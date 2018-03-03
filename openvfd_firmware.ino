@@ -1,6 +1,6 @@
 /*MIT License
 
-Copyright (c) 2018 Frank F. Zheng, Date: 01/11/2018
+Copyright (c) 2018 Frank F. Zheng, Date: 02/25/2018
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ SOFTWARE.*/
 #include <Wire.h>                // RTC Clock Communication Library (Wire)
 #include <digitalWriteFast.h>    // Clock Cycle Optimized Output
 #include <EEPROM.h>              // EEPROM Access
+#include <SoftwareSerial.h>      // Bluetooth Serial Communication
 
 // Remove comment to enable temperature sensor reading at STEM pin (DS18B20)
 // #define    TEMPERATURE_ENABLE
@@ -54,6 +55,10 @@ SOFTWARE.*/
   #define    STEM_PIN   A1  // ATMEGA: 24   Temperature Sensor Input Pin, STEM
 #endif
 
+#define    B_GROUND   9     // Bluetooth Ground Pin
+#define    B_TXD     10     // Bluetooth TXD Pin
+#define    B_RXD     11     // Bluetooth RXD Pin
+
 
 // ------------------------------------------------------------------------------------------
 #define    SHORTPRESS  1    // Short press is 1
@@ -76,10 +81,15 @@ SOFTWARE.*/
 // --------- Firmware Information --------- 
 
 // FIRMWARE VERSION STRING
-// Version 2.1 fluorescence final, Date: 01/11/2018, 08:07 AM
-char fwString[7] = {'v', '2', '.', '1', 'f', ' ', ' '};
+// Version 2.2 fluorescence final, Date: 02/25/2018, 00:22 AM
+char fwString[7] = {'v', '2', '.', '2', 'f', ' ', ' '};
 
 /* Changelog
+ * 2.2f (02/25/2018):
+ * - Serial Bluetooth enables Bluetooth communication between clock and HM-10 module
+ *    -> Serial protocol is the same
+ * - Minor enhancements on color distance for USB communication
+ * 
  * 2.1f (01/11/2018):
  * - Removed manual sensitivity setting of VU meter LED mode
  *    -> Software 'sort-of' AGC implementation enables dynamic range detection
@@ -100,6 +110,7 @@ RTC_DS1307 rtc;
 #ifdef TEMPERATURE_ENABLE
   OneWire ds(STEM_PIN);
 #endif
+SoftwareSerial BTSerial(B_TXD, B_RXD);
 
 // --------- Global Variable Initializer --------- 
 
@@ -337,6 +348,16 @@ void setup(){
   pinMode(CLOCK_PIN, OUTPUT);
   pinMode(LATCH_PIN, OUTPUT);
   pinMode(DATA_PIN, OUTPUT);
+
+  // Bluetooth Configuration
+  pinMode(B_GROUND, OUTPUT);                    // Data Ground Pin (yup that's clumsy)
+  digitalWrite(B_GROUND, LOW);                  // Permanent Low
+  BTSerial.begin(9600);
+  BTSerial.write("AT+DEFAULT\r\n");
+  BTSerial.write("AT+RESET\r\n");
+  BTSerial.write("AT+NAME=Controller\r\n");
+  BTSerial.write("AT+ROLE1\r\n");
+  BTSerial.write("AT+TYPE1");
 
   analogReference(DEFAULT);
 
@@ -853,6 +874,10 @@ void ledRoutine(){
         LED7_delta = 42;
         displayWrite(3, 0x00, 1000, LED7PM[2]);
       }
+      else{
+        LED7_delta = 10;
+        displayWrite(3, 0x00, 1000, LED7PM[0]);
+      }
       clearInterface();
     }
   }
@@ -1064,6 +1089,10 @@ void ledRoutine(){
         LED7_delta = 42;
         displayWrite(3, 0x00, 1000, LED7PM[2]);
       }
+      else{
+        LED7_delta = 10;
+        displayWrite(3, 0x00, 1000, LED7PM[0]);
+      }
       clearInterface();
     }
   }
@@ -1124,18 +1153,29 @@ void serialRoutine(){
     // If the communication pattern of 16 bytes is detected, write a message
     // Serial.print(sRead);
     
-    uint8_t* inputBuffer;
-    if((inputBuffer = (uint8_t*)malloc(24))) memset(inputBuffer, 0, 24);  
+    uint8_t inputBuffer[24]; 
     Serial.readBytes(inputBuffer, 24);
 
     serialCommandDecode(inputBuffer, serialCommandEncodeUSB);
-
-    free(inputBuffer);
 
     // Discard the rest
     uint8_t flushBuffer[Serial.available()];
     Serial.readBytes(flushBuffer, Serial.available());
     Serial.flush();
+  }
+
+  int bRead = BTSerial.available();
+
+  if(bRead > 0){
+    uint8_t inputBuffer[24];
+    BTSerial.readBytes(inputBuffer, 24);
+
+    serialCommandDecode(inputBuffer, serialCommandEncodeBluetooth);
+
+    // Discard buffer
+    uint8_t flushBuffer[BTSerial.available()];
+    BTSerial.readBytes(flushBuffer, BTSerial.available());
+    BTSerial.flush();
   }
 }
 
@@ -1420,6 +1460,11 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
 void serialCommandEncodeUSB(uint8_t* transferBuffer){
   // Write to USB Serial instance (constant 10 byte response)
   Serial.write(transferBuffer, 10);
+}
+
+void serialCommandEncodeBluetooth(uint8_t* transferBuffer){
+  // Write to Bluetooth Serial instance (constant 10 byte response)
+  BTSerial.write(transferBuffer, 10);
 }
 
 // Reset config, load initial values
