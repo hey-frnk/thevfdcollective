@@ -1,6 +1,6 @@
 /*MIT License
 
-Copyright (c) 2018 Frank F. Zheng, Date: 02/25/2018
+Copyright (c) 2018 Frank F. Zheng, Date: 03/20/2018
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 
-// --------- Includes ---------
+// --------- Libraries Used ---------
+#include <avr/pgmspace.h>
 #include <RTClib.h>              // RTC Clock Library
 #include <Wire.h>                // RTC Clock Communication Library (Wire)
 #include <digitalWriteFast.h>    // Clock Cycle Optimized Output
@@ -34,6 +35,9 @@ SOFTWARE.*/
 #ifdef TEMPERATURE_ENABLE
   #include <OneWire.h>          // One Wire DS18B20 Temperature Sensor Access - FLUORESCENCE: No TEMP
 #endif
+
+// Running firmware for the first time? Remove comment to configure OpenVFD for the first time (EEPROM reset)!
+// #define FIRSTCONFIG
 
 // --------- Pin Mapping Defines ---------
 
@@ -81,10 +85,19 @@ SOFTWARE.*/
 // --------- Firmware Information --------- 
 
 // FIRMWARE VERSION STRING
-// Version 2.2 fluorescence final, Date: 02/25/2018, 00:22 AM
-char fwString[7] = {'v', '2', '.', '2', 'f', ' ', ' '};
+// Version 2.2r fluorescence final, Date: 03/20/2018, 07:05 PM
+char fwString[7] = {'v', '2', '.', '2', 'r', 'f', ' '};
 
 /* Changelog
+ * 2.2rf (03/21/2018):
+ * - Clock can now be fully controlled via Bluetooth!
+ * - Significant performance and code efficiency improvements
+ * - Dynamic memory optimization, moving less frequently used constant variables into PROGMEM
+ * - Night shift is now available. The clock will enter low brightness when time is reached. Time setting using serial command (app or myOpenVFD)
+ * - 12h/24h, international date format and leading zero now configurable using serial command
+ * - Resolved an issue that would cause significant lag when flip dot mode is active in night shift
+ * - First firmware config can now be enabled in code to load default settings correctly
+ * 
  * 2.2f (02/25/2018):
  * - Serial Bluetooth enables Bluetooth communication between clock and HM-10 module
  *    -> Serial protocol is the same
@@ -107,6 +120,7 @@ char fwString[7] = {'v', '2', '.', '2', 'f', ' ', ' '};
 // --------- Component Initializer --------- 
 
 RTC_DS1307 rtc;
+uint8_t global_s, global_m, global_h;
 #ifdef TEMPERATURE_ENABLE
   OneWire ds(STEM_PIN);
 #endif
@@ -149,6 +163,8 @@ uint8_t led = LED_STATIC;
 uint8_t clockFlags = 0;           // Global clock flags
 #define B_12H       0             // Bit 0: 12h/24h option  
 #define B_INTD      1             // Bit 1: DDMMYY or MMDDYY
+#define B_NSHIFT    2             // Bit 2: Night shift
+#define B_LZERO     3
 // End Clock Flags
                                
 char welcomeText[6];
@@ -285,9 +301,15 @@ const uint8_t LED20_sense = 2;                            // Noise threshold
 const float LED20_linFactor = -0.50;                      // VU meter log mapping adjust: linFactor in [-1 ... inf], -1 <= lF < 0: log, 0: lin, > 0: exp
 
 
-uint8_t LED21_DF = 1;      // Dim factor, 1 = 50% render duty cycle
-uint8_t LED21_DC = 0;        // Dim flag used for switching PWM
-const char offs[6] = {' ', ' ', ' ', ' ', ' ', ' '};
+uint8_t LED21_DF = 1;                                     // Dim factor, 1 = 50% render duty cycle
+const uint8_t LED21_DFMAX = 19;                           // Max dim factor
+uint8_t LED21_DC = 0;                                     // Dim flag used for switching PWM
+const char offs[6] = {' ', ' ', ' ', ' ', ' ', ' '};      // Digit blanking
+uint8_t LED21_hEN = 22;                                   // Begin time of night shift (hour)
+uint8_t LED21_mEN = 0;                                    // Begin time of night shift (minute)
+uint8_t LED21_hDS = 8;                                    // End time of night shift (hour)
+uint8_t LED21_mDS = 0;                                    // End time of night shift (minute)
+
 
 
 // ---- Menu/Interface selector variables
@@ -301,6 +323,34 @@ uint8_t cF1, cF2, cF3, cF4 = 0;             // Check state variable
 void displayWrite_REG(uint8_t, uint8_t, int, const char*);
 void displayWrite_DIM(uint8_t, uint8_t, int, const char*);
 void (*displayWrite)(uint8_t, uint8_t, int, const char*) = displayWrite_REG;
+
+// Progmem messages (less used, optimized for RAM availability)
+const char MSG_COLOR[6] PROGMEM = {' ', 'C', 'O', 'L', 'O', 'R'};
+const char MSG_FADE[6] PROGMEM = {'C', ' ', 'F', 'A', 'D', 'E'};
+const char MSG_CROSSFADE[6] PROGMEM = {'C', ' ', 'C', 'R', 'F', 'D'};
+const char MSG_CHASEFADE[6] PROGMEM = {'C', ' ', 'C', 'H', 'F', 'D'};
+const char MSG_CRCODE[6] PROGMEM = {'C', 'R', 'C', 'O', 'D', 'E'};
+const char MSG_CSOUND[6] PROGMEM = {'C', 'S', 'O', 'U', 'N', 'D'};
+const char MSG_CCOP[6] PROGMEM = {'C', ' ', ' ', 'C', 'O', 'P'};
+const char MSG_CSILENT[6] PROGMEM = {'C', ' ', 'S', 'L', 'N', 'T'};
+const char MSG_INTLDATESET[6] PROGMEM = {'O', 'O', 'D', 'D', 'Y', 'Y'};
+const char MSG_INTLDATERESET[6] PROGMEM = {'D', 'D', 'O', 'O', 'Y', 'Y'};
+const char MSG_LEADINGZERO_ON[6] PROGMEM = {0, ' ', ' ', ' ', 'O', 'N'};
+const char MSG_LEADINGZERO_OFF[6] PROGMEM = {0, ' ', ' ', 'O', 'F', 'F'};
+const char MSG_DEFAULT1[6] PROGMEM= {'D', 'E', 'F', 'A', 'U', 'L'};
+const char MSG_DEFAULT2[6] PROGMEM = {'S', 'E', 'T', 'I', 'N', 'G'};
+const char MSG_DEFAULT3[6] PROGMEM = {'R', 'E', 'T', 'O', 'R', 'D'};
+const char MSG_TIMESYNC1[6] PROGMEM = {'T', '-', 'D', ' ', ' ', ' '};
+const char MSG_TIMESYNC2[6] PROGMEM = {'S', 'Y', 'N', 'C', 'E', 'D'};
+const char MSG_SAVESETTINGS1[6] PROGMEM = {'A', 'L', 'L', ' ', ' ', ' '};
+const char MSG_SAVESETTINGS2[6] PROGMEM = {'S', 'E', 'T', 'I', 'N', 'G'};
+const char MSG_SAVESETTINGS3[6] PROGMEM = {'S', 'A', 'V', 'E', 'D', ' '};
+const char MSG_SILENT1[6] PROGMEM = {'F', 'U', 'L', 'L', ' ', ' '};
+const char MSG_SILENT2[6] PROGMEM = {'N', 'I', 'G', 'H', 'T', ' '};
+const char MSG_SILENT3[6] PROGMEM = {'S', 'H', 'I', 'F', 'T', ' '};
+const char MSG_ON[6] PROGMEM = {' ', ' ', ' ', ' ', 'O', 'N'};
+const char MSG_OFF[6] PROGMEM = {' ', ' ', ' ', 'O', 'F', 'F'};
+const char MSG_ERROR[6] PROGMEM = {'E', 'R', 'R', 'O', 'R', ' '};
 
 // ------------------------------------------------------------------------------------------
 //              Time interval updating event class: Clocked FSM
@@ -331,7 +381,7 @@ uint8_t updateIntervalEvent(intervalEvent* input){
   return FALSE;
 }
 
-intervalEvent dotUpdater, jdotUpdater, sdotUpdater, cfUpdater, chUpdater, vuUpdater, vu2Updater;
+intervalEvent dotUpdater, jdotUpdater, sdotUpdater, cfUpdater, chUpdater, vuUpdater, vu2Updater, nShiftUpdater;
 #ifdef TEMPERATURE_ENABLE
   intervalEvent tsUpdater;
 #endif
@@ -352,12 +402,7 @@ void setup(){
   // Bluetooth Configuration
   pinMode(B_GROUND, OUTPUT);                    // Data Ground Pin (yup that's clumsy)
   digitalWrite(B_GROUND, LOW);                  // Permanent Low
-  BTSerial.begin(9600);
-  BTSerial.write("AT+DEFAULT\r\n");
-  BTSerial.write("AT+RESET\r\n");
-  BTSerial.write("AT+NAME=Controller\r\n");
-  BTSerial.write("AT+ROLE1\r\n");
-  BTSerial.write("AT+TYPE1");
+  BTSerial.begin(4800);
 
   analogReference(DEFAULT);
 
@@ -379,7 +424,11 @@ void setup(){
   
   // Wire, RTC Initializer
   wrInit();
-  
+
+  #ifdef FIRSTCONFIG  // If first time configuring, load default and save all settings
+    firstConfig();
+    saveConfig(1);
+  #endif
   // Initialize global saved values
   loadConfig();
   
@@ -396,6 +445,7 @@ void setup(){
   chUpdater = newiE(60);
   vuUpdater = newiE(90);
   vu2Updater = newiE(250);
+  nShiftUpdater = newiE(1000);
 }
 
 void loop(){
@@ -441,11 +491,11 @@ void interfaceRoutine(){
       // This function is damn lit. Once it detects a change in second, 
       // the decimal dot will slide over the displays.
       // Get the current time and compare it with the previous timestamp
-      DateTime now = rtc.now();
-      if(INTF0_ds != now.second()){
+      // DateTime now = rtc.now();
+      if(INTF0_ds != global_s){
         // Time has changed -> Reset dot position, remember timestamp, change direction
         INTF0_DP = 0;
-        INTF0_ds = now.second();
+        INTF0_ds = global_s;
         INTF0_dr = !INTF0_dr;
       }
 
@@ -482,7 +532,7 @@ void interfaceRoutine(){
     if(cF4 == SHORTPRESS){
       clearInterface();
       INTF0_DM++;
-      if((INTF0_DM == 2) && (led == LED_SILENT)) INTF0_DM = 3;
+      // if((INTF0_DM == 2) && (led == LED_SILENT)) INTF0_DM = 3;
     }
     // Long press will save all settings.
     if(cF4 == LONGPRESS){  
@@ -620,10 +670,12 @@ void interfaceRoutine(){
       }else{
         tBit(&clockFlags, B_INTD); // Flip clockFlags international date bit
         if(rBit(clockFlags, B_INTD)){
-          char k[6] = {'O', 'O', 'D', 'D', 'Y', 'Y'};
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_INTLDATESET + i);
           displayWrite(3, 0x00, 1000, k);
         }else{
-          char k[6] = {'D', 'D', 'O', 'O', 'Y', 'Y'};
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_INTLDATERESET + i);
           displayWrite(3, 0x00, 1000, k);
         }
       }
@@ -771,7 +823,8 @@ void ledRoutine(){
 
     if(cF2 == SHORTPRESS){
       led = LED_FADE;                    // Switch to regular fade
-      char k[6] = {'C', ' ', 'F', 'A', 'D', 'E'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_FADE + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -797,7 +850,8 @@ void ledRoutine(){
 
     if(cF2 == SHORTPRESS){
       led = LED_FADE;                    // Switch to regular fade
-      char k[6] = {'C', ' ', 'F', 'A', 'D', 'E'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_FADE + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -809,7 +863,8 @@ void ledRoutine(){
 
     if(cF2 == SHORTPRESS){
       led = LED_FADE;                    // Switch to regular fade
-      char k[6] = {'C', ' ', 'F', 'A', 'D', 'E'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_FADE + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -831,7 +886,8 @@ void ledRoutine(){
 
     if(cF2 == SHORTPRESS){
       led = LED_CROSSFADE;                    // Switch to cross fade
-      char k[6] = {'C', ' ', 'C', 'R', 'F', 'D'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CROSSFADE + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -855,7 +911,8 @@ void ledRoutine(){
 
     if(cF2 == SHORTPRESS){
       led = LED_CHASEFADE;                    // To chase fade (LED 8)
-      char k[6] = {'C', ' ', 'C', 'H', 'F', 'D'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CHASEFADE + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -885,11 +942,11 @@ void ledRoutine(){
   // LED 8: Chase fade!
   else if(led == LED_CHASEFADE){
     if(LED8_dp < 3){                                         // If reactive to second flip
-      DateTime now = rtc.now();                              // Get time
-      if(LED8_ds != now.second()){                           // If the second has changed
+      // DateTime now = rtc.now();                              // Get time
+      if(LED8_ds != global_s){                           // If the second has changed
         if(LED8_dp == 2) LED8_dr = !LED8_dr;                 // Change chase fade direction
         LED8_st = 0;                                         // Reset state machine
-        LED8_ds = now.second();                              // Overwrite old second with new second
+        LED8_ds = global_s;                              // Overwrite old second with new second
         LED8_ph += 22;                                       // Let it overflow and get different values.
       }
     }
@@ -918,7 +975,8 @@ void ledRoutine(){
     
     if(cF2 == SHORTPRESS){
       led = LED_RESISTOR;        // To resistor mode (LED 10)
-      char k[6] = {'C', 'R', 'C', 'O', 'D', 'E'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CRCODE + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -946,13 +1004,13 @@ void ledRoutine(){
     uint8_t clockData[NUM_RGB];
 
     // Get the time once again
-    DateTime now = rtc.now();
-    clockData[0] = now.second() % 10;
-    clockData[1] = now.second() / 10;
-    clockData[2] = now.minute() % 10;
-    clockData[3] = now.minute() / 10;
-    clockData[4] = now.hour() % 10;
-    clockData[5] = now.hour() / 10;
+    // DateTime now = rtc.now();
+    clockData[0] = global_s % 10;
+    clockData[1] = global_s / 10;
+    clockData[2] = global_m % 10;
+    clockData[3] = global_m / 10;
+    clockData[4] = global_h % 10;
+    clockData[5] = global_h / 10;
     
     uint8_t offset = 0;
     for(uint8_t i = 0; i < 6; i++){
@@ -966,7 +1024,8 @@ void ledRoutine(){
     
     if(cF2 == SHORTPRESS){
       led = LED_COP;                    // Switch to police light mode!
-      char k[6] = {'C', ' ', ' ', 'C', 'O', 'P'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CCOP + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -1001,7 +1060,8 @@ void ledRoutine(){
 
     if(cF2 == SHORTPRESS){
       led = LED_MUSIC;                    // Switch to microphone mode!
-      char k[6] = {'C', 'S', 'O', 'U', 'N', 'D'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CSOUND + i);
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
     }
@@ -1060,7 +1120,8 @@ void ledRoutine(){
 
     if(cF2 == SHORTPRESS){
       led = LED_SILENT;                    // To silent mode
-      char k[6] = {'C', ' ', 'S', 'L', 'N', 'T'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CSILENT + i);
       displayWrite(3, 0x00, 1000, k);
 
       uint8_t silent_target[NUM_BYTES];
@@ -1070,8 +1131,6 @@ void ledRoutine(){
         silent_target[offset + 2] = led_scPresets[0][2];
       }
       ledDirectWrite(silent_target);
-      if(INTF0_DM == 2) INTF0_DM = 1;    // Disable possibility of dot mode 2 flicker
-
       clearInterface();
     }
 
@@ -1103,7 +1162,8 @@ void ledRoutine(){
     
     if(cF2 == SHORTPRESS){
       led = LED_STATIC;                    // Back to LED 0
-      char k[6] = {' ', 'C', 'O', 'L', 'O', 'R'};
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_COLOR + i);
       displayWrite = &displayWrite_REG;
       displayWrite(3, 0x00, 1000, k);
       clearInterface();
@@ -1111,37 +1171,31 @@ void ledRoutine(){
 
     if(cF3 == SHORTPRESS){
       // Increase dim factor
-      if(LED21_DF == 1) LED21_DF = 16;
-      // else if(LED21_DF == 2) LED21_DF = 4;
-      // else if(LED21_DF == 4) LED21_DF = 8;
-      // else if(LED21_DF == 8) LED21_DF = 16;
-      else if(LED21_DF == 16) LED21_DF = 1;
+      if(LED21_DF == 1) LED21_DF = LED21_DFMAX;
+      else if(LED21_DF == LED21_DFMAX) LED21_DF = 1;
       else LED21_DF = 1; // Default set
 
       // Tell the brightness
       displayWrite = &displayWrite_REG;
       if(LED21_DF == 1){
-        char k[6] = {'F', 'U', 'L', 'L', ' ', ' '};
+        char k[6];
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SILENT1 + i);
         displayWrite(3, 0x00, 750, k);
-      }/*else if(LED21_DF == 2){
-        char k[6] = {'H', 'A', 'L', 'F', ' ', ' '};
+      }else if(LED21_DF == LED21_DFMAX){
+        char k[6];
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SILENT2 + i);
         displayWrite(3, 0x00, 750, k);
-      }else if(LED21_DF == 4){
-        char k[6] = {'Q', 'U', 'A', 'R', 'T', 'R'};
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SILENT3 + i);
         displayWrite(3, 0x00, 750, k);
-      }else if(LED21_DF == 8){
-        char k[6] = {'E', 'I', 'G', 'H', 'T', 'H'};
-        displayWrite(3, 0x00, 750, k);
-      }*/else if(LED21_DF == 16){
-        char k[6] = {'N', 'I' , 'G', 'H', 'T', ' '};
-        displayWrite(3, 0x00, 750, k);
-      }
-      char k[6] = {'B', 'R', 'I', 'G', 'H', 'T'};
-      displayWrite(3, 0b00100000, 750, k);
-        
+      } 
       clearInterface();
     }
   }
+
+  // Check if night shift time set is enabled
+  // If yes, check every second if night shift should be turned on or off
+  // DimFactor AND LED_Silent checks the direction whether turn on or off
+  if(rBit(clockFlags, B_NSHIFT)) if(updateIntervalEvent(&nShiftUpdater)) nightShiftRoutine((LED21_DF == LED21_DFMAX) && (led == LED_SILENT), global_h, global_m);
 }
 
 // This routine is to check for incoming serial data
@@ -1170,13 +1224,56 @@ void serialRoutine(){
     uint8_t inputBuffer[24];
     BTSerial.readBytes(inputBuffer, 24);
 
+    /*for(uint8_t i = 0; i < 24; i++){
+      Serial.print((int)inputBuffer[i]);
+      Serial.print(" ");
+    }
+    Serial.print("Start \n");*/
+
     serialCommandDecode(inputBuffer, serialCommandEncodeBluetooth);
 
     // Discard buffer
     uint8_t flushBuffer[BTSerial.available()];
     BTSerial.readBytes(flushBuffer, BTSerial.available());
     BTSerial.flush();
+
+    /*for(uint8_t i = 0; i < 24; i++){
+      Serial.print((int)inputBuffer[i]);
+      Serial.print(" ");
+    }
+    Serial.print("Stop \n");*/
   }
+}
+
+// This routine is to check whether night shift should be turned on/off or not
+// Direction parameter: dir == 0: possibility of turning on, dir == 1: possibility of turning off
+void nightShiftRoutine(uint8_t dir, uint8_t h, uint8_t m){
+  // Otherwise check for possibility if night shift should be turned on/off once a sec
+  uint8_t hInstance = (dir == 0) ? LED21_hEN : LED21_hDS;
+  uint8_t mInstance = (dir == 0) ? LED21_mEN : LED21_mDS;
+    
+  if(h == hInstance){      // If hour is right
+    if(m == mInstance){    // And minute is right
+      if(dir == 0){
+        // Then automatically (silently) enter night shift
+        led = LED_SILENT;                    // To silent mode
+        LED21_DF = LED21_DFMAX;                       // And dim down
+
+        uint8_t silent_target[NUM_BYTES];
+        for(uint8_t offset = 0; offset < NUM_BYTES; offset += 3){
+          silent_target[offset] = led_scPresets[0][0];
+          silent_target[offset + 1] = led_scPresets[0][1];
+          silent_target[offset + 2] = led_scPresets[0][2];
+        }
+        ledDirectWrite(silent_target);
+      }else{  // Automatically (silently) enter static mode
+        led = LED_STATIC;                    // Back to LED 0
+        displayWrite = &displayWrite_REG;
+      }
+      clearInterface();
+    }
+  }
+  
 }
 
 // Serial command decode function. Takes input buffer from USB Serial or Software Serial
@@ -1188,6 +1285,7 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
 
     // If LED set is detected
     if(cmdByte == 0x01){
+      displayWrite = &displayWrite_REG; // Reset display function
       // Set LED mode to 2 (Serial custom mode)
       led = LED_SERIAL_0;
       // And write LED information to target
@@ -1197,6 +1295,7 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
 
     // If LED smooth set is detected
     else if(cmdByte == 0x02){
+      displayWrite = &displayWrite_REG; // Reset display function
       // Set LED mode to 3 (Serial smooth write)
       led = LED_SERIAL_1;
       // And write LED information to target
@@ -1221,15 +1320,124 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
       // A make sure flag
       if(inputBuffer[8] == 0x23){
         // Say that time and date is synced now.
-        char msg[6] = {'T', '-', 'D', ' ', ' ', ' '};
-        char msg2[6] = {'S', 'Y', 'N', 'C', 'E', 'D'};
-        displayWrite(3, 0x00, 750, msg);
-        displayWrite(3, 0x00, 750, msg2);
+        char k[6];
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_TIMESYNC1 + i);
+        displayWrite(3, 0x00, 750, k);
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_TIMESYNC2 + i);
+        displayWrite(3, 0x00, 750, k);
       }
 
       // Answer with a beginning of a message. If it's all good, the PC controller will complete the message :p
       uint8_t transferBuffer[10] = {0x23, 0x10, 'T', 'i', 'm', 'e', ' ', 'S', 'y', 0x24};
       encoderInstance(transferBuffer);
+    }
+
+    // If night shift is set (silent mode)
+    else if(cmdByte == 0x11){
+      if((inputBuffer[2] == 0x23) && (inputBuffer[9] == 0x23)){ // Further format verify
+        // If time set night shift is enabled
+        char k[6];
+        
+        if(inputBuffer[7] == 1){ // Set enable minute, hour; disable minute, hour
+          LED21_mEN = inputBuffer[3];
+          LED21_hEN = inputBuffer[4];
+          LED21_mDS = inputBuffer[5];
+          LED21_hDS = inputBuffer[6];
+          sBit(&clockFlags, B_NSHIFT);       // Set night shift time enable bit
+          saveConfig(1);                     // Silently save settings
+
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SILENT2 + i);
+          displayWrite(3, 0x00, 750, k);
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SILENT3 + i);
+          displayWrite(3, 0x00, 750, k);
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_ON + i);
+          displayWrite(3, 0x00, 750, k);
+        }
+        else if(inputBuffer[7] == 0){ // Reset enable minute, hour; disable minute, hour
+          LED21_mEN = 0;
+          LED21_hEN = 22;
+          LED21_mDS = 0;
+          LED21_hDS = 8;
+          cBit(&clockFlags, B_NSHIFT);       // Clear night shift time enable bit
+          saveConfig(1);                     // Silently save settings
+
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SILENT2 + i);
+          displayWrite(3, 0x00, 750, k);
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SILENT3 + i);
+          displayWrite(3, 0x00, 750, k);
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_OFF + i);
+          displayWrite(3, 0x00, 750, k);
+        }
+        // else do nothing
+
+        if(inputBuffer[8] < 2){
+          // Simple night shift is enabled
+          led = LED_SILENT;                                           // To silent mode
+          LED21_DF = (inputBuffer[8]) ? LED21_DFMAX : 1;                       // And dim down if requested
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CSILENT + i);
+          displayWrite(3, 0x00, 1000, k);
+  
+          uint8_t silent_target[NUM_BYTES];
+          for(uint8_t offset = 0; offset < NUM_BYTES; offset += 3){
+            silent_target[offset] = led_scPresets[0][0];
+            silent_target[offset + 1] = led_scPresets[0][1];
+            silent_target[offset + 2] = led_scPresets[0][2];
+          }
+          ledDirectWrite(silent_target);
+          clearInterface();
+        }
+      }
+    }
+
+    // If clock configuration set is detected
+    else if(cmdByte == 0x12){
+      // If 12h/24h set
+      if(inputBuffer[2] == B_12H){
+        if(inputBuffer[3]) sBit(&clockFlags, B_12H);     // Set 12h mode
+        else cBit(&clockFlags, B_12H);                   // clear 12h mode
+
+        // And output 
+        if(rBit(clockFlags, B_12H)){
+          char k[6] = {1, 2, 'H'};
+          for(uint8_t i = 3; i < 6; i++) k[i] = ' ';
+          displayWrite(3, 0x00, 1000, k);
+        }else{
+          char k[6] = {2, 4, 'H'};
+          for(uint8_t i = 3; i < 6; i++) k[i] = ' ';
+          displayWrite(3, 0x00, 1000, k);
+        }
+      }
+      else if(inputBuffer[2] == B_INTD){
+      
+        if(inputBuffer[3]) sBit(&clockFlags, B_INTD);    // Set intl' date
+        else cBit(&clockFlags, B_INTD);                  // clear intl' date
+
+        // And output
+        if(rBit(clockFlags, B_INTD)){
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_INTLDATESET + i);
+          displayWrite(3, 0x00, 1000, k);
+        }else{
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_INTLDATERESET + i);
+          displayWrite(3, 0x00, 1000, k);
+        }
+      }
+      else if(inputBuffer[2] == B_LZERO){
+        if(inputBuffer[3]) sBit(&clockFlags, B_LZERO);    // enable leading zero
+        else cBit(&clockFlags, B_LZERO);                  // disable leading zero
+
+        // And output
+        if(rBit(clockFlags, B_LZERO)){
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_LEADINGZERO_ON + i);
+          displayWrite(3, 0x00, 1000, k);
+        }else{
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_LEADINGZERO_OFF + i);
+          displayWrite(3, 0x00, 1000, k);
+        }
+      }
     }
 
     // If message display is detected
@@ -1263,6 +1471,7 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
 
     // If LED preset mode is detected
     else if(cmdByte == 0x20){
+      displayWrite = &displayWrite_REG; // Reset display function
       // Get input LED mode
       uint8_t cmdMode = inputBuffer[2];
 
@@ -1282,7 +1491,8 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
       // If regular fade preset is detected
       else if(cmdMode == 0x02){
         led = LED_FADE;
-        char k[6] = {'C', ' ', 'F', 'A', 'D', 'E'};
+        char k[6];
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_FADE + i);
         displayWrite(3, 0x00, 1000, k);
       }
 
@@ -1292,22 +1502,14 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
           
         if(led == LED_CROSSFADE){     // If it is already in CF mode, just display the message
           // Higher delta: wider rainbow
-          if(LED7_delta == 42){
-            LED7_delta = 10;
-            displayWrite(3, 0x00, 1000, LED7PM[0]);
-          }
-          else if(LED7_delta == 10){
-            LED7_delta = 21;
-            displayWrite(3, 0x00, 1000, LED7PM[1]);
-          }
-          else if(LED7_delta == 21){
-            LED7_delta = 42;
-            displayWrite(3, 0x00, 1000, LED7PM[2]);
-          }
+          if(LED7_delta == 42) displayWrite(3, 0x00, 1000, LED7PM[2]);
+          else if(LED7_delta == 10) displayWrite(3, 0x00, 1000, LED7PM[0]);
+          else if(LED7_delta == 21) displayWrite(3, 0x00, 1000, LED7PM[1]);
         }
         else{                         // Otherwise
           led = LED_CROSSFADE;        // Switch to cross fade and message
-          char k[6] = {'C', ' ', 'C', 'R', 'F', 'D'};
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CROSSFADE + i);
           displayWrite(3, 0x00, 1000, k);
         }
       }
@@ -1328,7 +1530,8 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
         }
         else{                         // Otherwise
           led = LED_CHASEFADE;        // Switch to chase fade (LED 8)
-          char k[6] = {'C', ' ', 'C', 'H', 'F', 'D'};
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CHASEFADE + i);
           displayWrite(3, 0x00, 1000, k);
         }
       }
@@ -1336,7 +1539,8 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
       // If resistor color mode is detected
       else if(cmdMode == 0x05){
         led = LED_RESISTOR;           // To resistor mode (LED 10)
-        char k[6] = {'C', 'R', 'C', 'O', 'D', 'E'};
+        char k[6];
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CRCODE + i);
         displayWrite(3, 0x00, 1000, k);
       }
 
@@ -1346,22 +1550,14 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
           
         if(led == LED_MUSIC){                // If it is already in mic mode, just display message
           // Higher delta: wider rainbow
-          if(LED7_delta == 42){
-            LED7_delta = 10;
-            displayWrite(3, 0x00, 1000, LED7PM[0]);
-          }
-          else if(LED7_delta == 10){
-            LED7_delta = 21;
-            displayWrite(3, 0x00, 1000, LED7PM[1]);
-          }
-          else if(LED7_delta == 21){
-            LED7_delta = 42;
-            displayWrite(3, 0x00, 1000, LED7PM[2]);
-          }
+          if(LED7_delta == 42) displayWrite(3, 0x00, 1000, LED7PM[2]);
+          else if(LED7_delta == 10) displayWrite(3, 0x00, 1000, LED7PM[0]);
+          else if(LED7_delta == 21) displayWrite(3, 0x00, 1000, LED7PM[1]);
         }
         else{                         // Otherwise
           led = LED_MUSIC;            // Switch to microphone mode (LED 20)
-          char k[6] = {'C', 'S', 'O', 'U', 'N', 'D'};
+          char k[6];
+          for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CSOUND + i);
           displayWrite(3, 0x00, 1000, k);
         }
       }
@@ -1369,49 +1565,9 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
       // If police lights mode is detected
       else if(cmdMode == 0x07){
         led = LED_COP;                 // Switch to police light mode!
-        char k[6] = {'C', ' ', ' ', 'C', 'O', 'P'};
+        char k[6];
+        for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_CCOP + i);
         displayWrite(3, 0x00, 1000, k);
-      }
-
-      // If silent mode is detected
-      else if(cmdMode == 0x08){
-        LED21_DF = inputBuffer[3];
-
-        if(led == LED_SILENT){        // If already in silent mode, just set new parameter
-          if(LED21_DF == 1){
-            char k[6] = {'F', 'U', 'L', 'L', ' ', ' '};
-            displayWrite(3, 0x00, 750, k);
-          }/*else if(LED21_DF == 2){
-            char k[6] = {'H', 'A', 'L', 'F', ' ', ' '};
-            displayWrite(3, 0x00, 750, k);
-          }else if(LED21_DF == 4){
-            char k[6] = {'Q', 'U', 'A', 'R', 'T', 'R'};
-            displayWrite(3, 0x00, 750, k);
-          }else if(LED21_DF == 8){
-            char k[6] = {'E', 'I', 'G', 'H', 'T', 'H'};
-            displayWrite(3, 0x00, 750, k);
-          }*/else if(LED21_DF == 16){
-            char k[6] = {'N', 'I' , 'G', 'H', 'T', ' '};
-            displayWrite(3, 0x00, 750, k);
-          }
-          char k[6] = {'B', 'R', 'I', 'G', 'H', 'T'};
-          displayWrite(3, 0b00100000, 750, k);
-        }
-          
-        else{
-          led = LED_SILENT;                    // To silent mode
-          char k[6] = {'C', ' ', 'S', 'L', 'N', 'T'};
-          displayWrite(3, 0x00, 1000, k);
-      
-          uint8_t silent_target[NUM_BYTES];
-          for(uint8_t offset = 0; offset < NUM_BYTES; offset += 3){
-            silent_target[offset] = led_scPresets[0][0];
-            silent_target[offset + 1] = led_scPresets[0][1];
-            silent_target[offset + 2] = led_scPresets[0][2];
-          }
-          ledDirectWrite(silent_target);
-          if(INTF0_DM == 2) INTF0_DM = 1;    // Disable possibility of dot mode 2 flicker
-        }
       }
     }
 
@@ -1446,12 +1602,12 @@ void serialCommandDecode(uint8_t* inputBuffer, void (*encoderInstance)(uint8_t*)
       firstConfig();
     }
 
-    // Bad command. Some random return otherwise. You should never ever get to this point.
+    // Bad command or bit error :( Some random return otherwise. You should never ever get to this point.
     else{
-      char k[6] = {' ', ' ', ' ', ' ', ' ', ' '};
-      for(uint8_t i = 1; i < 7; i++) k[i - 1] = (char)inputBuffer[i];
+      char k[6];
+      for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_ERROR + i);
+      // for(uint8_t i = 1; i < 7; i++) k[i - 1] = (char)inputBuffer[i];
       displayWrite(3, 0x00, 1000, k);
-      // for(uint8_t i = 0; i < 6; i++) Serial.print(k[i]);
     }
   }
 }
@@ -1478,17 +1634,22 @@ void firstConfig(){
   LED8_dp = 0;               // Default: right to left
   LED11_pt = 0;              // Default: standard cop
   LED21_DF = 1;              // Default: Full brightness
+  LED21_hEN = 22;
+  LED21_mEN = 0;
+  LED21_hDS = 8;
+  LED21_mDS = 0;
   clockFlags = 0;            // Default: 10
   // Default welcome message (HELLO)
   char w[6] = {'H', 'E', 'L', 'L', 'O', ' '};
   for(uint8_t i = 0; i < 6; i++) welcomeText[i] = w[i];
 
-  char k[6] = {'D', 'E', 'F', 'A', 'U', 'L'};
-  char k2[6] = {'S', 'E', 'T', 'I', 'N', 'G'};
-  char k3[6] = {'R', 'E', 'T', 'O', 'R', 'D'};
+  char k[6];
+  for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_DEFAULT1 + i);
   displayWrite(3, 0x00, 750, k);
-  displayWrite(3, 0x00, 750, k2);
-  displayWrite(3, 0x00, 750, k3);
+  for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_DEFAULT2 + i);
+  displayWrite(3, 0x00, 750, k);
+  for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_DEFAULT3 + i);
+  displayWrite(3, 0x00, 750, k);
 }
 
 // Global variables load procedure
@@ -1507,7 +1668,7 @@ void loadConfig(){
   // Call to save all settings
   // Interface 0: Read dot mode
   INTF0_DM = EEPROM.read(addr);
-  if((INTF0_DM == 2) && (led == LED_SILENT)) INTF0_DM == 1;   // Remove dot mode 2 flicker
+  // if((INTF0_DM == 2) && (led == LED_SILENT)) INTF0_DM == 1;   // Remove dot mode 2 flicker
   addr++;
 
   // Interface 1: Nothin to read
@@ -1558,6 +1719,15 @@ void loadConfig(){
   addr += 6;
 
   LED21_DF = EEPROM.read(addr);
+  addr++;
+
+  LED21_hEN = EEPROM.read(addr);
+  addr++;
+  LED21_mEN = EEPROM.read(addr);
+  addr++;
+  LED21_hDS = EEPROM.read(addr);
+  addr++;
+  LED21_mDS = EEPROM.read(addr);
 }
 
 // Global variables save procedure
@@ -1620,14 +1790,25 @@ void saveConfig(uint8_t mute){
 
   // Save dim factor
   EEPROM.update(addr, LED21_DF);
+  addr++;
+
+  // Save night shift parameters
+  EEPROM.update(addr, LED21_hEN);
+  addr++;
+  EEPROM.update(addr, LED21_mEN);
+  addr++;
+  EEPROM.update(addr, LED21_hDS);
+  addr++;
+  EEPROM.update(addr, LED21_mDS);
 
   if(!mute){
-    char k[6] = {'A', 'L', 'L', ' ', ' ', ' '};
-    char k2[6] = {'S', 'E', 'T', 'I', 'N', 'G'};
-    char k3[6] = {'S', 'A', 'V', 'E', 'D', ' '};
+    char k[6];
+    for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SAVESETTINGS1 + i);
     displayWrite(3, 0x00, 750, k);
-    displayWrite(3, 0x00, 750, k2);
-    displayWrite(3, 0x00, 750, k3);
+    for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SAVESETTINGS2 + i);
+    displayWrite(3, 0x00, 750, k);
+    for(uint8_t i = 0; i < 6; i++) k[i] = pgm_read_byte_near(MSG_SAVESETTINGS3 + i);
+    displayWrite(3, 0x00, 750, k);
   }
 }
 
@@ -1883,22 +2064,29 @@ void displayWrite_REG(uint8_t renderOption, uint8_t ODDR, int delayOption, const
   if(renderOption == 0){
     // If getDisplayData is requested to retrieve time information
     DateTime now = rtc.now();
-    codedOutput[0] = charConvert((now.second() % 10));
-    codedOutput[1] = charConvert((now.second() / 10));
-    codedOutput[2] = charConvert((now.minute() % 10));
-    codedOutput[3] = charConvert((now.minute() / 10));
-    codedOutput[4] = charConvert((now.hour() % 10));
-    codedOutput[5] = charConvert((now.hour() / 10));
+    global_s = now.second(); // Reduce s/m/h getter overhead
+    global_m = now.minute();
+    global_h = now.hour();
+    
+    codedOutput[0] = charConvert(global_s % 10);
+    codedOutput[1] = charConvert(global_s / 10);
+    codedOutput[2] = charConvert(global_m % 10);
+    codedOutput[3] = charConvert(global_m / 10);
+    codedOutput[4] = charConvert(global_h % 10);
+    codedOutput[5] = charConvert(global_h / 10);
     if(rBit(clockFlags, B_12H)){ // Alternative rendering with 12h format
-      uint8_t c5 = charConvert(((now.hour() % 12) / 10));
-      codedOutput[4] = (now.hour() == 12) ? charConvert(2) : charConvert(((now.hour() % 12) % 10));       // 12 AM fix
-      codedOutput[5] = (now.hour() == 12) ? charConvert(1) : c5;
-      codedOutput[5] = ((((now.hour() % 12) / 10) == 0) && (now.hour() != 12)) ? charConvert(' ') : c5;   // Remove leading zero
+      uint8_t c5 = charConvert(((global_h % 12) / 10));
+      codedOutput[4] = (global_h == 12) ? charConvert(2) : charConvert(((global_h % 12) % 10));       // 12 AM fix
+      codedOutput[5] = (global_h == 12) ? charConvert(1) : c5;
+      if(!rBit(clockFlags, B_LZERO)) codedOutput[5] = ((((global_h % 12) / 10) == 0) && (global_h != 12)) ? charConvert(' ') : c5;   // Remove leading zero
     }
   }
   else if(renderOption == 1){
     // If getDisplayData is requested to retrieve date information
     DateTime now = rtc.now();
+    global_s = now.second(); // Reduce s/m/h getter overhead
+    global_m = now.minute();
+    global_h = now.hour();
     codedOutput[0] = charConvert((now.year() % 10));
     codedOutput[1] = charConvert((now.year() % 100) / 10);
     if(rBit(clockFlags, B_INTD)){ // Alternative rendering with MM/DD/YY format
@@ -1911,7 +2099,7 @@ void displayWrite_REG(uint8_t renderOption, uint8_t ODDR, int delayOption, const
       codedOutput[3] = charConvert((now.month() / 10));
       codedOutput[4] = charConvert((now.day() % 10));
       codedOutput[5] = charConvert((now.day() / 10));
-    } 
+    }
   }
   else if(renderOption == 2){
     #ifdef TEMPERATURE_ENABLE
@@ -2079,19 +2267,19 @@ uint8_t decToBcd(uint8_t input) {
 }
 
 // Bit manipulation functions
-void sBit(uint8_t* x, uint8_t pos){
+inline void sBit(uint8_t* x, uint8_t pos){
   *x |= (1 << pos);
 }
 
-void cBit(uint8_t* x, uint8_t pos){
+inline void cBit(uint8_t* x, uint8_t pos){
   *x &= ~(1 << pos);
 }
 
-void tBit(uint8_t* x, uint8_t pos){
+inline void tBit(uint8_t* x, uint8_t pos){
   *x ^= (1 << pos);
 }
 
-uint8_t rBit(uint8_t x, uint8_t pos){
+inline uint8_t rBit(uint8_t x, uint8_t pos){
   return (x >> pos) & 0x01;
 }
 
