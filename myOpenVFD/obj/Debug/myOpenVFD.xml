@@ -1,0 +1,142 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+myOpenVFD
+</name>
+</assembly>
+<members>
+<member name="T:myOpenVFD.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.berlin1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.computer">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.green2blue">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.HXP_TN">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.led">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.pastelrainbow">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.rainbow_alt">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.red2blue">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.red2green_alt">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.res0">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.res1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.res2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.res3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.resistor">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.speaker_note">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.speaker_off">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:myOpenVFD.My.Resources.Resources.speaker_on">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="E:myOpenVFD.ClassUnzip.Unzipstart">
+ <summary>Event welches vor dem Entpacken (Unzip) ausgeführt wird.</summary>
+ <remarks></remarks>
+</member>
+<member name="E:myOpenVFD.ClassUnzip.UnzipFinishd">
+ <summary>Event welches nach dem Entpacken (Unzip) ausgeführt wird.</summary>
+ <remarks></remarks>
+</member>
+<member name="M:myOpenVFD.ClassUnzip.#ctor(System.String,System.String)">
+ <summary>Neue Instanz der ClassUnzip Klasse.</summary>
+ <param name="file">Datei welche entpackt werden soll.</param>
+ <param name="towhere">Zielordner.</param>
+ <remarks></remarks>
+</member>
+<member name="M:myOpenVFD.ClassUnzip.UnzipNow">
+ <summary>Das Entpacken (Unzip) wird ausgeführt.</summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:myOpenVFD.ClassUnzip.UnZipFile">
+ <summary>Gibt den Namen der gepackten Datei zurück, oder setzt diesen.</summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:myOpenVFD.ClassUnzip.UnzipTo">
+ <summary>Gibt den Zielort (entpacken) zurück, oder setzt diesen.</summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+</members>
+</doc>
