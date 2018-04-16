@@ -1,6 +1,6 @@
 /*MIT License
 
-Copyright (c) 2018 Frank F. Zheng, Date: 03/20/2018
+Copyright (c) 2018 Frank F. Zheng, Date: 04/17/2018
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -85,10 +85,13 @@ SOFTWARE.*/
 // --------- Firmware Information --------- 
 
 // FIRMWARE VERSION STRING
-// Version 2.2r fluorescence final, Date: 03/20/2018, 07:05 PM
-char fwString[7] = {'v', '2', '.', '2', 'r', 'f', ' '};
+// Version 2.2 release fluorescence, Date: 04/17/2018
+char fwString[7] = {'v', '2', '.', '2', '1', 'r', 'f'};
 
 /* Changelog
+ * 2.21rf (04/21/2018):
+ * - Fixed an issue in 12h mode
+ *  
  * 2.2rf (03/21/2018):
  * - Clock can now be fully controlled via Bluetooth!
  * - Significant performance and code efficiency improvements
@@ -2075,10 +2078,16 @@ void displayWrite_REG(uint8_t renderOption, uint8_t ODDR, int delayOption, const
     codedOutput[4] = charConvert(global_h % 10);
     codedOutput[5] = charConvert(global_h / 10);
     if(rBit(clockFlags, B_12H)){ // Alternative rendering with 12h format
-      uint8_t c5 = charConvert(((global_h % 12) / 10));
-      codedOutput[4] = (global_h == 12) ? charConvert(2) : charConvert(((global_h % 12) % 10));       // 12 AM fix
-      codedOutput[5] = (global_h == 12) ? charConvert(1) : c5;
-      if(!rBit(clockFlags, B_LZERO)) codedOutput[5] = ((((global_h % 12) / 10) == 0) && (global_h != 12)) ? charConvert(' ') : c5;   // Remove leading zero
+      uint8_t global_h_alt = global_h ? global_h : 12;                                             // Special case fix: 00:00 -> 12:00 PM
+      codedOutput[4] = (global_h_alt > 12) ? charConvert((global_h_alt - 12) % 10) : charConvert(global_h_alt % 10);
+      if(!rBit(clockFlags, B_LZERO)){
+        if(global_h_alt > 12){                                                                     // Let's not use ternary
+          if(!((global_h_alt - 12) / 10)) codedOutput[5] = charConvert(' ');                       // Leading zero removal only from 1 PM to 9 PM
+          else codedOutput[5] = charConvert((global_h_alt - 12) / 10);                             // Otherwise render normal 12h
+        }
+        else codedOutput[5] = charConvert((global_h_alt) / 10);                                    // Lower hour 12h render                              
+      }
+      else codedOutput[5] = (global_h_alt > 12) ? charConvert((global_h_alt - 12) / 10) : charConvert(global_h_alt / 10);
     }
   }
   else if(renderOption == 1){
