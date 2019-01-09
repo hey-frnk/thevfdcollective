@@ -22,7 +22,7 @@ extern "C" {
 #define digitalPinToBitMask(P)    (digital_pin_to_bit_mask_PGM[P])
 #define digitalPinToPort(P)       (digital_pin_to_port_PGM[P])
 #define PROGMEM
-#define displayWrite(mode, mask, delay, msg) {for(uint8_t i = 0; i < 6; ++i) printf("%c", msg[i]); printf("\n");}
+#define displayWrite(mode, mask, delay, msg) {printf("Messaging with: \n"); for(uint8_t i = 0; i < 6; ++i) printf("%c", msg[i]); printf("\n");}
 #define pgm_read_byte_near(p) (*(p))
 
 const uint8_t digital_pin_to_bit_mask_PGM[] = {

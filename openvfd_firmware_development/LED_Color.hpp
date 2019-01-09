@@ -21,9 +21,8 @@ public:
 };
 
 class LED_Color_Mode {
-private:
-  LED_Color             *l;
 protected:
+  LED_Color             *l;
   uint8_t               NUM_RGB;
   uint8_t               NUM_BYTES;
   uint8_t               *rgb_arr;

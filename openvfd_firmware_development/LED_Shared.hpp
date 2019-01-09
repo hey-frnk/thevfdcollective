@@ -107,6 +107,10 @@ const char LED0PM[][4] = {         {' ', 'O', 'F', 'F'},
 typedef enum {LED_L_HIGH = 127,   LED_L_REG = 90,   LED_L_LOW = 50    } LED_L_t;
 typedef enum {LED_S_HIGH = 255,   LED_S_REG = 196,  LED_S_LOW = 127   } LED_S_t;
 
+const char LED7PM[][NUM_DIGITS_V] = {{'C', 'H', 'I', 'L', 'L', ' '},
+                                  {'R', 'E', 'G', 'U', 'L', 'A'},
+                                  {'T', 'I', 'G', 'H', 'T', ' '}};
+
 uint32_t ledPhase(uint8_t h, uint8_t s, uint8_t l);
 
 #endif

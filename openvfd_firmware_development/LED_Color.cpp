@@ -28,7 +28,9 @@ LED_Color::~LED_Color() {
   void LED_Color::render() {
     printf("Rendering %hhu bytes of LED data with %hhu pixels and %hhu bytes per pixel.\n", NUM_BYTES, NUM_RGB, (uint8_t)(NUM_BYTES / NUM_RGB));
     printf("rgb_arr: ");
-    for(uint8_t i = 0; i < NUM_BYTES; ++i) printf("%03hhu, ", rgb_arr[i]);
+    for(uint8_t i = 0; i < NUM_RGB; ++i) {
+      printf("(%03hhu, %03hhu, %03hhu) ", rgb_arr[3 * i], rgb_arr[3 * i + 1], rgb_arr[3 * i + 2]);
+    }
     printf("\n\n");
   }
 #else
