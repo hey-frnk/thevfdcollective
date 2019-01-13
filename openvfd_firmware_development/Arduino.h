@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdio.h>
 #include <stdint.h>
+#include <time.h>
 
 #define PA 1
 #define PB 2
@@ -24,6 +25,10 @@ extern "C" {
 #define PROGMEM
 #define displayWrite(mode, mask, delay, msg) {printf("Messaging with: \n"); for(uint8_t i = 0; i < 6; ++i) printf("%c", msg[i]); printf("\n");}
 #define pgm_read_byte_near(p) (*(p))
+#define analogRead(p) (rand() % 256)
+
+#define SHORTPRESS 1
+#define LONGPRESS 2
 
 const uint8_t digital_pin_to_bit_mask_PGM[] = {
         _BV(0), /* 0, port D */
@@ -70,15 +75,6 @@ const uint8_t digital_pin_to_port_PGM[] = {
         PC,
         PC,
 };
-
-typedef struct intervalEvent{
-  unsigned long interval;
-  unsigned long previousMillis;
-} intervalEvent;
-
-extern struct intervalEvent newiE(long p1);
-extern void resetiE(intervalEvent *input);
-extern uint8_t updateIntervalEvent(intervalEvent *input);
 
 #endif
 

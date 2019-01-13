@@ -3,8 +3,8 @@
 #include "LED_Shared.hpp"
 #include "Arduino.h"
 
-LED_Color_Static::LED_Color_Static(LED_Color *l) :
-LED_Color_Mode(l), position(0) {}
+LED_Color_Static::LED_Color_Static(LED_Color *l, uint8_t position) :
+LED_Color_Mode(l), position(position) {}
 
 void LED_Color_Static::loop() {
   // If not single Color
@@ -33,4 +33,10 @@ void LED_Color_Static::F3() {
   for(uint8_t i = 2; i < NUM_RGB; i++) LED0PMC[i] = LED0PM[position][i - 2];
 
   displayWrite(3, 0x00, 500, LED0PMC);    // Write change message
+}
+
+void LED_Color_Static::hello() {
+  char k[NUM_DIGITS_V];
+  for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_COLOR + i);
+  displayWrite(3, 0x00, 1000, k);
 }

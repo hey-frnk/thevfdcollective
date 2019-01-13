@@ -66,3 +66,9 @@ void LED_Color_Spectrum::F3var() {
     displayWrite(3, 0x00, 1000, k);
   }
 }
+
+void LED_Color_Spectrum::hello() {
+  char k[NUM_DIGITS_V];
+  for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_FADE + i);
+  displayWrite(3, 0x00, 1000, k);
+}

@@ -121,7 +121,5 @@ void LED_Color_Mode::ledDirectWrite(uint8_t *ledTarget) {
   l->render();
 }
 
-void LED_Color_Mode::F2() { return; }
-void LED_Color_Mode::F2var() { return; }
 void LED_Color_Mode::F3() { return; }
 void LED_Color_Mode::F3var() { return; }

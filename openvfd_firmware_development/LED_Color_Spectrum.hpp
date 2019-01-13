@@ -8,15 +8,16 @@
 
 class LED_Color_Spectrum : public LED_Color_Mode {
 private:
-  uint8_t angle = 0;             // LED regular fade position
+  uint8_t angle;                 // LED regular fade position
   LED_L_t lightness;             // LED regular fade lightness
   LED_S_t saturation;            // LED regular fade saturation
   intervalEvent angleUpdater;
 public:
   LED_Color_Spectrum(LED_Color *l);
-  void F3();
-  void F3var();
+  void F3();    // Change of lightness
+  void F3var(); // Change of saturatuion
   void loop();
+  void hello();
 };
 
 #endif

@@ -9,14 +9,15 @@
 class LED_Color_Cross : public LED_Color_Mode {
 private:
   uint8_t angle;
-  uint8_t delta;
   LED_L_t lightness;
   intervalEvent angleUpdater;
 public:
-  LED_Color_Cross(LED_Color *l);
+  uint8_t delta; // (LED7_delta, shared, saved)
+  LED_Color_Cross(LED_Color *l, uint8_t delta);
   void F3();
   void F3var();
   void loop();
+  void hello();
 };
 
 #endif

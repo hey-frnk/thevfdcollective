@@ -2,6 +2,7 @@
 #define LED_COLOR_HPP
 
 #include <stdint.h>
+#include "LED_Shared.hpp"
 
 class LED_Color {
 private:
@@ -31,12 +32,11 @@ protected:
   void                  ledDirectWrite(uint8_t *ledTarget);
 public:
   LED_Color_Mode(LED_Color *l);
-  virtual void F2();
-  virtual void F2var();
   virtual void F3();
   virtual void F3var();
   virtual ~LED_Color_Mode();
   virtual void loop() = 0;
+  virtual void hello() = 0;
 };
 
 #endif

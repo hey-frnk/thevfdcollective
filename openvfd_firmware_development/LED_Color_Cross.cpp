@@ -3,8 +3,8 @@
 #include "LED_Shared.hpp"
 #include "Arduino.h"
 
-LED_Color_Cross::LED_Color_Cross(LED_Color *l) :
-LED_Color_Mode(l), angle(0), delta(21), lightness(LED_L_HIGH) {
+LED_Color_Cross::LED_Color_Cross(LED_Color *l, uint8_t delta) :
+LED_Color_Mode(l), angle(0), lightness(LED_L_HIGH), delta(delta) {
   angleUpdater = newiE(60);
 }
 
@@ -63,4 +63,10 @@ void LED_Color_Cross::F3var() {
     k[0] = 'L';
     displayWrite(3, 0x00, 1000, k);
   }
+}
+
+void LED_Color_Cross::hello() {
+  char k[NUM_DIGITS_V];
+  for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CROSSFADE + i);
+  displayWrite(3, 0x00, 1000, k);
 }

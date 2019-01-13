@@ -3,27 +3,39 @@
 #include "LED_Color_Static.hpp"
 #include "LED_Color_Spectrum.hpp"
 #include "LED_Color_Cross.hpp"
+#include "LED_Color_Chase.hpp"
+#include "LED_Color_R.hpp"
+#include "LED_Color_Cop.hpp"
+#include "LED_Color_Music.hpp"
+#include "LED_Mode_Manager.hpp"
 
 // cd documents/github/thevfdcollective/openvfd_firmware_development
-// g++ Main.cpp LED_Color.cpp LED_Color_Static.cpp LED_Color_Spectrum.cpp LED_Color_Cross.cpp LED_Shared.cpp -DDEBUG -std=c++11 -Wall -o Main
+// g++ Main.cpp LED_Color.cpp LED_Color_Static.cpp LED_Color_Spectrum.cpp LED_Color_Cross.cpp LED_Color_Chase.cpp LED_Color_R.cpp LED_Color_Cop.cpp LED_Color_Music.cpp LED_Shared.cpp LED_Mode_Manager.cpp -DDEBUG -std=c++11 -Wall -o Main
 
 using namespace std;
 extern unsigned long programruntime;
-
-LED_Color *WS2812B = new LED_Color(6, 3, 13);
-LED_Color_Static led_static = LED_Color_Static(WS2812B);
-LED_Color_Spectrum led_spectrum = LED_Color_Spectrum(WS2812B);
-LED_Color_Cross led_cfade = LED_Color_Cross(WS2812B);
-
-LED_Color_Mode *m = &led_static;
-
-void mChanger(LED_Color_Mode **mode) {
-  if(         dynamic_cast<LED_Color_Static *>      (*mode))    {*mode = &led_spectrum;     printf("Changed to Spectrum fade\n");}
-  else if(    dynamic_cast<LED_Color_Spectrum *>    (*mode))    {*mode = &led_cfade;        printf("Changed to Cross fade\n");}
-  else if(    dynamic_cast<LED_Color_Cross *>       (*mode))    {*mode = &led_static;       printf("Changed to Static fade\n");}
-}
+uint8_t _h = 21, _m = 37, _s = 45;
+int cF2 = 0, cF3 = 0;
+uint8_t micPin = 13;
 
 int main () {
+  LED_Color LED_Hardware = LED_Color(6, 3, 13);
+  struct LED_SavedParam_Serialization k = {
+    (uint8_t)LED_COP,
+    1,
+    NULL,
+    NULL,
+    21,
+    0,
+    0,
+    1,
+    22,
+    0,
+    8,
+    0
+  };
+
+  LED_Mode_Manager m(&LED_Hardware, k);
 
   while(1) {
 
@@ -34,17 +46,18 @@ int main () {
     cin >> c >> n >> t;
 
     switch(c) {
+      case 'c': {int c; cout << "newsec"; cin >> c; _s = c; break;}
       case 'e': exit(0); break;
-      case 'f': mChanger(&m); m->F2(); break;
-      case 'F': m->F2var(); break;
-      case 'g': m->F3(); break;
-      case 'G': m->F3var(); break;
+      case 'f': cF2 = SHORTPRESS; break;
+      // case 'F': m->F2var(); break;
+      case 'g': cF3 = SHORTPRESS; break;
+      case 'G': cF3 = LONGPRESS; break;
       default: break;
     }
 
     for(int i = 0; i < n; ++i) {
-      m->loop();
       programruntime += t;
+      m.LED_Manager_Routine();
     }
   }
 }
