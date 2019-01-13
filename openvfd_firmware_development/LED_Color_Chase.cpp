@@ -2,7 +2,12 @@
 #include "LED_Color.hpp"
 #include "LED_Color_Chase.hpp"
 #include "LED_Shared.hpp"
-#include "Arduino.h"
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 LED_Color_Chase::LED_Color_Chase(LED_Color *l, uint8_t MicPin, uint8_t *s, uint8_t flipdir, uint8_t direction) :
 LED_Color_Mode(l), angle(0), secondFlip(0), directionFlag(0), state(0), MicPin(MicPin), flipdir(flipdir), s(s), lightness(LED_L_HIGH), direction(direction)

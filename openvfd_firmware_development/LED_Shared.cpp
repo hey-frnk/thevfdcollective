@@ -2,7 +2,12 @@
 #include <time.h>
 #include <stdlib.h>
 #include "LED_Shared.hpp"
-#include "Arduino.h"
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 unsigned long programruntime = 0;
 

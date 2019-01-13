@@ -1,3 +1,7 @@
+#if defined(__AVR_ATmega328P__)
+
+#else
+
 #include <iostream>
 #include "LED_Color.hpp"
 #include "LED_Color_Static.hpp"
@@ -7,6 +11,7 @@
 #include "LED_Color_R.hpp"
 #include "LED_Color_Cop.hpp"
 #include "LED_Color_Music.hpp"
+#include "LED_Color_Serial.hpp"
 #include "LED_Mode_Manager.hpp"
 
 // cd documents/github/thevfdcollective/openvfd_firmware_development
@@ -14,12 +19,12 @@
 
 using namespace std;
 extern unsigned long programruntime;
-uint8_t _h = 21, _m = 37, _s = 45;
-int cF2 = 0, cF3 = 0;
-uint8_t micPin = 13;
+uint8_t global_h = 21, global_m = 37, global_s = 45;
+uint8_t cF2 = 0, cF3 = 0, cF4 = 0;
+const uint8_t micPin = 13;
 
 int main () {
-  LED_Color LED_Hardware = LED_Color(6, 3, 13);
+  LED_Color LED_Hardware = LED_Color(6, 3);
   struct LED_SavedParam_Serialization k = {
     (uint8_t)LED_COP,
     1,
@@ -46,12 +51,13 @@ int main () {
     cin >> c >> n >> t;
 
     switch(c) {
-      case 'c': {int c; cout << "newsec"; cin >> c; _s = c; break;}
+      case 'c': {int c; cout << "newsec"; cin >> c; global_s = c; break;}
       case 'e': exit(0); break;
       case 'f': cF2 = SHORTPRESS; break;
       // case 'F': m->F2var(); break;
       case 'g': cF3 = SHORTPRESS; break;
       case 'G': cF3 = LONGPRESS; break;
+      case 'S': cF4 = LONGPRESS; break;
       default: break;
     }
 
@@ -61,3 +67,5 @@ int main () {
     }
   }
 }
+
+#endif

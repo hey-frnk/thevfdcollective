@@ -3,8 +3,13 @@
 
 #include "LED_Shared.hpp"
 #include "LED_Color.hpp"
-#include "Arduino.h"
 #include <stdint.h>
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 class LED_Color_Chase : public LED_Color_Mode {
 private:

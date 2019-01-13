@@ -9,6 +9,29 @@
 #include "LED_Color_Cop.hpp"
 #include "LED_Color_Music.hpp"
 
+extern uint8_t cF2, cF3, cF4;
+extern const uint8_t micPin;
+extern uint8_t global_h, global_m, global_s;
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
+
+#define COLORPOS_STATIC      0
+#define COLORPOS_FADE        1
+#define COLORPOS_CROSSFADE   2
+#define COLORPOS_CHASEFADE   3
+#define COLORPOS_RESISTOR    4
+#define COLORPOS_COP         5
+#define COLORPOS_MUSIC       6
+
+#define COLORPOS_SERIAL0     7
+#define COLORPOS_SERIAL1     8
+
+#define COLORPOS_MAXCNT      9
+
 struct LED_SavedParam_Serialization {
   uint8_t led,
           LED0P,
@@ -30,16 +53,11 @@ private:
   LED_Color *LED_Hardware;
   struct LED_SavedParam_Serialization s;
 
-  LED_Color_Static *led_static;
-  LED_Color_Spectrum *led_spectrum;
-  LED_Color_Cross *led_cfade;
-  LED_Color_Chase *led_chfd;
-  LED_Color_R *led_resistor;
-  LED_Color_Music *led_music;
-  LED_Color_Cop *led_cop;
-  LED_Color_Mode *LED_Instance;
+  LED_Color_Mode **LED_Instance;
+  uint8_t LED_Instance_Position;
 public:
   LED_Mode_Manager(LED_Color *l, struct LED_SavedParam_Serialization s);
+  ~LED_Mode_Manager();
   void LED_Manager_Routine();
   struct LED_SavedParam_Serialization EEPGenerate();
   void EEPReadIn(struct LED_SavedParam_Serialization s);

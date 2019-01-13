@@ -1,7 +1,22 @@
 #ifndef LED_SHARED_HPP
 #define LED_SHARED_HPP
 
-#include "Arduino.h"
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+
+#define NUM_DIGITS_V 6
+
+#define    FALSE       0
+#define    TRUE        1
+
+#define    SHORTPRESS  1
+#define    LONGPRESS   2
+
+extern void (*displayWrite)(uint8_t, uint8_t, uint32_t, const char *);
+
+#endif
 
 // Each LED mode is assigned to a number. All number configurations are listed in this enum.
 typedef enum {
@@ -144,8 +159,8 @@ typedef struct intervalEvent{
   unsigned long previousMillis;
 } intervalEvent;
 
-struct intervalEvent newiE(long p1);
-void resetiE(intervalEvent *input);
-uint8_t updateIntervalEvent(intervalEvent *input);
+extern struct intervalEvent newiE(long p1);
+extern void resetiE(intervalEvent *input);
+extern uint8_t updateIntervalEvent(intervalEvent *input);
 
 #endif

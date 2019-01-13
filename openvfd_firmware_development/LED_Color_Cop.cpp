@@ -1,7 +1,12 @@
 #include "LED_Color.hpp"
 #include "LED_Color_Cop.hpp"
 #include "LED_Shared.hpp"
-#include "Arduino.h"
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 LED_Color_Cop::LED_Color_Cop(LED_Color *l, uint8_t pattern) : LED_Color_Mode(l), state(0), pattern(pattern)
 {

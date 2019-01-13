@@ -1,7 +1,12 @@
 #include "LED_Color.hpp"
 #include "LED_Color_Spectrum.hpp"
 #include "LED_Shared.hpp"
-#include "Arduino.h"
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 LED_Color_Spectrum::LED_Color_Spectrum(LED_Color *l) :
 LED_Color_Mode(l), angle(0), lightness(LED_L_HIGH), saturation(LED_S_HIGH) {

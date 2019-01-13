@@ -1,7 +1,12 @@
 #include "LED_Color.hpp"
 #include "LED_Color_R.hpp"
 #include "LED_Shared.hpp"
-#include "Arduino.h"
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 LED_Color_R::LED_Color_R(LED_Color *l, uint8_t *h, uint8_t *m, uint8_t *s) :
 LED_Color_Mode(l), h(h), m(m), s(s) {}

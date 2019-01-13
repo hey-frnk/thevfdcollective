@@ -1,7 +1,12 @@
 #include "LED_Color.hpp"
 #include "LED_Color_Cross.hpp"
 #include "LED_Shared.hpp"
-#include "Arduino.h"
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 LED_Color_Cross::LED_Color_Cross(LED_Color *l, uint8_t delta) :
 LED_Color_Mode(l), angle(0), lightness(LED_L_HIGH), delta(delta) {

@@ -4,6 +4,12 @@
 #include "LED_Color.hpp"
 #include <stdint.h>
 
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
+
 class LED_Color_Static : public LED_Color_Mode {
 public:
   uint8_t position;

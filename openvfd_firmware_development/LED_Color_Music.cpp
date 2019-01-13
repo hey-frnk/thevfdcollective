@@ -2,7 +2,12 @@
 #include "LED_Color.hpp"
 #include "LED_Color_Music.hpp"
 #include "LED_Shared.hpp"
-#include "Arduino.h"
+
+#ifdef DEBUG
+#include "ArduinoSIM.h"
+#else
+#include <Arduino.h>
+#endif
 
 LED_Color_Music::LED_Color_Music(LED_Color *l, uint8_t MicPin) :
 LED_Color_Mode(l), angle(0), delta(21), state(0), delayState(FALSE), MicPin(MicPin), lightness(LED_L_HIGH) {

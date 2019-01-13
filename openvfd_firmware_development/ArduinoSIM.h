@@ -2,6 +2,10 @@
 extern "C" {
 #endif
 
+#if defined(__AVR_ATmega328P__)
+
+#else
+
 #ifndef ARDUINO_SIM_H
 #define ARDUINO_SIM_H
 
@@ -76,6 +80,7 @@ const uint8_t digital_pin_to_port_PGM[] = {
         PC,
 };
 
+#endif
 #endif
 
 #ifdef __cplusplus
