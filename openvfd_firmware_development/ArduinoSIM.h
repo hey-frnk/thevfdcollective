@@ -34,7 +34,7 @@ extern "C" {
 #define SHORTPRESS 1
 #define LONGPRESS 2
 
-const uint8_t digital_pin_to_bit_mask_PGM[] = {
+static const uint8_t digital_pin_to_bit_mask_PGM[] = {
         _BV(0), /* 0, port D */
         _BV(1),
         _BV(2),
@@ -57,7 +57,7 @@ const uint8_t digital_pin_to_bit_mask_PGM[] = {
         _BV(5),
 };
 
-const uint8_t digital_pin_to_port_PGM[] = {
+static const uint8_t digital_pin_to_port_PGM[] = {
         PD, /* 0 */
         PD,
         PD,

@@ -52,7 +52,7 @@ SOFTWARE.*/
 // #define FIRSTCONFIG
 
 // Hardware Version Control
-// #define HW_VERSION_22
+#define HW_VERSION_22
 
 // --------- Pin Mapping Defines ---------
 
