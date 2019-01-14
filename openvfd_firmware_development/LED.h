@@ -211,8 +211,8 @@ struct LED_Color {
   #ifndef DEBUG
     uint32_t        t_f;
   #endif
-  uint8_t         NUM_RGB,
-                  NUM_BYTES,
+  uint8_t         num_rgb,
+                  num_bytes,
                   *rgb_arr,
                   *target_arr;
   void            (*render)(const struct LED_Color *self);
@@ -229,11 +229,12 @@ void LED_Color_Init(struct LED_Color *self, uint8_t num_pixel, uint8_t bpp, uint
 /**
   * @brief  Virtual table for LED_Color_Mode
  **/
+struct LED_Color_Mode;
 struct LED_Color_Mode_VTable {
-  void                  (*F3)               (const void *unsafe_self);
-  void                  (*F3Var)            (const void *unsafe_self);
-  void                  (*Update)           (const void *unsafe_self);
-  void                  (*Hello)            (const void *unsafe_self);
+  void                  (*F3)               (const struct LED_Color_Mode *unsafe_self);
+  void                  (*F3Var)            (const struct LED_Color_Mode *unsafe_self);
+  void                  (*Update)           (const struct LED_Color_Mode *unsafe_self);
+  void                  (*Hello)            (const struct LED_Color_Mode *unsafe_self);
 };
 
 /**
@@ -241,8 +242,8 @@ struct LED_Color_Mode_VTable {
  **/
 struct LED_Color_Mode {
   struct LED_Color      *l;
-  uint8_t               NUM_RGB,      // Copy of l->NUM_RGB
-                        NUM_BYTES,    // Copy of l->NUM_BYTES
+  uint8_t               num_rgb,      // Copy of l->num_rgb
+                        num_bytes,    // Copy of l->num_bytes
                         *rgb_arr,     // Copy of l->rgb_arr
                         *target_arr;  // Copy of l->target_arr
 
@@ -250,10 +251,10 @@ struct LED_Color_Mode {
   void                  (*ledDirectWrite)   (struct LED_Color_Mode *self, const uint8_t *ledTarget);
 
   // VTable (virtual) functions
-  void                  (*F3)               (const void *unsafe_self);
-  void                  (*F3Var)            (const void *unsafe_self);
-  void                  (*Update)           (const void *unsafe_self);
-  void                  (*Hello)            (const void *unsafe_self);
+  void                  (*F3)               (const struct LED_Color_Mode *unsafe_self);
+  void                  (*F3Var)            (const struct LED_Color_Mode *unsafe_self);
+  void                  (*Update)           (const struct LED_Color_Mode *unsafe_self);
+  void                  (*Hello)            (const struct LED_Color_Mode *unsafe_self);
 
   struct LED_Color_Mode_VTable VTable;
 };

@@ -6,7 +6,7 @@
 // cd documents/github/thevfdcollective/openvfd_firmware_development
 // gcc LED.c Main.c -DDEBUG -std=c11 -Wall -O3 -o capp
 
-extern unsigned long programruntime;
+unsigned long programruntime = 0;
 uint8_t cF2 = 0, cF3 = 0, cF4 = 0;
 uint8_t global_h = 21, global_m = 37, global_s = 45;
 const uint8_t micPin = 13;
