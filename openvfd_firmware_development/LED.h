@@ -17,6 +17,9 @@
   *           SECTION_LED_COLOR_CHASEFADE
   *           SECTION_LED_COLOR_RESISTOR
   *           SECTION_LED_COLOR_COP
+  *           SECTION_LED_COLOR_MUSIC
+  *           SECTION_LED_COLOR_SERIAL
+  *           SECTION_LED_MODE_MANAGER
   ******************************************************************************
  **/
 
@@ -37,8 +40,6 @@ extern "C" {
   #include "ArduinoSIM.h"
 
   #define _debug_static_identifier_ static
-#else
-  #include <Arduino.h>
 
   #define NUM_DIGITS_V 6
 
@@ -48,8 +49,19 @@ extern "C" {
   #define    SHORTPRESS  1
   #define    LONGPRESS   2
 
-  extern void (*displayWrite)(uint8_t, uint8_t, uint32_t, const char *);
+  extern uint8_t cF2, cF3;
+  extern const uint8_t micPin;
+  extern uint8_t global_h, global_m, global_s;
 
+  typedef struct intervalEvent{
+    unsigned long interval;
+    unsigned long previousMillis;
+  } intervalEvent;
+
+  extern struct intervalEvent newiE(long p1);
+  extern void resetiE(intervalEvent *input);
+  extern uint8_t updateIntervalEvent(intervalEvent *input);
+#else
   #define _debug_static_identifier_
 #endif
 
@@ -189,15 +201,6 @@ typedef enum {LED_S_HIGH = 255,   LED_S_REG = 196,  LED_S_LOW = 127   } LED_S_t;
 uint32_t ledPhase(uint8_t h, uint8_t s, uint8_t l);
 uint8_t getMicData(uint8_t MicPin);
 
-typedef struct intervalEvent{
-  unsigned long interval;
-  unsigned long previousMillis;
-} intervalEvent;
-
-extern struct intervalEvent newiE(long p1);
-extern void resetiE(intervalEvent *input);
-extern uint8_t updateIntervalEvent(intervalEvent *input);
-
 /** Begin of:
   * @toc SECTION_LED_COLOR
  **/
@@ -205,7 +208,7 @@ extern uint8_t updateIntervalEvent(intervalEvent *input);
   * @brief  Definition of LED_Color class
  **/
 struct LED_Color {
-  #ifdef DEBUG
+  #ifndef DEBUG
     uint32_t        t_f;
   #endif
   uint8_t         NUM_RGB,
@@ -395,9 +398,129 @@ struct LED_Color_Cop {
  **/
 void LED_Color_Cop_Init(struct LED_Color_Cop *self, struct LED_Color *l, uint8_t pattern);
 
+/** Begin of:
+  * @toc SECTION_LED_COLOR_MUSIC
+ **/
+/**
+  * @brief  Definition of LED_Color_Music class
+ **/
+struct LED_Color_Music {
+  struct LED_Color_Mode super;
+
+  uint8_t               angle,                 // LED music cross fade position
+                        delta,                 // LED music cross fade delta
+                        state,                 // LED microphone mode off fader state
+                        delayState,            // LED microphone mode blink delay state
+                        MicPin;
+  LED_L_t               lightness;             // LED lightness
+  intervalEvent         angleUpdater,          // LED music cross fade position update timer
+                        stateUpdater,          // FSM timer
+                        delayUpdater;          // Blink delay timer
+};
+
+/**
+  * @brief  Constructor of LED_Color_Music class
+ **/
+void LED_Color_Music_Init(struct LED_Color_Music *self, struct LED_Color *l, uint8_t MicPin);
+
+/** Begin of:
+  * @toc SECTION_LED_COLOR_SERIAL
+ **/
+/**
+  * @brief  Definition of classes LED_Color_Serial0 and LED_Color_Serial1
+ **/
+struct LED_Color_Serial0 { struct LED_Color_Mode super; };
+struct LED_Color_Serial1 { struct LED_Color_Mode super; };
+
+/**
+  * @brief  Constructor of LED_Color_Serial0/1 class
+ **/
+void LED_Color_Serial0_Init(struct LED_Color_Serial0 *self, struct LED_Color *l);
+void LED_Color_Serial1_Init(struct LED_Color_Serial1 *self, struct LED_Color *l);
+
+/** Begin of:
+  * @toc SECTION_LED_MODE_MANAGER
+ **/
+/**
+  * @brief  This struct keeps all saved data
+ **/
+struct LED_SavedParam_Serialization {
+  uint8_t led,
+          LED0P,
+          *SER0,
+          *SER1,
+          LED7_delta,
+          LED8_dp,
+          LED11_pt,
+          LED21_DF,
+          LED21_hEN,
+          LED21_mEN,
+          LED21_hDS,
+          LED21_mDS;
+};
+
+/**
+  * @brief  Internal array mapping
+ **/
+#define COLORPOS_STATIC      0
+#define COLORPOS_FADE        1
+#define COLORPOS_CROSSFADE   2
+#define COLORPOS_CHASEFADE   3
+#define COLORPOS_RESISTOR    4
+#define COLORPOS_COP         5
+#define COLORPOS_MUSIC       6
+
+#define COLORPOS_SERIAL0     7
+#define COLORPOS_SERIAL1     8
+
+#define COLORPOS_MAXCNT      9
+
+/**
+  * @brief  Definition of LED_Mode_Manager class. LED manager instance tracks all LED modes
+ **/
+struct LED_Mode_Manager {
+  LED_MODE_t            LED;                   // Current active instance (quick n dirty 'dynamic_cast')
+  struct LED_Color      *LED_Hardware;         // Hardware mapping
+  struct LED_SavedParam_Serialization s;       // Saved parameters
+
+  struct LED_Color_Mode **LED_Instance;        // Array of all instances!
+
+  uint8_t               LED_Instance_Position; // Index in LED_Instance array
+
+  // Methods
+  void (*LED_Manager_Routine)(struct LED_Mode_Manager *self);
+  struct LED_SavedParam_Serialization (*EEPGenerate)(struct LED_Mode_Manager *self);
+  void (*EEPReadIn)(struct LED_Mode_Manager *self, struct LED_SavedParam_Serialization s);
+};
+
+/**
+  * @brief  Constructor of LED_Mode_Manager
+ **/
+void LED_Mode_Manager_Init(
+  struct LED_Mode_Manager *self,
+  struct LED_Color *l,                    // Hardware instance
+  struct LED_SavedParam_Serialization s   // Saved parameters
+);
+
+static struct LED_Color_Static led_static;
+static struct LED_Color_Serial0 led_s0;
+static struct LED_Color_Serial1 led_s1;
+static struct LED_Color_Spectrum led_spectrum;
+static struct LED_Color_Cross led_cfade;
+static struct LED_Color_Chase led_chfd;
+static struct LED_Color_Resistor led_resistor;
+static struct LED_Color_Cop led_cop;
+static struct LED_Color_Music led_music;
+
 
 #endif
 
 #ifdef __cplusplus
 }
 #endif
+
+/**
+  ******************************************************************************
+  * @end      END OF FILE LED.h
+  ******************************************************************************
+ **/

@@ -17,21 +17,26 @@
   *           SECTION_LED_COLOR_CHASEFADE
   *           SECTION_LED_COLOR_RESISTOR
   *           SECTION_LED_COLOR_COP
+  *           SECTION_LED_COLOR_MUSIC
+  *           SECTION_LED_COLOR_SERIAL
+  *           SECTION_LED_MODE_MANAGER
   ******************************************************************************
  **/
 
+#ifdef DEBUG
 #include <math.h>
 #include <time.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include "LED.h"
-
-#ifdef DEBUG
 #include "ArduinoSIM.h"
 unsigned long programruntime = 0;
-#else
-#include <Arduino.h>
+
+void clearInterface() {
+  cF2 = 0;
+  cF3 = 0;
+}
 #endif
 
 /** Begin of:
@@ -109,6 +114,7 @@ static uint16_t LED20_lLevelArr_vPush(uint16_t amplitudeIn) {
 uint8_t getMicData(uint8_t MicPin) {
   #ifdef DEBUG
   srand(0);
+  return (rand() % 256);
   #endif
 
   uint16_t dMicRead = 512;
@@ -388,7 +394,7 @@ static void _LED_Color_Static_F3(const void *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Static::Hello (static void _LED_Color_Static_Hello)
  **/
-static void _LED_Color_Static_Hello(const void *unsafe_self) {
+static inline void _LED_Color_Static_Hello(const void *unsafe_self) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_COLOR + i);
   displayWrite(3, 0x00, 1000, k);
@@ -495,7 +501,7 @@ static void _LED_Color_Spectrum_F3Var(const void *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Spectrum::Hello (static void _LED_Color_Spectrum_Hello)
  **/
-static void _LED_Color_Spectrum_Hello(const void *unsafe_self) {
+static inline void _LED_Color_Spectrum_Hello(const void *unsafe_self) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_FADE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -604,7 +610,7 @@ static void _LED_Color_Cross_F3Var(const void *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Cross::Hello (static void _LED_Color_Cross_Hello)
  **/
-static void _LED_Color_Cross_Hello(const void *unsafe_self) {
+static inline void _LED_Color_Cross_Hello(const void *unsafe_self) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CROSSFADE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -733,7 +739,7 @@ static void _LED_Color_Chase_F3Var(const void *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Chase::Hello (static void _LED_Color_Chase_Hello)
  **/
-static void _LED_Color_Chase_Hello(const void *unsafe_self) {
+static inline void _LED_Color_Chase_Hello(const void *unsafe_self) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CHASEFADE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -810,7 +816,7 @@ static void _LED_Color_Resistor_Update(const void *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Resistor::Hello (static void _LED_Color_Resistor_Hello)
  **/
-static void _LED_Color_Resistor_Hello(const void *unsafe_self) {
+static inline void _LED_Color_Resistor_Hello(const void *unsafe_self) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CRCODE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -894,7 +900,7 @@ static inline void _LED_Color_Cop_copHalfRender(struct LED_Color_Mode *rself, ui
 /**
   * @brief  Implementation of virtual function LED_Color_Cop::Hello (static void _LED_Color_Cop_Hello)
  **/
-static void _LED_Color_Cop_Hello(const void *unsafe_self) {
+static inline void _LED_Color_Cop_Hello(const void *unsafe_self) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CCOP + i);
   displayWrite(3, 0x00, 1000, k);
@@ -921,13 +927,328 @@ void LED_Color_Cop_Init(struct LED_Color_Cop *self, struct LED_Color *l, uint8_t
   self->super.VTable = _cop_vtable;
 }
 
+/** Begin of:
+  * @toc SECTION_LED_COLOR_MUSIC
+ **/
+/**
+  * @brief  Implementation of virtual function LED_Color_Music::Update (static void _LED_Color_Music_Update)
+ **/
+static void _LED_Color_Music_Update(const void *unsafe_self) {
+  struct LED_Color_Music *self = (struct LED_Color_Music *)unsafe_self;
+  // Dereference const (read only) variables
+  const uint8_t         NUM_BYTES = self->super.NUM_BYTES,
+                        delta = self->delta,
+                        MicPin = self->MicPin;
+  const LED_L_t         lightness = self->lightness;
+  uint8_t * const       rgb_arr = self->super.rgb_arr;
+
+  // If time interval passed, decrease turned on LEDs by one (regular state update)
+  if(updateIntervalEvent(&self->stateUpdater)) if(self->state < 7) self->state++;
+
+  // Cross fade LED color position update
+  if(updateIntervalEvent(&self->angleUpdater)) self->angle++; // Just let it overflow and begin from 0 :p
+
+  // Read microphone information, convert value to updateable state
+  // Get mic data (log), divide by 36
+  uint8_t rLevel = 6 - (uint8_t)(roundf(getMicData(MicPin) / 42.5));
+  // Write the less valued LEDs only when the sound is actively changed
+
+  if(self->state >= rLevel) {
+    self->state = rLevel;                                        // If the new state is lower than the previous state: Overwrite current state with new rLevel (interrupt state)
+    self->delayState = FALSE;                                        // Delay state = 0 (reset)
+  }
+  else{
+    if(updateIntervalEvent(&self->delayUpdater)) self->delayState = TRUE;    // If the time has elapsed, write empty
+  }
+
+  if(self->state < 7) {                                           // If new information
+    uint8_t offset = 0;
+
+    for(uint8_t i = 0; i < (6 - self->state); i++) {
+      uint32_t phase = ledPhase(self->angle + (i * delta), 255, lightness);
+      rgb_arr[offset] = (uint8_t)((phase >> 16) & 0xFF);      // G
+      rgb_arr[offset + 1] = (uint8_t)((phase >> 8) & 0xFF);   // R
+      rgb_arr[offset + 2] = (uint8_t)(phase & 0xFF);          // B
+      offset += 3;
+    }
+
+    // And set all the others zero
+    for(uint8_t lOffset = offset; lOffset < NUM_BYTES; lOffset++) rgb_arr[lOffset] = 0;
+
+    // Black out the inactives
+    if(self->delayState) {
+      if(self->state < 6) {
+        uint8_t tOffset = 0;                                  // Temporary offset variable
+        for(uint8_t i = 0; i < (5 - self->state); i++) {
+          rgb_arr[tOffset] = 0;
+          rgb_arr[tOffset + 1] = 0;
+          rgb_arr[tOffset + 2] = 0;
+          tOffset += 3;
+        }
+      }
+    }
+
+    self->super.l->render(self->super.l);
+  }
+}
+
+/**
+  * @brief  Implementation of virtual function LED_Color_Music::F3 (static void _LED_Color_Music_F3)
+ **/
+static void _LED_Color_Music_F3(const void *unsafe_self) {
+  struct LED_Color_Music *self = (struct LED_Color_Music *)unsafe_self;
+
+  // Higher delta: wider rainbow
+  if(self->delta == 42) {
+    self->state = 10;
+    displayWrite(3, 0x00, 1000, LED7PM[0]);
+  }
+  else if(self->state == 10) {
+    self->state = 21;
+    displayWrite(3, 0x00, 1000, LED7PM[1]);
+  }
+  else if(self->state == 21) {
+    self->state = 42;
+    displayWrite(3, 0x00, 1000, LED7PM[2]);
+  }
+  else{
+    self->state = 10;
+    displayWrite(3, 0x00, 1000, LED7PM[0]);
+  }
+}
+
+/**
+  * @brief  Implementation of virtual function LED_Color_Music::F3Var (static void _LED_Color_Music_F3Var)
+ **/
+static void _LED_Color_Music_F3Var(const void *unsafe_self) {
+  struct LED_Color_Music *self = (struct LED_Color_Music *)unsafe_self;
+
+  char k[NUM_DIGITS_V];
+  if(self->lightness == LED_L_REG) {
+    self->lightness = LED_L_HIGH; // Change to bright
+    for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_LED6_L0 + i);
+    k[0] = 'L';
+    displayWrite(3, 0x00, 1000, k);
+  }
+  else if(self->lightness == LED_L_HIGH) {
+    self->lightness = LED_L_LOW; // Change to dim
+    for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_LED6_L2 + i);
+    k[0] = 'L';
+    displayWrite(3, 0x00, 1000, k);
+  }
+  else{
+    self->lightness = LED_L_REG; // Back to normal
+    for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_LED6_L1 + i);
+    k[0] = 'L';
+    displayWrite(3, 0x00, 1000, k);
+  }
+}
+
+/**
+  * @brief  Implementation of virtual function LED_Color_Music::Hello (static void _LED_Color_Music_Hello)
+ **/
+static inline void _LED_Color_Music_Hello(const void *unsafe_self) {
+  char k[NUM_DIGITS_V];
+  for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CSOUND + i);
+  displayWrite(3, 0x00, 1000, k);
+}
+
+/**
+  * @brief  Constructor of LED_Color_Music class
+ **/
+void LED_Color_Music_Init(struct LED_Color_Music *self, struct LED_Color *l, uint8_t MicPin) {
+  LED_Color_Mode_Init(&self->super, l);
+
+  self->angle = 0;
+  self->delta = 21;
+  self->state = 0;
+  self->delayState = FALSE;
+  self->MicPin = MicPin;
+  self->lightness = LED_L_HIGH;
+  self->angleUpdater = newiE(60);
+  self->stateUpdater = newiE(25);
+  self->delayUpdater = newiE(250);
+
+  struct LED_Color_Mode_VTable _music_vtable = {
+    .F3 = _LED_Color_Music_F3,
+    .F3Var = _LED_Color_Music_F3Var,
+    .Update = _LED_Color_Music_Update,
+    .Hello = _LED_Color_Music_Hello
+  };
+  self->super.VTable = _music_vtable;
+}
+
+/** Begin of:
+  * @toc SECTION_LED_COLOR_SERIAL
+ **/
+/**
+  * @brief  Implementation of virtual functions LED_Color_Serial0/1::Update (static void _LED_Color_Serial0/1_Update)
+ **/
+static void _LED_Color_Serial0_Update(const void *unsafe_self) { return; }
+static void _LED_Color_Serial1_Update(const void *unsafe_self) {
+  struct LED_Color_Serial1 *self = (struct LED_Color_Serial1 *)unsafe_self;
+  self->super.ledSmoothWrite(&self->super);
+}
+
+/**
+  * @brief  Constructor of LED_Color_Serial0/1 class
+ **/
+void LED_Color_Serial0_Init(struct LED_Color_Serial0 *self, struct LED_Color *l) {
+  LED_Color_Mode_Init(&self->super, l);
+
+  struct LED_Color_Mode_VTable _serial0_vtable = {
+    .F3 = NULL,
+    .F3Var = NULL,
+    .Update = _LED_Color_Serial0_Update,
+    .Hello = NULL
+  };
+  self->super.VTable = _serial0_vtable;
+}
+
+void LED_Color_Serial1_Init(struct LED_Color_Serial1 *self, struct LED_Color *l) {
+  LED_Color_Mode_Init(&self->super, l);
+
+  struct LED_Color_Mode_VTable _serial1_vtable = {
+    .F3 = NULL,
+    .F3Var = NULL,
+    .Update = _LED_Color_Serial1_Update,
+    .Hello = NULL
+  };
+  self->super.VTable = _serial1_vtable;
+}
+
+/** Begin of:
+  * @toc SECTION_LED_MODE_MANAGER
+ **/
+/**
+  * @brief  Implementation of method LED_Mode_Manager::LED_Manager_Routine (static void _LED_Mode_Manager_Routine)
+ **/
+static void _LED_Mode_Manager_Routine(struct LED_Mode_Manager *self) {
+  struct LED_Color_Mode *activeInstance = self->LED_Instance[self->LED_Instance_Position];
+  activeInstance->Update((void *)activeInstance);
+
+  // F2 was pressed, switch color mode
+  if(cF2 == SHORTPRESS) {
+    ++self->LED_Instance_Position;
+    if(self->LED_Instance_Position >= COLORPOS_SERIAL0) self->LED_Instance_Position = COLORPOS_STATIC;
+    activeInstance = self->LED_Instance[self->LED_Instance_Position]; // Re-reference
+    activeInstance->Hello((void *)activeInstance);
+    clearInterface();
+  }
+
+  // F3 was pressed, switch color parameter 1
+  if(cF3 == SHORTPRESS) {
+    activeInstance->F3((void *)activeInstance);
+    clearInterface();
+  }
+
+  // F3 was pressed, switch color parameter 2
+  if(cF3 == LONGPRESS) {
+    activeInstance->F3Var((void *)activeInstance);
+    clearInterface();
+  }
+}
+
+/**
+  * @brief  Implementation of method LED_Mode_Manager::EEPGenerate (static struct LED_SavedParam_Serialization _LED_Mode_Manager_EEPGenerate)
+ **/
+static struct LED_SavedParam_Serialization _LED_Mode_Manager_EEPGenerate(struct LED_Mode_Manager *self) {
+  self->s.led = (uint8_t)self->LED;
+  struct LED_Color_Static *led_static = (struct LED_Color_Static *)(self->LED_Instance[COLORPOS_STATIC]);
+  struct LED_Color_Cross *led_cfade = (struct LED_Color_Cross *)(self->LED_Instance[COLORPOS_CROSSFADE]);
+  struct LED_Color_Chase *led_chfd = (struct LED_Color_Chase *)(self->LED_Instance[COLORPOS_CHASEFADE]);
+  struct LED_Color_Cop *led_cop = (struct LED_Color_Cop *)(self->LED_Instance[COLORPOS_COP]);
+
+  if(led_static) self->s.LED0P = led_static->position;
+  if(led_cfade) self->s.LED7_delta = led_cfade->delta;
+  if(led_chfd) self->s.LED8_dp = led_chfd->direction;
+  if(led_cop) self->s.LED11_pt = led_cop->pattern;
+
+  return self->s;
+}
+
+/**
+  * @brief  Implementation of method LED_Mode_Manager::EEPReadIn (static void _LED_Mode_Manager_EEPReadIn)
+ **/
+static void _LED_Mode_Manager_EEPReadIn(struct LED_Mode_Manager *self, struct LED_SavedParam_Serialization s) {
+  self->LED = (LED_MODE_t)s.led;
+
+  struct LED_Color_Static *led_static = (struct LED_Color_Static *)(self->LED_Instance[COLORPOS_STATIC]);
+  struct LED_Color_Cross *led_cfade = (struct LED_Color_Cross *)(self->LED_Instance[COLORPOS_CROSSFADE]);
+  struct LED_Color_Chase *led_chfd = (struct LED_Color_Chase *)(self->LED_Instance[COLORPOS_CHASEFADE]);
+  struct LED_Color_Cop *led_cop = (struct LED_Color_Cop *)(self->LED_Instance[COLORPOS_COP]);
+
+  if(led_static) led_static->position = s.LED0P;
+  if(led_cfade) led_cfade->delta = s.LED7_delta;
+  if(led_chfd) led_chfd->direction = s.LED8_dp;
+  if(led_cop) led_cop->pattern = s.LED11_pt;
+}
+
+/**
+  * @brief  Constructor of LED_Mode_Manager
+ **/
+void LED_Mode_Manager_Init(
+  struct LED_Mode_Manager *self,
+  struct LED_Color *l,                    // Hardware instance
+  struct LED_SavedParam_Serialization s   // Saved parameters
+) {
+  self->LED = (LED_MODE_t)s.led;
+  self->LED_Hardware = l;
+  self->s = s;
+
+  self->LED_Manager_Routine = _LED_Mode_Manager_Routine;
+  self->EEPGenerate         = _LED_Mode_Manager_EEPGenerate;
+  self->EEPReadIn           = _LED_Mode_Manager_EEPReadIn;
+
+  LED_Color_Static_Init       (&led_static, l, s.LED0P);
+  LED_Color_Serial0_Init      (&led_s0, l);
+  LED_Color_Serial1_Init      (&led_s1, l);
+  LED_Color_Spectrum_Init     (&led_spectrum, l);
+  LED_Color_Cross_Init        (&led_cfade, l, s.LED7_delta);
+  LED_Color_Chase_Init        (&led_chfd, l, micPin, &global_s, 0, s.LED8_dp);
+  LED_Color_Resistor_Init     (&led_resistor, l, &global_h, &global_m, &global_s);
+  LED_Color_Cop_Init          (&led_cop, l, s.LED11_pt);
+  LED_Color_Music_Init        (&led_music, l, micPin);
+
+  self->LED_Instance = (struct LED_Color_Mode **)malloc(COLORPOS_MAXCNT * sizeof(struct LED_Color_Mode *));
+  self->LED_Instance[COLORPOS_STATIC]     = (struct LED_Color_Mode *) &led_static;
+  self->LED_Instance[COLORPOS_SERIAL0]    = (struct LED_Color_Mode *) &led_s0;
+  self->LED_Instance[COLORPOS_SERIAL1]    = (struct LED_Color_Mode *) &led_s1;
+  self->LED_Instance[COLORPOS_FADE]       = (struct LED_Color_Mode *) &led_spectrum;
+  self->LED_Instance[COLORPOS_CROSSFADE]  = (struct LED_Color_Mode *) &led_cfade;
+  self->LED_Instance[COLORPOS_CHASEFADE]  = (struct LED_Color_Mode *) &led_chfd;
+  self->LED_Instance[COLORPOS_RESISTOR]   = (struct LED_Color_Mode *) &led_resistor;
+  self->LED_Instance[COLORPOS_COP]        = (struct LED_Color_Mode *) &led_cop;
+  self->LED_Instance[COLORPOS_MUSIC]      = (struct LED_Color_Mode *) &led_music;
+
+  switch (s.led) {
+    case LED_STATIC:      self->LED_Instance_Position = COLORPOS_STATIC;      break;
+    case LED_FADE:        self->LED_Instance_Position = COLORPOS_FADE;        break;
+    case LED_CROSSFADE:   self->LED_Instance_Position = COLORPOS_CROSSFADE;   break;
+    case LED_CHASEFADE:   self->LED_Instance_Position = COLORPOS_CHASEFADE;   break;
+    case LED_RESISTOR:    self->LED_Instance_Position = COLORPOS_RESISTOR;    break;
+    case LED_COP:         self->LED_Instance_Position = COLORPOS_COP;         break;
+    case LED_MUSIC:       self->LED_Instance_Position = COLORPOS_MUSIC;       break;
+
+    case LED_SERIAL_0: {
+      self->LED_Instance_Position = COLORPOS_SERIAL0;
+      for(uint8_t i = 0; i < l->NUM_BYTES; ++i) l->rgb_arr[i] = s.SER0[i];
+      l->render(l);
+      break;
+    }
+    case LED_SERIAL_1: {
+      self->LED_Instance_Position = COLORPOS_SERIAL1;
+      for(uint8_t i = 0; i < l->NUM_BYTES; ++i) l->target_arr[i] = s.SER1[i];
+      break;
+    }
+
+    default:              self->LED_Instance_Position = COLORPOS_STATIC;      break;
+  }
+}
 
 
-
-
-
-
-
-
-
-// hi hey hello
+/**
+  ******************************************************************************
+  * @end      END OF FILE LED.c
+  ******************************************************************************
+ **/

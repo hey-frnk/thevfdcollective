@@ -18,8 +18,8 @@ int main () {
   struct LED_Color LED_Hardware;
   LED_Color_Init(&LED_Hardware, 6, 3, ra, ta);
 
-  struct LED_Color_Cop ledInstance;
-  LED_Color_Cop_Init(&ledInstance, &LED_Hardware, 0);
+  struct LED_Color_Music ledInstance;
+  LED_Color_Music_Init(&ledInstance, &LED_Hardware, 13);
 
   struct LED_Color_Mode *virtualMode = NULL;
   virtualMode = (struct LED_Color_Mode *)&ledInstance;
