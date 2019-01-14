@@ -723,7 +723,6 @@ struct LED_SavedParam_Serialization {
 struct LED_Mode_Manager {
   LED_MODE_t            LED;                   // Current active instance (quick n dirty 'dynamic_cast')
   struct LED_Color      *LED_Hardware;         // Hardware mapping
-  struct LED_SavedParam_Serialization s;       // Saved parameters
 
   struct LED_Color_Mode **LED_Instance;        // Array of all instances!
 
@@ -1916,18 +1915,19 @@ static void _LED_Mode_Manager_Routine(struct LED_Mode_Manager *self) {
   * @brief  Implementation of method LED_Mode_Manager::EEPGenerate (static struct LED_SavedParam_Serialization _LED_Mode_Manager_EEPGenerate)
  **/
 static struct LED_SavedParam_Serialization _LED_Mode_Manager_EEPGenerate(struct LED_Mode_Manager *self) {
-  self->s.led = (uint8_t)self->LED;
+  struct LED_SavedParam_Serialization s;
+  s.led = (uint8_t)self->LED;
   struct LED_Color_Static *led_static = (struct LED_Color_Static *)(self->LED_Instance[COLORPOS_STATIC]);
   struct LED_Color_Cross *led_cfade = (struct LED_Color_Cross *)(self->LED_Instance[COLORPOS_CROSSFADE]);
   struct LED_Color_Chase *led_chfd = (struct LED_Color_Chase *)(self->LED_Instance[COLORPOS_CHASEFADE]);
   struct LED_Color_Cop *led_cop = (struct LED_Color_Cop *)(self->LED_Instance[COLORPOS_COP]);
 
-  if(led_static) self->s.LED0P = led_static->position;
-  if(led_cfade) self->s.LED7_delta = led_cfade->delta;
-  if(led_chfd) self->s.LED8_dp = led_chfd->direction;
-  if(led_cop) self->s.LED11_pt = led_cop->pattern;
+  s.LED0P = led_static->position;
+  s.LED7_delta = led_cfade->delta;
+  s.LED8_dp = led_chfd->direction;
+  s.LED11_pt = led_cop->pattern;
 
-  return self->s;
+  return s;
 }
 
 /**
@@ -1957,7 +1957,6 @@ void LED_Mode_Manager_Init(
 ) {
   self->LED = (LED_MODE_t)s.led;
   self->LED_Hardware = l;
-  self->s = s;
 
   self->LED_Manager_Routine = _LED_Mode_Manager_Routine;
   self->EEPGenerate         = _LED_Mode_Manager_EEPGenerate;
@@ -2015,10 +2014,6 @@ void LED_Mode_Manager_Init(
   * @end      END OF FILE LED.c
   ******************************************************************************
  **/
-
-
-
-
 
 enum {LED21_SILENT, LED21_SLEEP, LED21_SHIFTSLEEP};       // 3 States
 uint8_t LED21_st = LED21_SILENT;                          // State: standard silent

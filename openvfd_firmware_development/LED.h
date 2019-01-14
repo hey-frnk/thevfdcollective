@@ -482,7 +482,6 @@ struct LED_SavedParam_Serialization {
 struct LED_Mode_Manager {
   LED_MODE_t            LED;                   // Current active instance (quick n dirty 'dynamic_cast')
   struct LED_Color      *LED_Hardware;         // Hardware mapping
-  struct LED_SavedParam_Serialization s;       // Saved parameters
 
   struct LED_Color_Mode **LED_Instance;        // Array of all instances!
 
