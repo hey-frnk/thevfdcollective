@@ -15,11 +15,12 @@ int main () {
   uint8_t ra[18] = {0};
   uint8_t ta[18] = {0};
 
-  struct LED_Color LED_Hardware;
-  LED_Color_Init(&LED_Hardware, 6, 3, ra, ta);
+  // struct LED_Color LED_Hardware;
+  // LED_Color_Init(&LED_Hardware, 6, 3, ra, ta);
+  LED_Color_Init(6, 3, ra, ta);
 
   struct LED_Color_Music ledInstance;
-  LED_Color_Music_Init(&ledInstance, &LED_Hardware, 13);
+  LED_Color_Music_Init(&ledInstance/*, &LED_Hardware*/, 13);
 
   struct LED_Color_Mode *virtualMode = NULL;
   virtualMode = (struct LED_Color_Mode *)&ledInstance;

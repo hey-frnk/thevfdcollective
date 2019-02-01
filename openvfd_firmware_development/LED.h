@@ -110,7 +110,8 @@ _debug_static_identifier_ const char MSG_ON[NUM_DIGITS_V] PROGMEM = {' ', ' ', '
 _debug_static_identifier_ const char MSG_OFF[NUM_DIGITS_V] PROGMEM = {' ', ' ', ' ', 'O', 'F', 'F'};
 _debug_static_identifier_ const char MSG_ERROR[NUM_DIGITS_V] PROGMEM = {'E', 'R', 'R', 'O', 'R', ' '};
 
-_debug_static_identifier_ const char LED0PM[][4] = {         {' ', 'O', 'F', 'F'},
+_debug_static_identifier_ const char LED0PM[][4] PROGMEM = {
+                                   {' ', 'O', 'F', 'F'},
                                    {' ', ' ', 'O', 'N'},
                                    {' ', 'L', 'O', 'N'},
                                    {' ', 'R', 'E', 'D'},
@@ -207,7 +208,7 @@ uint8_t getMicData(uint8_t MicPin);
 /**
   * @brief  Definition of LED_Color class
  **/
-struct LED_Color {
+// struct LED_Color {
   #ifndef DEBUG
     uint32_t        t_f;
   #endif
@@ -215,13 +216,13 @@ struct LED_Color {
                   num_bytes,
                   *rgb_arr,
                   *target_arr;
-  void            (*render)(const struct LED_Color *self);
-};
+  void            render(); //(*render)(const struct LED_Color *self);
+// };
 
 /**
   * @brief  Constructor of LED_Color class
  **/
-void LED_Color_Init(struct LED_Color *self, uint8_t num_pixel, uint8_t bpp, uint8_t *rgb, uint8_t *target);
+void LED_Color_Init(/*struct LED_Color *self, */uint8_t num_pixel, uint8_t bpp, uint8_t *rgb, uint8_t *target);
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_MODE
@@ -234,21 +235,17 @@ struct LED_Color_Mode_VTable {
   void                  (*F3)               (const struct LED_Color_Mode *unsafe_self);
   void                  (*F3Var)            (const struct LED_Color_Mode *unsafe_self);
   void                  (*Update)           (const struct LED_Color_Mode *unsafe_self);
-  void                  (*Hello)            (const struct LED_Color_Mode *unsafe_self);
+  void                  (*Hello)            (void);
 };
 
 /**
   * @brief  Definition of LED_Color_Mode class
  **/
 struct LED_Color_Mode {
-  struct LED_Color      *l;
-  uint8_t               num_rgb,      // Copy of l->num_rgb
-                        num_bytes,    // Copy of l->num_bytes
-                        *rgb_arr,     // Copy of l->rgb_arr
-                        *target_arr;  // Copy of l->target_arr
+/*  struct LED_Color      *l;
 
   void                  (*ledSmoothWrite)   (struct LED_Color_Mode *self);
-  void                  (*ledDirectWrite)   (struct LED_Color_Mode *self, const uint8_t *ledTarget);
+  void                  (*ledDirectWrite)   (struct LED_Color_Mode *self, const uint8_t *ledTarget);*/
 
   // VTable (virtual) functions
   void                  (*F3)               (const struct LED_Color_Mode *unsafe_self);
@@ -258,11 +255,16 @@ struct LED_Color_Mode {
 
   struct LED_Color_Mode_VTable VTable;
 };
+/**
+  * @brief  Modified external smooth/directWrite functions
+ **/
+void                  ledSmoothWrite   (void);
+void                  ledDirectWrite   (const uint8_t *ledTarget);
 
 /**
   * @brief  Constructor of LED_Color_Mode class
  **/
-void LED_Color_Mode_Init(struct LED_Color_Mode *self, struct LED_Color *l);
+void LED_Color_Mode_Init(struct LED_Color_Mode *self/*, struct LED_Color *l*/);
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_STATIC
@@ -279,7 +281,7 @@ struct LED_Color_Static {
 /**
   * @brief  Constructor of LED_Color_Static class
  **/
-void LED_Color_Static_Init(struct LED_Color_Static *self, struct LED_Color *l, uint8_t position);
+void LED_Color_Static_Init(struct LED_Color_Static *self/*, struct LED_Color *l*/, uint8_t position);
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_SPECTRUM
@@ -299,7 +301,7 @@ struct LED_Color_Spectrum {
 /**
   * @brief  Constructor of LED_Color_Spectrum class
  **/
-void LED_Color_Spectrum_Init(struct LED_Color_Spectrum *self, struct LED_Color *l);
+void LED_Color_Spectrum_Init(struct LED_Color_Spectrum *self/*, struct LED_Color *l*/);
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_CROSSFADE
@@ -319,7 +321,7 @@ struct LED_Color_Cross {
 /**
   * @brief  Constructor of LED_Color_Cross class
  **/
-void LED_Color_Cross_Init(struct LED_Color_Cross *self, struct LED_Color *l, uint8_t delta);
+void LED_Color_Cross_Init(struct LED_Color_Cross *self/*, struct LED_Color *l*/, uint8_t delta);
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_CHASEFADE
@@ -348,7 +350,7 @@ struct LED_Color_Chase {
  **/
 void LED_Color_Chase_Init(
   struct LED_Color_Chase *self,
-  struct LED_Color *l,
+  // struct LED_Color *l,
   uint8_t MicPin,               // Pin number of microphone
   uint8_t *Second,              // Reference of a globally updated second variable
   uint8_t FlipSync,             // Flag to sync L-R <-> R-L chase flip with dot flip of display
@@ -372,7 +374,7 @@ struct LED_Color_Resistor {
  **/
 void LED_Color_Resistor_Init(
   struct LED_Color_Resistor *self,
-  struct LED_Color *l,
+  // struct LED_Color *l,
   // Reference of globally updated hour/minute/second variable
   uint8_t *h, uint8_t *m, uint8_t *s
 );
@@ -397,7 +399,7 @@ struct LED_Color_Cop {
 /**
   * @brief  Constructor of LED_Color_Cop class
  **/
-void LED_Color_Cop_Init(struct LED_Color_Cop *self, struct LED_Color *l, uint8_t pattern);
+void LED_Color_Cop_Init(struct LED_Color_Cop *self/*, struct LED_Color *l*/, uint8_t pattern);
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_MUSIC
@@ -422,7 +424,7 @@ struct LED_Color_Music {
 /**
   * @brief  Constructor of LED_Color_Music class
  **/
-void LED_Color_Music_Init(struct LED_Color_Music *self, struct LED_Color *l, uint8_t MicPin);
+void LED_Color_Music_Init(struct LED_Color_Music *self/*, struct LED_Color *l*/, uint8_t MicPin);
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_SERIAL
@@ -436,8 +438,8 @@ struct LED_Color_Serial1 { struct LED_Color_Mode super; };
 /**
   * @brief  Constructor of LED_Color_Serial0/1 class
  **/
-void LED_Color_Serial0_Init(struct LED_Color_Serial0 *self, struct LED_Color *l);
-void LED_Color_Serial1_Init(struct LED_Color_Serial1 *self, struct LED_Color *l);
+void LED_Color_Serial0_Init(struct LED_Color_Serial0 *self/*, struct LED_Color *l*/);
+void LED_Color_Serial1_Init(struct LED_Color_Serial1 *self/*, struct LED_Color *l*/);
 
 /** Begin of:
   * @toc SECTION_LED_MODE_MANAGER
@@ -481,7 +483,7 @@ struct LED_SavedParam_Serialization {
  **/
 struct LED_Mode_Manager {
   LED_MODE_t            LED;                   // Current active instance (quick n dirty 'dynamic_cast')
-  struct LED_Color      *LED_Hardware;         // Hardware mapping
+  // struct LED_Color      *LED_Hardware;         // Hardware mapping
 
   struct LED_Color_Mode **LED_Instance;        // Array of all instances!
 
@@ -498,7 +500,7 @@ struct LED_Mode_Manager {
  **/
 void LED_Mode_Manager_Init(
   struct LED_Mode_Manager *self,
-  struct LED_Color *l,                    // Hardware instance
+  // struct LED_Color *l,                    // Hardware instance
   struct LED_SavedParam_Serialization s   // Saved parameters
 );
 

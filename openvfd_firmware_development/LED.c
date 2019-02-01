@@ -172,21 +172,21 @@ uint8_t updateIntervalEvent(intervalEvent *input) {
  **/
 #ifdef DEBUG
 
-static void _LED_Color_render(const struct LED_Color *self) {
-  printf("Rendering %hhu bytes of LED data with %hhu pixels and %hhu bytes per pixel.\n", self->num_bytes, self->num_rgb, (uint8_t)(self->num_bytes / self->num_rgb));
+void render(/*const struct LED_Color *self*/) {
+  printf("Rendering %hhu bytes of LED data with %hhu pixels and %hhu bytes per pixel.\n", num_bytes, num_rgb, (uint8_t)(num_bytes / num_rgb));
   printf("rgb_arr: ");
-  for (uint8_t i = 0; i < self->num_rgb; ++i) {
-    printf("(%03hhu, %03hhu, %03hhu) ", self->rgb_arr[3 * i], self->rgb_arr[3 * i + 1], self->rgb_arr[3 * i + 2]);
+  for (uint8_t i = 0; i < num_rgb; ++i) {
+    printf("(%03hhu, %03hhu, %03hhu) ", rgb_arr[3 * i], rgb_arr[3 * i + 1], rgb_arr[3 * i + 2]);
   }
   printf("\n\n");
 }
 
 #else
 
-static inline void _LED_Color_render(const struct LED_Color *self) {
-  uint32_t        t_f = self->t_f;
-  uint8_t         num_bytes = self->num_bytes,
-                  *rgb_arr = self->rgb_arr;
+static inline void render(/*const struct LED_Color *self*/) {
+  // uint32_t        t_f = self->t_f;
+  // uint8_t         num_bytes = self->num_bytes,
+  //                 *rgb_arr = self->rgb_arr;
   // This section is writF1 by:
   // Acrobotic - 01/10/2013
   // Author: x1sc0
@@ -256,13 +256,13 @@ static inline void _LED_Color_render(const struct LED_Color *self) {
 /**
   * @brief  Constructor of LED_Color class
  **/
-void LED_Color_Init(struct LED_Color *self, uint8_t num_pixel, uint8_t bpp, uint8_t *rgb, uint8_t *target) {
-  self->num_rgb = num_pixel;
-  self->num_bytes = num_pixel * bpp;
-  self->rgb_arr = rgb;
-  self->target_arr = target;
+void LED_Color_Init(/*struct LED_Color *self, */uint8_t num_pixel, uint8_t bpp, uint8_t *rgb, uint8_t *target) {
+  num_rgb = num_pixel;
+  num_bytes = num_pixel * bpp;
+  rgb_arr = rgb;
+  target_arr = target;
 
-  self->render = _LED_Color_render;
+  // self->render = _LED_Color_render;
 }
 
 /** Begin of:
@@ -271,30 +271,31 @@ void LED_Color_Init(struct LED_Color *self, uint8_t num_pixel, uint8_t bpp, uint
 /**
   * @brief  Implementation of void LED_Color_Mode::ledSmoothWrite (static void _LED_Color_Mode_ledSmoothWrite)
  **/
-static inline void _LED_Color_Mode_ledSmoothWrite(struct LED_Color_Mode *self) {
-  const struct LED_Color      *l = self->l;
-  const uint8_t               num_bytes = self->num_bytes;
-  uint8_t * const             rgb_arr = self->rgb_arr;
-  uint8_t * const             target_arr = self->target_arr;
+// static inline void _LED_Color_Mode_ledSmoothWrite(struct LED_Color_Mode *self) {
+inline void ledSmoothWrite(void) {
+  // const struct LED_Color      *l = self->l;
+  // const uint8_t               num_bytes = num_bytes;
+  // uint8_t * const             rgb_arr = rgb_arr;
+  // uint8_t * const             target_arr = target_arr;
 
   // Obtain equality
   for (uint8_t i = 0; i < num_bytes; i++) {
     if (rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
     else if (rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
   }
-  l->render(l);
+  render();
 }
 
 /**
   * @brief  Implementation of void LED_Color_Mode::ledDirectWrite (static void _LED_Color_Mode_ledDirectWrite)
  **/
-static inline void _LED_Color_Mode_ledDirectWrite(struct LED_Color_Mode *self, const uint8_t *ledTarget) {
+/* static inline void _LED_Color_Mode_ledDirectWrite(struct LED_Color_Mode *self, const uint8_t *ledTarget) {
   const struct LED_Color      *l = self->l;
-  const uint8_t               num_bytes = self->num_bytes;
-
-  memcpy(self->rgb_arr, ledTarget, num_bytes);
-  memcpy(self->target_arr, ledTarget, num_bytes);
-  l->render(l);
+  const uint8_t               num_bytes = num_bytes; */
+inline void ledDirectWrite(const uint8_t *ledTarget) {
+  memcpy(rgb_arr, ledTarget, num_bytes);
+  memcpy(target_arr, ledTarget, num_bytes);
+  render();
 }
 
 /**
@@ -314,22 +315,17 @@ static inline void _LED_Color_Mode_Update(const struct LED_Color_Mode *unsafe_se
 }
 static inline void _LED_Color_Mode_Hello(const struct LED_Color_Mode *unsafe_self) {
   if(!unsafe_self->VTable.Hello) return;
-  unsafe_self->VTable.Hello(unsafe_self);
+  unsafe_self->VTable.Hello();
 }
 
 /**
   * @brief  Constructor of LED_Color_Mode class
  **/
-void LED_Color_Mode_Init(struct LED_Color_Mode *self, struct LED_Color *l) {
-  self->l = l;
+void LED_Color_Mode_Init(struct LED_Color_Mode *self/*, struct LED_Color *l*/) {
+  // self->l = l;
 
-  self->num_rgb = l->num_rgb;
-  self->num_bytes = l->num_bytes;
-  self->rgb_arr = l->rgb_arr;
-  self->target_arr = l->target_arr;
-
-  self->ledSmoothWrite = _LED_Color_Mode_ledSmoothWrite;
-  self->ledDirectWrite = _LED_Color_Mode_ledDirectWrite;
+  // self->ledSmoothWrite = _LED_Color_Mode_ledSmoothWrite;
+  // self->ledDirectWrite = _LED_Color_Mode_ledDirectWrite;
 
   self->F3 = _LED_Color_Mode_F3;
   self->F3Var = _LED_Color_Mode_F3Var;
@@ -346,15 +342,16 @@ void LED_Color_Mode_Init(struct LED_Color_Mode *self, struct LED_Color *l) {
  **/
 static void _LED_Color_Static_Update(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Static *self = (struct LED_Color_Static *)unsafe_self;
+  // const struct LED_Color *l = self->super.l;
 
-  const uint8_t         position = self->position,
-                        num_bytes = self->super.num_bytes;
-  uint8_t * const       target_arr = self->super.target_arr;
+  const uint8_t         position = self->position;
+  //                      num_bytes = num_bytes;
+  // uint8_t * const       target_arr = target_arr;
 
   // If not single Color
   if(position > LED0_mcOffset) {
     for(uint8_t i = 0; i < num_bytes; i++) target_arr[i] = led_Presets[position - LED0_cOffset][i];
-    self->super.ledSmoothWrite(&self->super);
+    ledSmoothWrite();
   }
   else{ // Save some RAM
     for(uint8_t offset = 0; offset < num_bytes; offset += 3) {
@@ -362,7 +359,7 @@ static void _LED_Color_Static_Update(const struct LED_Color_Mode *unsafe_self) {
       target_arr[offset + 1] = led_scPresets[position][1];
       target_arr[offset + 2] = led_scPresets[position][2];
     }
-    self->super.ledSmoothWrite(&self->super);
+    ledSmoothWrite();
   }
 }
 
@@ -371,8 +368,9 @@ static void _LED_Color_Static_Update(const struct LED_Color_Mode *unsafe_self) {
  **/
 static void _LED_Color_Static_F3(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Static *self = (struct LED_Color_Static *)unsafe_self;
+  // const struct LED_Color *l = self->super.l;
 
-  const uint8_t         num_rgb = self->super.num_rgb;
+  // const uint8_t         num_rgb = num_rgb;
 
   self->position++;
   if(self->position == 16) self->position = 0;
@@ -381,7 +379,7 @@ static void _LED_Color_Static_F3(const struct LED_Color_Mode *unsafe_self) {
   char LED0PMC[NUM_DIGITS_V];
   LED0PMC[0] = 'C';
   LED0PMC[1] = ' ';
-  for(uint8_t i = 2; i < num_rgb; i++) LED0PMC[i] = LED0PM[self->position][i - 2];
+  for(uint8_t i = 2; i < num_rgb; i++) LED0PMC[i] = pgm_read_byte_near(&LED0PM[self->position][i - 2]); // LED0PM[self->position][i - 2];
 
   displayWrite(3, 0x00, 500, LED0PMC);    // Write change message
 }
@@ -389,7 +387,7 @@ static void _LED_Color_Static_F3(const struct LED_Color_Mode *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Static::Hello (static void _LED_Color_Static_Hello)
  **/
-static inline void _LED_Color_Static_Hello(const struct LED_Color_Mode *unsafe_self) {
+static inline void _LED_Color_Static_Hello(void) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_COLOR + i);
   displayWrite(3, 0x00, 1000, k);
@@ -398,8 +396,8 @@ static inline void _LED_Color_Static_Hello(const struct LED_Color_Mode *unsafe_s
 /**
   * @brief  Constructor of LED_Color_Static class
  **/
-void LED_Color_Static_Init(struct LED_Color_Static *self, struct LED_Color *l, uint8_t position) {
-  LED_Color_Mode_Init(&self->super, l);
+void LED_Color_Static_Init(struct LED_Color_Static *self/*, struct LED_Color *l*/, uint8_t position) {
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   self->position = position;
 
@@ -420,9 +418,10 @@ void LED_Color_Static_Init(struct LED_Color_Static *self, struct LED_Color *l, u
  **/
 static void _LED_Color_Spectrum_Update(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Spectrum *self = (struct LED_Color_Spectrum *)unsafe_self;
+  // const struct LED_Color *l = self->super.l;
   // Dereference const (read only) variables
-  const uint8_t         num_bytes = self->super.num_bytes;
-  uint8_t * const       target_arr = self->super.target_arr;
+  // const uint8_t         num_bytes = num_bytes;
+  // uint8_t * const       target_arr = target_arr;
   const LED_S_t         saturation = self->saturation;
   const LED_L_t         lightness = self->lightness;
 
@@ -436,7 +435,7 @@ static void _LED_Color_Spectrum_Update(const struct LED_Color_Mode *unsafe_self)
     target_arr[offset + 2] = (uint8_t)(phase & 0xFF);         // B
   }
 
-  self->super.ledSmoothWrite(&self->super);
+  ledSmoothWrite();
 }
 
 /**
@@ -496,7 +495,7 @@ static void _LED_Color_Spectrum_F3Var(const struct LED_Color_Mode *unsafe_self) 
 /**
   * @brief  Implementation of virtual function LED_Color_Spectrum::Hello (static void _LED_Color_Spectrum_Hello)
  **/
-static inline void _LED_Color_Spectrum_Hello(const struct LED_Color_Mode *unsafe_self) {
+static inline void _LED_Color_Spectrum_Hello(void) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_FADE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -505,8 +504,8 @@ static inline void _LED_Color_Spectrum_Hello(const struct LED_Color_Mode *unsafe
 /**
   * @brief  Constructor of LED_Color_Spectrum class
  **/
-void LED_Color_Spectrum_Init(struct LED_Color_Spectrum *self, struct LED_Color *l) {
-  LED_Color_Mode_Init(&self->super, l);
+void LED_Color_Spectrum_Init(struct LED_Color_Spectrum *self/*, struct LED_Color *l*/) {
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   self->angle = 0;
   self->lightness = LED_L_HIGH;
@@ -530,11 +529,12 @@ void LED_Color_Spectrum_Init(struct LED_Color_Spectrum *self, struct LED_Color *
  **/
 static void _LED_Color_Cross_Update(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Cross *self = (struct LED_Color_Cross *)unsafe_self;
+  // const struct LED_Color *l = self->super.l;
   // Dereference const (read only) variables
-  const uint8_t         num_rgb = self->super.num_rgb,
+  const uint8_t         // num_rgb = num_rgb,
                         delta = self->delta;
   const LED_L_t         lightness = self->lightness;
-  uint8_t * const       rgb_arr = self->super.rgb_arr;
+  // uint8_t * const       rgb_arr = rgb_arr;
 
   if(updateIntervalEvent(&self->angleUpdater)) self->angle++; // Just let it overflow and begin from 0 :p
   uint8_t offset = 0;
@@ -547,7 +547,7 @@ static void _LED_Color_Cross_Update(const struct LED_Color_Mode *unsafe_self) {
     rgb_arr[offset + 2] = (uint8_t)(phase & 0xFF);         // B
     offset += 3;
   }
-  self->super.l->render(self->super.l);
+  render();
 }
 
 /**
@@ -605,7 +605,7 @@ static void _LED_Color_Cross_F3Var(const struct LED_Color_Mode *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Cross::Hello (static void _LED_Color_Cross_Hello)
  **/
-static inline void _LED_Color_Cross_Hello(const struct LED_Color_Mode *unsafe_self) {
+static inline void _LED_Color_Cross_Hello(void) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CROSSFADE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -614,8 +614,8 @@ static inline void _LED_Color_Cross_Hello(const struct LED_Color_Mode *unsafe_se
 /**
   * @brief  Constructor of LED_Color_Cross class
  **/
-void LED_Color_Cross_Init(struct LED_Color_Cross *self, struct LED_Color *l, uint8_t delta) {
-  LED_Color_Mode_Init(&self->super, l);
+void LED_Color_Cross_Init(struct LED_Color_Cross *self/*, struct LED_Color *l*/, uint8_t delta) {
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   self->angle = 0;
   self->lightness = LED_L_HIGH;
@@ -639,13 +639,14 @@ void LED_Color_Cross_Init(struct LED_Color_Cross *self, struct LED_Color *l, uin
  **/
 static void _LED_Color_Chase_Update(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Chase *self = (struct LED_Color_Chase *)unsafe_self;
+  // const struct LED_Color *l = self->super.l;
   // Dereference const (read only) variables
-  const uint8_t         num_bytes = self->super.num_bytes,
+  const uint8_t         // num_bytes = num_bytes,
                         direction = self->direction,
                         MicPin = self->MicPin,
                         s = *(self->s);
   const LED_L_t         lightness = self->lightness;
-  uint8_t * const       rgb_arr = self->super.rgb_arr;
+  // uint8_t * const       rgb_arr = rgb_arr;
 
   if(direction < 3) {                                         // If reactive to second flip
     if(self->secondFlip != s) {                               // If the second has changed
@@ -656,7 +657,7 @@ static void _LED_Color_Chase_Update(const struct LED_Color_Mode *unsafe_self) {
       self->angle += 22;                                      // Let it overflow and get different values.
     }
   }
-  else{                                                       // If reactive to sound
+  else {                                                      // If reactive to sound
     if(getMicData(MicPin) > 196) {                            // If the intensity of the audio samples are higher than 196 - threshold
       if(updateIntervalEvent(&self->delayUpdater)) {          // And some time has elapsed
         self->directionFlag = !self->directionFlag;           // Flip direction
@@ -675,7 +676,7 @@ static void _LED_Color_Chase_Update(const struct LED_Color_Mode *unsafe_self) {
     rgb_arr[offset + 1] = (uint8_t)((phase >> 8) & 0xFF);     // Manipulate R
     rgb_arr[offset + 2] = (uint8_t)(phase & 0xFF);            // Manipulate B
   }
-  self->super.l->render(self->super.l);
+  render();
 
   if(updateIntervalEvent(&self->stateUpdater)) self->state++;
 }
@@ -685,7 +686,8 @@ static void _LED_Color_Chase_Update(const struct LED_Color_Mode *unsafe_self) {
  **/
 static void _LED_Color_Chase_F3(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Chase *self = (struct LED_Color_Chase *)unsafe_self;
-  const uint8_t         num_rgb = self->super.num_rgb,
+  // const struct LED_Color *l = self->super.l;
+  const uint8_t         // num_rgb = num_rgb,
                         flipdir = self->flipdir;
 
   // Short press results change in direction
@@ -734,7 +736,7 @@ static void _LED_Color_Chase_F3Var(const struct LED_Color_Mode *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Chase::Hello (static void _LED_Color_Chase_Hello)
  **/
-static inline void _LED_Color_Chase_Hello(const struct LED_Color_Mode *unsafe_self) {
+static inline void _LED_Color_Chase_Hello(void) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CHASEFADE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -745,13 +747,13 @@ static inline void _LED_Color_Chase_Hello(const struct LED_Color_Mode *unsafe_se
  **/
 void LED_Color_Chase_Init(
   struct LED_Color_Chase *self,
-  struct LED_Color *l,
+  /*struct LED_Color *l,*/
   uint8_t MicPin,               // Pin number of microphone
   uint8_t *Second,              // Reference of a globally updated second variable
   uint8_t FlipSync,             // Flag to sync L-R <-> R-L chase flip with dot flip of display
   uint8_t ChaseMode             // Saved parameter chase mode (L-R/R-L/flip/mic)
 ) {
-  LED_Color_Mode_Init(&self->super, l);
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   self->angle = 0;
   self->secondFlip = 0;
@@ -782,12 +784,13 @@ void LED_Color_Chase_Init(
  **/
 static void _LED_Color_Resistor_Update(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Resistor *self = (struct LED_Color_Resistor *)unsafe_self;
+  // const struct LED_Color *l = self->super.l;
   // Dereference const (read only) variables
-  const uint8_t         num_rgb = self->super.num_rgb,
+  const uint8_t         // num_rgb = num_rgb,
                         h = *(self->h),
                         m = *(self->m),
                         s = *(self->s);
-  uint8_t * const       target_arr = self->super.target_arr;
+  // uint8_t * const       target_arr = target_arr;
 
   uint8_t clockData[num_rgb];
   clockData[0] = s % 10;
@@ -805,13 +808,13 @@ static void _LED_Color_Resistor_Update(const struct LED_Color_Mode *unsafe_self)
     offset += 3;
   }
 
-  self->super.ledSmoothWrite(&self->super);
+  ledSmoothWrite();
 }
 
 /**
   * @brief  Implementation of virtual function LED_Color_Resistor::Hello (static void _LED_Color_Resistor_Hello)
  **/
-static inline void _LED_Color_Resistor_Hello(const struct LED_Color_Mode *unsafe_self) {
+static inline void _LED_Color_Resistor_Hello(void) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CRCODE + i);
   displayWrite(3, 0x00, 1000, k);
@@ -822,11 +825,11 @@ static inline void _LED_Color_Resistor_Hello(const struct LED_Color_Mode *unsafe
  **/
 void LED_Color_Resistor_Init(
   struct LED_Color_Resistor *self,
-  struct LED_Color *l,
+  /* struct LED_Color *l,*/
   // Reference of globally updated hour/minute/second variable
   uint8_t *h, uint8_t *m, uint8_t *s
 ) {
-  LED_Color_Mode_Init(&self->super, l);
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   self->h = h;
   self->m = m;
@@ -850,9 +853,9 @@ void LED_Color_Resistor_Init(
 static void _LED_Color_Cop_Update(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Cop *self = (struct LED_Color_Cop *)unsafe_self;
   struct LED_Color_Mode *super = &self->super;
-  const uint8_t         pattern = self->pattern,
-                        num_bytes = super->num_bytes;
-  uint8_t * const       rgb_arr = super->rgb_arr;
+  const uint8_t         pattern = self->pattern;
+                        // num_bytes = super->num_bytes;
+  // uint8_t * const       rgb_arr = super->rgb_arr;
 
   if(updateIntervalEvent(&self->stateUpdater)) {
     if(self->state < 13) self->state++;
@@ -864,7 +867,7 @@ static void _LED_Color_Cop_Update(const struct LED_Color_Mode *unsafe_self) {
 
     else if(self->state == 5) {
       for(uint8_t i = 0; i < num_bytes; i += 3) for(uint8_t j = 0; j < 3; j++) rgb_arr[i + j] = led_scPresets[0][j];
-      super->l->render(super->l);                                  // off fill
+      render();                                                    // off fill
     }
 
     else if(self->state == 6) self->copHalfRender(super, 0, 1);    // b | r fill
@@ -872,7 +875,7 @@ static void _LED_Color_Cop_Update(const struct LED_Color_Mode *unsafe_self) {
 
     else if(self->state == 12) {
       for(uint8_t i = 0; i < num_bytes; i += 3) for(uint8_t j = 0; j < 3; j++) rgb_arr[i + j] = led_scPresets[1][j];
-      super->l->render(super->l);                                  // white fill
+      render();                                                    // white fill
     }
 
     else if(self->state == 13) self->copHalfRender(super, 1, 0);   // r | b fill
@@ -883,19 +886,19 @@ static void _LED_Color_Cop_Update(const struct LED_Color_Mode *unsafe_self) {
   * @brief  Implementation of method LED_Color_Cop::copHalfRender (static inline void _LED_Color_Cop_copHalfRender)
  **/
 static inline void _LED_Color_Cop_copHalfRender(struct LED_Color_Mode *rself, uint8_t left, uint8_t right) {
-  const struct LED_Color      *l = rself->l;
-  const uint8_t               num_bytes = rself->num_bytes;
-  uint8_t * const             rgb_arr = rself->rgb_arr;
+  // const struct LED_Color      *l = rself->l;
+  // const uint8_t               num_bytes = rself->num_bytes;
+  // uint8_t * const             rgb_arr = rself->rgb_arr;
 
   for(uint8_t i = 0; i < (num_bytes >> 1); i+= 3) for(uint8_t j = 0; j < 3; j++) rgb_arr[i + j] = LED11_colors[right][j];
   for(uint8_t i = (num_bytes >> 1); i < num_bytes; i+= 3) for(uint8_t j = 0; j < 3; j++) rgb_arr[i + j] = LED11_colors[left][j];
-  l->render(l);
+  render();
 }
 
 /**
   * @brief  Implementation of virtual function LED_Color_Cop::Hello (static void _LED_Color_Cop_Hello)
  **/
-static inline void _LED_Color_Cop_Hello(const struct LED_Color_Mode *unsafe_self) {
+static inline void _LED_Color_Cop_Hello(void) {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CCOP + i);
   displayWrite(3, 0x00, 1000, k);
@@ -904,8 +907,8 @@ static inline void _LED_Color_Cop_Hello(const struct LED_Color_Mode *unsafe_self
 /**
   * @brief  Constructor of LED_Color_Cop class
  **/
-void LED_Color_Cop_Init(struct LED_Color_Cop *self, struct LED_Color *l, uint8_t pattern) {
-  LED_Color_Mode_Init(&self->super, l);
+void LED_Color_Cop_Init(struct LED_Color_Cop *self/*, struct LED_Color *l*/, uint8_t pattern) {
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   self->pattern = pattern;
   self->state = 0;
@@ -930,12 +933,13 @@ void LED_Color_Cop_Init(struct LED_Color_Cop *self, struct LED_Color *l, uint8_t
  **/
 static void _LED_Color_Music_Update(const struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Music *self = (struct LED_Color_Music *)unsafe_self;
+  // const struct LED_Color *l = self->super.l;
   // Dereference const (read only) variables
-  const uint8_t         num_bytes = self->super.num_bytes,
+  const uint8_t         // num_bytes = num_bytes,
                         delta = self->delta,
                         MicPin = self->MicPin;
   const LED_L_t         lightness = self->lightness;
-  uint8_t * const       rgb_arr = self->super.rgb_arr;
+  // uint8_t * const       rgb_arr = rgb_arr;
 
   // If time interval passed, decrease turned on LEDs by one (regular state update)
   if(updateIntervalEvent(&self->stateUpdater)) if(self->state < 7) self->state++;
@@ -983,7 +987,7 @@ static void _LED_Color_Music_Update(const struct LED_Color_Mode *unsafe_self) {
       }
     }
 
-    self->super.l->render(self->super.l);
+    render();
   }
 }
 
@@ -1042,7 +1046,7 @@ static void _LED_Color_Music_F3Var(const struct LED_Color_Mode *unsafe_self) {
 /**
   * @brief  Implementation of virtual function LED_Color_Music::Hello (static void _LED_Color_Music_Hello)
  **/
-static inline void _LED_Color_Music_Hello(const struct LED_Color_Mode *unsafe_self) {
+static inline void _LED_Color_Music_Hello() {
   char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CSOUND + i);
   displayWrite(3, 0x00, 1000, k);
@@ -1051,8 +1055,8 @@ static inline void _LED_Color_Music_Hello(const struct LED_Color_Mode *unsafe_se
 /**
   * @brief  Constructor of LED_Color_Music class
  **/
-void LED_Color_Music_Init(struct LED_Color_Music *self, struct LED_Color *l, uint8_t MicPin) {
-  LED_Color_Mode_Init(&self->super, l);
+void LED_Color_Music_Init(struct LED_Color_Music *self/*, struct LED_Color *l*/, uint8_t MicPin) {
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   self->angle = 0;
   self->delta = 21;
@@ -1081,15 +1085,15 @@ void LED_Color_Music_Init(struct LED_Color_Music *self, struct LED_Color *l, uin
  **/
 static void _LED_Color_Serial0_Update(const struct LED_Color_Mode *unsafe_self) { return; }
 static void _LED_Color_Serial1_Update(const struct LED_Color_Mode *unsafe_self) {
-  struct LED_Color_Serial1 *self = (struct LED_Color_Serial1 *)unsafe_self;
-  self->super.ledSmoothWrite(&self->super);
+  // struct LED_Color_Serial1 *self = (struct LED_Color_Serial1 *)unsafe_self;
+  ledSmoothWrite();
 }
 
 /**
   * @brief  Constructor of LED_Color_Serial0/1 class
  **/
-void LED_Color_Serial0_Init(struct LED_Color_Serial0 *self, struct LED_Color *l) {
-  LED_Color_Mode_Init(&self->super, l);
+void LED_Color_Serial0_Init(struct LED_Color_Serial0 *self/*, struct LED_Color *l*/) {
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   struct LED_Color_Mode_VTable _serial0_vtable = {
     .F3 = NULL,
@@ -1100,8 +1104,8 @@ void LED_Color_Serial0_Init(struct LED_Color_Serial0 *self, struct LED_Color *l)
   self->super.VTable = _serial0_vtable;
 }
 
-void LED_Color_Serial1_Init(struct LED_Color_Serial1 *self, struct LED_Color *l) {
-  LED_Color_Mode_Init(&self->super, l);
+void LED_Color_Serial1_Init(struct LED_Color_Serial1 *self/*, struct LED_Color *l*/) {
+  LED_Color_Mode_Init(&self->super/*, l*/);
 
   struct LED_Color_Mode_VTable _serial1_vtable = {
     .F3 = NULL,
@@ -1185,25 +1189,25 @@ static void _LED_Mode_Manager_EEPReadIn(struct LED_Mode_Manager *self, struct LE
  **/
 void LED_Mode_Manager_Init(
   struct LED_Mode_Manager *self,
-  struct LED_Color *l,                    // Hardware instance
+  // struct LED_Color *l,                    // Hardware instance
   struct LED_SavedParam_Serialization s   // Saved parameters
 ) {
   self->LED = (LED_MODE_t)s.led;
-  self->LED_Hardware = l;
+  // self->LED_Hardware = l;
 
   self->LED_Manager_Routine = _LED_Mode_Manager_Routine;
   self->EEPGenerate         = _LED_Mode_Manager_EEPGenerate;
   self->EEPReadIn           = _LED_Mode_Manager_EEPReadIn;
 
-  LED_Color_Static_Init       (&led_static, l, s.LED0P);
-  LED_Color_Serial0_Init      (&led_s0, l);
-  LED_Color_Serial1_Init      (&led_s1, l);
-  LED_Color_Spectrum_Init     (&led_spectrum, l);
-  LED_Color_Cross_Init        (&led_cfade, l, s.LED7_delta);
-  LED_Color_Chase_Init        (&led_chfd, l, micPin, &global_s, 0, s.LED8_dp);
-  LED_Color_Resistor_Init     (&led_resistor, l, &global_h, &global_m, &global_s);
-  LED_Color_Cop_Init          (&led_cop, l, s.LED11_pt);
-  LED_Color_Music_Init        (&led_music, l, micPin);
+  LED_Color_Static_Init       (&led_static/*, l*/, s.LED0P);
+  LED_Color_Serial0_Init      (&led_s0/*, l*/);
+  LED_Color_Serial1_Init      (&led_s1/*, l*/);
+  LED_Color_Spectrum_Init     (&led_spectrum/*, l*/);
+  LED_Color_Cross_Init        (&led_cfade/*, l*/, s.LED7_delta);
+  LED_Color_Chase_Init        (&led_chfd/*, l*/, micPin, &global_s, 0, s.LED8_dp);
+  LED_Color_Resistor_Init     (&led_resistor/*, l*/, &global_h, &global_m, &global_s);
+  LED_Color_Cop_Init          (&led_cop/*, l*/, s.LED11_pt);
+  LED_Color_Music_Init        (&led_music/*, l*/, micPin);
 
   self->LED_Instance = (struct LED_Color_Mode **)malloc(COLORPOS_MAXCNT * sizeof(struct LED_Color_Mode *));
   self->LED_Instance[COLORPOS_STATIC]     = (struct LED_Color_Mode *) &led_static;
@@ -1227,13 +1231,13 @@ void LED_Mode_Manager_Init(
 
     case LED_SERIAL_0: {
       self->LED_Instance_Position = COLORPOS_SERIAL0;
-      for(uint8_t i = 0; i < l->num_bytes; ++i) l->rgb_arr[i] = s.SER0[i];
-      l->render(l);
+      for(uint8_t i = 0; i < num_bytes; ++i) rgb_arr[i] = s.SER0[i];
+      render();
       break;
     }
     case LED_SERIAL_1: {
       self->LED_Instance_Position = COLORPOS_SERIAL1;
-      for(uint8_t i = 0; i < l->num_bytes; ++i) l->target_arr[i] = s.SER1[i];
+      for(uint8_t i = 0; i < num_bytes; ++i) target_arr[i] = s.SER1[i];
       break;
     }
 
