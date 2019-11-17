@@ -101,7 +101,7 @@ char fwString[7] = {'v', '2', '.', '3', 'f', ' ', ' '};
  * - Significantly faster color wheel algorithm using fixed point arithmetic HSL transform enables adjustment of saturation and lightness besides color (hue)
  * - (Finally) fixed a pesk bugs that caused night shift to turn on/off incorrectly or at unexpected time
  * - Hardware Version 2.2b (experimental) support
- * 
+ *
  * 2.21rf (04/21/2018):
  * - Fixed an issue in 12h mode
  *
@@ -650,7 +650,7 @@ void interfaceRoutine() {
     else if(INTF3_st == INTF3_RUNNING) {
       // Stopwatch running, get elapsed time
       TimeSpan ts = *INTF3_TS + (rtc.now() - *INTF3_TB);
-      int8_t    _h = ts.hours(), 
+      int8_t    _h = ts.hours(),
                 _m = ts.minutes(),
                 _s = ts.seconds(),
                 _u = ((INTF3_MILLIE + (millis() - INTF3_MILLIS)) % 1000) / 10;
@@ -683,7 +683,7 @@ void interfaceRoutine() {
 
     else if(INTF3_st == INTF3_PAUSED) {
       // Stopwatch paused, constant display of current time
-      int8_t    _h = INTF3_TS->hours(), 
+      int8_t    _h = INTF3_TS->hours(),
                 _m = INTF3_TS->minutes(),
                 _s = INTF3_TS->seconds(),
                 _u = (INTF3_MILLIE % 1000) / 10;
@@ -1466,7 +1466,7 @@ void ledRoutine() {
         displayWrite(3, 0x00, 750, k);
         clearInterface();
       }
-      
+
       // 'Explicit wake': F3 changes to silent, breaking night shift
       if(cF3 == SHORTPRESS) {
         LED21_st = LED21_SILENT;
@@ -1479,7 +1479,7 @@ void ledRoutine() {
       }
     }
 
-    
+
   }
 
   // Check if night shift time set is enabled. If yes, check for trigger signal
@@ -1536,7 +1536,7 @@ void serialRoutine() {
 // This routine is to check whether night shift should be turned on/off or not
 inline void nightShiftRoutine(uint8_t h, uint8_t m, uint8_t s) {
   // If night shift is on, look for disable trigger, otherwise look for enable trigger
-  
+
   if(LED21_st == LED21_SHIFTSLEEP) {
     // Night shift is on
     // Look for disable trigger
@@ -1564,7 +1564,7 @@ inline void nightShiftRoutine(uint8_t h, uint8_t m, uint8_t s) {
         char k[NUM_DIGITS_V];
         for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_CSILENT + i);
         displayWrite(3, 0x00, 1000, k);
-        
+
         LED21_shslpst = led;                    // Backup previous LED mode
         if(LED21_shslpst == LED_SERIAL_0 || LED21_shslpst == LED_SERIAL_1) LED21_shslpst = LED_STATIC; // won't happen that often #dontcare
         led = LED_SILENT;                       // Go into silent mode
@@ -2175,7 +2175,7 @@ void copHalfRender(uint8_t right, uint8_t left) {
   render();
 }
 
-// Faster color wheel with HSL transform and fixed point arithmetics 
+// Faster color wheel with HSL transform and fixed point arithmetics
 // https://stackoverflow.com/questions/2353211
 static inline int32_t _mdisplay_fpmul(int32_t x, int32_t y) { return ((int64_t)x * (int64_t)y) / 0x01000000; }
 static int32_t _mdisplay_hslp_hue2rgb(int32_t p, int32_t q, int32_t t) {
@@ -2235,7 +2235,7 @@ void ledDirectWrite(uint8_t *ledTarget) {
         p[num] = TRUE;          // Set pressed flag
         p_t[num] = millis();    // Set timer as millis
       }
-  
+
       if ((millis() - p_t[num] > lp_t) && (lp[num] == FALSE)) {
         lp[num] = TRUE;         // Long press detected
         rV = LONGPRESS;                 // Set alternative number
@@ -2252,7 +2252,7 @@ void ledDirectWrite(uint8_t *ledTarget) {
     }
     return rV;
   }
-#else 
+#else
   uint8_t checkOption(uint8_t buttonPin) {
     // Button check function
     uint8_t num = getNum(buttonPin);
@@ -2262,7 +2262,7 @@ void ledDirectWrite(uint8_t *ledTarget) {
         p[num] = TRUE;          // Set pressed flag
         p_t[num] = millis();    // Set timer as millis
       }
-  
+
       if ((millis() - p_t[num] > lp_t) && (lp[num] == FALSE)) {
         lp[num] = TRUE;         // Long press detected
         rV = LONGPRESS;                 // Set alternative number

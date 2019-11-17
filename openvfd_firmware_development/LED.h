@@ -481,28 +481,33 @@ struct LED_SavedParam_Serialization {
 /**
   * @brief  Definition of LED_Mode_Manager class. LED manager instance tracks all LED modes
  **/
-struct LED_Mode_Manager {
-  LED_MODE_t            LED;                   // Current active instance (quick n dirty 'dynamic_cast')
+// struct LED_Mode_Manager {
+LED_MODE_t            LED;                   // Current active instance (quick n dirty 'dynamic_cast')
   // struct LED_Color      *LED_Hardware;         // Hardware mapping
 
-  struct LED_Color_Mode **LED_Instance;        // Array of all instances!
+struct LED_Color_Mode **LED_Instance;        // Array of all instances!
 
-  uint8_t               LED_Instance_Position; // Index in LED_Instance array
+uint8_t               LED_Instance_Position; // Index in LED_Instance array
 
-  // Methods
-  void (*LED_Manager_Routine)(struct LED_Mode_Manager *self);
-  struct LED_SavedParam_Serialization (*EEPGenerate)(struct LED_Mode_Manager *self);
-  void (*EEPReadIn)(struct LED_Mode_Manager *self, struct LED_SavedParam_Serialization s);
-};
+// Methods
+// void (*LED_Manager_Routine)(struct LED_Mode_Manager *self);
+void LED_Manager_Routine(void);
+
+// struct LED_SavedParam_Serialization (*EEPGenerate)(struct LED_Mode_Manager *self);
+struct LED_SavedParam_Serialization LED_Manager_EEPGenerate(void);
+
+// void (*EEPReadIn)(struct LED_Mode_Manager *self, struct LED_SavedParam_Serialization s);
+void LED_Manager_EEPReadIn(struct LED_SavedParam_Serialization s);
+// };
 
 /**
   * @brief  Constructor of LED_Mode_Manager
  **/
-void LED_Mode_Manager_Init(
+/*void LED_Mode_Manager_Init(
   struct LED_Mode_Manager *self,
   // struct LED_Color *l,                    // Hardware instance
   struct LED_SavedParam_Serialization s   // Saved parameters
-);
+);*/
 
 static struct LED_Color_Static led_static;
 static struct LED_Color_Serial0 led_s0;
