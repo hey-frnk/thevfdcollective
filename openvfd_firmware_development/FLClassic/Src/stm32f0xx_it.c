@@ -23,6 +23,7 @@
 #include "stm32f0xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "vfdco_sk6812.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,11 +57,8 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern PCD_HandleTypeDef hpcd_USB_FS;
-extern DMA_HandleTypeDef hdma_spi1_tx;
 extern DMA_HandleTypeDef hdma_tim2_ch1;
 /* USER CODE BEGIN EV */
-
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -142,20 +140,6 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles DMA1 channel 2 and 3 interrupts.
-  */
-void DMA1_Channel2_3_IRQHandler(void)
-{
-  /* USER CODE BEGIN DMA1_Channel2_3_IRQn 0 */
-
-  /* USER CODE END DMA1_Channel2_3_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi1_tx);
-  /* USER CODE BEGIN DMA1_Channel2_3_IRQn 1 */
-
-  /* USER CODE END DMA1_Channel2_3_IRQn 1 */
-}
-
-/**
   * @brief This function handles DMA1 channel 4 and 5 interrupts.
   */
 void DMA1_Channel4_5_IRQHandler(void)
@@ -166,21 +150,15 @@ void DMA1_Channel4_5_IRQHandler(void)
   HAL_DMA_IRQHandler(&hdma_tim2_ch1);
   /* USER CODE BEGIN DMA1_Channel4_5_IRQn 1 */
 
+  	// For current single pixel
+  /*for(uint8_t i = 0; i < 8; ++i)
+  		for(uint8_t j = 0; j < 4; ++j)
+  			write_buf[i + (j << 3)] = (rgb_arr[(write_buf_pos << 2) + j] & (1 << i)) ? DUTY1 : DUTY0; // Fill RGBW
+  write_buf[32] = 6; // Just to make sure that the last bit is a reset pulse
+
+  if(++write_buf_pos >= num_rgb) write_buf_pos = 0; // Start over*/
+
   /* USER CODE END DMA1_Channel4_5_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USB global Interrupt / USB wake-up interrupt through EXTI line 18.
-  */
-void USB_IRQHandler(void)
-{
-  /* USER CODE BEGIN USB_IRQn 0 */
-
-  /* USER CODE END USB_IRQn 0 */
-  HAL_PCD_IRQHandler(&hpcd_USB_FS);
-  /* USER CODE BEGIN USB_IRQn 1 */
-
-  /* USER CODE END USB_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
