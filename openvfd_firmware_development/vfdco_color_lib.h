@@ -116,7 +116,31 @@ typedef enum {
 /** Begin of:
  * @toc SUBSECTION_COLOR_FADER
 **/
+struct LED_Color;
+struct LED_Color_VTable {
+  LED_COLOR_STATE_t     (*Next)             (const struct LED_Color *unsafe_self);
+  void                  (*Delete)           (const struct LED_Color *unsafe_self);
+};
+
+struct LED_Color {
+  // VTable (virtual) functions
+  LED_COLOR_STATE_t     (*Next)             (const struct LED_Color *unsafe_self);
+  void                  (*Delete)           (const struct LED_Color *unsafe_self);
+  struct LED_Color_VTable VTable;
+};
+
+void LED_Color_Init(struct LED_Color *f);
+
+
+
+
+
 struct LED_Color_Fader {
+  // Functions
+  struct LED_Color super;
+
+  void          (*_blend)         (uint8_t, uint8_t, uint8_t, uint8_t);
+
   // Option: Peaks
   uint8_t       num_pks;        // Number of peaks
   hsl_t         **pks;        // Peaks array
@@ -132,10 +156,6 @@ struct LED_Color_Fader {
   // State Variables
   LED_COLOR_STATE_t state;      // Color Fader FSM
   uint16_t      fade_pos;       // Fade position (substate)
-
-  // Functions
-  void          (*Next)           (struct LED_Color_Fader *self);
-  void          (*_blend)         (uint8_t, uint8_t, uint8_t, uint8_t);
 };
 
 /**
@@ -152,7 +172,16 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   LED_COLOR_BLEND_MODE_t    blend_mode              // Pixel blend setting.
 );
 
-void LED_Color_Fader_Delete(struct LED_Color_Fader *self);
+void _LED_Color_Fader_Delete(const struct LED_Color *unsafe_self);
+
+
+
+
+
+
+
+
+
 
 
 /** Begin of:

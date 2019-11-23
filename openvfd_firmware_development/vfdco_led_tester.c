@@ -16,7 +16,7 @@ int main(void) {
 
   vfdco_clr_init(6);
 
-  struct LED_Color_Fader *f1 = LED_Color_Fader_Init(2, cArr, 6, 10, 3, 6, 0, LED_COLOR_BLEND_MODE_NORMAL);
+  struct LED_Color *f1 = (struct LED_Color *)LED_Color_Fader_Init(1, cArr, 6, 0, 1, 7, 0, LED_COLOR_BLEND_MODE_NORMAL);
 
   for(;;) {
     int q;
@@ -27,9 +27,8 @@ int main(void) {
     scanf("%c", &c);
 
     if(c <= 'm' && c > '0') for(uint8_t i = 0; i < (c - '0'); ++i) {
-      if(f1->state) f1->Next(f1);
-      else {
-        LED_Color_Fader_Delete(f1);
+      if(!f1->Next(f1)) {
+        f1->Delete(f1);
         exit(1);
       }
     }
@@ -38,9 +37,8 @@ int main(void) {
       case 'E': exit(0); break;
       case 'F': break;
       case 'n': {
-        if(f1->state) f1->Next(f1);
-        else {
-          LED_Color_Fader_Delete(f1);
+        if(!f1->Next(f1)) {
+          f1->Delete(f1);
           exit(1);
         }
         break;
