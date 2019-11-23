@@ -22,8 +22,8 @@
 extern "C" {
 #endif
 
-#ifndef _LED_H
-#define _LED_H
+#ifndef _VFDCO_COLOR_LIB
+#define _VFDCO_COLOR_LIB
 
 #include <stdint.h>
 
@@ -36,26 +36,39 @@ extern "C" {
 // #include <vfdco_sk6812.h>
 
 // #define HARDWARE_OPTION_WS2812B
-// #define HARDWARE_OPTION_SK6812
+#define HARDWARE_OPTION_SK6812
 
-extern uint8_t  num_rgb,                  // Number of physical LEDs (pixels)
-                num_bpp,                  // Number of bytes per pixel bpp
-                num_bytes,                // Number of bytes per pixel bpp (3: RGB, 4: RGBW) * num_rgb
+extern uint8_t  num_rgb;                  // Number of physical LEDs (pixels)
+extern uint8_t  num_bpp;                  // Number of bytes per pixel bpp
+extern uint8_t  num_bytes;                // Number of bytes per pixel bpp (3: RGB, 4: RGBW) * num_rgb
                 // Array of color values of size num_bytes to be written in the next write cycle
                 // to the physical WS2812B/SK6812 LEDs
-                *rgb_arr;
+extern uint8_t  *rgb_arr;
 
-extern void     vfdco_clr_render(void);   // Transmits num_bytes of color data to LEDs upon call
+// Initialize SW/HW of num_pixels * SK6812 LEDs
+extern void vfdco_clr_init(uint8_t num_pixels);
+// You might never ever make use of it but hey... in case
+extern void vfdco_clr_deInit(void);
 
+// Some simple access functions. Add some more if u feel creative
+extern void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b);
+extern void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w);
+extern void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b);
+extern void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w);
+
+uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
+
+// Colors all written? Shuttle the data bit by bit into the LEDs
+extern void vfdco_clr_render();
 
 /** Begin of:
   * @toc SECTION_DRIVER_INITIALIZE
   * @brief  Driver initialize function
  **/
-void VFDCO_LED_Driver_Init(   uint8_t num_pixel,        // Number of physical LEDs (pixels)
+/*void VFDCO_LED_Driver_Init(   uint8_t num_pixel,        // Number of physical LEDs (pixels)
                               uint8_t bytes_per_pixel,  // Number of bytes per pixel
                               uint8_t *rgb_arr          // Reference to allocated rgb_arr
-);
+);*/
 
 
 /** Begin of:
@@ -81,10 +94,24 @@ void HSL_Delete(hsl_t *self);
 /** Begin of:
  * @toc SUBSECTION_COLOR_PEAK
 **/
-/*struct color_peak_t {
-  hsl_t         *pk,   // Peak HSL
-                *ps;   // Peak partial slope Cps = FWHW / 2 = sigma * sqrt(2 ln2)
-}; super unnecessary*/
+
+typedef enum {
+  // Blend mode implementation according to https://en.wikipedia.org/wiki/Blend_modes
+  // Assume R, G, B in [0 ... 1], f(a, b) = blended with a = existing value, b = blend layer
+   LED_COLOR_BLEND_MODE_NORMAL      =   0,  // f(a, b) = b
+   LED_COLOR_BLEND_MODE_MULTIPLY    =   1,  // f(a, b) = ab
+   LED_COLOR_BLEND_MODE_SCREEN      =   2,  // f(a, b) = 1 - (1-a)*(1-b)
+   LED_COLOR_BLEND_MODE_OVERLAY     =   3,  // f(a, b) = {2ab, a < 0.5} {1 - 2(1-a)(1-b), else}
+   LED_COLOR_BLEND_MODE_SOFT_LIGHT  =   4,  // f(a, b) = (1-2b) * a^2 + 2ba
+} LED_COLOR_BLEND_MODE_t;
+
+typedef enum {
+  LED_COLOR_STATE_COMPLETE          =   0,  // Fade stopped. All colors done
+  LED_COLOR_STATE_ACTIVE            =   1,  // Stationary state: Regular operation
+  LED_COLOR_STATE_FADE_IN           =  10,  // Transient state: Fading in
+  LED_COLOR_STATE_FADE_OUT          =  11,  // Transient state: Fading out
+  LED_COLOR_STATE_CYCLIC_RECOVERY   =  20   // Special case: Cyclic rollover
+} LED_COLOR_STATE_t;
 
 /** Begin of:
  * @toc SUBSECTION_COLOR_FADER
@@ -92,7 +119,7 @@ void HSL_Delete(hsl_t *self);
 struct LED_Color_Fader {
   // Option: Peaks
   uint8_t       num_pks;        // Number of peaks
-  hsl_t         **pks_h;        // Peaks array
+  hsl_t         **pks;        // Peaks array
   // Option: Chaining
   uint8_t       num_chain,      // Number of chained pixels. 0 = singular
                 chain_huediff;  // Constant difference of hue between chained pixels
@@ -103,25 +130,29 @@ struct LED_Color_Fader {
   uint8_t       start_pos;      // LED start index < end index
 
   // State Variables
-  uint16_t      fade_pos;       // Fade position [0 ... (num_pks + 1) * 256]
+  LED_COLOR_STATE_t state;      // Color Fader FSM
+  uint16_t      fade_pos;       // Fade position (substate)
 
   // Functions
-  void          (*NextColorLin)           (const struct color_fade *self);
-  void          (*NextColorSpline)        (const struct color_fade *self);
+  void          (*Next)           (struct LED_Color_Fader *self);
+  void          (*_blend)         (uint8_t, uint8_t, uint8_t, uint8_t);
 };
 
 /**
   * @brief  Constructor of LED_Color_Fader class
  **/
-void LED_Color_Fader_Init(  struct LED_Color_Fader    *self,
-                            uint8_t                   num_pks,
-                            hsl_t                     **pks,
-                            uint8_t                   num_chain,
-                            uint8_t                   chain_huediff,
-                            int8_t                    cyclic,
-                            uint8_t                   time_bits,
-                            uint8_t                   start_pos
-)
+struct LED_Color_Fader *LED_Color_Fader_Init(
+  uint8_t                   num_pks,                // Number of HSL colors
+  hsl_t                     **pks,                  // Array of HSL colors
+  uint8_t                   num_chain,              // Number of chained pixels
+  uint8_t                   chain_hue_diff,         // Hue difference between chained pixels
+  int8_t                    cyclic,                 // Fade N cycles
+  uint8_t                   time_resolution_bits,   // Time resolution in bit
+  uint8_t                   start_pos,              // Pixel index to start
+  LED_COLOR_BLEND_MODE_t    blend_mode              // Pixel blend setting.
+);
+
+void LED_Color_Fader_Delete(struct LED_Color_Fader *self);
 
 
 /** Begin of:

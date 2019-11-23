@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "ArduinoSIM.h"
 #include "LED.h"
 
@@ -12,6 +13,8 @@ uint8_t global_h = 21, global_m = 37, global_s = 45;
 const uint8_t micPin = 13;
 
 int main () {
+  srand(time(0));
+
   uint8_t ra[18] = {0};
   uint8_t ta[18] = {0};
 

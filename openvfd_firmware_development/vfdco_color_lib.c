@@ -18,10 +18,14 @@
   ******************************************************************************
  **/
 
+#include <time.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "vfdco_color_lib.h"
 
 // Fast hsl2rgb algorithm: https://stackoverflow.com/questions/13105185/fast-algorithm-for-rgb-hsl-conversion
-static uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
+/*static */uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
     uint8_t  r, g, b, lo, c, x, m;
     uint16_t h1, l1, H;
     l1 = l + 1;
@@ -62,36 +66,13 @@ static float box_muller_transform(float mu, float sigma) {
     } while(r >= 1.0f);
     r = sqrt(-2.0f * logf(r) / r);
     t = w2 * r;
-    return(u + w1 * r * d);
+    return(mu + w1 * r * sigma);
   } else {
     x = t;
     t = .0f;
-    return (u + x * d);
+    return (mu + x * sigma);
   }
 }
-
-/** Begin of:
-  * @toc SECTION_DRIVER_INITIALIZE
-  * @brief  Driver initialize function
-  * @random This is sooo useless lol but u know just to be formal
- **/
-void VFDCO_LED_Driver_Init(   uint8_t num_pixel,        // Number of physical LEDs (pixels)
-                              uint8_t bytes_per_pixel,  // Number of bytes per pixel
-                              uint8_t *rgb              // Reference to allocated rgb_arr
-) {
-  num_rgb = num_pixel;
-  num_bpp = bytes_per_pixel;
-  num_bytes = num_pixel * bytes_per_pixel;
-  rgb_arr = rgb;
-}
-
-/** Begin of:
-  * @toc SECTION_LED_COLOR_MODE
- **/
-
-/** Begin of:
-  * @toc SECTION_COLOR_DEFINITIONS
- **/
 
 /** Begin of:
   * @toc SUBSECTION_HSL
@@ -117,130 +98,201 @@ hsl_t *HSL_Init_Range(uint8_t h, uint8_t s, uint8_t l, float dh, float ds, float
 /** Begin of:
   * @toc SUBSECTION_COLOR_FADER
  **/
+static inline void _blend_normal(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[num_bpp * i    ] = bg;
+  rgb_arr[num_bpp * i + 1] = br;
+  rgb_arr[num_bpp * i + 2] = bb;
+}
+static inline void _blend_mup(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[num_bpp * i    ] = ((uint16_t)bg * rgb_arr[num_bpp * i    ]) >> 8;
+  rgb_arr[num_bpp * i + 1] = ((uint16_t)br * rgb_arr[num_bpp * i + 1]) >> 8;
+  rgb_arr[num_bpp * i + 2] = ((uint16_t)bb * rgb_arr[num_bpp * i + 2]) >> 8;
+}
+static inline void _blend_scr(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[num_bpp * i    ] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i    ])) >> 8;
+  rgb_arr[num_bpp * i + 1] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 1])) >> 8;
+  rgb_arr[num_bpp * i + 2] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 2])) >> 8;
+}
+static inline void _blend_overlay(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[num_bpp * i    ] = rgb_arr[num_bpp * i    ] < 128 ?
+                                (2 * (uint16_t)bg * rgb_arr[num_bpp * i    ]) >> 8 :
+                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i    ])) >> 8;
+  rgb_arr[num_bpp * i + 1] = rgb_arr[num_bpp * i + 1] < 128 ?
+                                (2 * (uint16_t)bg * rgb_arr[num_bpp * i + 1]) >> 8 :
+                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 1])) >> 8;
+  rgb_arr[num_bpp * i + 2] = rgb_arr[num_bpp * i + 2] < 128 ?
+                                (2 * (uint16_t)bg * rgb_arr[num_bpp * i + 2]) >> 8 :
+                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 2])) >> 8;
+}
+static inline void _blend_s_li(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+
+}
+
 /**
  * @brief  Implementation of methods LED_Color_Fader::NextColorLin/Spline for single and multiple peaks
 **/
-static inline void _LED_Color_Fader_NextColorLinSingle(const struct LED_Color_Fader *self) {
+static inline void _LED_Color_Fader_NextColorLinSingle(struct LED_Color_Fader *self) {
   hsl_t *pk1 = self->pks[0]; // Just get the one pk
 
   uint8_t end_pos = self->start_pos + self->num_chain;
 
   // Write to next color
-  for(uint8_t i = start_pos; i < end_pos; ++i) {
+  uint8_t i_h;
+  for(uint8_t i = self->start_pos; i < end_pos; ++i) {
     i_h = i * self->chain_huediff;
-    uint32_t target_color = _led_color_hsl2rgb(i_h, pk1->s, pk1->l);
+    uint32_t target_color = _led_color_hsl2rgb(pk1->h + i_h, pk1->s, pk1->l);
 
     #ifdef HARDWARE_OPTION_SK6812 // Optimize for speed
-    // Eventually we need to replace rgb_arr[G] <-> rgb_arr[R]
-    *(((uint32_t *)rgb_arr) + i) = target_color; // Evil, filthy type punning
+    *(((uint32_t *)rgb_arr) + i) = (target_color << 8); // Evil, filthy type punning
     #else
     uint8_t color_pos = i * num_bpp; // Insert GRB values
     rgb_arr[color_pos] =     (uint8_t)((target_color >> 16) & 0xFF);     // G
     rgb_arr[color_pos + 1] = (uint8_t)((target_color >> 8) & 0xFF);      // R
     rgb_arr[color_pos + 2] = (uint8_t)(target_color & 0xFF);             // B
     #endif
-
   }
 
   vfdco_clr_render();
 
   // Obtain next hue value, forever and overwrite starting point color
-  ++self->pks[0]->h;
+  ++(self->pks[0]->h);
 }
 
-static inline void _LED_Color_Fader_NextColorLin(const struct LED_Color_Fader *self) {
-  uint8_t time_bits = self->time_bits;
-  uint8_t time_period = 1 << time_bits;
-  uint8_t accidx = (uint8_t)(self->fade_pos >> time_bits),
-          accT = (uint8_t)(self->fade_pos & (time_period - 1));
+static inline void _LED_Color_Fader_NextColorLin(struct LED_Color_Fader *self) {
+  uint8_t time_bits = self->time_bits;      // Overhead reduce
+  uint8_t time_period = 1 << time_bits;     // Time period, resuolution by: 2^(time_bits)
 
-  // Check if fade is in range and not fading in or out
-  uint8_t max_time = time_period * num_pks;
-  uint8_t isFadingIn = self->fade_pos < time_period; // If smaller than one time period, then it's fading in!
-  uint8_t isInRange = self->fade_pos < (max_time + time_period); // If max_time + 1 period, then its still in range
-  hsl_t *pk1 = isInRange ? self->pks[accidxH + 1] : (isFadingIn ? self->pks[0] : self->pks[num_pks - 1]);
-  hsl_t *pk2 = isInRange ? self->pks[accidx] : NULL;
-
-  uint8_t end_pos = self->start_pos + self->num_chain;
-  if(end_pos > num_rgb) end_pos = num_rgb;
-
-  // Cheap ass linear interpolation
   uint8_t i_h, i_s, i_l;
-  if(isInRange) {
-    // linear fade from pk to pk for H, S and L
-    i_h = (((int32_t)((int16_t)(pk1->h) - (int16_t)(pk2->h)) * (int32_t)accT) >> time_bits) + pk1->h;
-    i_s = (((int32_t)((int16_t)(pk1->s) - (int16_t)(pk2->s)) * (int32_t)accT) >> time_bits) + pk1->s;
-    i_l = (((int32_t)((int16_t)(pk1->l) - (int16_t)(pk2->l)) * (int32_t)accT) >> time_bits) + pk1->l;
-  } else if(isFadingIn) {
-    // linear from 0(L) to 1st pk if inside fade
-    i_h = pk1->h;
-    i_s = pk1->s;
-    i_l = (((int32_t)pk1->l * (int32_t)accT) >> time_bits) + pk1->l;
-  } else {
-    // linear from last pk to 0(L) if falling out of fade
-    i_h = pk1->h;
-    i_s = pk1->s;
-    i_l = (int32_t)pk1->l - (((int32_t)pk1->l * (int32_t)accT) >> time_bits);
+  // State FSM output
+  if(self->state == LED_COLOR_STATE_FADE_IN) {
+    // Pick up first pix as target
+    hsl_t *target = self->pks[0];
+    // Let the light fade in by increasing lightness linearly until target->l is reached
+    i_h = target->h;
+    i_s = target->s;
+    i_l = ((int32_t)target->l * self->fade_pos) >> time_bits;
+
+    ++self->fade_pos;
+    // State transistion if time_period has elapsed. Next state: Active
+    if(!(self->fade_pos < time_period)) {
+      self->fade_pos = 0;
+      self->state = LED_COLOR_STATE_ACTIVE;
+    }
+  } else if(self->state == LED_COLOR_STATE_FADE_OUT) {
+    // Pick up last pix as current
+    hsl_t *current = self->pks[self->num_pks - 1];
+    // And let the light fade out by decreasing lightness linearly until 0 is reached
+    i_h = current->h;
+    i_s = current->s;
+    i_l = (int32_t)current->l - (((int32_t)current->l * (int32_t)self->fade_pos) >> time_bits);
+
+    ++self->fade_pos;
+    // State transistion if time_period has elapsed. Next state: We're done!
+    if(!(self->fade_pos < time_period)) {
+      self->fade_pos = 0;
+      self->state = LED_COLOR_STATE_COMPLETE;
+    }
+  } else if(self->state == LED_COLOR_STATE_ACTIVE) {
+    // Pick up current and target pix depending on position and
+    uint16_t t = self->fade_pos & (time_period - 1);      // Current time = fade_pos % time_period, always a value between [0 ... time_period - 1]
+    uint8_t access_index = self->fade_pos >> time_bits;   // Current access index = fade_pos / time_period, always between [0 ... num_pks - 1]
+    hsl_t *current  = self->pks[access_index];
+    hsl_t *target   = self->pks[access_index + 1];
+    // Linearly transition HSL from curr -> target
+    i_h = (((target->h - (int16_t)current->h) * (int32_t)t) >> time_bits) + current->h;
+    i_s = (((target->s - (int16_t)current->s) * (int32_t)t) >> time_bits) + current->s;
+    i_l = (((target->l - (int16_t)current->l) * (int32_t)t) >> time_bits) + current->l;
+
+    ++self->fade_pos;
+    // State transistion if time_period has elapsed.
+    // Next state: Cyclic rollover if --cyclic is >= 0, else fade out
+    if(!(self->fade_pos < time_period * (self->num_pks - 1))) {
+      self->fade_pos = 0;
+      if(--self->cyclic >= 0)   self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
+      else                      self->state = LED_COLOR_STATE_FADE_OUT;
+    }
+  } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
+    // Special case where we need to fade from last pix to first pix
+    hsl_t *current = self->pks[self->num_pks - 1];
+    hsl_t *target = self->pks[0];
+    // Linearly transition HSL from curr -> target
+    i_h = (((target->h - (int16_t)current->h) * (int32_t)self->fade_pos) >> time_bits) + current->h;
+    i_s = (((target->s - (int16_t)current->s) * (int32_t)self->fade_pos) >> time_bits) + current->s;
+    i_l = (((target->l - (int16_t)current->l) * (int32_t)self->fade_pos) >> time_bits) + current->l;
+
+    ++self->fade_pos;
+    // State transistion if time_period has elapsed. Next state: Active
+    if(!(self->fade_pos < time_period)) {
+      self->fade_pos = 0;
+      self->state = LED_COLOR_STATE_ACTIVE;
+    }
   }
 
   // Write to array
+  uint8_t end_pos = self->start_pos + self->num_chain;
+  if(end_pos > num_rgb) end_pos = num_rgb;
+
   for(uint8_t i = self->start_pos; i < end_pos; ++i) {
-    // i-th hue difference (delta), intended angle overflow
-    i_h += i * self->chain_huediff;
-    // Get target RGB
-    uint32_t target_color = _led_color_hsl2rgb(i_h, i_s, i_l);
+    i_h += i * self->chain_huediff;                             // i-th hue difference (delta), intended angle overflow
+    uint32_t target_color = _led_color_hsl2rgb(i_h, i_s, i_l);  // Get target RGB
 
     #ifdef HARDWARE_OPTION_SK6812 // Optimize for speed
-    *(((uint32_t *)rgb_arr) + i) = target_color; // Evil, filthy type punning
+    // bad habit: evil, filthy but fast type punning. please check memory alignment if it doesn't work
+    // *(((uint32_t *)rgb_arr) + i) = target_color;
+    self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+
     #else
-    uint8_t color_pos = i * num_bpp; // Insert GRB values
+    /*uint8_t color_pos = i * num_bpp; // Insert GRB values
     rgb_arr[color_pos] =     (uint8_t)((target_color >> 16) & 0xFF);     // G
     rgb_arr[color_pos + 1] = (uint8_t)((target_color >> 8) & 0xFF);      // R
-    rgb_arr[color_pos + 2] = (uint8_t)(target_color & 0xFF);             // B
+    rgb_arr[color_pos + 2] = (uint8_t)(target_color & 0xFF);             // B*/
+    self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
     #endif
   }
+  // Write to LEDs, physically
   vfdco_clr_render();
-
-  // Go to next color
-  ++self->fade_pos;
-  // If we've been through one cycle
-  if(self->fade_pos == max_time + time_period) {
-    if(--self->cyclic >= 0) self->fade_pos = time_period;  // start over again
-    else                    self->fade_pos++; // go one over
-  }
-  // If we've made it
-  if(self->fade_pos == max_time + (time_period << 1)) {
-    // Call destructor, we're done
-  }
-}
-
-static inline void _LED_Color_Fader_NextColorSpline(const struct LED_Color_Fader *self) {
-
 }
 
 /**
  * @brief  Constructor of LED_Color_Fader class
 **/
-void LED_Color_Fader_Init(  struct LED_Color_Fader    *self,
-                            uint8_t                   num_pks,
-                            hsl_t                     **pks,
-                            uint8_t                   num_chain,
-                            uint8_t                   chain_huediff,
-                            int8_t                    cyclic,
-                            uint8_t                   time_bits,
-                            uint8_t                   start_pos
+struct LED_Color_Fader *LED_Color_Fader_Init(
+  uint8_t                   num_pks,
+  hsl_t                     **pks,
+  uint8_t                   num_chain,
+  uint8_t                   chain_hue_diff,
+  int8_t                    cyclic,
+  uint8_t                   time_resolution_bits,
+  uint8_t                   start_pos,
+  LED_COLOR_BLEND_MODE_t    blend_mode
 ) {
-  self->num_pks = num_pks;
-  self->pks = pks;
-  self->num_chain = num_chain;
-  self->chain_huediff = chain_huediff;
-  self->cyclic = cyclic;
-  self->fade_pos = fade_pos;
+  struct LED_Color_Fader *f = (struct LED_Color_Fader *)malloc(sizeof(struct LED_Color_Fader));
 
-  self->NextColorLin = (num_pks > 1) ? _LED_Color_Fader_NextColorLin : _LED_Color_Fader_NextColorLinSingle;
-  self->NextColorSpline = _LED_Color_Fader_NextColorSpline;
+  f->num_pks = num_pks;
+  f->pks = pks;
+  f->num_chain = num_chain;
+  f->chain_huediff = chain_hue_diff;
+  f->cyclic = cyclic;
+  f->time_bits = time_resolution_bits;
+  f->start_pos = start_pos;
 
-  self->fade_pos = 0;
+  f->Next = (num_pks > 1) ? _LED_Color_Fader_NextColorLin : _LED_Color_Fader_NextColorLinSingle;
+  switch(blend_mode) {
+    case LED_COLOR_BLEND_MODE_NORMAL:     f->_blend = _blend_normal;   break;
+    case LED_COLOR_BLEND_MODE_MULTIPLY:   f->_blend = _blend_mup;      break;
+    case LED_COLOR_BLEND_MODE_SCREEN:     f->_blend = _blend_scr;      break;
+    case LED_COLOR_BLEND_MODE_OVERLAY:    f->_blend = _blend_overlay;  break;
+    case LED_COLOR_BLEND_MODE_SOFT_LIGHT: f->_blend = _blend_s_li;     break;
+    default:                              f->_blend = _blend_normal;   break;
+  }
+
+  f->fade_pos = 0;
+  f->state = LED_COLOR_STATE_FADE_IN;
+  return f;
+}
+
+void LED_Color_Fader_Delete(struct LED_Color_Fader *self) {
+  free(self);
 }
 
 /**
