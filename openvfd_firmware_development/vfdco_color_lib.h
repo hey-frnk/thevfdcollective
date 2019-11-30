@@ -198,8 +198,8 @@ struct LED_Color_Fader {
   uint8_t       num_pks;        // Number of peaks
   hsl_t         **pks;        // Peaks array
   // Option: Chaining
-  uint8_t       num_chain,      // Number of chained pixels. 0 = singular
-                chain_huediff;  // Constant difference of hue between chained pixels
+  uint8_t       num_chain;      // Number of chained pixels. 0 = singular
+  int8_t        chain_huediff;  // Constant difference of hue between chained pixels
   // Option: Time
   int8_t        repeat;         // If == k: pk[n] -> pk[0] for k cycles, else fade in & out once
   // Option: StartPos
@@ -220,7 +220,7 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   uint8_t                   num_pks,                // Number of HSL colors
   hsl_t                     **pks,                  // Array of HSL colors
   uint8_t                   num_chain,              // Number of chained pixels
-  uint8_t                   chain_hue_diff          // Hue difference between chained pixels
+  int8_t                    chain_hue_diff          // Hue difference between chained pixels
 );
 
 /** Begin of:
@@ -260,17 +260,25 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
  * @toc SUBSECTION_COLOR_CHASER
 **/
 enum {
-  LED_COLOR_CHASER_C_PRESERVING_ON,     // Only active pixel will be affected by LED chase
-  LED_COLOR_CHASER_C_PRESERVING_OFF     // Active pixel and past pixels will be affected by LED chase
+  LED_COLOR_CHASER_PRESERVING             = 0,       // Only one pixel is on during the chase
+  LED_COLOR_CHASER_PRESERVING_DECAY_FAST  = 1,       // Preserve active LED and fade out past LEDs quickly
+  LED_COLOR_CHASER_PRESERVING_DECAY_SLOW  = 2,       // Preserve active LED and fade out past LEDs slowly
+  LED_COLOR_CHASER_NON_PRESERVING         = 3        // The one active pixel and its past pixels are on during the chase
 };
+
 enum {
-  LED_COLOR_CHASER_MODE_LINEAR        = 0,        // Chase in a linear way
-  LED_COLOR_CHASER_MODE_ACCELERATING  = 1,        // Become faster with every chasing step (exponential)
-  LED_COLOR_CHASER_MODE_DECELERATING  = 2,        // Become slower with every chasing step (exponential)
-  LED_COLOR_CHASER_MODE_SPLITLIN      = 4,       // Split in the middle and chase in both directions
-  LED_COLOR_CHASER_MODE_SPLITACC      = 5,       // -||- accelerating
-  LED_COLOR_CHASER_MODE_SPLITDEC      = 6        // -||- decelerating
-};
+  LED_COLOR_CHASER_MODE_LR_LINEAR         = 0,       // Chase in a linear way (from left to right)
+  LED_COLOR_CHASER_MODE_LR_ACCELERATING   = 1,       // Become faster with every chasing step (exponential)
+  LED_COLOR_CHASER_MODE_LR_DECELERATING   = 2,       // Become slower with every chasing step (exponential)
+
+  LED_COLOR_CHASER_MODE_RL_LINEAR         = 8,       // Chase in a linear way (from right to left)
+  LED_COLOR_CHASER_MODE_RL_ACCELERATING   = 9,       // Become faster with every chasing step (exponential)
+  LED_COLOR_CHASER_MODE_RL_DECELERATING   = 10,      // Become slower with every chasing step (exponential)
+
+  LED_COLOR_CHASER_MODE_SPLITLIN          = 4,       // Split in the middle and chase in both directions
+  LED_COLOR_CHASER_MODE_SPLITACC          = 5,       // -||- accelerating
+  LED_COLOR_CHASER_MODE_SPLITDEC          = 6        // -||- decelerating
+}; // Trust me this sort of encoding actually makes sense
 
 struct LED_Color_Chaser {
   // Functions

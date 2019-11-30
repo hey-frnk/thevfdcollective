@@ -256,7 +256,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
 
   // Write to next color
   for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
-    uint8_t i_h = i * self->chain_huediff;
+    int16_t i_h = i * self->chain_huediff;
     uint32_t target_color = _led_color_hsl2rgb(target->h + i_h, i_s, i_l);
     self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
   }
@@ -344,7 +344,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
   if(end_pos > num_rgb) end_pos = num_rgb;
 
   for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
-    i_h += i * self->chain_huediff;                             // i-th hue difference (delta), intended angle overflow
+    i_h += i * (int16_t)self->chain_huediff;                    // i-th hue difference (delta), intended angle overflow
     uint32_t target_color = _led_color_hsl2rgb(i_h, i_s, i_l);  // Get target RGB
     self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
   }
@@ -370,7 +370,7 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   uint8_t                   num_pks,
   hsl_t                     **pks,
   uint8_t                   num_chain,
-  uint8_t                   chain_hue_diff
+  int8_t                    chain_hue_diff
 ) {
   struct LED_Color_Fader *f = (struct LED_Color_Fader *)malloc(sizeof(struct LED_Color_Fader));
   LED_Color_Init(&f->super);
@@ -487,6 +487,10 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
 static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_self) {
   struct LED_Color_Chaser *self = (struct LED_Color_Chaser *)unsafe_self;
 
+  uint_fast16_t chase_duration = self->chase_duration;
+  uint_fast16_t chase_cpreserving = self->chase_cpreserving;
+
+
   if(self->state == LED_COLOR_STATE_ACTIVE) {
     if(Time_Event_Update(&unsafe_self->timer)) ++self->chase_pos;
 
@@ -508,43 +512,37 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
       }
     }
 
-    // Write to array
-    if(self->chase_cpreserving == LED_COLOR_CHASER_C_PRESERVING_ON) {
-      // In range check
-      if(self->start_pos + self->pk_state < num_rgb) {
-        uint32_t target_right = _led_color_hsl2rgb(
-          self->pk->h + self->pk_state * self->pk_diff->h,
-          self->pk->s + self->pk_state * self->pk_diff->s,
-          self->pk->l + self->pk_state * self->pk_diff->l);  // Get target RGB
-        self->_blend(self->start_pos + self->pk_state, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
-      }
-      // In range check
-      if((self->chase_mode > LED_COLOR_CHASER_MODE_DECELERATING) && (self->pk_state > 0) && (self->start_pos - self->pk_state >= 0)) {
-        uint32_t target_left = _led_color_hsl2rgb(
-          self->pk->h - self->pk_state * self->pk_diff->h,
-          self->pk->s - self->pk_state * self->pk_diff->s,
-          self->pk->l - self->pk_state * self->pk_diff->l);  // Get target RGB
-        self->_blend(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
-      }
-    } else {
-      for(uint8_t i = 0; i < self->pk_state + 1; ++i) {
-        // Additional oor change
-        if(self->start_pos + self->pk_state < num_rgb) {
-          uint32_t target_right = _led_color_hsl2rgb(
-            self->pk->h + i * self->pk_diff->h,
-            self->pk->s + i * self->pk_diff->s,
-            self->pk->l + i * self->pk_diff->l);  // Get target RGB
-          self->_blend(self->start_pos + i, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
-        }
-        if((self->chase_mode > LED_COLOR_CHASER_MODE_DECELERATING) && (self->pk_state > 0) && (self->start_pos - self->pk_state >= 0)) {
-          uint32_t target_left = _led_color_hsl2rgb(
-            self->pk->h - i * self->pk_diff->h,
-            self->pk->s - i * self->pk_diff->s,
-            self->pk->l - i * self->pk_diff->l);  // Get target RGB
-          self->_blend(self->start_pos - i, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
-        }
+    // pk_state +1 determines the amount of single sided LEDs to be written
+    for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
 
+      // Right sided write. Only write if pixel is in range and LR or Split is active
+      if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb)) {
+        uint8_t _tmp_lightness = self->pk->l; //+ (float)i * self->pk_diff->l;
+        _tmp_lightness =      _tmp_lightness
+                              - ((int32_t)_tmp_lightness * (chase_duration * (self->pk_state - i) + (int32_t)self->chase_pos))
+                              / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
+
+        uint32_t target_right = _led_color_hsl2rgb(
+          self->pk->h + i * self->pk_diff->h,
+          self->pk->s + i * self->pk_diff->s,
+          _tmp_lightness);  // Get target RGB
+          self->_blend(self->start_pos + i, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
       }
+
+      // Left sided write
+      if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) /*&& (self->pk_state > 0)*/ && (self->start_pos - self->pk_state >= 0)) {
+        uint8_t _tmp_lightness = self->pk->l; //- (float)i * self->pk_diff->l;
+        _tmp_lightness =      _tmp_lightness
+                              - ((int32_t)_tmp_lightness * (chase_duration * (self->pk_state - i) + (int32_t)self->chase_pos))
+                              / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
+
+        uint32_t target_left = _led_color_hsl2rgb(
+          self->pk->h - i * self->pk_diff->h,
+          self->pk->s - i * self->pk_diff->s,
+          _tmp_lightness);  // Get target RGB
+          self->_blend(self->start_pos - i, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
+      }
+
     }
 
     // Write to LEDs, physically

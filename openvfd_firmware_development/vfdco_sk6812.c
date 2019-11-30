@@ -48,7 +48,7 @@ void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 
 void vfdco_clr_render() {
   // printf("SK6812 tester: Render function started with %hhu pixels, %hhu bpp, %hhu bytes.\n", num_rgb, num_bpp, num_bytes);
-  printf("rgbw_arr: ");
+  printf("                                   rgbw_arr: ");
   for (uint8_t i = 0; i < num_rgb; ++i) {
     printf("(%03hhu, %03hhu, %03hhu, %03hhu) ", rgb_arr[4*i], rgb_arr[4*i + 1], rgb_arr[4*i + 2], rgb_arr[4*i + 3]);
   }

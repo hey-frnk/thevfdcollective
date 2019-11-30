@@ -26,6 +26,5 @@ void Time_Event_Reset(time_event_t *input) {
 
 unsigned char Time_Event_Update(time_event_t *input) {
   // lel this is always true in simulation
-  printf("tim_called ");
   return 1;
 }

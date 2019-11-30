@@ -17,9 +17,9 @@ int main(void) {
 
   vfdco_clr_init(6);
 
-  struct LED_Color *f1 = (struct LED_Color *)LED_Color_Fader_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 2, cArr, 6, 0);
+  struct LED_Color *f1 = // (struct LED_Color *)LED_Color_Fader_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 2, cArr, 6, 0);
                          // (struct LED_Color *)LED_Color_Flasher_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 3, c1, 31, 3);
-                         // (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 2, 0, 4, c1, &d, 128, LED_COLOR_CHASER_C_PRESERVING_ON, LED_COLOR_CHASER_MODE_SPLITACC);
+                         (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 2, 0, 4, c1, &d, 38, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
 
   for(;;) {
     int q;
