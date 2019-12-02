@@ -17,11 +17,28 @@ int main(void) {
 
   vfdco_clr_init(6);
 
-  struct LED_Color *f1 = // (struct LED_Color *)LED_Color_Fader_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 2, cArr, 6, 0);
+  // struct LED_Color *f1 = // (struct LED_Color *)LED_Color_Fader_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 2, cArr, 6, 0);
                          // (struct LED_Color *)LED_Color_Flasher_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 3, c1, 31, 3);
-                         (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 2, 0, 4, c1, &d, 38, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
+                         // (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 5, 0, 6, c1, &d, 38, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_LINEAR);
 
-  for(;;) {
+  struct LED_Color *tester[24] = {NULL};
+  for(uint8_t i = 0; i < 4; ++i) {
+    tester[6 * i] =     (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 5, 0, 6, c1, &d, 30, i, LED_COLOR_CHASER_MODE_RL_LINEAR);
+    tester[6 * i + 1] = (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 30, i, LED_COLOR_CHASER_MODE_LR_LINEAR);
+    tester[6 * i + 2] = (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 2, 0, 3, c1, &d, 30, i, LED_COLOR_CHASER_MODE_SPLITLIN);
+    tester[6 * i + 3] = (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 5, 0, 6, c1, &d, 30, i, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+    tester[6 * i + 4] = (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 30, i, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+    tester[6 * i + 5] = (struct LED_Color *)LED_Color_Chaser_Init(LED_COLOR_BLEND_MODE_NORMAL, 3, 0, 3, c1, &d, 30, i, LED_COLOR_CHASER_MODE_SPLITACC);
+  }
+
+  for(uint8_t i = 0; i < 24; ++i) {
+    printf("Testing Unit: %hhu %p\n", i, tester[i]);
+    while(tester[i]->Next(tester[i]));
+    tester[i]->Delete(tester[i]);
+    vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+  }
+
+  /*for(;;) {
     int q;
     while((q = getchar()) != '\n' && q != EOF);
 
@@ -48,7 +65,7 @@ int main(void) {
       }
       default: break;
     }
-  }
+  }*/
 
   HSL_Delete(c1);
   HSL_Delete(c2);

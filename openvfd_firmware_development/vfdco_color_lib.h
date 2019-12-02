@@ -260,10 +260,10 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
  * @toc SUBSECTION_COLOR_CHASER
 **/
 enum {
-  LED_COLOR_CHASER_PRESERVING             = 0,       // Only one pixel is on during the chase
+  LED_COLOR_CHASER_NON_PRESERVING         = 0,       // Only one pixel is on during the chase
   LED_COLOR_CHASER_PRESERVING_DECAY_FAST  = 1,       // Preserve active LED and fade out past LEDs quickly
   LED_COLOR_CHASER_PRESERVING_DECAY_SLOW  = 2,       // Preserve active LED and fade out past LEDs slowly
-  LED_COLOR_CHASER_NON_PRESERVING         = 3        // The one active pixel and its past pixels are on during the chase
+  LED_COLOR_CHASER_PRESERVING             = 3        // The one active pixel and its past pixels are on during the chase
 };
 
 enum {

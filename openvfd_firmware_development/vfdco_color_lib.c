@@ -512,37 +512,45 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
       }
     }
 
-    // pk_state +1 determines the amount of single sided LEDs to be written
-    for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
-
+    if(chase_cpreserving) {
+      // pk_state +1 determines the amount of single sided LEDs to be written
+      for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
+        // Right sided write. Only write if pixel is in range and LR or Split is active
+        if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb)) {
+          uint8_t lightness = self->pk->l + i * self->pk_diff->l;
+          if(self->pk_state != i || chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
+            int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
+                                / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
+            lightness -= (attenuation > lightness) ? lightness : attenuation;
+          }
+          uint32_t target_right = _led_color_hsl2rgb(self->pk->h + i * self->pk_diff->h, self->pk->s + i * self->pk_diff->s, lightness);
+          self->_blend(self->start_pos + i, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
+        }
+        // Left sided write
+        if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) /*&& (self->pk_state > 0)*/ && (self->start_pos - i >= 0)) {
+          uint8_t lightness = self->pk->l - i * self->pk_diff->l;
+          if(self->pk_state != i || chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
+            int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
+                                / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
+            lightness -= (attenuation > lightness) ? lightness : attenuation;
+          }
+          uint32_t target_left = _led_color_hsl2rgb(self->pk->h - i * self->pk_diff->h, self->pk->s - i * self->pk_diff->s, lightness);
+          self->_blend(self->start_pos - i, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
+        }
+      }
+    } else {
       // Right sided write. Only write if pixel is in range and LR or Split is active
       if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb)) {
-        uint8_t _tmp_lightness = self->pk->l; //+ (float)i * self->pk_diff->l;
-        _tmp_lightness =      _tmp_lightness
-                              - ((int32_t)_tmp_lightness * (chase_duration * (self->pk_state - i) + (int32_t)self->chase_pos))
-                              / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
-
-        uint32_t target_right = _led_color_hsl2rgb(
-          self->pk->h + i * self->pk_diff->h,
-          self->pk->s + i * self->pk_diff->s,
-          _tmp_lightness);  // Get target RGB
-          self->_blend(self->start_pos + i, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
+        uint8_t lightness = self->pk->l + self->pk_state * self->pk_diff->l;
+        uint32_t target_right = _led_color_hsl2rgb(self->pk->h + self->pk_state * self->pk_diff->h, self->pk->s + self->pk_state * self->pk_diff->s, lightness);
+        self->_blend(self->start_pos + self->pk_state, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
       }
-
       // Left sided write
-      if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) /*&& (self->pk_state > 0)*/ && (self->start_pos - self->pk_state >= 0)) {
-        uint8_t _tmp_lightness = self->pk->l; //- (float)i * self->pk_diff->l;
-        _tmp_lightness =      _tmp_lightness
-                              - ((int32_t)_tmp_lightness * (chase_duration * (self->pk_state - i) + (int32_t)self->chase_pos))
-                              / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
-
-        uint32_t target_left = _led_color_hsl2rgb(
-          self->pk->h - i * self->pk_diff->h,
-          self->pk->s - i * self->pk_diff->s,
-          _tmp_lightness);  // Get target RGB
-          self->_blend(self->start_pos - i, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
+      if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0)) {
+        uint8_t lightness = self->pk->l - self->pk_state * self->pk_diff->l;
+        uint32_t target_left = _led_color_hsl2rgb(self->pk->h - self->pk_state * self->pk_diff->h, self->pk->s - self->pk_state * self->pk_diff->s, lightness);
+        self->_blend(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
       }
-
     }
 
     // Write to LEDs, physically
