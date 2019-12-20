@@ -23,7 +23,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "vfdco_sk6812.h"
+#include "../../vfdco_sk6812.h"
+#include "../../vfdco_color_lib.h"
+#include "../../vfdco_time.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

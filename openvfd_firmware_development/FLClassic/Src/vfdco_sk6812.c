@@ -5,9 +5,22 @@
  *      Author: HARDWARECOP
  */
 
-#include "vfdco_sk6812.h"
+#include "../../vfdco_sk6812.h"
 #include <stdlib.h>
 #include <string.h>
+#include "stm32f0xx_hal.h"
+
+#define SK6812_PWM_DUTY_HI 38
+#define SK6812_PWM_DUTY_LO 19
+#define RESET_SLOT 82 //41
+#define LED_NUMBER 6
+
+uint8_t  *write_buf;
+
+// Write buffer with two
+uint16_t write_buf_length, write_buf_pos;
+
+extern TIM_HandleTypeDef htim2;
 
 void vfdco_clr_init(uint8_t num_pixels) {
 	num_rgb = num_pixels;									// Number of physical LEDs
@@ -85,4 +98,3 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) {
 		// Oops, you should probably never get to this point
 	}
 }
-

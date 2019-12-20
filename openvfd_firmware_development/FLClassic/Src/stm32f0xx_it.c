@@ -23,7 +23,7 @@
 #include "stm32f0xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "vfdco_sk6812.h"
+// #include "vfdco_sk6812.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
