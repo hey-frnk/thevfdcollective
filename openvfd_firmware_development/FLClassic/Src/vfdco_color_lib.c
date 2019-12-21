@@ -23,7 +23,11 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "../../vfdco_color_lib.h"
+#ifndef DEBUG
+  #include "../../vfdco_color_lib.h"
+#else
+  #include "vfdco_color_lib.h"
+#endif
 
 /** Begin of:
   * @toc SECTION_SUPPORTING_FUNCTIONS
@@ -127,6 +131,7 @@ static inline void _blend_normal(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) 
   rgb_arr[num_bpp * i    ] = bg;
   rgb_arr[num_bpp * i + 1] = br;
   rgb_arr[num_bpp * i + 2] = bb;
+	// vfdco_clr_set_RGB(i, br, bg, bb);
 }
 /**
  * @brief  Implementation of blend mode multiply f(a, b) = ab
@@ -200,9 +205,11 @@ static inline void _LED_Color_Delete(struct LED_Color *unsafe_self) {
 /**
  * @brief  Implementation of constructor LED_Color::LED_Color
 **/
-void LED_Color_Init(struct LED_Color *f) {
+void LED_Color_Init(struct LED_Color *f, uint_fast32_t timer1_interval) {
   f->Next = _LED_Color_Next;
   f->Delete = _LED_Color_Delete;
+
+  f->timer = Time_Event_Init(timer1_interval);
 }
 
 /** Begin of:
@@ -218,14 +225,15 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
   uint8_t end_pos = self->start_pos + self->num_chain;
 
   uint_fast16_t time_period = 1 << LED_COLOR_FADER_TIME_BITS;     // Time period, resuolution by: 2^(time_bits)
+  uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
 
-  uint8_t i_s = target->s, i_l;
+  uint8_t i_s = target->s, i_l = 0;
   // State FSM output
   if(self->state == LED_COLOR_STATE_FADE_IN) {
     i_l = ((int32_t)target->l * self->fade_pos) >> LED_COLOR_FADER_TIME_BITS;
 
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->fade_pos;
-    // State transistion if time_period has elapsed. Next state: Active
+    if(render_enable) self->fade_pos += 2;
+    // State tranistion if time_period has elapsed. Next state: Active
     if(!(self->fade_pos < time_period)) {
       self->fade_pos = 0;
       self->state = LED_COLOR_STATE_ACTIVE;
@@ -234,34 +242,42 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
     // Let the light fade out by decreasing lightness linearly until 0 is reached
     i_l = (int32_t)target->l - (((int32_t)target->l * (int32_t)self->fade_pos) >> LED_COLOR_FADER_TIME_BITS);
 
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->fade_pos;
-    // State transistion if time_period has elapsed. Next state: We're done!
+    if(render_enable) self->fade_pos += 2;
+    // State transition if time_period has elapsed. Next state: We're done!
     if(!(self->fade_pos < time_period)) {
       self->fade_pos = 0;
       self->state = LED_COLOR_STATE_COMPLETE;
+      // for(uint8_t i = self->start_pos; i < end_pos; ++i) self->_blend(i, 0, 0, 0); // clr
+      // vfdco_clr_render();
     }
   } else if(self->state == LED_COLOR_STATE_ACTIVE) {
     i_l = target->l;
 
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->fade_pos;
-    // Obtain next hue value, forever and overwrite starting point color
-    ++(self->pks[0]->h);
-    // State transistion if time_period has elapsed.
-    // Next state: Cyclic rollover if --repeat is >= 0, else fade out
-    if(!(self->fade_pos < time_period)) {
-      self->fade_pos = 0;
-      if(--self->repeat < 0)   self->state = LED_COLOR_STATE_FADE_OUT;
+    if(render_enable) {
+    	++self->fade_pos;
+
+    	// Obtain next hue value, forever and overwrite starting point color
+    	++(self->pks[0]->h);
+    	// State transition if time_period has elapsed.
+    	// Next state: Cyclic rollover if --repeat is >= 0, else fade out
+    	if(!(self->fade_pos < time_period)) {
+    		self->fade_pos = 0;
+    		if(--self->repeat < 0)   self->state = LED_COLOR_STATE_FADE_OUT;
+    	}
     }
   }
 
-  // Write to next color
-  for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
-    int16_t i_h = i * self->chain_huediff;
-    uint32_t target_color = _led_color_hsl2rgb(target->h + i_h, i_s, i_l);
-    self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+  if(render_enable) {
+  	// Write to next color
+  	for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
+  		int16_t i_h = i * self->chain_huediff;
+  		uint32_t target_color = _led_color_hsl2rgb(target->h + i_h, i_s, i_l);
+  		self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+  	}
+  	vfdco_clr_render();
   }
 
-  vfdco_clr_render();
+
   return self->state;
 }
 
@@ -273,6 +289,8 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
   uint_fast8_t time_bits = LED_COLOR_FADER_TIME_BITS;      // Overhead reduce
   uint_fast16_t time_period = 1 << time_bits;     // Time period, resuolution by: 2^(time_bits)
 
+  uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
+
   uint8_t i_h, i_s, i_l;
   // State FSM output
   if(self->state == LED_COLOR_STATE_FADE_IN) {
@@ -283,7 +301,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
     i_s = target->s;
     i_l = ((int_fast32_t)target->l * self->fade_pos) >> time_bits;
 
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->fade_pos;
+    if(render_enable) self->fade_pos += 2;
     // State transistion if time_period has elapsed. Next state: Active
     if(!(self->fade_pos < time_period)) {
       self->fade_pos = 0;
@@ -297,11 +315,16 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
     i_s = current->s;
     i_l = (int32_t)current->l - (((int32_t)current->l * (int32_t)self->fade_pos) >> time_bits);
 
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->fade_pos;
+    if(render_enable) self->fade_pos += 2;
     // State transistion if time_period has elapsed. Next state: We're done!
     if(!(self->fade_pos < time_period)) {
       self->fade_pos = 0;
       self->state = LED_COLOR_STATE_COMPLETE;
+
+      uint_fast8_t end_pos = self->start_pos + self->num_chain;
+      if(end_pos > num_rgb) end_pos = num_rgb;
+      for(uint8_t i = self->start_pos; i < end_pos; ++i) self->_blend(i, 0, 0, 0); // clr
+      vfdco_clr_render();
     }
   } else if(self->state == LED_COLOR_STATE_ACTIVE) {
     // Pick up current and target pix depending on position and
@@ -314,7 +337,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
     i_s = (((target->s - (int_fast16_t)current->s) * (int_fast32_t)t) >> time_bits) + current->s;
     i_l = (((target->l - (int_fast16_t)current->l) * (int_fast32_t)t) >> time_bits) + current->l;
 
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->fade_pos;
+    if(render_enable) ++self->fade_pos;
     // State transistion if time_period has elapsed.
     // Next state: Cyclic rollover if --repeat is >= 0, else fade out
     if(!(self->fade_pos < time_period * (self->num_pks - 1))) {
@@ -331,7 +354,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
     i_s = (((target->s - (int_fast16_t)current->s) * (int_fast32_t)self->fade_pos) >> time_bits) + current->s;
     i_l = (((target->l - (int_fast16_t)current->l) * (int_fast32_t)self->fade_pos) >> time_bits) + current->l;
 
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->fade_pos;
+    if(render_enable) ++self->fade_pos;
     // State transistion if time_period has elapsed. Next state: Active
     if(!(self->fade_pos < time_period)) {
       self->fade_pos = 0;
@@ -339,17 +362,19 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
     }
   }
 
-  // Write to array
-  uint_fast8_t end_pos = self->start_pos + self->num_chain;
-  if(end_pos > num_rgb) end_pos = num_rgb;
+  if(render_enable) {
+  	// Write to array
+  	uint_fast8_t end_pos = self->start_pos + self->num_chain;
+  	if(end_pos > num_rgb) end_pos = num_rgb;
 
-  for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
-    i_h += i * (int16_t)self->chain_huediff;                    // i-th hue difference (delta), intended angle overflow
-    uint32_t target_color = _led_color_hsl2rgb(i_h, i_s, i_l);  // Get target RGB
-    self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+  	for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
+  		i_h += i * (int16_t)self->chain_huediff;                    // i-th hue difference (delta), intended angle overflow
+  		uint32_t target_color = _led_color_hsl2rgb(i_h, i_s, i_l);  // Get target RGB
+  		self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+  	}
+  	// Write to LEDs, physically
+  	vfdco_clr_render();
   }
-  // Write to LEDs, physically
-  vfdco_clr_render();
   return self->state;
 }
 
@@ -364,6 +389,7 @@ void _LED_Color_Fader_Delete(struct LED_Color *unsafe_self) {
  * @brief  Implementation of constructor LED_Color_Fader::LED_Color_Fader
 **/
 struct LED_Color_Fader *LED_Color_Fader_Init(
+  uint_fast32_t             timer1_interval,
   LED_COLOR_BLEND_MODE_t    blend_mode,
   uint8_t                   start_pos,
   int8_t                    repeat,
@@ -373,7 +399,7 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   int8_t                    chain_hue_diff
 ) {
   struct LED_Color_Fader *f = (struct LED_Color_Fader *)malloc(sizeof(struct LED_Color_Fader));
-  LED_Color_Init(&f->super);
+  LED_Color_Init(&f->super, timer1_interval);
 
   // LED Fader Attributes
   f->start_pos = start_pos;
@@ -410,15 +436,20 @@ static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe
   struct LED_Color_Flasher *self = (struct LED_Color_Flasher *)unsafe_self;
 
   if(self->state == LED_COLOR_STATE_ACTIVE) {
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->flash_pos;
+    if(Time_Event_Update(&unsafe_self->timer)) {
+    	++self->flash_pos;
 
-    uint32_t target_color = _led_color_hsl2rgb(self->pk->h, self->pk->s, self->pk->l);  // Get target RGB
-    self->_blend(self->start_pos, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+    	uint32_t target_color = _led_color_hsl2rgb(self->pk->h, self->pk->s, self->pk->l);  // Get target RGB
+    	self->_blend(self->start_pos, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
 
-    if(!(self->flash_pos < self->flash_duration)) {
-      self->flash_pos = 0;
-      self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
-      self->_blend(self->start_pos, 0, 0, 0);           // Zero out
+    	if(!(self->flash_pos < self->flash_duration)) {
+    		self->flash_pos = 0;
+    		self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
+    		self->_blend(self->start_pos, 0, 0, 0);           // Zero out
+    		// vfdco_clr_render();
+    	}
+    	// Write to LEDs, physically
+    	vfdco_clr_render();
     }
   } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     if(Time_Event_Update(&unsafe_self->timer)) ++self->flash_pos;
@@ -430,8 +461,6 @@ static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe
     }
   }
 
-  // Write to LEDs, physically
-  vfdco_clr_render();
   return self->state;
 }
 
@@ -446,6 +475,7 @@ void _LED_Color_Flasher_Delete(struct LED_Color *unsafe_self) {
  * @brief  Implementation of constructor LED_Color_Flasher::LED_Color_Flasher
 **/
 struct LED_Color_Flasher *LED_Color_Flasher_Init(
+  uint_fast32_t             timer1_interval,
   LED_COLOR_BLEND_MODE_t    blend_mode,
   uint8_t                   start_pos,
   int8_t                    repeat,
@@ -454,7 +484,7 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
   uint8_t                   offtime
 ) {
   struct LED_Color_Flasher *f = (struct LED_Color_Flasher *)malloc(sizeof(struct LED_Color_Flasher));
-  LED_Color_Init(&f->super);
+  LED_Color_Init(&f->super, timer1_interval);
 
   // LED Flasher Attributes
   f->start_pos = start_pos;
@@ -490,9 +520,10 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
   uint_fast16_t chase_duration = self->chase_duration;
   uint_fast16_t chase_cpreserving = self->chase_cpreserving;
 
+  uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
 
   if(self->state == LED_COLOR_STATE_ACTIVE) {
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->chase_pos;
+    if(render_enable) ++self->chase_pos;
 
     // If the chase duration has elapsed, proceed onto the next LED and chase pos
     if(!(self->chase_pos < self->chase_duration)) {
@@ -552,11 +583,11 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         self->_blend(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
       }
     }
-
-    // Write to LEDs, physically
-    vfdco_clr_render();
   }
 
+
+  // Write to LEDs, physically
+  if(render_enable) vfdco_clr_render();
   return self->state;
 }
 
@@ -571,6 +602,7 @@ void _LED_Color_Chaser_Delete(struct LED_Color *unsafe_self) {
   * @brief Implementation of constructor LED_Color_Chaser::LED_Color_Chaser
  **/
 struct LED_Color_Chaser *LED_Color_Chaser_Init(
+  uint_fast32_t             timer1_interval,
   LED_COLOR_BLEND_MODE_t    blend_mode,
   uint8_t                   start_pos,
   int8_t                    repeat,
@@ -582,7 +614,7 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
   uint8_t                   mode
 ) {
   struct LED_Color_Chaser *f = (struct LED_Color_Chaser *)malloc(sizeof(struct LED_Color_Chaser));
-  LED_Color_Init(&f->super);
+  LED_Color_Init(&f->super, timer1_interval);
 
   // LED Chaser Attributes
   f->pk = pk;

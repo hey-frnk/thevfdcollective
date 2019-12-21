@@ -180,7 +180,7 @@ struct LED_Color {
 /**
  * @brief  Declaration of constructor LED_Color::LED_Color
 **/
-void LED_Color_Init(struct LED_Color *f);
+void LED_Color_Init(struct LED_Color *f, uint_fast32_t timer1_interval);
 
 
 
@@ -214,6 +214,7 @@ struct LED_Color_Fader {
   * @brief  Constructor of LED_Color_Fader class
  **/
 struct LED_Color_Fader *LED_Color_Fader_Init(
+  uint_fast32_t             timer1_interval,        // Timer interval
   LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Fade N cycles
@@ -248,6 +249,7 @@ struct LED_Color_Flasher {
   * @brief  Constructor of LED_Color_Flasher class
  **/
 struct LED_Color_Flasher *LED_Color_Flasher_Init(
+  uint_fast32_t             timer1_interval,        // Timer interval
   LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat flash how many times?
@@ -307,6 +309,7 @@ struct LED_Color_Chaser {
   * @brief  Constructor of LED_Color_Chaser class
  **/
 struct LED_Color_Chaser *LED_Color_Chaser_Init(
+  uint_fast32_t             timer1_interval,        // Timer interval
   LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat N times

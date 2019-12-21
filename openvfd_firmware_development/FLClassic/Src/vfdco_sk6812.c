@@ -16,11 +16,14 @@
 #define LED_NUMBER 6
 
 uint8_t  *write_buf;
+uint8_t	 *rgb_arr;
 
 // Write buffer with two
-uint16_t write_buf_length, write_buf_pos;
+uint16_t write_buf_length;
+uint_fast8_t write_buf_pos;
 
 extern TIM_HandleTypeDef htim2;
+extern DMA_HandleTypeDef hdma_tim2_ch1;
 
 void vfdco_clr_init(uint8_t num_pixels) {
 	num_rgb = num_pixels;									// Number of physical LEDs
@@ -63,38 +66,39 @@ inline void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 inline void vfdco_clr_render() {
 	// Ooh boi the first data buffer!!
 	write_buf_pos = 0;
-	for(uint8_t i = 0; i < 8; ++i) {
-		write_buf[i     ] = ((rgb_arr[0] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
-		write_buf[i +  8] = ((rgb_arr[1] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
-		write_buf[i + 16] = ((rgb_arr[2] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
-		write_buf[i + 24] = ((rgb_arr[3] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
+	for(uint_fast8_t i = 0; i < 8; ++i) {
+		write_buf[i     ] = SK6812_PWM_DUTY_LO << (((rgb_arr[0] << i) & 0x80) > 0);
+		write_buf[i +  8] = SK6812_PWM_DUTY_LO << (((rgb_arr[1] << i) & 0x80) > 0);
+		write_buf[i + 16] = SK6812_PWM_DUTY_LO << (((rgb_arr[2] << i) & 0x80) > 0);
+		write_buf[i + 24] = SK6812_PWM_DUTY_LO << (((rgb_arr[3] << i) & 0x80) > 0);
 	}
+
 	write_buf_pos++; // Since we're ready for the next buffer
 	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, write_buf_length);
 }
 
-void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) {
+void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
 	// DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
 	if(write_buf_pos < num_rgb) {
 		// We're in. Let's fill the mem
-		for(uint8_t i = 0; i < 8; ++i) {
-			write_buf[i     ] = ((rgb_arr[(write_buf_pos) * 4 + 0] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
-			write_buf[i +  8] = ((rgb_arr[(write_buf_pos) * 4 + 1] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
-			write_buf[i + 16] = ((rgb_arr[(write_buf_pos) * 4 + 2] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
-			write_buf[i + 24] = ((rgb_arr[(write_buf_pos) * 4 + 3] << i) & 0x80) ? SK6812_PWM_DUTY_HI : SK6812_PWM_DUTY_LO;
+		for(uint_fast8_t i = 0; i < 8; ++i) {
+			write_buf[i     ] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4    ] << i) & 0x80) > 0);
+			write_buf[i +  8] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4 + 1] << i) & 0x80) > 0);
+			write_buf[i + 16] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4 + 2] << i) & 0x80) > 0);
+			write_buf[i + 24] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4 + 3] << i) & 0x80) > 0);
 		}
-		++write_buf_pos;
-	} else if(write_buf_pos >= num_rgb) {
+		write_buf_pos++;
+	} else if (write_buf_pos >= num_rgb + 1) {
 		// Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
 		memset(write_buf, 0x00, write_buf_length);
-		++write_buf_pos;
+		write_buf_pos++;
 
-		if(write_buf_pos == num_rgb + 2) {
-			// Stop transfer, we're done for now until someonw needs us again
+		if(write_buf_pos >= num_rgb + 2) {
+			// Stop transfer, we're done for now until someone needs us again
 			write_buf_pos = 0;
 			HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
 		}
-	} else {
-		// Oops, you should probably never get to this point
+	} else { // heart clap, we skip a beat
+		write_buf_pos++;
 	}
 }

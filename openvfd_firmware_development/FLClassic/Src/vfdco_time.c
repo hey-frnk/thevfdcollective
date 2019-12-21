@@ -30,5 +30,6 @@ unsigned char Time_Event_Update(time_event_t *input) {
     input->previousTime = currentTime;
     return 1;
   }
+  else return 0;
   return 0;
 }

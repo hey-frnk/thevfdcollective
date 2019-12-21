@@ -68,38 +68,6 @@ void setColorRGBW(uint8_t *);*/
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-// Faster color wheel with HSL transform and fixed point arithmetics
-// https://stackoverflow.com/questions/2353211
-static inline int32_t _mdisplay_fpmul(int32_t x, int32_t y) { return ((int64_t)x * (int64_t)y) / 0x01000000; }
-static int32_t _mdisplay_hslp_hue2rgb(int32_t p, int32_t q, int32_t t) {
-  if(t < 0x00000000) t += 0x01000000;
-  if(t > 0x01000000) t -= 0x01000000;
-  if(t < 0x002AAAAB) return p + _mdisplay_fpmul(0x06000000, _mdisplay_fpmul((q - p), t));
-  if(t < 0x00800000) return q;
-  if(t < 0x00AAAAAB) return p + _mdisplay_fpmul(0x06000000, _mdisplay_fpmul((q - p), 0x00AAAAAB - t));
-  return p;
-}
-
-uint32_t ledPhase(uint8_t h, uint8_t s, uint8_t l) {
-  int32_t hFP = _mdisplay_fpmul((int32_t)h << 23, 0x20202);
-  int32_t sFP = _mdisplay_fpmul((int32_t)s << 23, 0x20202);
-  int32_t lFP = _mdisplay_fpmul((int32_t)l << 23, 0x20202);
-
-  int32_t rFP, gFP, bFP;
-  if(s == 0) return ((uint32_t)l) | (((uint32_t)l) << 8) | (((uint32_t)l) << 16);
-  else{
-    int32_t q = (lFP < 0x00800000) ? _mdisplay_fpmul(lFP, 0x01000000 + sFP) : (lFP + sFP - _mdisplay_fpmul(lFP, sFP));
-    int32_t p = _mdisplay_fpmul(0x02000000, lFP) - q;
-    rFP = _mdisplay_hslp_hue2rgb(p, q, hFP + 0x00555555);
-    gFP = _mdisplay_hslp_hue2rgb(p, q, hFP);
-    bFP = _mdisplay_hslp_hue2rgb(p, q, hFP - 0x00555555);
-  }
-
-  return ((uint32_t)(_mdisplay_fpmul(0x3FC00000, gFP) >> 6 ) & 0x00FF0000) | \
-         ((uint32_t)(_mdisplay_fpmul(0x3FC00000, rFP) >> 14) & 0x0000FF00) | \
-         ((uint32_t)(_mdisplay_fpmul(0x3FC00000, bFP) >> 22) & 0x000000FF);
-}
-
 /* USER CODE END 0 */
 
 /**
@@ -137,10 +105,20 @@ int main(void)
 
 	// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 	// HAL_Delay(100);
+  hsl_t *c1 = HSL_Init(0, 255, 127);
+  hsl_t *c2 = HSL_Init(85, 255, 127);
+  hsl_d_t d = {0, 0, 0};
+  hsl_t *cArr[2] = {c1, c2};
 
 	vfdco_clr_init(6);
 
-	uint8_t LED7_dp = 0;
+	vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+	vfdco_clr_render();
+
+	struct LED_Color *f1  //= (struct LED_Color *)LED_Color_Fader_Init(10, LED_COLOR_BLEND_MODE_NORMAL, 0, 4, 1, cArr, 6, 0);
+											 //= (struct LED_Color *)LED_Color_Chaser_Init(4, LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 6, c1, &d, 174, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+											  = (struct LED_Color *)LED_Color_Flasher_Init(3, LED_COLOR_BLEND_MODE_NORMAL, 5, 3, c2, 51, 2);
+	uint8_t i = 0;
 
   /* USER CODE END 2 */
 
@@ -151,82 +129,15 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		LED7_dp+= 1; // Just let it overflow and begin from 0 :p
-		HAL_Delay(20);
+  	++i;
+  	uint8_t k = i % 6;
 
-    // Cycle position
+  	while(f1->Next(f1));
+  	f1->Delete(f1);
 
-    /*for(uint8_t i = 0; i < 6; i++) {
-    	uint32_t phase = ledPhase(LED7_dp + (i * 7), 255, 128);
-    	vfdco_clr_set_RGB(i, (phase >> 16) & 0xFF, (phase >> 8) & 0xFF, phase & 0xFF);
-    }*/
-
-		uint32_t phase = ledPhase(LED7_dp, 255, 128);
-
-		for(uint8_t i = 0; i < 6; ++i) {
-			vfdco_clr_set_RGB(i, (phase >> 16) & 0xFF, (phase >> 8) & 0xFF, phase & 0xFF);
-		}
-
-		/*const uint8_t led_Presets[][18] = {{  0, 200, 255,  // Rainbow colors!
-				                                       0,   0, 255,
-				                                     255,   0,   0,
-				                                     128, 255,   0,
-				                                      30, 255,   0,
-				                                       0, 255,   0},
-
-				                                    {128, 255, 255,  // Pastel rainbow!
-				                                     128,  50, 255,
-				                                     255,   0, 128,
-				                                     255, 128, 128,
-				                                     255, 255, 128,
-				                                     100, 255, 128},
-
-				                                    {255,   0,   0,  // Green to blue!
-				                                     240,   0,  64,
-				                                     216,   0, 128,
-				                                     128,   0, 216,
-				                                      64,   0, 240,
-				                                       0,   0, 255},
-
-				                                    {  0, 255,   3,  // Red to blue!
-				                                       0, 255,  10,
-				                                       0, 240,  25,
-				                                       0, 200,  80,
-				                                       0, 100, 150,
-				                                       0,  50, 255},
-
-				                                    {  3, 255,   0,  // Red to green!
-				                                      30, 255,   0,
-				                                      60, 240,   0,
-				                                     100, 180,   0,
-				                                     180, 180,   0,
-				                                     255,  20,   0}
-				                                     };
-
-				for(uint8_t j = 0; j < 5; ++j) {
-					for(uint8_t i = 0; i < 6; i++) {
-								rgb_arr[4 * i] = led_Presets[j][i * 3];
-								rgb_arr[4 * i + 1] = led_Presets[j][i * 3 + 1];
-								rgb_arr[4 * i + 2] = led_Presets[j][i * 3 + 2];
-								rgb_arr[4 * i + 3] = 0;
-					}
-			    vfdco_clr_render();
-			    HAL_Delay(1500);
-				}*/
-
-		vfdco_clr_render();
-
-		/*for(uint8_t i = 0; i < 6; i++) {
-		    	uint32_t phase = ledPhase(LED7_dp + (i * 20), 255, 128);
-		    	rgb_arr[4 * i] = (uint8_t)((phase >> 8) & 0xFF);     // G
-		    	rgb_arr[4 * i + 1] = (uint8_t)((phase >> 16) & 0xFF);  // R
-		    	rgb_arr[4 * i + 2] = (uint8_t)(phase & 0xFF);         // B
-		    	rgb_arr[4 * i + 3] = 0;
-		    }*/
-
-
-
- // vfdco_clr_render(i, (uint8_t)((phase >> 16) & 0xFF), (uint8_t)((phase >> 8) & 0xFF), (uint8_t)(phase & 0xFF), 0);
+  	f1 = (struct LED_Color *)LED_Color_Fader_Init(30, LED_COLOR_BLEND_MODE_NORMAL, 0, 6, 2, cArr, 6, 3);
+		  // = (struct LED_Color *)LED_Color_Chaser_Init(4, LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 6, c1, &d, 174, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+		 	// = (struct LED_Color *)LED_Color_Flasher_Init(3, LED_COLOR_BLEND_MODE_NORMAL, k, 3, c1, 64, 2);
   }
   /* USER CODE END 3 */
 }
