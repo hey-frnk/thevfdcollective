@@ -295,6 +295,7 @@ struct LED_Color_Chaser {
   int8_t         chase_repeat;        // Repeat
 
   uint16_t       chase_duration;      // (Min (acc), Max (dec)) time diff between LED chase
+  uint16_t       _chase_duration_restore; // Backup variable
 
   // Option: Start & Length
   uint8_t        start_pos;           // LED start index < end index

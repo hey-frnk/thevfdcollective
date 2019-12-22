@@ -69,29 +69,42 @@ void test1() {
   hsl_t *c1 = HSL_Init(0, 255, 127);
   hsl_d_t d = {0, 0, 0};
 
-  struct LED_Color *tester[24] = {NULL};
+  struct LED_Color *tester[18] = {NULL};
 
-  printf("L->R, NONPRESERVING, Start 1, End 6, t: 80\n");
-  tester[0] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 40, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  int cs = 2;
+  int cr = 0;
+  int ce = 4;
+  int ct = 32;
+  tester[0] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[1] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[2] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[3] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITLIN);
+  tester[4] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITLIN);
+  tester[5] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
 
-  printf("L->R, PRESERVINGFAS, Start 1, End 6, t: 80\n");
-  tester[1] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 40, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  int rs = 5;
+  int rr = 0;
+  int re = 6;
+  int rt = 64;
+  tester[6] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[7] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[8] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[9] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_LINEAR);
+  tester[10] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_LINEAR);
+  tester[11] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_LINEAR);
 
-  printf("L->R, PRESERVINGSLO, Start 1, End 6, t: 80\n");
-  tester[2] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 40, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  int ls = 0;
+  int lr = 0;
+  int le = 6;
+  int lt = 64;
+  tester[12] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[13] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[14] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[15] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  tester[16] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  tester[17] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
 
-  /*for(uint8_t i = 0; i < 4; ++i) {
-
-
-    tester[6 * i] =     (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 5, 0, 6, c1, &d, 156, i, LED_COLOR_CHASER_MODE_RL_LINEAR);
-    tester[6 * i + 1] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 166, i, LED_COLOR_CHASER_MODE_LR_LINEAR);
-    tester[6 * i + 2] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 2, 0, 3, c1, &d, 176, i, LED_COLOR_CHASER_MODE_SPLITLIN);
-    tester[6 * i + 3] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 5, 0, 6, c1, &d, 186, i, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-    tester[6 * i + 4] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 186, i, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-    tester[6 * i + 5] = (struct LED_Color *)LED_Color_Chaser_Init(80, LED_COLOR_BLEND_MODE_NORMAL, 3, 0, 3, c1, &d, 196, i, LED_COLOR_CHASER_MODE_SPLITACC);
-  }*/
-
-  for(uint8_t i = 0; i < 24; ++i) {
+  for(uint8_t i = 0; i < 18; ++i) {
     printf("Testing Unit: %hhu %p\n", i, tester[i]);
     while(tester[i]->Next(tester[i]));
     tester[i]->Delete(tester[i]);

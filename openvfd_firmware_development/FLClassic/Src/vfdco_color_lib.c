@@ -524,34 +524,66 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
 
   uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
 
-  if(self->state == LED_COLOR_STATE_ACTIVE) {
+  if(self->state == LED_COLOR_STATE_ACTIVE || self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     if(render_enable) ++self->chase_pos;
 
     // If the chase duration has elapsed, proceed onto the next LED and chase pos
-    if(!(self->chase_pos < self->chase_duration)) {
-      self->chase_pos = 0;
-      ++self->pk_state;
+    if(self->state == LED_COLOR_STATE_ACTIVE) {
+      if(!(self->chase_pos < self->chase_duration)) {
+        self->chase_pos = 0;
+        ++self->pk_state;
 
-      // Modify chase direction by speeding up (half duration time) or slowing down (double duration time)
-      if        (self->chase_mode & 0x01) self->chase_duration /= 2;
-      else if   (self->chase_mode & 0x02) self->chase_duration *= 2;
+        // Modify chase direction by speeding up (half duration time) or slowing down (double duration time)
+        if        (self->chase_mode & 0x01) self->chase_duration /= 2;
+        else if   (self->chase_mode & 0x02) self->chase_duration *= 2;
 
-      // If the last LED has reached, start over!
-      if(!(self->pk_state < self->chase_length)) {
-        self->pk_state = 0;
+        // If the last LED has reached, start over!
+        if(!(self->pk_state < self->chase_length)) {
+          if(!chase_cpreserving)  {
+            // If NONPRESERVING, we're done
+            self->pk_state = 0;
+            // And if repeated enough, quit
+            if(!(--self->chase_repeat >= 0)) self->state = LED_COLOR_STATE_COMPLETE;
+          } else {
+            // If preserving, revert state and chase pos, enter fade out "recovery"
+            --self->pk_state;
+            if        (self->chase_mode & 0x01) self->chase_duration *= 2;
+            else if   (self->chase_mode & 0x02) self->chase_duration /= 2;
+            self->chase_pos = self->chase_duration;
+
+            self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
+            printf("Entering recovery\n");
+          }
+        }
+      }
+    } else {
+      // Full fade out cycle
+      if(!(self->chase_pos < self->chase_duration * (chase_cpreserving + 1))) {
+        self->chase_pos = 0;
 
         // And if repeated enough, quit
-        if(!(--self->chase_repeat >= 0)) self->state = LED_COLOR_STATE_COMPLETE;
+        if(!(--self->chase_repeat >= 0)) {
+          self->state = LED_COLOR_STATE_COMPLETE;
+          return self->state;
+        }
+        else {
+          self->pk_state = 0; // Reset position
+          self->state = LED_COLOR_STATE_ACTIVE;
+
+          if(self->chase_mode | 0x03) self->chase_duration = self->_chase_duration_restore;
+        }
       }
     }
+
 
     if(chase_cpreserving) {
       // pk_state +1 determines the amount of single sided LEDs to be written
       for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
         // Right sided write. Only write if pixel is in range and LR or Split is active
-        if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb)) {
+        if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < num_rgb)) {
           int16_t lightness = self->pk->l + i * self->pk_diff->l;
-          if(self->pk_state != i && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
+          // Ugly AF, sorry
+          if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
             int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
                                 / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
@@ -562,7 +594,8 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         // Left sided write
         if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) /*&& (self->pk_state > 0)*/ && (self->start_pos - i >= 0)) {
           uint8_t lightness = self->pk->l - i * self->pk_diff->l;
-          if(self->pk_state != i && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
+          // Ugly AF, sorry
+          if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
             int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
                                 / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
@@ -625,8 +658,15 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
   f->chase_mode = mode;
   f->chase_repeat = repeat;
   f->chase_duration = duration;
+  f->_chase_duration_restore = duration;
   f->start_pos = start_pos;
-  f->chase_length = length;
+
+  // Chase length init clipper
+  if(mode <= LED_COLOR_CHASER_MODE_SPLITDEC) {
+    f->chase_length = (length + start_pos > num_rgb) ? length - start_pos + 1 : length;
+  } else {
+    f->chase_length = (length > start_pos) ? start_pos + 1 : length;
+  }
 
   // Method mapping
   struct LED_Color_VTable _chaser_vtable = {

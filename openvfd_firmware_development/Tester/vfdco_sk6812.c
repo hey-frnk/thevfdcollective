@@ -50,7 +50,18 @@ void vfdco_clr_render() {
   // printf("SK6812 tester: Render function started with %hhu pixels, %hhu bpp, %hhu bytes.\n", num_rgb, num_bpp, num_bytes);
   printf("                                   rgbw_arr: ");
   for (uint8_t i = 0; i < num_rgb; ++i) {
-    printf("(%03hhu, %03hhu, %03hhu, %03hhu) ", rgb_arr[4*i], rgb_arr[4*i + 1], rgb_arr[4*i + 2], rgb_arr[4*i + 3]);
+		// Skip Zeros
+		if(rgb_arr[4*i]) printf("(%03hhu  ", rgb_arr[4*i]);
+		else printf("(     ");
+
+		if(rgb_arr[4*i + 1]) printf("%03hhu  ", rgb_arr[4*i + 1]);
+		else printf("     ");
+
+		if(rgb_arr[4*i + 2]) printf("%03hhu  ", rgb_arr[4*i + 2]);
+		else printf("     ");
+
+		if(rgb_arr[4*i + 3]) printf("%03hhu)", rgb_arr[4*i + 3]);
+		else printf("   )");
   }
   printf("\n");
 }
