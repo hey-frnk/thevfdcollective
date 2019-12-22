@@ -107,7 +107,7 @@ int main(void)
 	// HAL_Delay(100);
   hsl_t *c1 = HSL_Init(0, 255, 127);
   hsl_t *c2 = HSL_Init(85, 255, 127);
-  hsl_d_t d = {0, 0, 0};
+  hsl_d_t d = {-4, 0, 0};
   hsl_t *cArr[2] = {c1, c2};
 
 	vfdco_clr_init(6);
@@ -136,8 +136,11 @@ int main(void)
   	f1->Delete(f1);
 
   	f1 = (struct LED_Color *)LED_Color_Fader_Init(30, LED_COLOR_BLEND_MODE_NORMAL, 0, 6, 2, cArr, 6, 3);
-		  // = (struct LED_Color *)LED_Color_Chaser_Init(4, LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 6, c1, &d, 174, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+		  // = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 40, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
 		 	// = (struct LED_Color *)LED_Color_Flasher_Init(3, LED_COLOR_BLEND_MODE_NORMAL, k, 3, c1, 64, 2);
+
+  	vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+  	vfdco_clr_render();
   }
   /* USER CODE END 3 */
 }

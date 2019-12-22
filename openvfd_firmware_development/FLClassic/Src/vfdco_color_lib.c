@@ -26,7 +26,7 @@
 #ifndef DEBUG
   #include "../../vfdco_color_lib.h"
 #else
-  #include "vfdco_color_lib.h"
+  #include "../vfdco_color_lib.h"
 #endif
 
 /** Begin of:
@@ -36,30 +36,32 @@
  * @brief Fast hsl2rgb algorithm: https://stackoverflow.com/questions/13105185/fast-algorithm-for-rgb-hsl-conversion
 **/
 static inline uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
-    uint8_t  r, g, b, lo, c, x, m;
-    uint16_t h1, l1, H;
-    l1 = l + 1;
-    if (l < 128)    c = ((l1 << 1) * s) >> 8;
-    else            c = (512 - (l1 << 1)) * s >> 8;
+  if(l == 0) return 0;
 
-    H = h * 6;              // 0 to 1535 (actually 1530)
-    lo = H & 255;           // Low byte  = primary/secondary color mix
-    h1 = lo + 1;
+  uint8_t  r, g, b, lo, c, x, m;
+  uint16_t h1, l1, H;
+  l1 = l + 1;
+  if (l < 128)    c = ((l1 << 1) * s) >> 8;
+  else            c = (512 - (l1 << 1)) * s >> 8;
 
-    if ((H & 256) == 0)   x = h1 * c >> 8;          // even sextant, like red to yellow
-    else                  x = (256 - h1) * c >> 8;  // odd sextant, like yellow to green
+  H = h * 6;              // 0 to 1535 (actually 1530)
+  lo = H & 255;           // Low byte  = primary/secondary color mix
+  h1 = lo + 1;
 
-    m = l - (c >> 1);
-    switch(H >> 8) {       // High byte = sextant of colorwheel
-        case 0 : r = c; g = x; b = 0; break; // R to Y
-        case 1 : r = x; g = c; b = 0; break; // Y to G
-        case 2 : r = 0; g = c; b = x; break; // G to C
-        case 3 : r = 0; g = x; b = c; break; // C to B
-        case 4 : r = x; g = 0; b = c; break; // B to M
-        default: r = c; g = 0; b = x; break; // M to R
-    }
+  if ((H & 256) == 0)   x = h1 * c >> 8;          // even sextant, like red to yellow
+  else                  x = (256 - h1) * c >> 8;  // odd sextant, like yellow to green
 
-    return ((r + m) << 8) | ((g + m) << 16) | (b + m);
+  m = l - (c >> 1);
+  switch(H >> 8) {       // High byte = sextant of colorwheel
+    case 0 : r = c; g = x; b = 0; break; // R to Y
+    case 1 : r = x; g = c; b = 0; break; // Y to G
+    case 2 : r = 0; g = c; b = x; break; // G to C
+    case 3 : r = 0; g = x; b = c; break; // C to B
+    case 4 : r = x; g = 0; b = c; break; // B to M
+    default: r = c; g = 0; b = x; break; // M to R
+  }
+
+  return ((r + m) << 8) | ((g + m) << 16) | (b + m);
 }
 
 #define GAUSSIAN_MAGIC_NUMBER 0.424660900144f
@@ -548,10 +550,10 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
       for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
         // Right sided write. Only write if pixel is in range and LR or Split is active
         if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb)) {
-          uint8_t lightness = self->pk->l + i * self->pk_diff->l;
-          if(self->pk_state != i || chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
-            float attenuation = ((float)lightness * (chase_duration * (self->pk_state - i - 1) + (float)self->chase_pos))
-                                / (float)(chase_cpreserving * (float)chase_duration);
+          int16_t lightness = self->pk->l + i * self->pk_diff->l;
+          if(self->pk_state != i && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
+            int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
+                                / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
           uint32_t target_right = _led_color_hsl2rgb(self->pk->h + i * self->pk_diff->h, self->pk->s + i * self->pk_diff->s, lightness);
@@ -560,9 +562,9 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         // Left sided write
         if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) /*&& (self->pk_state > 0)*/ && (self->start_pos - i >= 0)) {
           uint8_t lightness = self->pk->l - i * self->pk_diff->l;
-          if(self->pk_state != i || chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
-            float attenuation = ((float)lightness * (chase_duration * (self->pk_state - i - 1) + (float)self->chase_pos))
-                                / (float)(chase_cpreserving * (float)chase_duration);
+          if(self->pk_state != i && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
+            int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
+                                / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
           uint32_t target_left = _led_color_hsl2rgb(self->pk->h - i * self->pk_diff->h, self->pk->s - i * self->pk_diff->s, lightness);
