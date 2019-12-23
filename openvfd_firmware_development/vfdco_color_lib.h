@@ -156,6 +156,13 @@ typedef enum {
   LED_COLOR_STATE_ALWAYS_ACTIVE     =  22   // Repeat forever until external change of state
 } LED_COLOR_STATE_t;
 
+enum {
+  LED_COLOR_REPEAT_RUN_ONCE         =   0,  // Only one run
+  LED_COLOR_REPEAT_ONCE             =   1,  // Repeat once
+  LED_COLOR_REPEAT_TWICE            =   2,  // Repeat twice (lol)
+  LED_COLOR_REPEAT_FOREVER          = -42,  // Repeat forever
+};
+
 /**
   * @brief  Definition of the abstract LED_Color action class.
   *         For an LED_Color class to become a valid action, the mapping of Next and Delete is required

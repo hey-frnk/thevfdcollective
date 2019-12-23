@@ -264,7 +264,8 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
     	// Next state: Cyclic rollover if --repeat is >= 0, else fade out
     	if(!(self->fade_pos < time_period)) {
     		self->fade_pos = 0;
-    		if(--self->repeat < 0)   self->state = LED_COLOR_STATE_FADE_OUT;
+        // If not repeat forever
+        if(self->repeat != LED_COLOR_REPEAT_FOREVER) if(--self->repeat < 0) self->state = LED_COLOR_STATE_FADE_OUT;
     	}
     }
   }
@@ -344,8 +345,11 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
     // Next state: Cyclic rollover if --repeat is >= 0, else fade out
     if(!(self->fade_pos < time_period * (self->num_pks - 1))) {
       self->fade_pos = 0;
-      if(--self->repeat >= 0)   self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
-      else                      self->state = LED_COLOR_STATE_FADE_OUT;
+      if(self->repeat != LED_COLOR_REPEAT_FOREVER) {
+        if(--self->repeat < 0)  self->state = LED_COLOR_STATE_FADE_OUT;
+        else                    self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
+      }
+      else                      self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
     }
   } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     // Special case where we need to fade from last pix to first pix
@@ -448,18 +452,24 @@ static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe
     		self->flash_pos = 0;
     		self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
     		self->_blend(self->start_pos, 0, 0, 0);           // Zero out
-    		// vfdco_clr_render();
     	}
     	// Write to LEDs, physically
     	vfdco_clr_render();
     }
   } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     if(Time_Event_Update(&unsafe_self->timer)) ++self->flash_pos;
+    #ifdef DEBUG
+    printf("Ghost Write\n");
+    #endif
 
     if(!(self->flash_pos < self->flash_offtime)) {
       self->flash_pos = 0;
-      if(--self->flash_repeat >= 0)   self->state = LED_COLOR_STATE_ACTIVE;
-      else                            self->state = LED_COLOR_STATE_COMPLETE;
+      if(self->flash_repeat != LED_COLOR_REPEAT_FOREVER) {
+        if(--self->flash_repeat < 0) self->state = LED_COLOR_STATE_COMPLETE;
+        else                         self->state = LED_COLOR_STATE_ACTIVE;
+      } else {
+        self->state = LED_COLOR_STATE_ACTIVE;
+      }
     }
   }
 
@@ -543,7 +553,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
             // If NONPRESERVING, we're done
             self->pk_state = 0;
             // And if repeated enough, quit
-            if(!(--self->chase_repeat >= 0)) self->state = LED_COLOR_STATE_COMPLETE;
+            if(self->chase_repeat != LED_COLOR_REPEAT_FOREVER) if(--self->chase_repeat < 0) self->state = LED_COLOR_STATE_COMPLETE;
           } else {
             // If preserving, revert state and chase pos, enter fade out "recovery"
             --self->pk_state;
@@ -552,7 +562,6 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
             self->chase_pos = self->chase_duration;
 
             self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
-            printf("Entering recovery\n");
           }
         }
       }
@@ -562,11 +571,18 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         self->chase_pos = 0;
 
         // And if repeated enough, quit
-        if(!(--self->chase_repeat >= 0)) {
-          self->state = LED_COLOR_STATE_COMPLETE;
-          return self->state;
-        }
-        else {
+        if(self->chase_repeat != LED_COLOR_REPEAT_FOREVER) {
+          if(--self->chase_repeat < 0) {
+            self->state = LED_COLOR_STATE_COMPLETE;
+            return self->state;
+          }
+          else {
+            self->pk_state = 0; // Reset position
+            self->state = LED_COLOR_STATE_ACTIVE;
+
+            if(self->chase_mode | 0x03) self->chase_duration = self->_chase_duration_restore;
+          }
+        } else {
           self->pk_state = 0; // Reset position
           self->state = LED_COLOR_STATE_ACTIVE;
 
