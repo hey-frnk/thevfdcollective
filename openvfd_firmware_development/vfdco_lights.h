@@ -11,8 +11,8 @@
   ******************************************************************************
  **/
 
-#ifndef _VFDCO_COLOR_MODE_H
-#define _VFDCO_COLOR_MODE_H
+#ifndef _VFDCO_LIGHTS_H
+#define _VFDCO_LIGHTS_H
 
 #include "vfdco_color_lib.h"
 #include "vfdco_time.h"
@@ -71,31 +71,31 @@ static const uint8_t Static_Color_Rainbow_Saturation[NUM_STATIC_COLOR_RAINBOWS] 
 /**
   * @brief  Virtual table for LED_Color_Mode
 **/
-struct LED_Color_Mode;
-struct LED_Color_Mode_VTable {
-  void                  (*F3)               (struct LED_Color_Mode *unsafe_self);
-  void                  (*F3Var)            (struct LED_Color_Mode *unsafe_self);
-  void                  (*Update)           (struct LED_Color_Mode *unsafe_self);
+struct Light_Pattern;
+struct Light_Pattern_VTable {
+  void                  (*F3)               (struct Light_Pattern *unsafe_self);
+  void                  (*F3Var)            (struct Light_Pattern *unsafe_self);
+  void                  (*Update)           (struct Light_Pattern *unsafe_self);
   void                  (*Hello)            (void);
 };
 
 /**
   * @brief  Definition of LED_Color_Mode class
 **/
-struct LED_Color_Mode {
+struct Light_Pattern {
   // VTable (virtual) functions
-  void                  (*F3)               (struct LED_Color_Mode *unsafe_self);
-  void                  (*F3Var)            (struct LED_Color_Mode *unsafe_self);
-  void                  (*Update)           (struct LED_Color_Mode *unsafe_self);
-  void                  (*Hello)            (struct LED_Color_Mode *unsafe_self);
+  void                  (*F3)               (struct Light_Pattern *unsafe_self);
+  void                  (*F3Var)            (struct Light_Pattern *unsafe_self);
+  void                  (*Update)           (struct Light_Pattern *unsafe_self);
+  void                  (*Hello)            (struct Light_Pattern *unsafe_self);
 
-  struct LED_Color_Mode_VTable VTable;
+  struct Light_Pattern_VTable VTable;
 };
 
 /**
   * @brief  Constructor of LED_Color_Mode class
 **/
-void LED_Color_Mode_Init(struct LED_Color_Mode *self);
+void Light_Pattern_Init(struct Light_Pattern *self);
 
 
 
@@ -105,8 +105,8 @@ void LED_Color_Mode_Init(struct LED_Color_Mode *self);
 /**
   * @brief  Definition of LED_Color_Static class
  **/
-struct LED_Color_Static {
-  struct LED_Color_Mode super;
+struct Light_Pattern_Static {
+  struct Light_Pattern super;
   time_event_t          t;
 
   uint8_t               position;   // Color lookup array index
@@ -120,7 +120,7 @@ struct LED_Color_Static {
 /**
   * @brief  Constructor of LED_Color_Static class
  **/
-void LED_Color_Static_Init(struct LED_Color_Static *self);
+void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
 
 
 

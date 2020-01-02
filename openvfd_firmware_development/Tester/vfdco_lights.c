@@ -12,50 +12,50 @@
  **/
 
 #include "../vfdco_color_lib.h"
-#include "../vfdco_color_mode.h"
+#include "../vfdco_lights.h"
 #include <stdlib.h>
 #ifdef DEBUG
 #include <stdio.h>
 #endif
 
 /**
-  * @brief  Implementation of virtual functions LED_Color_Mode::VTable (static void _LED_Color_Mode_F3)
+  * @brief  Implementation of virtual functions Light_Pattern::VTable (static void _Light_Pattern_F3)
 **/
-static inline void _LED_Color_Mode_F3(struct LED_Color_Mode *unsafe_self) {
+static inline void _Light_Pattern_F3(struct Light_Pattern *unsafe_self) {
  if(!unsafe_self->VTable.F3) return;
  unsafe_self->VTable.F3(unsafe_self);
 }
-static inline void _LED_Color_Mode_F3Var(struct LED_Color_Mode *unsafe_self) {
+static inline void _Light_Pattern_F3Var(struct Light_Pattern *unsafe_self) {
  if(!unsafe_self->VTable.F3Var) return;
  unsafe_self->VTable.F3Var(unsafe_self);
 }
-static inline void _LED_Color_Mode_Update(struct LED_Color_Mode *unsafe_self) {
+static inline void _Light_Pattern_Update(struct Light_Pattern *unsafe_self) {
  // if(!self->VTable.Update) return; Will make sure this never happens. Optimize for loop performance
  unsafe_self->VTable.Update(unsafe_self);
 }
-static inline void _LED_Color_Mode_Hello(struct LED_Color_Mode *unsafe_self) {
+static inline void _Light_Pattern_Hello(struct Light_Pattern *unsafe_self) {
  if(!unsafe_self->VTable.Hello) return;
  unsafe_self->VTable.Hello();
 }
 
 /**
-  * @brief  Constructor of LED_Color_Mode class
+  * @brief  Constructor of Light_Pattern class
 **/
-void LED_Color_Mode_Init(struct LED_Color_Mode *self) {
-  self->F3 = _LED_Color_Mode_F3;
-  self->F3Var = _LED_Color_Mode_F3Var;
-  self->Update = _LED_Color_Mode_Update;
-  self->Hello = _LED_Color_Mode_Hello;
+void Light_Pattern_Init(struct Light_Pattern *self) {
+  self->F3 = _Light_Pattern_F3;
+  self->F3Var = _Light_Pattern_F3Var;
+  self->Update = _Light_Pattern_Update;
+  self->Hello = _Light_Pattern_Hello;
 }
 
 /** Begin of:
   * @toc SECTION_LED_COLOR_STATIC
  **/
 /**
-  * @brief  Implementation of virtual function LED_Color_Static::Update (static void _LED_Color_Static_Update)
+  * @brief  Implementation of virtual function Light_Pattern_Static::Update (static void _Light_Pattern_Static_Update)
  **/
-static void _LED_Color_Static_Update(struct LED_Color_Mode *unsafe_self) {
-  struct LED_Color_Static *self = (struct LED_Color_Static *)unsafe_self;
+static void _Light_Pattern_Static_Update(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
 
   hsl_t *tc = self->target_color;
   hsl_t *cc = self->current_color;
@@ -84,10 +84,10 @@ static void _LED_Color_Static_Update(struct LED_Color_Mode *unsafe_self) {
 }
 
 /**
-  * @brief  Implementation of virtual function LED_Color_Static::F3 (static void _LED_Color_Static_F3)
+  * @brief  Implementation of virtual function Light_Pattern_Static::F3 (static void _Light_Pattern_Static_F3)
  **/
-static void _LED_Color_Static_F3(struct LED_Color_Mode *unsafe_self) {
-  struct LED_Color_Static *self = (struct LED_Color_Static *)unsafe_self;
+static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
   self->position++;
   printf("%d ", self->position);
   if(self->position >= NUM_STATIC_T4) self->position = 0;
@@ -132,19 +132,19 @@ static void _LED_Color_Static_F3(struct LED_Color_Mode *unsafe_self) {
 }
 
 /**
-  * @brief  Implementation of virtual function LED_Color_Static::Hello (static void _LED_Color_Static_Hello)
+  * @brief  Implementation of virtual function Light_Pattern_Static::Hello (static void _Light_Pattern_Static_Hello)
  **/
-static inline void _LED_Color_Static_Hello(void) {
+static inline void _Light_Pattern_Static_Hello(void) {
   /*char k[NUM_DIGITS_V];
   for(uint8_t i = 0; i < NUM_DIGITS_V; i++) k[i] = pgm_read_byte_near(MSG_COLOR + i);
   displayWrite(3, 0x00, 1000, k);*/
 }
 
 /**
-  * @brief  Constructor of LED_Color_Static class
+  * @brief  Constructor of Light_Pattern_Static class
  **/
-void LED_Color_Static_Init(struct LED_Color_Static *self) {
-  LED_Color_Mode_Init(&self->super);
+void Light_Pattern_Static_Init(struct Light_Pattern_Static *self) {
+  Light_Pattern_Init(&self->super);
 
   /*self->color_instance = malloc(2 * sizeof(hsl_t *));
   self->color_instance[0] = HSL_Init(Static_Colors_Special[0].h, Static_Colors_Special[0].s, Static_Colors_Special[0].l);
@@ -160,11 +160,11 @@ void LED_Color_Static_Init(struct LED_Color_Static *self) {
   self->position = 0;
   self->hue_diff = 0;
 
-  struct LED_Color_Mode_VTable _static_vtable = {
-    .F3 = _LED_Color_Static_F3,
+  struct Light_Pattern_VTable _static_vtable = {
+    .F3 = _Light_Pattern_Static_F3,
     .F3Var = NULL,
-    .Update = _LED_Color_Static_Update,
-    .Hello = _LED_Color_Static_Hello
+    .Update = _Light_Pattern_Static_Update,
+    .Hello = _Light_Pattern_Static_Hello
   };
   self->super.VTable = _static_vtable;
 }

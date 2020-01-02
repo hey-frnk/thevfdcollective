@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include "../vfdco_sk6812.h"
 #include "../vfdco_color_lib.h"
-#include "../vfdco_color_mode.h"
+#include "../vfdco_lights.h"
 
 // cd documents/github/thevfdcollective/openvfd_firmware_development
-// gcc vfdco_led_tester.c vfdco_color_lib.c vfdco_color_mode.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
+// gcc vfdco_led_tester.c vfdco_color_lib.c vfdco_lights.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
 
 //#define TEST0
 // #define TEST1
@@ -118,11 +118,11 @@ void test1() {
 }
 
 void test2() {
-  struct LED_Color_Static ledInstance;
-  LED_Color_Static_Init(&ledInstance);
+  struct Light_Pattern_Static ledInstance;
+  Light_Pattern_Static_Init(&ledInstance);
 
-  struct LED_Color_Mode *virtualMode = NULL;
-  virtualMode = (struct LED_Color_Mode *)&ledInstance;
+  struct Light_Pattern *virtualMode = NULL;
+  virtualMode = (struct Light_Pattern *)&ledInstance;
 
   while(1) {
     int q;
