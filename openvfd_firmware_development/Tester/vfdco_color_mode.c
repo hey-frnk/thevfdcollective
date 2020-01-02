@@ -57,22 +57,29 @@ void LED_Color_Mode_Init(struct LED_Color_Mode *self) {
 static void _LED_Color_Static_Update(struct LED_Color_Mode *unsafe_self) {
   struct LED_Color_Static *self = (struct LED_Color_Static *)unsafe_self;
 
-  LED_COLOR_STATE_t prev_state = self->fader_instance->state;
-  LED_COLOR_STATE_t curr_state = self->fader_instance->super.Next(&self->fader_instance->super);
-  // On rising edge, set to regular active by fading between two same colors
-  if((prev_state == LED_COLOR_STATE_FADE_IN || prev_state == LED_COLOR_STATE_CYCLIC_RECOVERY)
-      && curr_state == LED_COLOR_STATE_ACTIVE) {
-    self->color_instance[1]->h = self->color_instance[0]->h;
-    self->color_instance[1]->s = self->color_instance[0]->s;
-    self->color_instance[1]->l = self->color_instance[0]->l;
-    int8_t bckup_colordiff = self->fader_instance->chain_huediff;
-    self->fader_instance->super.Delete((struct LED_Color *)self->fader_instance);
-    printf("c1hsl: %d %d %d, c2hsl: %d %d %d\n",  self->color_instance[0]->h, self->color_instance[0]->s, self->color_instance[0]->l, self->color_instance[1]->h, self->color_instance[1]->s, self->color_instance[1]->l);
-    self->fader_instance = LED_Color_Fader_Init(
-      20, LED_COLOR_BLEND_MODE_NORMAL, 0, LED_COLOR_REPEAT_FOREVER,
-      2, self->color_instance, 6, bckup_colordiff
-    );
-    self->fader_instance->state = LED_COLOR_STATE_ACTIVE;
+  hsl_t *tc = self->target_color;
+  hsl_t *cc = self->current_color;
+  if(Time_Event_Update(&self->t)) {
+    uint8_t ndt = 0;
+    if(       cc->h < tc->h) cc->h++;
+    else if(  cc->h > tc->h) cc->h--;
+    else ndt++;
+    if(       cc->s < tc->s) cc->s++;
+    else if(  cc->s > tc->s) cc->s--;
+    else ndt++;
+    if(       cc->l < tc->l) cc->l++;
+    else if(  cc->l > tc->l) cc->l--;
+    else ndt++;
+
+    if(ndt != 3) { // If change has occured, write to LEDs
+      for(uint8_t i = 0; i < num_rgb; ++i) {
+        uint8_t i_h = cc->h;
+        i_h += i * (int16_t)self->hue_diff;                             // i-th hue difference (delta), intended angle overflow
+        uint32_t target_color = _led_color_hsl2rgb(i_h, cc->s, cc->l);  // Get target RGB
+        vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+      }
+      vfdco_clr_render();
+    }
   }
 }
 
@@ -86,40 +93,34 @@ static void _LED_Color_Static_F3(struct LED_Color_Mode *unsafe_self) {
   if(self->position >= NUM_STATIC_T4) self->position = 0;
 
   // Color transition by introducing unequal colors & putting into recovery
-  int8_t hue_diff = 0;
 
   if(self->position < NUM_STATIC_T1) {
     // Single Color Special
-    self->color_instance[0]->h = Static_Colors_Special[self->position].h;
-    self->color_instance[0]->s = Static_Colors_Special[self->position].s;
-    self->color_instance[0]->l = Static_Colors_Special[self->position].l;
+    self->target_color->h = Static_Colors_Special[self->position].h;
+    self->target_color->s = Static_Colors_Special[self->position].s;
+    self->target_color->l = Static_Colors_Special[self->position].l;
+    self->hue_diff = 0;
   } else if(self->position < NUM_STATIC_T2) {
     // Single Color
-    self->color_instance[0]->h = Static_Color_Hues[self->position - NUM_STATIC_T1];
-    self->color_instance[0]->s = 255;
-    self->color_instance[0]->l = 127;
+    self->target_color->h = Static_Color_Hues[self->position - NUM_STATIC_T1];
+    self->target_color->s = 255;
+    self->target_color->l = 127;
+    self->hue_diff = 0;
   } else if (self->position < NUM_STATIC_T3) {
     // Rainbows
     uint8_t t_pos = self->position - NUM_STATIC_T2;
-    self->color_instance[0]->h = Static_Color_Hues[0]; // Red to start
-    self->color_instance[0]->s = Static_Color_Rainbow_Saturation[t_pos];
-    self->color_instance[0]->l = Static_Color_Rainbow_Lightness[t_pos];
-    hue_diff = 51; // Rainbow equidistance
+    self->target_color->h = Static_Color_Hues[0]; // Red to start
+    self->target_color->s = Static_Color_Rainbow_Saturation[t_pos];
+    self->target_color->l = Static_Color_Rainbow_Lightness[t_pos];
+    self->hue_diff = 51; // Rainbow equidistance
   } else { // < T4
     // Multicolor
     uint8_t t_pos = self->position - NUM_STATIC_T3;
-    self->color_instance[0]->h = Static_Color_Hues[t_pos];
-    self->color_instance[0]->s = 255;
-    self->color_instance[0]->l = 127;
-    hue_diff = Static_Color_Presets[t_pos];
+    self->target_color->h = Static_Color_Hues[t_pos];
+    self->target_color->s = 255;
+    self->target_color->l = 127;
+    self->hue_diff = Static_Color_Presets[t_pos];
   }
-
-  self->fader_instance->super.Delete((struct LED_Color *)self->fader_instance);
-  self->fader_instance = LED_Color_Fader_Init(
-    20, LED_COLOR_BLEND_MODE_NORMAL, 0, LED_COLOR_REPEAT_ONCE,
-    2, self->color_instance, 6, hue_diff
-  );
-  self->fader_instance->state = LED_COLOR_STATE_CYCLIC_RECOVERY; // Put into recovery
 
   /*// Dynamic memory saving
   char LED0PMC[NUM_DIGITS_V];
@@ -145,12 +146,19 @@ static inline void _LED_Color_Static_Hello(void) {
 void LED_Color_Static_Init(struct LED_Color_Static *self) {
   LED_Color_Mode_Init(&self->super);
 
-  self->color_instance = malloc(2 * sizeof(hsl_t *));
+  /*self->color_instance = malloc(2 * sizeof(hsl_t *));
   self->color_instance[0] = HSL_Init(Static_Colors_Special[0].h, Static_Colors_Special[0].s, Static_Colors_Special[0].l);
   self->color_instance[1] = HSL_Init(Static_Colors_Special[0].h, Static_Colors_Special[0].s, Static_Colors_Special[0].l);
 
-  self->fader_instance = LED_Color_Fader_Init(20, LED_COLOR_BLEND_MODE_NORMAL, 0, LED_COLOR_REPEAT_ONCE, 2, (hsl_t **)self->color_instance, 6, 0);
+  self->fader_instance = LED_Color_Fader_Init(20, LED_COLOR_BLEND_MODE_NORMAL, 0, LED_COLOR_REPEAT_ONCE, 2, (hsl_t **)self->color_instance, 6, 0);*/
+
+  self->t = Time_Event_Init(SINGLE_COLOR_FADE_SPEED);
+
+  self->current_color = (hsl_t *)calloc(1, sizeof(hsl_t));
+  self->target_color = HSL_Init(Static_Colors_Special[0].h, Static_Colors_Special[0].s, Static_Colors_Special[0].l);
+
   self->position = 0;
+  self->hue_diff = 0;
 
   struct LED_Color_Mode_VTable _static_vtable = {
     .F3 = _LED_Color_Static_F3,

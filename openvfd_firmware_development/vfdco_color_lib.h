@@ -131,6 +131,8 @@ hsl_t *HSL_Init_Range(    uint8_t h, uint8_t s, uint8_t l, // Like above
 void HSL_Delete(hsl_t *self);
 void RGB_Delete(rgb_t *self);
 
+uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
+
 /** Begin of:
   * @toc SECTION_BLENDING_FUNCTIONS
  **/

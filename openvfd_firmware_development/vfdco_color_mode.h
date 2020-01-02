@@ -15,6 +15,7 @@
 #define _VFDCO_COLOR_MODE_H
 
 #include "vfdco_color_lib.h"
+#include "vfdco_time.h"
 #include <stdint.h>
 
 #define   NUM_STATIC_COLOR_SPECIAL    2
@@ -106,10 +107,14 @@ void LED_Color_Mode_Init(struct LED_Color_Mode *self);
  **/
 struct LED_Color_Static {
   struct LED_Color_Mode super;
+  time_event_t          t;
 
   uint8_t               position;   // Color lookup array index
-  hsl_t                 **color_instance;
-  struct LED_Color_Fader *fader_instance;
+
+  hsl_t                 *current_color;
+  hsl_t                 *target_color;
+
+  int8_t                hue_diff;
 };
 
 /**

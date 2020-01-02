@@ -35,7 +35,7 @@
 /**
  * @brief Fast hsl2rgb algorithm: https://stackoverflow.com/questions/13105185/fast-algorithm-for-rgb-hsl-conversion
 **/
-static inline uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
+inline uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
   if(l == 0) return 0;
 
   uint8_t  r, g, b, lo, c, x, m;
