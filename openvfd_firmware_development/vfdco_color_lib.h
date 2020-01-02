@@ -101,6 +101,7 @@ extern void vfdco_clr_render();
  **/
 typedef struct hsl_t { uint8_t h, s, l; } hsl_t; // Hue Saturation Lightness
 typedef struct hsl_d_t { int8_t h, s, l; } hsl_d_t; // Hue Saturation Lightness Difference
+typedef struct rgb_t {uint8_t r, g, b; } rgb_t; // Red Green Blue
 
 /**
  * @brief  Declaration of constructor HSL class, HSL::HSL(h, s, l)
@@ -108,6 +109,12 @@ typedef struct hsl_d_t { int8_t h, s, l; } hsl_d_t; // Hue Saturation Lightness 
 hsl_t *HSL_Init(  uint8_t h, // Hue value
                   uint8_t s, // Saturation value
                   uint8_t l  // Lightness value
+);
+
+rgb_t *RGB_Init(
+                  uint8_t r,
+                  uint8_t g,
+                  uint8_t b
 );
 
 /**
@@ -122,6 +129,7 @@ hsl_t *HSL_Init_Range(    uint8_t h, uint8_t s, uint8_t l, // Like above
  * @brief  Declaration of destructor HSL class, HSL::* HSL(h, s, l)
 **/
 void HSL_Delete(hsl_t *self);
+void RGB_Delete(rgb_t *self);
 
 /** Begin of:
   * @toc SECTION_BLENDING_FUNCTIONS
@@ -239,7 +247,7 @@ struct LED_Color_Flasher {
   struct LED_Color super;
 
   void          (*_blend)           (uint8_t, uint8_t, uint8_t, uint8_t);
-  hsl_t         *pk;                // Peaks array
+  rgb_t         *pk;                // Peaks array
 
   uint8_t       flash_duration;     // Duration of each flash
   uint16_t      flash_offtime;      // Duration of off time, 0: as long as flash, 1: twice as long, 2: 4x as long, ...
@@ -260,7 +268,7 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
   LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat flash how many times?
-  hsl_t                     *pk,                    // Array of HSL colors
+  rgb_t                     *pk,                    // Array of RGB colors
   uint8_t                   duration,               // Duration of each flash
   uint8_t                   offtime                 // Duration of flash offtime (factor)
 );
@@ -350,42 +358,6 @@ struct LED_Color_Manager {
   struct LED_Color_Flasher *   (*Init_LED_Color_Flasher_From_Bitstream) (uint8_t *p, uint_fast16_t length);
   struct LED_Color_Chaser *    (*Init_LED_Color_Chaser_From_Bitstream)  (uint8_t *p, uint_fast16_t length);
 };
-
-
-
-
-
-/** Begin of:
-  * @toc SECTION_LED_COLOR_MODE
- **/
-/**
-  * @brief  Virtual table for LED_Color_Mode
- **/
-struct LED_Color_Mode;
-struct LED_Color_Mode_VTable {
-  void                  (*F3)               (struct LED_Color_Mode *unsafe_self);
-  void                  (*F3Var)            (struct LED_Color_Mode *unsafe_self);
-  void                  (*Update)           (struct LED_Color_Mode *unsafe_self);
-  void                  (*Hello)            (void);
-};
-
-/**
-  * @brief  Definition of LED_Color_Mode class
- **/
-struct LED_Color_Mode {
-  // VTable (virtual) functions
-  void                  (*F3)               (struct LED_Color_Mode *unsafe_self);
-  void                  (*F3Var)            (struct LED_Color_Mode *unsafe_self);
-  void                  (*Update)           (struct LED_Color_Mode *unsafe_self);
-  void                  (*Hello)            (struct LED_Color_Mode *unsafe_self);
-
-  struct LED_Color_Mode_VTable VTable;
-};
-
-/**
-  * @brief  Constructor of LED_Color_Mode class
- **/
-void LED_Color_Mode_Init(struct LED_Color_Mode *self);
 
 
 
