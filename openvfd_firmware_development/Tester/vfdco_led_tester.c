@@ -5,7 +5,7 @@
 #include "../vfdco_lights.h"
 
 // cd documents/github/thevfdcollective/openvfd_firmware_development
-// gcc vfdco_led_tester.c vfdco_color_lib.c vfdco_lights.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
+// gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
 
 //#define TEST0
 // #define TEST1

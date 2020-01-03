@@ -23,7 +23,6 @@ uint16_t write_buf_length;
 uint_fast8_t write_buf_pos;
 
 extern TIM_HandleTypeDef htim2;
-extern DMA_HandleTypeDef hdma_tim2_ch1;
 
 void vfdco_clr_init(uint8_t num_pixels) {
 	num_rgb = num_pixels;									// Number of physical LEDs

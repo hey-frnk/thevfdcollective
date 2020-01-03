@@ -23,11 +23,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-#ifndef DEBUG
-  #include "../../vfdco_color_lib.h"
-#else
-  #include "../vfdco_color_lib.h"
-#endif
+#include "../vfdco_color_lib.h"
 
 /** Begin of:
   * @toc SECTION_SUPPORTING_FUNCTIONS

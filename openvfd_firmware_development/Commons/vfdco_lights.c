@@ -18,6 +18,23 @@
 #include <stdio.h>
 #endif
 
+static inline void _target_RGB(uint8_t *tp, uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
+	tp[4 * index] = g;
+	tp[4 * index + 1] = r;
+	tp[4 * index + 2] = b;
+	tp[4 * index + 3] = 0;
+}
+static inline void _target_RGBW(uint8_t *tp, uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+	_target_RGB(tp, index, r, g, b);
+	tp[4 * index + 3] = w;
+}
+static inline void _target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
+	for(uint8_t i = 0; i < num_rgb; ++i) _target_RGB(tp, i, r, g, b);
+}
+static inline void _target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+	for(uint8_t i = 0; i < num_rgb; ++i) _target_RGBW(tp, i, r, g, b, w);
+}
+
 /**
   * @brief  Implementation of virtual functions Light_Pattern::VTable (static void _Light_Pattern_F3)
 **/
@@ -56,30 +73,14 @@ void Light_Pattern_Init(struct Light_Pattern *self) {
  **/
 static void _Light_Pattern_Static_Update(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
-
-  hsl_t *tc = self->target_color;
-  hsl_t *cc = self->current_color;
   if(Time_Event_Update(&self->t)) {
-    uint8_t ndt = 0;
-    if(       cc->h < tc->h) cc->h++;
-    else if(  cc->h > tc->h) cc->h--;
-    else ndt++;
-    if(       cc->s < tc->s) cc->s++;
-    else if(  cc->s > tc->s) cc->s--;
-    else ndt++;
-    if(       cc->l < tc->l) cc->l++;
-    else if(  cc->l > tc->l) cc->l--;
-    else ndt++;
-
-    if(ndt != 3) { // If change has occured, write to LEDs
-      for(uint8_t i = 0; i < num_rgb; ++i) {
-        uint8_t i_h = cc->h;
-        i_h += i * (int16_t)self->hue_diff;                             // i-th hue difference (delta), intended angle overflow
-        uint32_t target_color = _led_color_hsl2rgb(i_h, cc->s, cc->l);  // Get target RGB
-        vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
-      }
-      vfdco_clr_render();
+    uint8_t dt = 0;
+    for(uint8_t i = 0; i < num_bytes; i++) { // Sorry for the ll-access
+      if(rgb_arr[i] < self->target_arr[i]) rgb_arr[i]++;
+      else if(rgb_arr[i] > self->target_arr[i]) rgb_arr[i]--;
+      else ++dt;
     }
+    if(dt != num_bytes) vfdco_clr_render();
   }
 }
 
@@ -88,38 +89,46 @@ static void _Light_Pattern_Static_Update(struct Light_Pattern *unsafe_self) {
  **/
 static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
+
   self->position++;
-  printf("%d ", self->position);
   if(self->position >= NUM_STATIC_T4) self->position = 0;
 
-  // Color transition by introducing unequal colors & putting into recovery
+	#ifdef DEBUG
+  printf("%d ", self->position);
+	#endif
 
   if(self->position < NUM_STATIC_T1) {
     // Single Color Special
-    self->target_color->h = Static_Colors_Special[self->position].h;
-    self->target_color->s = Static_Colors_Special[self->position].s;
-    self->target_color->l = Static_Colors_Special[self->position].l;
-    self->hue_diff = 0;
+    switch(self->position) {
+      case 0: _target_all_RGB   (self->target_arr,   0,   0,   0     ); break;
+      case 1: _target_all_RGBW  (self->target_arr,   0,   0,  96, 255); break;
+      case 2: _target_all_RGBW  (self->target_arr,   0,   0,   0, 255); break;
+    }
   } else if(self->position < NUM_STATIC_T2) {
     // Single Color
-    self->target_color->h = Static_Color_Hues[self->position - NUM_STATIC_T1];
-    self->target_color->s = 255;
-    self->target_color->l = 127;
-    self->hue_diff = 0;
+    uint32_t target_color = _led_color_hsl2rgb(Static_Color_Hues[self->position - NUM_STATIC_T1], 255, 127);
+    _target_all_RGB(self->target_arr, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+
   } else if (self->position < NUM_STATIC_T3) {
     // Rainbows
     uint8_t t_pos = self->position - NUM_STATIC_T2;
-    self->target_color->h = Static_Color_Hues[0]; // Red to start
-    self->target_color->s = Static_Color_Rainbow_Saturation[t_pos];
-    self->target_color->l = Static_Color_Rainbow_Lightness[t_pos];
-    self->hue_diff = 51; // Rainbow equidistance
+    for(uint8_t i = 0; i < num_rgb; ++i) {
+      uint8_t i_h = Static_Color_Hues[0] + 2;
+      i_h += i * 40; // i-th hue difference (delta), intended angle overflow
+      uint32_t target_color = _led_color_hsl2rgb(i_h, Static_Color_Rainbow_Saturation[t_pos], Static_Color_Rainbow_Lightness[t_pos]);
+      _target_RGB(self->target_arr, i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+    }
+
   } else { // < T4
     // Multicolor
     uint8_t t_pos = self->position - NUM_STATIC_T3;
-    self->target_color->h = Static_Color_Hues[t_pos];
-    self->target_color->s = 255;
-    self->target_color->l = 127;
-    self->hue_diff = Static_Color_Presets[t_pos];
+
+    for(uint8_t i = 0; i < num_rgb; ++i) {
+      uint8_t i_h = Static_Color_Hues[t_pos] + 2;
+      i_h -= i * 15; // i-th hue difference (delta), intended angle overflow
+      uint32_t target_color = _led_color_hsl2rgb(i_h, 255, 127);  // Get target RGB
+      _target_RGB(self->target_arr, i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+    }
   }
 
   /*// Dynamic memory saving
@@ -154,11 +163,8 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self) {
 
   self->t = Time_Event_Init(SINGLE_COLOR_FADE_SPEED);
 
-  self->current_color = (hsl_t *)calloc(1, sizeof(hsl_t));
-  self->target_color = HSL_Init(Static_Colors_Special[0].h, Static_Colors_Special[0].s, Static_Colors_Special[0].l);
-
+  self->target_arr = (uint8_t *)calloc(num_bytes, sizeof(uint8_t));
   self->position = 0;
-  self->hue_diff = 0;
 
   struct Light_Pattern_VTable _static_vtable = {
     .F3 = _Light_Pattern_Static_F3,

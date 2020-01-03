@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "../../vfdco_sk6812.h"
 #include "../../vfdco_color_lib.h"
+#include "../../vfdco_lights.h"
 #include "../../vfdco_time.h"
 #include "../../vfdco_hid.h"
 /* USER CODE END Includes */
@@ -115,6 +116,26 @@ void test1() {
   HSL_Delete(c1);
 }
 
+void test2() {
+  struct Light_Pattern_Static ledInstance;
+  Light_Pattern_Static_Init(&ledInstance);
+
+  struct Light_Pattern *virtualMode = NULL;
+  virtualMode = (struct Light_Pattern *)&ledInstance;
+
+  while(1) {
+    virtualMode->Update((void *)virtualMode);
+
+    uint8_t c = vfdco_hid_button_retrieve(BUTTON_F3);
+    vfdco_hid_button_reset(BUTTON_F3);
+    switch(c) {
+      case BUTTON_STATE_SHORTPRESS: virtualMode->F3((void *)virtualMode); break;
+      case BUTTON_STATE_LONGPRESS: virtualMode->F3Var((void *)virtualMode); break;
+      default: break;
+    }
+  }
+}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -130,7 +151,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   /* USER CODE END 1 */
-  
+
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -156,22 +177,11 @@ int main(void)
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
-	// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	// HAL_Delay(100);
-  hsl_t *c1 = HSL_Init(0, 255, 127);
-  hsl_t *c2 = HSL_Init(85, 255, 127);
-  hsl_d_t d = {-4, 0, 0};
-  hsl_t *cArr[2] = {c1, c2};
-
 	vfdco_clr_init(6);
 
 	vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+  HAL_Delay(10);
 	vfdco_clr_render();
-
-	/*struct LED_Color *f1  //= (struct LED_Color *)LED_Color_Fader_Init(10, LED_COLOR_BLEND_MODE_NORMAL, 0, 4, 1, cArr, 6, 0);
-											 //= (struct LED_Color *)LED_Color_Chaser_Init(4, LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 6, c1, &d, 174, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
-											  = (struct LED_Color *)LED_Color_Flasher_Init(3, LED_COLOR_BLEND_MODE_NORMAL, 5, 3, c2, 51, 2);
-	uint8_t i = 0;*/
 
   /* USER CODE END 2 */
 
@@ -182,21 +192,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  	test1();
-
-  	/*++i;
-  	uint8_t k = i % 6;
-
-  	while(f1->Next(f1));
-  	f1->Delete(f1);
-
-  	f1 = (struct LED_Color *)LED_Color_Fader_Init(30, LED_COLOR_BLEND_MODE_NORMAL, 0, 6, 2, cArr, 6, 3);
-		  // = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, 0, 0, 6, c1, &d, 40, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
-		 	// = (struct LED_Color *)LED_Color_Flasher_Init(3, LED_COLOR_BLEND_MODE_NORMAL, k, 3, c1, 64, 2);
-
-  	vfdco_clr_set_all_RGBW(0, 0, 0, 0);
-  	vfdco_clr_render();*/
-
+  	test2();
 
   }
   /* USER CODE END 3 */
@@ -212,7 +208,7 @@ void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48;
   RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
@@ -221,7 +217,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
@@ -364,10 +360,10 @@ static void MX_USB_PCD_Init(void)
 
 }
 
-/** 
+/**
   * Enable DMA controller clock
   */
-static void MX_DMA_Init(void) 
+static void MX_DMA_Init(void)
 {
 
   /* DMA controller clock enable */
@@ -400,11 +396,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA1 PA2 PA3 PA4 
-                           PA5 PA6 PA7 PA8 
+  /*Configure GPIO pins : PA1 PA2 PA3 PA4
+                           PA5 PA6 PA7 PA8
                            PA9 PA10 PA15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4 
-                          |GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8 
+  GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4
+                          |GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8
                           |GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -473,7 +469,7 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(char *file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */

@@ -18,7 +18,7 @@
 #include "vfdco_time.h"
 #include <stdint.h>
 
-#define   NUM_STATIC_COLOR_SPECIAL    2
+#define   NUM_STATIC_COLOR_SPECIAL    3
 #define   NUM_STATIC_COLOR_HUES       8
 #define   NUM_STATIC_COLOR_RAINBOWS   2
 #define   NUM_STATIC_COLOR_PRESETS    3
@@ -28,34 +28,34 @@
 #define   NUM_STATIC_T3               (NUM_STATIC_T2 + NUM_STATIC_COLOR_RAINBOWS)
 #define   NUM_STATIC_T4               (NUM_STATIC_T3 + NUM_STATIC_COLOR_PRESETS)
 
-#define   SINGLE_COLOR_FADE_SPEED    10
+#define   SINGLE_COLOR_FADE_SPEED     2
 
-static const hsl_t Static_Colors_Special[NUM_STATIC_COLOR_SPECIAL] = {
+/*static const hsl_t Static_Colors_Special[NUM_STATIC_COLOR_SPECIAL] = {
   {.h =   0,   .s =   0,   .l =   0}, // Off (Black)
   {.h =   0,   .s =   0,   .l = 255}  // White
-};
+};*/
 
 static const uint8_t Static_Color_Hues[NUM_STATIC_COLOR_HUES] = {
   // As always the sat is 255, lightness 127, only memorize hues
     0, // Red      , also Red --> Blue
    85, // Green    , also Red --> Green
-  170, // Blue,    , also Blue --> Green
-   43, // Yellow
-   14, // Orange
+  160, // Blue,    , also Blue --> Green
+   25, // Yellow
+    5, // Orange
   128, // Cyan
-  212, // Magenta
-  191  // Purple
+  240, // Magenta
+  205  // Purple
 };
 
-static const int8_t Static_Color_Presets[NUM_STATIC_COLOR_PRESETS] = {
+/* static const int8_t Static_Color_Presets[NUM_STATIC_COLOR_PRESETS] = {
    -17, // Difference to get from green to blue with num_rgb == 6
-    13, // Difference to get from red to green
-    21  // Difference to get from green to blue
-};
+   -17, // Difference to get from red to green
+   -17  // Difference to get from green to blue
+}; */
 
 static const uint8_t Static_Color_Rainbow_Lightness[NUM_STATIC_COLOR_RAINBOWS] = {
   127,
-  216
+  170
 };
 static const uint8_t Static_Color_Rainbow_Saturation[NUM_STATIC_COLOR_RAINBOWS] = {
   255,
@@ -110,11 +110,7 @@ struct Light_Pattern_Static {
   time_event_t          t;
 
   uint8_t               position;   // Color lookup array index
-
-  hsl_t                 *current_color;
-  hsl_t                 *target_color;
-
-  int8_t                hue_diff;
+  uint8_t               *target_arr;
 };
 
 /**
