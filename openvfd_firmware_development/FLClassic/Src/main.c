@@ -26,6 +26,7 @@
 #include "../../vfdco_sk6812.h"
 #include "../../vfdco_color_lib.h"
 #include "../../vfdco_time.h"
+#include "../../vfdco_hid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +45,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim14;
 DMA_HandleTypeDef hdma_tim2_ch1;
 
 PCD_HandleTypeDef hpcd_USB_FS;
@@ -58,6 +60,7 @@ static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_USB_PCD_Init(void);
 static void MX_DMA_Init(void);
+static void MX_TIM14_Init(void);
 /* USER CODE BEGIN PFP */
 /*void user_pwm_setvalue(uint8_t value);
 void setColorRGBW(uint8_t *);*/
@@ -69,42 +72,44 @@ void test1() {
   int t = 3;
 
   int cs = 2;
-  int cr = 0;
+  int cr = LED_COLOR_REPEAT_FOREVER;
   int ce = 4;
   int ct = 100;
-  tester[0] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[1] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[2] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[3] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITLIN);
-  tester[4] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITLIN);
-  tester[5] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
+  tester[0] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[1] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[2] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITLIN);
+  tester[3] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
 
   int rs = 5;
-  int rr = 0;
+  int rr = LED_COLOR_REPEAT_FOREVER;
   int re = 6;
   int rt = 100;
-  tester[6] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[7] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[8] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[9] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_LINEAR);
-  tester[10] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_LINEAR);
-  tester[11] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_LINEAR);
+  tester[4] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[5] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[6] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_LINEAR);
+  tester[7] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_LINEAR);
 
   int ls = 0;
-  int lr = 0;
+  int lr = LED_COLOR_REPEAT_FOREVER;
   int le = 6;
   int lt = 100;
-  tester[12] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[13] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[14] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[15] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_LINEAR);
-  tester[16] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
-  tester[17] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  tester[8] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[9] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[10] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  tester[11] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
 
-  for(uint8_t i = 0; i < 18; ++i) {
-    while(tester[i]->Next(tester[i]));
-    tester[i]->Delete(tester[i]);
-    vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+  for(uint8_t i = 0; i < 12; ++i) {
+    while(tester[i]->Next(tester[i])) {
+      uint8_t f1, f2, f3, f4;
+      vfdco_hid_button_retrieve_all(&f1, &f2, &f3, &f4);
+
+      if(f3 == BUTTON_STATE_SHORTPRESS) {
+        tester[i]->Delete(tester[i]);
+        vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+
+        break;
+      }
+    }
   }
 
   HSL_Delete(c1);
@@ -145,9 +150,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USB_PCD_Init();
   MX_DMA_Init();
   MX_TIM2_Init();
+  MX_USB_PCD_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
 	// HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -296,6 +302,37 @@ static void MX_TIM2_Init(void)
 }
 
 /**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 48-1;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 1000-1;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
+
+}
+
+/**
   * @brief USB Initialization Function
   * @param None
   * @retval None
@@ -381,9 +418,13 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : F1_Pin F2_Pin F3_Pin F4_Pin */
   GPIO_InitStruct.Pin = F1_Pin|F2_Pin|F3_Pin|F4_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
 
 }
 

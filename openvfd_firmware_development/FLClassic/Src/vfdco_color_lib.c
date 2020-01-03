@@ -35,7 +35,7 @@
 /**
  * @brief Fast hsl2rgb algorithm: https://stackoverflow.com/questions/13105185/fast-algorithm-for-rgb-hsl-conversion
 **/
-static inline uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
+inline uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
   if(l == 0) return 0;
 
   uint8_t  r, g, b, lo, c, x, m;
@@ -102,6 +102,13 @@ hsl_t *HSL_Init(uint8_t h, uint8_t s, uint8_t l) {
   hsl->l = l;
   return hsl;
 }
+rgb_t *RGB_Init(uint8_t r, uint8_t g, uint8_t b) {
+  rgb_t *_rgb = (rgb_t *)malloc(sizeof(rgb_t));
+  _rgb->r = r;
+  _rgb->g = g;
+  _rgb->b = b;
+  return _rgb;
+}
 
 /**
  * @brief  Implementation of alt. constructor HSL class, HSL::HSL(h, s, l, dh, ds, dl)
@@ -119,6 +126,9 @@ hsl_t *HSL_Init_Range(uint8_t h, uint8_t s, uint8_t l, float dh, float ds, float
  * @brief  Declaration of destructor HSL class, HSL::~HSL
 **/
 inline void HSL_Delete(hsl_t *self) {
+  free(self);
+}
+inline void RGB_Delete(rgb_t *self) {
   free(self);
 }
 
@@ -264,7 +274,8 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
     	// Next state: Cyclic rollover if --repeat is >= 0, else fade out
     	if(!(self->fade_pos < time_period)) {
     		self->fade_pos = 0;
-    		if(--self->repeat < 0)   self->state = LED_COLOR_STATE_FADE_OUT;
+        // If not repeat forever
+        if(self->repeat != LED_COLOR_REPEAT_FOREVER) if(--self->repeat < 0) self->state = LED_COLOR_STATE_FADE_OUT;
     	}
     }
   }
@@ -344,8 +355,11 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
     // Next state: Cyclic rollover if --repeat is >= 0, else fade out
     if(!(self->fade_pos < time_period * (self->num_pks - 1))) {
       self->fade_pos = 0;
-      if(--self->repeat >= 0)   self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
-      else                      self->state = LED_COLOR_STATE_FADE_OUT;
+      if(self->repeat != LED_COLOR_REPEAT_FOREVER) {
+        if(--self->repeat < 0)  self->state = LED_COLOR_STATE_FADE_OUT;
+        else                    self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
+      }
+      else                      self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
     }
   } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     // Special case where we need to fade from last pix to first pix
@@ -441,25 +455,30 @@ static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe
     if(Time_Event_Update(&unsafe_self->timer)) {
     	++self->flash_pos;
 
-    	uint32_t target_color = _led_color_hsl2rgb(self->pk->h, self->pk->s, self->pk->l);  // Get target RGB
-    	self->_blend(self->start_pos, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+    	self->_blend(self->start_pos, self->pk->r, self->pk->g, self->pk->b);
 
     	if(!(self->flash_pos < self->flash_duration)) {
     		self->flash_pos = 0;
     		self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
     		self->_blend(self->start_pos, 0, 0, 0);           // Zero out
-    		// vfdco_clr_render();
     	}
     	// Write to LEDs, physically
     	vfdco_clr_render();
     }
   } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     if(Time_Event_Update(&unsafe_self->timer)) ++self->flash_pos;
+    #ifdef DEBUG
+    printf("Ghost Write\n");
+    #endif
 
     if(!(self->flash_pos < self->flash_offtime)) {
       self->flash_pos = 0;
-      if(--self->flash_repeat >= 0)   self->state = LED_COLOR_STATE_ACTIVE;
-      else                            self->state = LED_COLOR_STATE_COMPLETE;
+      if(self->flash_repeat != LED_COLOR_REPEAT_FOREVER) {
+        if(--self->flash_repeat < 0) self->state = LED_COLOR_STATE_COMPLETE;
+        else                         self->state = LED_COLOR_STATE_ACTIVE;
+      } else {
+        self->state = LED_COLOR_STATE_ACTIVE;
+      }
     }
   }
 
@@ -481,7 +500,7 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
   LED_COLOR_BLEND_MODE_t    blend_mode,
   uint8_t                   start_pos,
   int8_t                    repeat,
-  hsl_t                     *pk,
+  rgb_t                     *pk,
   uint8_t                   duration,
   uint8_t                   offtime
 ) {
@@ -543,7 +562,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
             // If NONPRESERVING, we're done
             self->pk_state = 0;
             // And if repeated enough, quit
-            if(!(--self->chase_repeat >= 0)) self->state = LED_COLOR_STATE_COMPLETE;
+            if(self->chase_repeat != LED_COLOR_REPEAT_FOREVER) if(--self->chase_repeat < 0) self->state = LED_COLOR_STATE_COMPLETE;
           } else {
             // If preserving, revert state and chase pos, enter fade out "recovery"
             --self->pk_state;
@@ -552,7 +571,6 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
             self->chase_pos = self->chase_duration;
 
             self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
-            printf("Entering recovery\n");
           }
         }
       }
@@ -562,15 +580,31 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         self->chase_pos = 0;
 
         // And if repeated enough, quit
-        if(!(--self->chase_repeat >= 0)) {
-          self->state = LED_COLOR_STATE_COMPLETE;
-          return self->state;
-        }
-        else {
+        if(self->chase_repeat != LED_COLOR_REPEAT_FOREVER) {
+          if(--self->chase_repeat < 0) {
+            self->state = LED_COLOR_STATE_COMPLETE;
+            return self->state;
+          }
+          else goto repeat_restore; // https://xkcd.com/292/
+        } else {
+          repeat_restore:
+          if(chase_cpreserving) {
+            for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
+              if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < num_rgb))             self->_blend(self->start_pos + i, 0, 0, 0);
+              if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - i >= 0))                  self->_blend(self->start_pos - i, 0, 0, 0);
+            }
+          } else {
+            if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb))  self->_blend(self->start_pos + self->pk_state, 0, 0, 0);
+            if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0))       self->_blend(self->start_pos - self->pk_state, 0, 0, 0);
+          }
+          vfdco_clr_render();
+
           self->pk_state = 0; // Reset position
           self->state = LED_COLOR_STATE_ACTIVE;
 
           if(self->chase_mode | 0x03) self->chase_duration = self->_chase_duration_restore;
+
+          return self->state;
         }
       }
     }
@@ -681,38 +715,6 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
   f->pk_state = 0;
   f->state = LED_COLOR_STATE_ACTIVE;
   return f;
-}
-
-
-
-/**
- * @brief  Implementation of virtual functions LED_Color_Mode::VTable (static void _LED_Color_Mode_F3)
-**/
-static inline void _LED_Color_Mode_F3(struct LED_Color_Mode *unsafe_self) {
- if(!unsafe_self->VTable.F3) return;
- unsafe_self->VTable.F3(unsafe_self);
-}
-static inline void _LED_Color_Mode_F3Var(struct LED_Color_Mode *unsafe_self) {
- if(!unsafe_self->VTable.F3Var) return;
- unsafe_self->VTable.F3Var(unsafe_self);
-}
-static inline void _LED_Color_Mode_Update(struct LED_Color_Mode *unsafe_self) {
- // if(!self->VTable.Update) return; Will make sure this never happens. Optimize for loop performance
- unsafe_self->VTable.Update(unsafe_self);
-}
-static inline void _LED_Color_Mode_Hello(struct LED_Color_Mode *unsafe_self) {
- if(!unsafe_self->VTable.Hello) return;
- unsafe_self->VTable.Hello();
-}
-
-/**
- * @brief  Constructor of LED_Color_Mode class
-**/
-void LED_Color_Mode_Init(struct LED_Color_Mode *self) {
-  self->F3 = _LED_Color_Mode_F3;
-  self->F3Var = _LED_Color_Mode_F3Var;
-  self->Update = _LED_Color_Mode_Update;
-  self->Hello = _LED_Color_Mode_Hello;
 }
 
 

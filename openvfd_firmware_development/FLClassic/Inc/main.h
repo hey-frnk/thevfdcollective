@@ -64,12 +64,16 @@ void Error_Handler(void);
 #define LED_PIN_GPIO_Port GPIOA
 #define F1_Pin GPIO_PIN_5
 #define F1_GPIO_Port GPIOB
+#define F1_EXTI_IRQn EXTI4_15_IRQn
 #define F2_Pin GPIO_PIN_6
 #define F2_GPIO_Port GPIOB
+#define F2_EXTI_IRQn EXTI4_15_IRQn
 #define F3_Pin GPIO_PIN_7
 #define F3_GPIO_Port GPIOB
+#define F3_EXTI_IRQn EXTI4_15_IRQn
 #define F4_Pin GPIO_PIN_8
 #define F4_GPIO_Port GPIOB
+#define F4_EXTI_IRQn EXTI4_15_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
