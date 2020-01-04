@@ -3,9 +3,10 @@
 #include "../vfdco_sk6812.h"
 #include "../vfdco_color_lib.h"
 #include "../vfdco_lights.h"
+#include "../vfdco_display.h"
 
 // cd documents/github/thevfdcollective/openvfd_firmware_development
-// gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
+// gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c vfdco_fakedisplay.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
 
 //#define TEST0
 // #define TEST1
@@ -121,8 +122,15 @@ void test2() {
   struct Light_Pattern_Static ledInstance;
   Light_Pattern_Static_Init(&ledInstance);
 
+
+  vfdco_time_t time;
+  vfdco_date_t date;
+  vfdco_get_date_time(&date, &time);
+  struct Light_Pattern_Time_Code ledTime;
+  Light_Pattern_Time_Code_Init(&ledTime, &time);
+
   struct Light_Pattern *virtualMode = NULL;
-  virtualMode = (struct Light_Pattern *)&ledInstance;
+  virtualMode = (struct Light_Pattern *)&ledTime;
 
   while(1) {
     int q;
@@ -155,6 +163,7 @@ void test2() {
 
 int main(void) {
   vfdco_clr_init(6);
+  vfdco_display_init(6);
 
   #ifdef TEST0
   test0();

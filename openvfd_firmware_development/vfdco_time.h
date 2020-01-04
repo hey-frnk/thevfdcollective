@@ -13,6 +13,25 @@
 #ifndef _VFDCO_TIME
 #define _VFDCO_TIME
 
+#include <stdint.h>
+
+#define DATE_MODE_DDMMYY 0
+#define DATE_MODE_MMDDYY 1
+
+typedef struct vfdco_time {
+  uint8_t h, m, s;
+} vfdco_time_t;
+
+typedef struct vfdco_date {
+  // Note: Only the two least significant digits of the date is used
+  uint8_t d, m, y;
+} vfdco_date_t;
+
+// Request current date and time from RTC
+void vfdco_get_date_time(vfdco_date_t *date, vfdco_time_t *time);
+// Set date of time of RTC to parameters date & time
+void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time);
+
 typedef struct time_event_t{
   unsigned long interval;
   unsigned long previousTime;

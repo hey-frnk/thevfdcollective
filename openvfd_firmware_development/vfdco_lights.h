@@ -30,41 +30,6 @@
 
 #define   SINGLE_COLOR_FADE_SPEED     2
 
-/*static const hsl_t Static_Colors_Special[NUM_STATIC_COLOR_SPECIAL] = {
-  {.h =   0,   .s =   0,   .l =   0}, // Off (Black)
-  {.h =   0,   .s =   0,   .l = 255}  // White
-};*/
-
-static const uint8_t Static_Color_Hues[NUM_STATIC_COLOR_HUES] = {
-  // As always the sat is 255, lightness 127, only memorize hues
-    0, // Red      , also Red --> Blue
-   85, // Green    , also Red --> Green
-  160, // Blue,    , also Blue --> Green
-   25, // Yellow
-    5, // Orange
-  128, // Cyan
-  240, // Magenta
-  205  // Purple
-};
-
-/* static const int8_t Static_Color_Presets[NUM_STATIC_COLOR_PRESETS] = {
-   -17, // Difference to get from green to blue with num_rgb == 6
-   -17, // Difference to get from red to green
-   -17  // Difference to get from green to blue
-}; */
-
-static const uint8_t Static_Color_Rainbow_Lightness[NUM_STATIC_COLOR_RAINBOWS] = {
-  127,
-  170
-};
-static const uint8_t Static_Color_Rainbow_Saturation[NUM_STATIC_COLOR_RAINBOWS] = {
-  255,
-  196
-};
-
-
-
-
 /** Begin of:
  * @toc SECTION_LED_COLOR_MODE
 **/
@@ -77,6 +42,7 @@ struct Light_Pattern_VTable {
   void                  (*F3Var)            (struct Light_Pattern *unsafe_self);
   void                  (*Update)           (struct Light_Pattern *unsafe_self);
   void                  (*Hello)            (void);
+  void                  (*Delete)           (struct Light_Pattern *unsafe_self);
 };
 
 /**
@@ -88,14 +54,16 @@ struct Light_Pattern {
   void                  (*F3Var)            (struct Light_Pattern *unsafe_self);
   void                  (*Update)           (struct Light_Pattern *unsafe_self);
   void                  (*Hello)            (struct Light_Pattern *unsafe_self);
+  void                  (*Delete)           (struct Light_Pattern *unsafe_self);
 
   struct Light_Pattern_VTable VTable;
 };
-
 /**
   * @brief  Constructor of LED_Color_Mode class
 **/
 void Light_Pattern_Init(struct Light_Pattern *self);
+
+
 
 
 
@@ -120,4 +88,28 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
 
 
 
+/** Begin of:
+  * @toc SECTION_LED_COLOR_TIME_CODE
+ **/
+/**
+  * @brief  Definition of LED_Color_Time_Code class
+ **/
+struct Light_Pattern_Time_Code {
+  struct Light_Pattern super;
+  time_event_t          clock;
+
+  vfdco_time_t          *time;
+  uint8_t               *target_arr;
+};
+
+/**
+  * @brief  Constructor of LED_Color_Time_Code class
+ **/
+void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_time_t *time_instance);
+
+
 #endif
+
+
+
+// Go Vegan
