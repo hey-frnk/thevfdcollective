@@ -14,7 +14,7 @@
 #include "../vfdco_time.h"
 #include "../vfdco_display.h"
 #include "../vfdco_color_lib.h"
-#include "../vfdco_color_lights.h"
+#include "../vfdco_lights.h"
 
 // Globally accessible parameters
 vfdco_time_t global_time;
@@ -26,6 +26,7 @@ uint8_t global_button_F3_state;
 uint8_t global_button_F4_state;
 
 time_event_t global_time_updater;
+time_event_t display_updater;
 
 struct Light_Pattern *global_light_instance = NULL;
 struct Light_Pattern_Static global_static;
@@ -36,6 +37,9 @@ void vfdco_clock_initializer() {
   vfdco_clr_init(GLOBAL_NUM_DIGITS_NUM_PIXELS);
 
   global_time_updater = Time_Event_Init(GLOBAL_TIME_UPDATE_INTERVAL);
+  display_updater = Time_Event_Init(100);
+
+  vfdco_clock_lights_initializer();
 }
 
 // Human interface device (Buttons) routine
@@ -58,7 +62,9 @@ void vfdco_clock_time_routine() {
 
 // VFD display data render routine
 void vfdco_clock_display_routine() {
-
+  if(Time_Event_Update(&display_updater)) {
+    vfdco_display_render_time(&global_time, 0);
+  }
 }
 
 void vfdco_clock_lights_initializer() {

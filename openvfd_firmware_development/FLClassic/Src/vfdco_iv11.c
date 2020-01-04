@@ -6,9 +6,11 @@
  *
  */
 
+#include "stm32f0xx_hal.h"
 #include "../../vfdco_display.h"
 #include "../../vfdco_time.h"
 
+extern SPI_HandleTypeDef hspi1;
 uint8_t     num_digits = 0;
 
 uint8_t vfdco_display_char_convert(char input) {
@@ -90,25 +92,23 @@ void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register,
   vfdco_display_render_direct(_rreg);
 }
 
-void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register) {
+void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay) {
   uint8_t _rreg[num_digits];
   for(uint8_t i = 0; i < num_digits; ++i) {
     _rreg[num_digits - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
   vfdco_display_render_direct(_rreg);
+  HAL_Delay(delay);
 }
 
 void vfdco_display_render_direct(uint8_t *data) {
-
+  // Write to SPI buffer & toggle latch
+  HAL_SPI_Transmit(&hspi1, data, num_digits, 40);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
 // Function mapping
 void vfdco_display_init(uint_fast8_t _num_digits) {
-  vfdco_display_char_convert = _iv11_char_convert;
-  vfdco_display_render_time = _iv11_render_time;
-  vfdco_display_render_date = _iv11_render_date;
-  vfdco_display_render_message = _iv11_render_message;
-  vfdco_display_render_direct = _iv11_render_direct;
-
   num_digits = _num_digits;
 }

@@ -27,7 +27,7 @@ uint8_t     vfdco_display_char_convert(char input);
 void        vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register);
 void        vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register, uint_fast8_t date_mode);
 
-void        vfdco_display_render_message(const char *message, uint8_t decimal_dot_register);
+void        vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay);
 
 void        vfdco_display_render_direct(uint8_t *data);
 

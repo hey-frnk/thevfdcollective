@@ -23,11 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "../../vfdco_sk6812.h"
-#include "../../vfdco_color_lib.h"
-#include "../../vfdco_lights.h"
-#include "../../vfdco_time.h"
-#include "../../vfdco_hid.h"
+#include "../../vfdco_clock_routines.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,87 +66,6 @@ static void MX_TIM14_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
-/*void user_pwm_setvalue(uint8_t value);
-void setColorRGBW(uint8_t *);*/
-void test1() {
-  hsl_t *c1 = HSL_Init(85, 255, 127);
-  hsl_d_t d = {-4, 0, 0};
-
-  struct LED_Color *tester[18] = {NULL};
-  int t = 3;
-
-  int cs = 2;
-  int cr = LED_COLOR_REPEAT_FOREVER;
-  int ce = 4;
-  int ct = 100;
-  tester[0] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[1] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[2] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITLIN);
-  tester[3] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
-
-  int rs = 5;
-  int rr = LED_COLOR_REPEAT_FOREVER;
-  int re = 6;
-  int rt = 100;
-  tester[4] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[5] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[6] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_LINEAR);
-  tester[7] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_LINEAR);
-
-  int ls = 0;
-  int lr = LED_COLOR_REPEAT_FOREVER;
-  int le = 6;
-  int lt = 100;
-  tester[8] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[9] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[10] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
-  tester[11] = (struct LED_Color *)LED_Color_Chaser_Init(t, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
-
-  for(uint8_t i = 0; i < 12; ++i) {
-    while(tester[i]->Next(tester[i])) {
-      uint8_t f1, f2, f3, f4;
-      vfdco_hid_button_retrieve_all(&f1, &f2, &f3, &f4);
-
-      if(f3 == BUTTON_STATE_SHORTPRESS) {
-        tester[i]->Delete(tester[i]);
-        vfdco_clr_set_all_RGBW(0, 0, 0, 0);
-
-        break;
-      }
-    }
-  }
-
-  HSL_Delete(c1);
-}
-
-void test2() {
-  // struct Light_Pattern_Static ledInstance;
-  // Light_Pattern_Static_Init(&ledInstance);
-
-  vfdco_time_t time;
-  vfdco_date_t date;
-  struct Light_Pattern_Time_Code ledTime;
-  Light_Pattern_Time_Code_Init(&ledTime, &time);
-
-  struct Light_Pattern *virtualMode = NULL;
-  virtualMode = (struct Light_Pattern *)&ledTime;
-
-  time_event_t time_event = Time_Event_Init(500);
-
-  while(1) {
-  	if(Time_Event_Update(&time_event)) vfdco_get_date_time(&date, &time);
-
-    virtualMode->Update((void *)virtualMode);
-
-    uint8_t c = vfdco_hid_button_retrieve(BUTTON_F3);
-    vfdco_hid_button_reset(BUTTON_F3);
-    switch(c) {
-      case BUTTON_STATE_SHORTPRESS: virtualMode->F3((void *)virtualMode); break;
-      case BUTTON_STATE_LONGPRESS: virtualMode->F3Var((void *)virtualMode); break;
-      default: break;
-    }
-  }
-}
 
 /* USER CODE END PFP */
 
@@ -187,19 +102,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM2_Init();
   MX_USB_PCD_Init();
-  MX_DMA_Init();
   MX_TIM14_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
-	vfdco_clr_init(6);
-
-	vfdco_clr_set_all_RGBW(0, 0, 0, 0);
-  HAL_Delay(10);
-	vfdco_clr_render();
+  // Initialize clock
+  vfdco_clock_initializer();
 
   /* USER CODE END 2 */
 
@@ -210,7 +122,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  	test2();
+
+  	// WoHOo hOw FuN iS tHhIis??
+  	vfdco_clock_hid_routine();
+  	vfdco_clock_time_routine();
+  	vfdco_clock_display_routine();
+  	vfdco_clock_lights_routine();
+  	vfdco_clock_com_routine();
 
   }
   /* USER CODE END 3 */
@@ -325,9 +243,9 @@ static void MX_SPI1_Init(void)
   hspi1.Init.Mode = SPI_MODE_MASTER;
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
-  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
   hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_LSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
@@ -500,6 +418,9 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : PA1 PA2 PA3 PA6 
                            PA8 PA9 PA10 PA15 */
   GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_6 
@@ -507,6 +428,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : SPI1_NSS_Pin */
+  GPIO_InitStruct.Pin = SPI1_NSS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SPI1_NSS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB0 PB1 PB3 PB4 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_4;
@@ -528,26 +456,6 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-/*void setColorRGBW(uint8_t *rgbw) {
-	for(uint8_t j = 0; j < 4; ++j) {
-		for(uint8_t i = 0; i < 8; ++i) {
-				user_pwm_setvalue((*rgbw & 0x01) ? DUTY1 : DUTY0);
-				*rgbw >>= 1;
-		}
-		++rgbw;
-	}
-}
-
-void user_pwm_setvalue(uint8_t value) {
-    TIM_OC_InitTypeDef sConfigOC;
-
-    sConfigOC.OCMode = TIM_OCMODE_PWM1;
-    sConfigOC.Pulse = value;
-    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-    HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1);
-    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-}*/
 /* USER CODE END 4 */
 
 /**

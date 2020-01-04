@@ -172,7 +172,7 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
   }
 
   char k[6] = {'C', 'H', 'A', 'N', 'G', 'E'};
-  vfdco_display_render_message(k, 0);
+  vfdco_display_render_message(k, 0, 1000);
 }
 
 /**
@@ -180,7 +180,7 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
  **/
 static inline void _Light_Pattern_Static_Hello(void) {
   char k[6] = {'S', 'T', 'A', 'T', 'I', 'C'};
-  vfdco_display_render_message(k, 0);
+  vfdco_display_render_message(k, 0, 1000);
 }
 
 static inline void _Light_Pattern_Static_Delete(struct Light_Pattern *unsafe_self) {
@@ -253,7 +253,7 @@ static void _Light_Pattern_Time_Code_Update(struct Light_Pattern *unsafe_self) {
  **/
 static inline void _Light_Pattern_Time_Code_Hello(void) {
 	char k[6] = {'T', 'I', 'C', 'O', 'D', 'E'};
-  vfdco_display_render_message(k, 0);
+  vfdco_display_render_message(k, 0, 1000);
 }
 
 static inline void _Light_Pattern_Time_Code_Delete(struct Light_Pattern *unsafe_self) {
