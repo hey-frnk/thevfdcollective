@@ -91,12 +91,13 @@ void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register,
   vfdco_display_render_direct(_rreg);
 }
 
-void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register) {
+void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay) {
   uint8_t _rreg[num_digits];
   for(uint8_t i = 0; i < num_digits; ++i) {
     _rreg[num_digits - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
   vfdco_display_render_direct(_rreg);
+  printf("Delay of %hu milliseconds by message\n", delay);
 }
 
 void vfdco_display_render_direct(uint8_t *data) {

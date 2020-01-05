@@ -4,13 +4,19 @@
 #include "../vfdco_color_lib.h"
 #include "../vfdco_lights.h"
 #include "../vfdco_display.h"
+#include "../vfdco_hid.h"
+#include "../vfdco_gui.h"
+#include "../vfdco_clock_routines.h"
 
 // cd documents/github/thevfdcollective/openvfd_firmware_development
-// gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c vfdco_fakedisplay.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
+// gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c ../Commons/vfdco_clock_routines.c ../Commons/vfdco_gui.c vfdco_fakedisplay.c vfdco_hid.c vfdco_sk6812.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
+
+#define ever (;;)
 
 //#define TEST0
 // #define TEST1
- #define TEST2
+// #define TEST2
+#define TEST3
 
 void test0() {
   hsl_t *c1 = HSL_Init(0, 255, 127);
@@ -161,9 +167,66 @@ void test2() {
   }
 }
 
+// SH... gets real
+void test3() {
+  vfdco_clock_initializer();
+
+  int execute_n_times = 1;
+
+  for ever {
+    // WoHOo hOw FuN iS tHhIis??
+  	vfdco_clock_hid_routine();
+  	vfdco_clock_time_routine();
+  	vfdco_clock_display_routine();
+  	vfdco_clock_lights_routine();
+  	vfdco_clock_com_routine();
+
+    if(--execute_n_times > 0) continue;
+
+    // loop breaker
+    int q;
+    while((q = getchar()) != '\n' && q != EOF);
+
+    char c;
+    printf("Button input: ");
+    scanf("%c", &c);
+
+    switch(c) {
+      // out
+      case 'e': exit(0); break;
+
+      // shortpress
+      case '1': _vfdco_hid_button_set(150, BUTTON_F1); break;
+      case '2': _vfdco_hid_button_set(150, BUTTON_F2); break;
+      case '3': _vfdco_hid_button_set(150, BUTTON_F3); break;
+      case '4': _vfdco_hid_button_set(150, BUTTON_F4); break;
+
+      // longpress
+      case '5': _vfdco_hid_button_set(800, BUTTON_F1); break;
+      case '6': _vfdco_hid_button_set(800, BUTTON_F2); break;
+      case '7': _vfdco_hid_button_set(800, BUTTON_F3); break;
+      case '8': _vfdco_hid_button_set(800, BUTTON_F4); break;
+
+      // run n times
+      case 'n': {
+        int r;
+        while((r = getchar()) != '\n' && r != EOF);
+
+        int n;
+        printf("Loop count: ");
+        scanf("%d", &n);
+
+        execute_n_times = n;
+      }
+    }
+  }
+}
+
 int main(void) {
+  #ifndef TEST3
   vfdco_clr_init(6);
   vfdco_display_init(6);
+  #endif
 
   #ifdef TEST0
   test0();
@@ -175,6 +238,10 @@ int main(void) {
 
   #ifdef TEST2
   test2();
+  #endif
+
+  #ifdef TEST3
+  test3();
   #endif
 
   return 0;

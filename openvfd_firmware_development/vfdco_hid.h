@@ -1,6 +1,8 @@
 #ifndef _VFDCO_HID_H
 #define _VFDCO_HID_H
 
+#include <stdint.h>
+
 #define   BUTTON_STATE_OFF         0b00000000
 #define   BUTTON_STATE_SHORTPRESS  0b00000001
 #define   BUTTON_STATE_LONGPRESS   0b00000010

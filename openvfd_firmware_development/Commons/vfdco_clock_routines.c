@@ -13,6 +13,7 @@
 #include "../vfdco_hid.h"
 #include "../vfdco_time.h"
 #include "../vfdco_display.h"
+#include "../vfdco_gui.h"
 #include "../vfdco_color_lib.h"
 #include "../vfdco_lights.h"
 
@@ -31,6 +32,9 @@ time_event_t display_updater;
 struct Light_Pattern *global_light_instance = NULL;
 struct Light_Pattern_Static global_static;
 
+struct GUI_Format *global_gui_instance = NULL;
+struct GUI_Format_Time global_gui_time_instance;
+
 void vfdco_clock_initializer() {
   // Initialize display and LEDs
   vfdco_display_init(GLOBAL_NUM_DIGITS_NUM_PIXELS);
@@ -40,6 +44,7 @@ void vfdco_clock_initializer() {
   display_updater = Time_Event_Init(100);
 
   vfdco_clock_lights_initializer();
+  vfdco_clock_display_initializer();
 }
 
 // Human interface device (Buttons) routine
@@ -60,10 +65,27 @@ void vfdco_clock_time_routine() {
   }
 }
 
+
+void vfdco_clock_display_initializer() {
+  GUI_Format_Time_Init(&global_gui_time_instance, 18, 0);
+  global_gui_instance = (struct GUI_Format *)&global_gui_time_instance;
+}
+
 // VFD display data render routine
 void vfdco_clock_display_routine() {
-  if(Time_Event_Update(&display_updater)) {
-    vfdco_display_render_time(&global_time, 0);
+  global_gui_instance->Update(global_gui_instance);
+
+  switch(global_button_F2_state) {
+    case BUTTON_STATE_SHORTPRESS: global_gui_instance->F2(global_gui_instance); break;
+    case BUTTON_STATE_LONGPRESS:  global_gui_instance->F2Var(global_gui_instance); break;
+  }
+  switch(global_button_F3_state) {
+    case BUTTON_STATE_SHORTPRESS: global_gui_instance->F3(global_gui_instance); break;
+    case BUTTON_STATE_LONGPRESS:  global_gui_instance->F3Var(global_gui_instance); break;
+  }
+  switch(global_button_F4_state) {
+    case BUTTON_STATE_SHORTPRESS: global_gui_instance->F4(global_gui_instance); break;
+    case BUTTON_STATE_LONGPRESS:  global_gui_instance->F4Var(global_gui_instance); break;
   }
 }
 
