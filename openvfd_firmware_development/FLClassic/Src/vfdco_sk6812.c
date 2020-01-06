@@ -56,10 +56,10 @@ inline void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, u
 	rgb_arr[4 * index + 3] = w;
 }
 inline void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
-	for(uint8_t i = 0; i < num_rgb; ++i) vfdco_clr_set_RGB(i, r, g, b);
+	for(uint_fast8_t i = 0; i < num_rgb; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
 inline void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-	for(uint8_t i = 0; i < num_rgb; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
+	for(uint_fast8_t i = 0; i < num_rgb; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
 }
 
 inline void vfdco_clr_render() {

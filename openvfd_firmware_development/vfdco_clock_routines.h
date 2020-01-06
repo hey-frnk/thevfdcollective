@@ -18,6 +18,18 @@ extern "C" {
 
 // How often should we ask the RTC what time it is? (Milliseconds)
 #define GLOBAL_TIME_UPDATE_INTERVAL 111
+#define GLOBAL_GUI_TIME_UPDATE_INTERVAL 18
+#define GLOBAL_GUI_DATE_UPDATE_INTERVAL 240
+
+// GUIs tell what kind of data will shuttle through the shift registers and the display render function(s) will render accordingly.
+typedef enum {
+  GUI_TIME,             // Display the current time (default of default)
+  GUI_DATE,             // Display the current date
+
+  GUI_STOPWATCH,        // Display stopwatch
+
+  GUI_TIME_DATE_SET     // Active when time set or date set is enabled
+} gui_instance_t;
 
 // Initialize function. Run first.
 void    vfdco_clock_initializer();

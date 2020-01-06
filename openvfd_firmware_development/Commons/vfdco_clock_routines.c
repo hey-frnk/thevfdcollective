@@ -14,8 +14,13 @@
 #include "../vfdco_time.h"
 #include "../vfdco_display.h"
 #include "../vfdco_gui.h"
+#include "../vfdco_sk6812.h"
 #include "../vfdco_color_lib.h"
 #include "../vfdco_lights.h"
+
+#ifndef DEBUG
+#include "stm32f0xx_hal.h"
+#endif
 
 // Globally accessible parameters
 vfdco_time_t global_time;
@@ -33,7 +38,35 @@ struct Light_Pattern *global_light_instance = NULL;
 struct Light_Pattern_Static global_static;
 
 struct GUI_Format *global_gui_instance = NULL;
-struct GUI_Format_Time global_gui_time_instance;
+gui_instance_t global_gui_instance_counter;
+
+void vfdco_welcome(char *message) {
+  uint8_t spaces = 0;                                                   // Empty spaces
+  for(uint_fast8_t i = 0; i < GLOBAL_NUM_DIGITS_NUM_PIXELS; i++) if(message[i] == ' ') spaces++;   // Count all spaces
+
+  uint8_t delayMatrix[][6] = {{30, 15, 15, 15, 15, 255},
+                              {30, 15, 15, 15, 255, 0},
+                              {30, 15, 15, 255, 0, 0},
+                              {30, 15, 255, 0, 0, 0},
+                              {30, 255, 0, 0, 0, 0},
+                              {255, 0, 0, 0, 0, 0}};
+
+  for(int k = 0; k < (GLOBAL_NUM_DIGITS_NUM_PIXELS - spaces); k++) {                         // k-th letter of message
+    for(int i = 0; i < (GLOBAL_NUM_DIGITS_NUM_PIXELS - k); i++) {                            // Let the letter slide in from the right to the next available position
+      char dPattern[GLOBAL_NUM_DIGITS_NUM_PIXELS];                                           // Define empty pattern
+      for(int j = 0; j < GLOBAL_NUM_DIGITS_NUM_PIXELS; j++) {
+        if(j >= k) dPattern[j] = ' ';                             // All j's larger than current k will be filled with empty spaces
+        else dPattern[j] = message[j];                            // If k has increased, fill letters already slided in in advance
+      }
+      dPattern[5 - i] = message[k];                               // Manipulate i-th filled empty pattern element with k-th letter of message
+      vfdco_display_render_message(dPattern, 0, delayMatrix[k][i]);   // Render the message with delay information
+    }
+  }
+
+  char empty[] = {' ', ' ', ' ', ' ', ' ', ' '};
+  vfdco_display_render_message(empty, 0, 400);
+  vfdco_display_render_message(message, 0, 1000);
+}
 
 void vfdco_clock_initializer() {
   // Initialize display and LEDs
@@ -45,6 +78,9 @@ void vfdco_clock_initializer() {
 
   vfdco_clock_lights_initializer();
   vfdco_clock_display_initializer();
+
+  char welcome[] = {'H', 'E', 'L', 'L', 'O', ' '};
+  vfdco_welcome(welcome);
 }
 
 // Human interface device (Buttons) routine
@@ -67,13 +103,74 @@ void vfdco_clock_time_routine() {
 
 
 void vfdco_clock_display_initializer() {
-  GUI_Format_Time_Init(&global_gui_time_instance, 18, 0);
-  global_gui_instance = (struct GUI_Format *)&global_gui_time_instance;
+  // Start by creating a time instance
+  struct GUI_Format_Time *initial_time = (struct GUI_Format_Time *)calloc(1, sizeof(struct GUI_Format_Time));
+  GUI_Format_Time_Init(initial_time, GLOBAL_GUI_TIME_UPDATE_INTERVAL, 0);
+
+  global_gui_instance = (struct GUI_Format *)initial_time;
+  global_gui_instance_counter = 0;
 }
 
 // VFD display data render routine
 void vfdco_clock_display_routine() {
-  global_gui_instance->Update(global_gui_instance);
+	global_gui_instance->Update(global_gui_instance);
+
+  if(global_button_F1_state == BUTTON_STATE_SHORTPRESS) {
+    global_gui_instance->Delete(global_gui_instance);
+    switch(global_gui_instance_counter) {
+      case GUI_TIME: {
+        struct GUI_Format_Date *gui_instance = (struct GUI_Format_Date *)calloc(1, sizeof(struct GUI_Format_Date));
+        GUI_Format_Date_Init(gui_instance, GLOBAL_GUI_DATE_UPDATE_INTERVAL, DATE_MODE_DDMMYY);
+        global_gui_instance = (struct GUI_Format *)gui_instance;
+        global_gui_instance_counter = GUI_DATE;
+        break;
+      }
+      case GUI_DATE: {
+        struct GUI_Format_Stopwatch *gui_instance = (struct GUI_Format_Stopwatch *)calloc(1, sizeof(struct GUI_Format_Stopwatch));
+        GUI_Format_Stopwatch_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL);
+        global_gui_instance = (struct GUI_Format *)gui_instance;
+        global_gui_instance_counter = GUI_STOPWATCH;
+        break;
+      }
+      case GUI_STOPWATCH: {
+        struct GUI_Format_Time *gui_instance = (struct GUI_Format_Time *)calloc(1, sizeof(struct GUI_Format_Time));
+        GUI_Format_Time_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL, 0);
+        global_gui_instance = (struct GUI_Format *)gui_instance;
+        global_gui_instance_counter = GUI_TIME;
+        break;
+      }
+      case GUI_TIME_DATE_SET: {
+        struct GUI_Format_Time *gui_instance = (struct GUI_Format_Time *)calloc(1, sizeof(struct GUI_Format_Time));
+        GUI_Format_Time_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL, 0);
+        global_gui_instance = (struct GUI_Format *)gui_instance;
+        global_gui_instance_counter = GUI_TIME;
+        break;
+      }
+      default: break;
+    }
+
+  } else if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
+    // To time set menu
+    global_gui_instance->Delete(global_gui_instance);
+
+    switch(global_gui_instance_counter) {
+      case GUI_TIME: {
+        struct GUI_Format_Time_Date_Setter *gui_instance = (struct GUI_Format_Time_Date_Setter *)calloc(1, sizeof(struct GUI_Format_Time_Date_Setter));
+        GUI_Format_Time_Date_Setter_Init(gui_instance, GLOBAL_GUI_DATE_UPDATE_INTERVAL, 0);
+        global_gui_instance = (struct GUI_Format *)gui_instance;
+        global_gui_instance_counter = GUI_TIME_DATE_SET;
+        break;
+      }
+      case GUI_DATE: {
+        struct GUI_Format_Time_Date_Setter *gui_instance = (struct GUI_Format_Time_Date_Setter *)calloc(1, sizeof(struct GUI_Format_Time_Date_Setter));
+        GUI_Format_Time_Date_Setter_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL, 1);
+        global_gui_instance = (struct GUI_Format *)gui_instance;
+        global_gui_instance_counter = GUI_TIME_DATE_SET;
+        break;
+      }
+      default: break;
+    }
+  }
 
   switch(global_button_F2_state) {
     case BUTTON_STATE_SHORTPRESS: global_gui_instance->F2(global_gui_instance); break;
@@ -90,6 +187,12 @@ void vfdco_clock_display_routine() {
 }
 
 void vfdco_clock_lights_initializer() {
+  vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+	#ifndef DEBUG
+  HAL_Delay(1);
+	#endif
+  vfdco_clr_render();
+
   Light_Pattern_Static_Init(&global_static);
   global_light_instance = (struct Light_Pattern *)&global_static;
 }

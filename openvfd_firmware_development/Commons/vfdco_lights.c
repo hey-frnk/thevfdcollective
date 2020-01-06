@@ -172,7 +172,7 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
   }
 
   char k[6] = {'C', 'H', 'A', 'N', 'G', 'E'};
-  vfdco_display_render_message(k, 0, 1000);
+  vfdco_display_render_message(k, 0, 200);
 }
 
 /**
