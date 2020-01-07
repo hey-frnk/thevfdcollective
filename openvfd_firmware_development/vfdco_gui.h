@@ -15,6 +15,7 @@ extern "C" {
 
 #include <stdint.h>
 #include "vfdco_time.h"
+#include "vfdco_hid.h"
 
 struct GUI_Format;
 struct GUI_Format_VTable {
@@ -31,13 +32,13 @@ struct GUI_Format_VTable {
 };
 
 struct GUI_Format {
-  void        (*F2)(struct GUI_Format *self);
-  void        (*F3)(struct GUI_Format *self);
-  void        (*F4)(struct GUI_Format *self);
+  vfdco_hid_action_status_t        (*F2)(struct GUI_Format *self);
+  vfdco_hid_action_status_t        (*F3)(struct GUI_Format *self);
+  vfdco_hid_action_status_t        (*F4)(struct GUI_Format *self);
 
-  void        (*F2Var)(struct GUI_Format *self);
-  void        (*F3Var)(struct GUI_Format *self);
-  void        (*F4Var)(struct GUI_Format *self);
+  vfdco_hid_action_status_t        (*F2Var)(struct GUI_Format *self);
+  vfdco_hid_action_status_t        (*F3Var)(struct GUI_Format *self);
+  vfdco_hid_action_status_t        (*F4Var)(struct GUI_Format *self);
 
   void        (*Update)(struct GUI_Format *self);
   void        (*Delete)(struct GUI_Format *self);

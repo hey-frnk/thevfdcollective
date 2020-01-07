@@ -84,13 +84,15 @@ static inline void _minimize_difference(uint8_t *target_arr) {
 /**
   * @brief  Implementation of virtual functions Light_Pattern::VTable (static void _Light_Pattern_F3)
 **/
-static inline void _Light_Pattern_F3(struct Light_Pattern *unsafe_self) {
- if(!unsafe_self->VTable.F3) return;
+static inline vfdco_hid_action_status_t _Light_Pattern_F3(struct Light_Pattern *unsafe_self) {
+ if(!unsafe_self->VTable.F3) return BUTTON_ACTION_NOT_PERFORMED;
  unsafe_self->VTable.F3(unsafe_self);
+ return BUTTON_ACTION_PERFORMED;
 }
-static inline void _Light_Pattern_F3Var(struct Light_Pattern *unsafe_self) {
- if(!unsafe_self->VTable.F3Var) return;
+static inline vfdco_hid_action_status_t _Light_Pattern_F3Var(struct Light_Pattern *unsafe_self) {
+ if(!unsafe_self->VTable.F3Var) return BUTTON_ACTION_NOT_PERFORMED;
  unsafe_self->VTable.F3Var(unsafe_self);
+ return BUTTON_ACTION_PERFORMED;
 }
 static inline void _Light_Pattern_Update(struct Light_Pattern *unsafe_self) {
  // if(!self->VTable.Update) return; Will make sure this never happens. Optimize for loop performance

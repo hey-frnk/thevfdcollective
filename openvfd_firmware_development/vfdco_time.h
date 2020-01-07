@@ -18,6 +18,11 @@
 #define DATE_MODE_DDMMYY 0
 #define DATE_MODE_MMDDYY 1
 
+// Returns milliseconds (GetTick/millis)
+uint32_t (*vfdco_time_get_milliseconds)(void);
+// Delay in milliseconds
+void (*vfdco_time_delay_milliseconds)(uint32_t);
+
 typedef struct vfdco_time {
   uint8_t h, m, s;
 } vfdco_time_t;

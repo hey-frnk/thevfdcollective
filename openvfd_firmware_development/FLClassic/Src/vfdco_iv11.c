@@ -98,7 +98,7 @@ void vfdco_display_render_message(const char *message, uint8_t decimal_dot_regis
     _rreg[num_digits - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
   vfdco_display_render_direct(_rreg);
-  HAL_Delay(delay);
+  vfdco_time_delay_milliseconds(delay);
 }
 
 void vfdco_display_render_direct(uint8_t *data) {

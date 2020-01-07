@@ -26,10 +26,10 @@
 vfdco_time_t global_time;
 vfdco_date_t global_date;
 
-uint8_t global_button_F1_state;
-uint8_t global_button_F2_state;
-uint8_t global_button_F3_state;
-uint8_t global_button_F4_state;
+uint8_t global_button_F1_state = BUTTON_STATE_OFF;
+uint8_t global_button_F2_state = BUTTON_STATE_OFF;
+uint8_t global_button_F3_state = BUTTON_STATE_OFF;
+uint8_t global_button_F4_state = BUTTON_STATE_OFF;
 
 time_event_t global_time_updater;
 time_event_t display_updater;
@@ -85,7 +85,6 @@ void vfdco_clock_initializer() {
 
 // Human interface device (Buttons) routine
 void vfdco_clock_hid_routine() {
-  // Poll button activity
   vfdco_hid_button_retrieve_all(
     &global_button_F1_state,
     &global_button_F2_state,
@@ -148,7 +147,7 @@ void vfdco_clock_display_routine() {
       }
       default: break;
     }
-
+    global_button_F1_state = BUTTON_STATE_OFF; // Priority clear
   } else if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
     // To time set menu
     global_gui_instance->Delete(global_gui_instance);
@@ -170,27 +169,38 @@ void vfdco_clock_display_routine() {
       }
       default: break;
     }
+    global_button_F1_state = BUTTON_STATE_OFF; // Priority clear
   }
 
   switch(global_button_F2_state) {
-    case BUTTON_STATE_SHORTPRESS: global_gui_instance->F2(global_gui_instance); break;
-    case BUTTON_STATE_LONGPRESS:  global_gui_instance->F2Var(global_gui_instance); break;
+    case BUTTON_STATE_SHORTPRESS:
+      if(global_gui_instance->F2(global_gui_instance) == BUTTON_ACTION_PERFORMED) global_button_F2_state = BUTTON_STATE_OFF;
+      break;
+    case BUTTON_STATE_LONGPRESS:
+      if(global_gui_instance->F2Var(global_gui_instance) == BUTTON_ACTION_PERFORMED) global_button_F2_state = BUTTON_STATE_OFF;
+      break;
   }
   switch(global_button_F3_state) {
-    case BUTTON_STATE_SHORTPRESS: global_gui_instance->F3(global_gui_instance); break;
-    case BUTTON_STATE_LONGPRESS:  global_gui_instance->F3Var(global_gui_instance); break;
+    case BUTTON_STATE_SHORTPRESS:
+      if(global_gui_instance->F3(global_gui_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      break;
+    case BUTTON_STATE_LONGPRESS:
+      if(global_gui_instance->F3Var(global_gui_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      break;
   }
   switch(global_button_F4_state) {
-    case BUTTON_STATE_SHORTPRESS: global_gui_instance->F4(global_gui_instance); break;
-    case BUTTON_STATE_LONGPRESS:  global_gui_instance->F4Var(global_gui_instance); break;
+    case BUTTON_STATE_SHORTPRESS:
+      if(global_gui_instance->F4(global_gui_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      break;
+    case BUTTON_STATE_LONGPRESS:
+      if(global_gui_instance->F4Var(global_gui_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      break;
   }
 }
 
 void vfdco_clock_lights_initializer() {
   vfdco_clr_set_all_RGBW(0, 0, 0, 0);
-	#ifndef DEBUG
-  HAL_Delay(1);
-	#endif
+	vfdco_time_delay_milliseconds(2);
   vfdco_clr_render();
 
   Light_Pattern_Static_Init(&global_static);
@@ -202,9 +212,14 @@ void vfdco_clock_lights_routine() {
   global_light_instance->Update(global_light_instance);
 
   switch(global_button_F3_state) {
-    case BUTTON_STATE_SHORTPRESS: global_light_instance->F3(global_light_instance); break;
-    case BUTTON_STATE_LONGPRESS:  global_light_instance->F3Var(global_light_instance); break;
-    default: break;
+    case BUTTON_STATE_SHORTPRESS:
+      if(global_light_instance->F3(global_light_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      break;
+    case BUTTON_STATE_LONGPRESS:
+      if(global_light_instance->F3Var(global_light_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      break;
+    default:
+      break;
   }
 }
 

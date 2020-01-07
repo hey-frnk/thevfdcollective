@@ -3,6 +3,11 @@
 
 #include <stdint.h>
 
+typedef enum {
+  BUTTON_ACTION_PERFORMED,      // If Class::F(x) is performed, status is set to BUTTON_ACTION_PERFORMED
+  BUTTON_ACTION_NOT_PERFORMED   // If Class::F(x) is null, status is set to BUTTON_ACTION_NOT_PERFORMED
+} vfdco_hid_action_status_t;
+
 #define   BUTTON_STATE_OFF         0b00000000
 #define   BUTTON_STATE_SHORTPRESS  0b00000001
 #define   BUTTON_STATE_LONGPRESS   0b00000010

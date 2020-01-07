@@ -16,6 +16,7 @@
 
 #include "vfdco_color_lib.h"
 #include "vfdco_time.h"
+#include "vfdco_hid.h"
 #include <stdint.h>
 
 #define   NUM_STATIC_COLOR_SPECIAL    3
@@ -50,8 +51,8 @@ struct Light_Pattern_VTable {
 **/
 struct Light_Pattern {
   // VTable (virtual) functions
-  void                  (*F3)               (struct Light_Pattern *unsafe_self);
-  void                  (*F3Var)            (struct Light_Pattern *unsafe_self);
+  vfdco_hid_action_status_t                  (*F3)               (struct Light_Pattern *unsafe_self);
+  vfdco_hid_action_status_t                  (*F3Var)            (struct Light_Pattern *unsafe_self);
   void                  (*Update)           (struct Light_Pattern *unsafe_self);
   void                  (*Hello)            (struct Light_Pattern *unsafe_self);
   void                  (*Delete)           (struct Light_Pattern *unsafe_self);

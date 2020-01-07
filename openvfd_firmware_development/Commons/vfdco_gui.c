@@ -18,10 +18,10 @@
 extern vfdco_time_t global_time;
 extern vfdco_date_t global_date;
 
-extern uint8_t global_button_F1_state;
+/*extern uint8_t global_button_F1_state;
 extern uint8_t global_button_F2_state;
 extern uint8_t global_button_F3_state;
-extern uint8_t global_button_F4_state;
+extern uint8_t global_button_F4_state;*/
 
 static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
   800,
@@ -31,12 +31,12 @@ static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
 };
 
 // Virtual function implementation
-static inline void _GUI_Format_F2(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F2) return; unsafe_self->VTable.F2(unsafe_self); }
-static inline void _GUI_Format_F3(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F3) return; unsafe_self->VTable.F3(unsafe_self); }
-static inline void _GUI_Format_F4(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F4) return; unsafe_self->VTable.F4(unsafe_self); }
-static inline void _GUI_Format_F2Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F2Var) return; unsafe_self->VTable.F2Var(unsafe_self); }
-static inline void _GUI_Format_F3Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F3Var) return; unsafe_self->VTable.F3Var(unsafe_self); }
-static inline void _GUI_Format_F4Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F4Var) return; unsafe_self->VTable.F4Var(unsafe_self); }
+static inline vfdco_hid_action_status_t _GUI_Format_F2(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F2) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F2(unsafe_self); return BUTTON_ACTION_PERFORMED;}
+static inline vfdco_hid_action_status_t _GUI_Format_F3(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F3) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F3(unsafe_self); return BUTTON_ACTION_PERFORMED;}
+static inline vfdco_hid_action_status_t _GUI_Format_F4(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F4) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F4(unsafe_self); return BUTTON_ACTION_PERFORMED;}
+static inline vfdco_hid_action_status_t _GUI_Format_F2Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F2Var) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F2Var(unsafe_self); return BUTTON_ACTION_PERFORMED;}
+static inline vfdco_hid_action_status_t _GUI_Format_F3Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F3Var) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F3Var(unsafe_self); return BUTTON_ACTION_PERFORMED;}
+static inline vfdco_hid_action_status_t _GUI_Format_F4Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F4Var) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F4Var(unsafe_self); return BUTTON_ACTION_PERFORMED;}
 static inline void _GUI_Format_Update(struct GUI_Format *unsafe_self) { unsafe_self->VTable.Update(unsafe_self); }
 static inline void _GUI_Format_Delete(struct GUI_Format *unsafe_self) { unsafe_self->VTable.Delete(unsafe_self); }
 
@@ -218,9 +218,6 @@ static void _GUI_Format_Time_Date_Setter_Update(struct GUI_Format *unsafe_self) 
 static void _GUI_Format_Time_Date_Setter_F2(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
 
-  // Priority clear F4
-  global_button_F2_state = BUTTON_STATE_OFF;
-
   // Short press on F2 changes the active parameter (h/m/s)
   ++self->active_digit;
   if(self->active_digit == 3) self->active_digit = 0;
@@ -228,9 +225,6 @@ static void _GUI_Format_Time_Date_Setter_F2(struct GUI_Format *unsafe_self) {
 
 static void _GUI_Format_Time_Date_Setter_F3(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
-
-  // Priority clear F3
-  global_button_F3_state = BUTTON_STATE_OFF;
 
   // Short press on F3 decreases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
@@ -269,8 +263,6 @@ static void _GUI_Format_Time_Date_Setter_F3(struct GUI_Format *unsafe_self) {
 
 static void _GUI_Format_Time_Date_Setter_F4(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
-  // Priority clear F4
-  global_button_F4_state = BUTTON_STATE_OFF;
 
   // Short press on F4 increases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
@@ -372,9 +364,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
       } else {
         char digits[6];
         uint8_t running_millis = ((self->elapsed_milliseconds +
-          #ifndef DEBUG
-          HAL_GetTick() -
-          #endif
+          vfdco_time_get_milliseconds() -
           self->initial_milliseconds) % 1000) / 10;
         digits[0] = (running_time / 60 % 60) / 10;
         digits[1] = (running_time / 60 % 60) % 10;
@@ -417,9 +407,6 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
 static void _GUI_Format_Stopwatch_F2(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
 
-  // Priority clear F2
-  global_button_F2_state = BUTTON_STATE_OFF;
-
   // Initialize
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
     if(!self->initial_time) {
@@ -429,7 +416,7 @@ static void _GUI_Format_Stopwatch_F2(struct GUI_Format *unsafe_self) {
       self->initial_time->s = global_time.s;
     }
     #ifndef DEBUG // Needs platform independency
-    self->initial_milliseconds = HAL_GetTick();
+    self->initial_milliseconds = vfdco_time_get_milliseconds();
     #endif
 
     self->elapsed_time = 0;
@@ -453,9 +440,6 @@ static void _GUI_Format_Stopwatch_F2(struct GUI_Format *unsafe_self) {
 static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
 
-  // Priority clear F3
-  global_button_F3_state = BUTTON_STATE_OFF;
-
   // Pause
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_RUNNING) {
     // Save seconds
@@ -464,11 +448,7 @@ static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
       (self->initial_time->h * 3600 + self->initial_time->m * 60 + self->initial_time->s);
 
     // Save milliseconds
-    self->elapsed_milliseconds +=
-      #ifndef DEBUG
-      HAL_GetTick() -
-      #endif
-      self->initial_milliseconds;
+    self->elapsed_milliseconds += vfdco_time_get_milliseconds() - self->initial_milliseconds;
     self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_PAUSED;
 
   }
@@ -479,7 +459,7 @@ static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
     self->initial_time->m = global_time.m;
     self->initial_time->s = global_time.s;
     #ifndef DEBUG
-    self->initial_milliseconds = HAL_GetTick();
+    self->initial_milliseconds = vfdco_time_get_milliseconds();
     #endif
     self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_RUNNING;
   }
