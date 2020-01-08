@@ -61,16 +61,16 @@ static void _GUI_Format_Time_Update(struct GUI_Format *unsafe_self) {
 
   if(Time_Event_Update(&unsafe_self->update_timer)) {
     if(self->dot_mode == 0) { // Standard
-      if      (self->dot_position == 0) vfdco_display_render_time(&global_time, 0b00010100);
-      else if (self->dot_position == 1) vfdco_display_render_time(&global_time, 0b00000000);
+      if      (self->dot_position == 0) vfdco_display_render_time(&global_time, 0b00010100, self->time_mode);
+      else if (self->dot_position == 1) vfdco_display_render_time(&global_time, 0b00000000, self->time_mode);
       else    self->dot_position = 0; // Reset
     }
     else if(self->dot_mode == 1) { // Converge
       switch (self->dot_position) {
-        case 0: vfdco_display_render_time(&global_time, 0b00100001); break;
-        case 1: vfdco_display_render_time(&global_time, 0b00010010); break;
-        case 2: vfdco_display_render_time(&global_time, 0b00001100); break;
-        case 3: vfdco_display_render_time(&global_time, 0b00010010); break;
+        case 0: vfdco_display_render_time(&global_time, 0b00100001, self->time_mode); break;
+        case 1: vfdco_display_render_time(&global_time, 0b00010010, self->time_mode); break;
+        case 2: vfdco_display_render_time(&global_time, 0b00001100, self->time_mode); break;
+        case 3: vfdco_display_render_time(&global_time, 0b00010010, self->time_mode); break;
         default: self->dot_position = 0;
       }
     }
@@ -84,15 +84,15 @@ static void _GUI_Format_Time_Update(struct GUI_Format *unsafe_self) {
       }
 
       if(self->dot_direction & 0x01) { // odd: r->l
-        if(self->dot_position < 5) vfdco_display_render_time(&global_time, 1 << self->dot_position);
-        else                       vfdco_display_render_time(&global_time, 0b00100000); // Leftmost static
+        if(self->dot_position < 5) vfdco_display_render_time(&global_time, 1 << self->dot_position, self->time_mode);
+        else                       vfdco_display_render_time(&global_time, 0b00100000, self->time_mode); // Leftmost static
       } else {
-        if(self->dot_position < 5) vfdco_display_render_time(&global_time, 0b00100000 >> self->dot_position);
-        else                       vfdco_display_render_time(&global_time, 0b00000001); // Rightmost static
+        if(self->dot_position < 5) vfdco_display_render_time(&global_time, 0b00100000 >> self->dot_position, self->time_mode);
+        else                       vfdco_display_render_time(&global_time, 0b00000001, self->time_mode); // Rightmost static
       }
     }
     else if(self->dot_mode == 3) {
-      vfdco_display_render_time(&global_time, 0);
+      vfdco_display_render_time(&global_time, 0, self->time_mode);
     }
   }
 }
@@ -109,13 +109,35 @@ static void _GUI_Format_Time_F4(struct GUI_Format *unsafe_self) {
   self->dot_timer = Time_Event_Init(GUI_Format_Time_Dot_Intervals[self->dot_mode]);
 }
 
+static void _GUI_Format_Time_F4Var(struct GUI_Format *unsafe_self) {
+  struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
+
+  if(self->time_mode == TIME_FORMAT_24H) {
+    self->time_mode = TIME_FORMAT_12H;
+    char _message[6] = {1, 2, 'H', ' ', ' ', ' '};
+    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+  }
+  else if(self->time_mode == TIME_FORMAT_12H) {
+    self->time_mode = TIME_FORMAT_12H_NO_LZ;
+    char _message[6] = {1, 2, 'H', ' ', 'N', 0};
+    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+  }
+  else {
+    self->time_mode = TIME_FORMAT_24H;
+    char _message[6] = {2, 4, 'H', ' ', ' ', ' '};
+    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+  }
+}
+
 void _GUI_Format_Time_Delete(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
   free(self);
 }
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, uint8_t dot_mode) {
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, time_format_t time_mode, uint8_t dot_mode) {
   GUI_Format_Init(&self->super, update_timer_interval);
+
+  self->time_mode = time_mode;
 
   self->dot_mode = dot_mode;
   self->dot_position = 0;
@@ -128,7 +150,7 @@ void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_time
     .F4 = _GUI_Format_Time_F4,
     .F2Var = NULL,
     .F3Var = NULL,
-    .F4Var = NULL,
+    .F4Var = _GUI_Format_Time_F4Var,
     .Update = _GUI_Format_Time_Update,
     .Delete = _GUI_Format_Time_Delete
   };
@@ -147,8 +169,16 @@ static void _GUI_Format_Date_Update(struct GUI_Format *unsafe_self) {
 static void _GUI_Format_Date_F4Var(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
 
-  if(self->date_mode == DATE_MODE_DDMMYY) self->date_mode = DATE_MODE_MMDDYY;
-  else self->date_mode = DATE_MODE_DDMMYY;
+  if(self->date_mode == DATE_FORMAT_DDMMYY) {
+    self->date_mode = DATE_FORMAT_MMDDYY;
+    char _message[6] = {'D', ' ', ' ', 'G', 'E', 'R'};
+    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+  }
+  else {
+    self->date_mode = DATE_FORMAT_DDMMYY;
+    char _message[6] = {'D', ' ', 'I', 'N', 'T', 'L'};
+    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+  }
 }
 
 void _GUI_Format_Date_Delete(struct GUI_Format *unsafe_self) {
@@ -156,7 +186,7 @@ void _GUI_Format_Date_Delete(struct GUI_Format *unsafe_self) {
   free(self);
 }
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, uint_fast8_t date_mode) {
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, date_format_t date_mode) {
   GUI_Format_Init(&self->super, update_timer_interval);
 
   self->date_mode = date_mode;
@@ -360,7 +390,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
           .m = running_time / 60 % 60,
           .s = running_time % 60
         };
-        vfdco_display_render_time(&new_time, 0);
+        vfdco_display_render_time(&new_time, 0, TIME_FORMAT_24H);
       } else {
         char digits[6];
         uint8_t running_millis = ((self->elapsed_milliseconds +
@@ -387,7 +417,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
           .s = elapsed_time % 60
         };
 
-        vfdco_display_render_time(&new_time, 0);
+        vfdco_display_render_time(&new_time, 0, TIME_FORMAT_24H);
       } else {
         char digits[6];
         uint8_t running_millis = (self->elapsed_milliseconds % 1000) / 10;

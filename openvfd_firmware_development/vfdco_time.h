@@ -15,8 +15,18 @@
 
 #include <stdint.h>
 
-#define DATE_MODE_DDMMYY 0
-#define DATE_MODE_MMDDYY 1
+// Time format 12h or 24h
+typedef enum {
+  TIME_FORMAT_24H       = 0,
+  TIME_FORMAT_12H       = 1,
+  TIME_FORMAT_12H_NO_LZ = 2 // No leading zero between 1-11 pm
+} time_format_t;
+
+// Date format DD.MM.YY or MM.DD.YY
+typedef enum {
+  DATE_FORMAT_DDMMYY = 0,
+  DATE_FORMAT_MMDDYY = 1
+} date_format_t;
 
 // Returns milliseconds (GetTick/millis)
 uint32_t (*vfdco_time_get_milliseconds)(void);

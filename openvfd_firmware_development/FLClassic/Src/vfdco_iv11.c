@@ -62,23 +62,34 @@ uint8_t vfdco_display_char_convert(char input) {
 // Decimal dot overlay function: uint8_t decimal_dot_register
 // [ reserved | reserved | dot5. | dot4. | dot3. | dot2. | dot1. | dot0. ]
 // 7                                                                     0
-void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register) {
+void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register, time_format_t time_mode) {
+  uint8_t _hour = time->h; // 12h fix
+  if(time_mode != TIME_FORMAT_24H) {
+    if       (_hour > 12) _hour -= 12; // 12h offset
+    else if  (_hour == 0) _hour  = 12; // 12 AM fix
+  }
+
   uint8_t _rreg[num_digits];
   _rreg[0] = vfdco_display_char_convert(time->s % 10) | ( decimal_dot_register       & 0x01);
   _rreg[1] = vfdco_display_char_convert(time->s / 10) | ((decimal_dot_register >> 1) & 0x01);
   _rreg[2] = vfdco_display_char_convert(time->m % 10) | ((decimal_dot_register >> 2) & 0x01);
   _rreg[3] = vfdco_display_char_convert(time->m / 10) | ((decimal_dot_register >> 3) & 0x01);
-  _rreg[4] = vfdco_display_char_convert(time->h % 10) | ((decimal_dot_register >> 4) & 0x01);
-  _rreg[5] = vfdco_display_char_convert(time->h / 10) | ((decimal_dot_register >> 5) & 0x01);
+  _rreg[4] = vfdco_display_char_convert(  _hour % 10) | ((decimal_dot_register >> 4) & 0x01);
+  _rreg[5] = vfdco_display_char_convert(  _hour / 10) | ((decimal_dot_register >> 5) & 0x01);
+
+  // Remove leading zero
+  if(time_mode == TIME_FORMAT_12H_NO_LZ) {
+    if(time->h > 12 && time->h < 22) _rreg[5] &= 0x01;
+  }
   vfdco_display_render_direct(_rreg);
 }
 
-void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register, uint_fast8_t date_mode) {
+void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register, date_format_t date_mode) {
   uint8_t _rreg[num_digits];
   _rreg[0] = vfdco_display_char_convert(date->y % 10) | (decimal_dot_register & 0x01);
   _rreg[1] = vfdco_display_char_convert((date->y % 100) / 10) | ((decimal_dot_register >> 1) & 0x01);
 
-  if(date_mode == DATE_MODE_DDMMYY) {
+  if(date_mode == DATE_FORMAT_DDMMYY) {
     _rreg[2] = vfdco_display_char_convert(date->m % 10) | ((decimal_dot_register >> 2) & 0x01);
     _rreg[3] = vfdco_display_char_convert(date->m / 10) | ((decimal_dot_register >> 3) & 0x01);
     _rreg[4] = vfdco_display_char_convert(date->d % 10) | ((decimal_dot_register >> 4) & 0x01);

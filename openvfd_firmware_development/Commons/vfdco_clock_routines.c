@@ -104,7 +104,7 @@ void vfdco_clock_time_routine() {
 void vfdco_clock_display_initializer() {
   // Start by creating a time instance
   struct GUI_Format_Time *initial_time = (struct GUI_Format_Time *)calloc(1, sizeof(struct GUI_Format_Time));
-  GUI_Format_Time_Init(initial_time, GLOBAL_GUI_TIME_UPDATE_INTERVAL, 0);
+  GUI_Format_Time_Init(initial_time, GLOBAL_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
 
   global_gui_instance = (struct GUI_Format *)initial_time;
   global_gui_instance_counter = 0;
@@ -119,7 +119,7 @@ void vfdco_clock_display_routine() {
     switch(global_gui_instance_counter) {
       case GUI_TIME: {
         struct GUI_Format_Date *gui_instance = (struct GUI_Format_Date *)calloc(1, sizeof(struct GUI_Format_Date));
-        GUI_Format_Date_Init(gui_instance, GLOBAL_GUI_DATE_UPDATE_INTERVAL, DATE_MODE_DDMMYY);
+        GUI_Format_Date_Init(gui_instance, GLOBAL_GUI_DATE_UPDATE_INTERVAL, DATE_FORMAT_DDMMYY);
         global_gui_instance = (struct GUI_Format *)gui_instance;
         global_gui_instance_counter = GUI_DATE;
         break;
@@ -133,14 +133,14 @@ void vfdco_clock_display_routine() {
       }
       case GUI_STOPWATCH: {
         struct GUI_Format_Time *gui_instance = (struct GUI_Format_Time *)calloc(1, sizeof(struct GUI_Format_Time));
-        GUI_Format_Time_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL, 0);
+        GUI_Format_Time_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
         global_gui_instance = (struct GUI_Format *)gui_instance;
         global_gui_instance_counter = GUI_TIME;
         break;
       }
       case GUI_TIME_DATE_SET: {
         struct GUI_Format_Time *gui_instance = (struct GUI_Format_Time *)calloc(1, sizeof(struct GUI_Format_Time));
-        GUI_Format_Time_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL, 0);
+        GUI_Format_Time_Init(gui_instance, GLOBAL_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
         global_gui_instance = (struct GUI_Format *)gui_instance;
         global_gui_instance_counter = GUI_TIME;
         break;

@@ -17,6 +17,9 @@ extern "C" {
 #include "vfdco_time.h"
 #include "vfdco_hid.h"
 
+#define GUI_MESSAGE_SHORT   250
+#define GUI_MESSAGE_LONG    1000
+
 struct GUI_Format;
 struct GUI_Format_VTable {
   void        (*F2)(struct GUI_Format *self);
@@ -53,6 +56,8 @@ void GUI_Format_Init(struct GUI_Format *self, uint_fast8_t update_timer_interval
 struct GUI_Format_Time {
   struct GUI_Format super;
 
+  time_format_t     time_mode;
+
   // Internal
   uint_fast8_t      dot_mode;
   uint8_t           dot_position;
@@ -60,16 +65,16 @@ struct GUI_Format_Time {
   time_event_t      dot_timer;
 };
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, uint8_t dot_mode);
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, time_format_t time_mode, uint8_t dot_mode);
 
 // Date Class
 struct GUI_Format_Date {
   struct GUI_Format super;
 
-  uint_fast8_t      date_mode;
+  date_format_t      date_mode;
 };
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, uint_fast8_t date_mode);
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, date_format_t date_mode);
 
 
 // Time Setter
@@ -102,7 +107,6 @@ struct GUI_Format_Stopwatch {
   struct GUI_Format super;
 
   uint_fast8_t      stopwatch_state;
-
 
   vfdco_time_t      *initial_time;
   uint32_t          elapsed_time;
