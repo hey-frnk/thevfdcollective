@@ -300,7 +300,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
 
   uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
 
-  uint8_t i_h, i_s, i_l;
+  uint8_t i_h = 0, i_s = 0, i_l = 0;
   // State FSM output
   if(self->state == LED_COLOR_STATE_FADE_IN) {
     // Pick up first pix as target

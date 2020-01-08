@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file     vfdco_sk6812.h
+  * @file     vfdco_led.h
   * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
   * @version  V1.0
   * @date     20-November-2019
@@ -9,7 +9,7 @@
   * @toc      Table of contents, enter to navigate:
   ******************************************************************************
  **/
-#include "../vfdco_sk6812.h"
+#include "../vfdco_led.h"
 #include <stdlib.h>
 #include <stdio.h>
 

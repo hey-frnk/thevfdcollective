@@ -44,7 +44,7 @@ extern "C" {
             the color lib will work, when every declaration here is implemented in the driver
  **/
 // #include <vfdco_ws2812b.h>
-// #include <vfdco_sk6812.h>
+// #include <vfdco_led.h>
 
 // #define HARDWARE_OPTION_WS2812B
 #define HARDWARE_OPTION_SK6812

@@ -5,7 +5,7 @@
  *      Author: HARDWARECOP
  */
 
-#include "../../vfdco_sk6812.h"
+#include "../../vfdco_led.h"
 #include <stdlib.h>
 #include <string.h>
 #include "stm32f0xx_hal.h"

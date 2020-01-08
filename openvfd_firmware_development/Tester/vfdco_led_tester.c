@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "../vfdco_sk6812.h"
+#include "../vfdco_led.h"
 #include "../vfdco_color_lib.h"
 #include "../vfdco_lights.h"
 #include "../vfdco_display.h"

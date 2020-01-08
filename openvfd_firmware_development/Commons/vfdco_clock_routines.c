@@ -14,7 +14,7 @@
 #include "../vfdco_time.h"
 #include "../vfdco_display.h"
 #include "../vfdco_gui.h"
-#include "../vfdco_sk6812.h"
+#include "../vfdco_led.h"
 #include "../vfdco_color_lib.h"
 #include "../vfdco_lights.h"
 

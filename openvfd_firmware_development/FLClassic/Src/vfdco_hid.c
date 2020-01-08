@@ -20,9 +20,8 @@ static inline uint8_t _vfdco_hid_button_mapper(uint16_t GPIO_Pin) {
 
 void _vfdco_hid_button_set(uint16_t count, uint8_t button) {
 	uint8_t mask = BUTTON_STATE_SHORTPRESS;
-	if(count < 100) mask = BUTTON_STATE_OFF;
-	else if(count > 700)
-		mask = BUTTON_STATE_LONGPRESS;
+	if      (count < BUTTON_SHORTPRESS_THRESHOLD) mask = BUTTON_STATE_OFF;
+	else if (count > BUTTON_LONGPRESS_THRESHOLD)  mask = BUTTON_STATE_LONGPRESS;
 
 	buttonRegister |= (mask << (button << 1));
 }

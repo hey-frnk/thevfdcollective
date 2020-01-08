@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file     vfdco_sk6812.h
+  * @file     vfdco_led.h
   * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
   * @version  V1.0
   * @date     20-November-2019
@@ -14,8 +14,8 @@
 extern "C" {
 #endif
 
-#ifndef _VFDCO_SK6812
-#define _VFDCO_SK6812
+#ifndef _VFDCO_LED_DRIVER
+#define _VFDCO_LED_DRIVER
 
 #include <stdint.h>
 
