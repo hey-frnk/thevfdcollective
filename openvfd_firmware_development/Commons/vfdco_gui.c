@@ -114,17 +114,17 @@ static void _GUI_Format_Time_F4Var(struct GUI_Format *unsafe_self) {
 
   if(self->time_mode == TIME_FORMAT_24H) {
     self->time_mode = TIME_FORMAT_12H;
-    char _message[6] = {1, 2, 'H', ' ', ' ', ' '};
+    char _message[GUI_MESSAGE_LENGTH] = {1, 2, 'H', ' ', ' ', ' '};
     vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
   }
   else if(self->time_mode == TIME_FORMAT_12H) {
     self->time_mode = TIME_FORMAT_12H_NO_LZ;
-    char _message[6] = {1, 2, 'H', ' ', 'N', 0};
+    char _message[GUI_MESSAGE_LENGTH] = {1, 2, 'H', ' ', 'N', 0};
     vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
   }
   else {
     self->time_mode = TIME_FORMAT_24H;
-    char _message[6] = {2, 4, 'H', ' ', ' ', ' '};
+    char _message[GUI_MESSAGE_LENGTH] = {2, 4, 'H', ' ', ' ', ' '};
     vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
   }
 }
@@ -171,12 +171,12 @@ static void _GUI_Format_Date_F4Var(struct GUI_Format *unsafe_self) {
 
   if(self->date_mode == DATE_FORMAT_DDMMYY) {
     self->date_mode = DATE_FORMAT_MMDDYY;
-    char _message[6] = {'D', ' ', ' ', 'G', 'E', 'R'};
+    char _message[GUI_MESSAGE_LENGTH] = {'D', ' ', ' ', 'G', 'E', 'R'};
     vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
   }
   else {
     self->date_mode = DATE_FORMAT_DDMMYY;
-    char _message[6] = {'D', ' ', 'I', 'N', 'T', 'L'};
+    char _message[GUI_MESSAGE_LENGTH] = {'D', ' ', 'I', 'N', 'T', 'L'};
     vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
   }
 }
@@ -347,7 +347,7 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
   self->blank_active = 0;
   self->active_digit = 0;
 
-  self->blank_alt_message = calloc(6, sizeof(char));
+  self->blank_alt_message = calloc(GUI_MESSAGE_LENGTH, sizeof(char));
   self->blank_timer = Time_Event_Init(500);
 
   self->new_time = global_time;
@@ -374,7 +374,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
 
   if(Time_Event_Update(&unsafe_self->update_timer)) {
     if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
-      char zeros[6] = {0};
+      char zeros[GUI_MESSAGE_LENGTH] = {0};
       vfdco_display_render_message(zeros, 0b000010100, 0);
     }
 
@@ -392,7 +392,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
         };
         vfdco_display_render_time(&new_time, 0, TIME_FORMAT_24H);
       } else {
-        char digits[6];
+        char digits[GUI_MESSAGE_LENGTH];
         uint8_t running_millis = ((self->elapsed_milliseconds +
           vfdco_time_get_milliseconds() -
           self->initial_milliseconds) % 1000) / 10;
@@ -419,7 +419,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
 
         vfdco_display_render_time(&new_time, 0, TIME_FORMAT_24H);
       } else {
-        char digits[6];
+        char digits[GUI_MESSAGE_LENGTH];
         uint8_t running_millis = (self->elapsed_milliseconds % 1000) / 10;
         digits[0] = (elapsed_time / 60 % 60) / 10;
         digits[1] = (elapsed_time / 60 % 60) % 10;

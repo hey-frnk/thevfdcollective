@@ -19,6 +19,9 @@
 #include "vfdco_hid.h"
 #include <stdint.h>
 
+// If legacy patterns are enabled, the color modes are just like in v2.x
+#define   LEGACY_LIGHT_PATTERNS       1
+
 #define   NUM_STATIC_COLOR_SPECIAL    3
 #define   NUM_STATIC_COLOR_HUES       8
 #define   NUM_STATIC_COLOR_RAINBOWS   2
@@ -30,6 +33,10 @@
 #define   NUM_STATIC_T4               (NUM_STATIC_T3 + NUM_STATIC_COLOR_PRESETS)
 
 #define   SINGLE_COLOR_FADE_SPEED     2
+#define   SPECTRUM_FADE_SPEED         60
+
+enum {LIGHTNESS_H  = 127,   LIGHTNESS_M  = 90,   LIGHTNESS_L  = 50    };
+enum {SATURATION_H = 255,   SATURATION_M = 196,  SATURATION_L = 127   };
 
 /** Begin of:
  * @toc SECTION_LED_COLOR_MODE
@@ -51,11 +58,11 @@ struct Light_Pattern_VTable {
 **/
 struct Light_Pattern {
   // VTable (virtual) functions
-  vfdco_hid_action_status_t                  (*F3)               (struct Light_Pattern *unsafe_self);
-  vfdco_hid_action_status_t                  (*F3Var)            (struct Light_Pattern *unsafe_self);
-  void                  (*Update)           (struct Light_Pattern *unsafe_self);
-  void                  (*Hello)            (struct Light_Pattern *unsafe_self);
-  void                  (*Delete)           (struct Light_Pattern *unsafe_self);
+  vfdco_hid_action_status_t   (*F3)               (struct Light_Pattern *unsafe_self);
+  vfdco_hid_action_status_t   (*F3Var)            (struct Light_Pattern *unsafe_self);
+  void                        (*Update)           (struct Light_Pattern *unsafe_self);
+  void                        (*Hello)            (struct Light_Pattern *unsafe_self);
+  void                        (*Delete)           (struct Light_Pattern *unsafe_self);
 
   struct Light_Pattern_VTable VTable;
 };
@@ -87,6 +94,67 @@ struct Light_Pattern_Static {
  **/
 void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
 
+
+/** Begin of:
+  * @toc
+ **/
+/**
+  * @brief  Definition of Light_Pattern_Spectrum class
+ **/
+struct Light_Pattern_Spectrum {
+  struct Light_Pattern super;
+
+  hsl_t                **color;
+  struct LED_Color     *spectrum_fader;
+};
+
+/**
+  * @brief  Constructor of Light_Pattern_Spectrum class
+ **/
+void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self);
+
+
+/** Begin of:
+  * @toc
+ **/
+/**
+  * @brief  Definition of Light_Pattern_Rainbow class
+ **/
+struct Light_Pattern_Rainbow {
+  struct Light_Pattern super;
+
+  hsl_t                **color;
+  struct LED_Color     *rainbow_fader;
+};
+
+/**
+  * @brief  Constructor of Light_Pattern_Rainbow class
+ **/
+void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self);
+
+
+/** Begin of:
+  * @toc
+ **/
+/**
+  * @brief  Definition of Light_Pattern_Chase class
+ **/
+struct Light_Pattern_Chase {
+  struct Light_Pattern super;
+
+  uint_fast8_t         chase_mode;
+  uint8_t              flip_timer_previous_second;
+  vfdco_time_t         *flip_timer;
+
+  hsl_t                *color;
+  hsl_d_t              diff_color;
+  struct LED_Color     *chase_fader;
+};
+
+/**
+  * @brief  Constructor of Light_Pattern_Chase class
+ **/
+void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *time, uint_fast8_t chase_mode);
 
 
 /** Begin of:

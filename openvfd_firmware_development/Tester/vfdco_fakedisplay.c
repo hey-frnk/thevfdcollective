@@ -9,6 +9,7 @@
 #include "../vfdco_display.h"
 #include "../vfdco_time.h"
 #include <stdio.h>
+#include <string.h>
 
 uint8_t     num_digits = 0;
 
@@ -111,6 +112,28 @@ void vfdco_display_render_message(const char *message, uint8_t decimal_dot_regis
   printf("Delay of %hu milliseconds by message\n", delay);
 }
 
+void _reverse(char *str) { // copypasta https://codingpuzzles.com/reverse-a-null-terminated-string-in-c-or-c-59acaca9b1f9
+   char* end = str;
+   char tmp;
+   if (str) {
+      while (*end) { /* find end of the string */
+         ++end;
+      }
+      --end; /* set one char back, since
+             last char is null */
+      /* swap characters from start of string
+       *  with the end of the
+       *  string, until the pointers
+       *  meet in middle.
+       */
+       while (str < end) {
+          tmp = *str;
+          *str++ = *end;
+          *end-- = tmp;
+       }
+    }
+ }
+
 void vfdco_display_render_direct(uint8_t *data) {
   // Five lines
   char seg_h_on[]  = "---";
@@ -126,29 +149,29 @@ void vfdco_display_render_direct(uint8_t *data) {
 
   // Segment a
   printf("\n ");
-  for(uint_fast8_t i = 0; i < num_digits; ++i)
+  for(int_fast8_t i = num_digits - 1; i >= 0; --i)
     printf("%s    ", ((data[i] >> 7) & 0x01) ? seg_h_on : seg_h_off);
   printf("\n");
 
   // Segment b, f
-  for(uint_fast8_t i = 0; i < num_digits; ++i)
-    printf("%s   %s  ", ((data[i] >> 6) & 0x01) ? seg_v_on : seg_v_off, ((data[i] >> 2) & 0x01) ? seg_v_on : seg_v_off);
+  for(int_fast8_t i = num_digits - 1; i >= 0; --i)
+    printf("%s   %s  ", ((data[i] >> 2) & 0x01) ? seg_v_on : seg_v_off, ((data[i] >> 6) & 0x01) ? seg_v_on : seg_v_off);
   printf("\n");
 
   // Segment g
   printf(" ");
-  for(uint_fast8_t i = 0; i < num_digits; ++i)
+  for(int_fast8_t i = num_digits - 1; i >= 0; --i)
     printf("%s    ", ((data[i] >> 1) & 0x01) ? seg_h_on : seg_h_off);
   printf("\n");
 
   // Segment c, e
-  for(uint_fast8_t i = 0; i < num_digits; ++i)
-    printf("%s   %s  ", ((data[i] >> 5) & 0x01) ? seg_v_on : seg_v_off, ((data[i] >> 3) & 0x01) ? seg_v_on : seg_v_off);
+  for(int_fast8_t i = num_digits - 1; i >= 0; --i)
+    printf("%s   %s  ", ((data[i] >> 3) & 0x01) ? seg_v_on : seg_v_off, ((data[i] >> 5) & 0x01) ? seg_v_on : seg_v_off);
   printf("\n");
 
   // Segment d
   printf(" ");
-  for(uint_fast8_t i = 0; i < num_digits; ++i)
+  for(int_fast8_t i = num_digits - 1; i >= 0; --i)
     printf("%s    ", ((data[i] >> 4) & 0x01) ? seg_h_on : seg_h_off);
   printf("\n");
 }

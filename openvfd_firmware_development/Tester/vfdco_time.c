@@ -12,6 +12,7 @@
 
 #include "../vfdco_time.h"
 #include <stdio.h>
+#include <time.h>
 
 uint32_t _vfdco_time_get_milliseconds() { return 42; }
 void _vfdco_time_delay_milliseconds(uint32_t delay) { printf("Dummy delay of %u milliseconds.\n", delay); }
@@ -19,14 +20,19 @@ void _vfdco_time_delay_milliseconds(uint32_t delay) { printf("Dummy delay of %u 
 uint32_t (*vfdco_time_get_milliseconds)(void) = _vfdco_time_get_milliseconds;
 void (*vfdco_time_delay_milliseconds)(uint32_t) = _vfdco_time_delay_milliseconds;
 
-void vfdco_get_date_time(vfdco_date_t *date, vfdco_time_t *time) {
-  date->y = 20;
-  date->m = 10;
-  date->d = 31; // Happy halloween
+void vfdco_get_date_time(vfdco_date_t *_date, vfdco_time_t *_time) {
+  time_t rawtime;
+  struct tm *timeinfo;
 
-  time->h = 12;
-  time->m = 13;
-  time->s = 14;
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
+
+  _date->y = 20;
+  _date->m = timeinfo->tm_mon + 1;
+  _date->d = timeinfo->tm_mday; // Happy halloween
+  _time->h = timeinfo->tm_hour;
+  _time->m = timeinfo->tm_min;
+  _time->s = timeinfo->tm_sec;
 }
 
 void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {

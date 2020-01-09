@@ -31,6 +31,14 @@ typedef enum {
   GUI_TIME_DATE_SET     // Active when time set or date set is enabled
 } gui_instance_t;
 
+typedef enum {
+  LIGHT_PATTERN_STATIC,
+  LIGHT_PATTERN_SPECTRUM,
+  LIGHT_PATTERN_RAINBOW,
+  LIGHT_PATTERN_CHASE,
+  LIGHT_PATTERN_TIME_CODE
+} light_pattern_instance_t;
+
 // Initialize function. Run first.
 void    vfdco_clock_initializer();
 

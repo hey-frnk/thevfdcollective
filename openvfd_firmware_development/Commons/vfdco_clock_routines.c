@@ -35,7 +35,7 @@ time_event_t global_time_updater;
 time_event_t display_updater;
 
 struct Light_Pattern *global_light_instance = NULL;
-struct Light_Pattern_Static global_static;
+light_pattern_instance_t global_light_instance_counter;
 
 struct GUI_Format *global_gui_instance = NULL;
 gui_instance_t global_gui_instance_counter;
@@ -203,20 +203,74 @@ void vfdco_clock_lights_initializer() {
 	vfdco_time_delay_milliseconds(2);
   vfdco_clr_render();
 
-  Light_Pattern_Static_Init(&global_static);
-  global_light_instance = (struct Light_Pattern *)&global_static;
+  struct Light_Pattern_Static *initial_light_pattern = (struct Light_Pattern_Static *)calloc(1, sizeof(struct Light_Pattern_Static));;
+  Light_Pattern_Static_Init(initial_light_pattern);
+
+  global_light_instance = (struct Light_Pattern *)initial_light_pattern;
+  global_light_instance_counter = LIGHT_PATTERN_STATIC;
 }
 
 // VFD LED light illumination routine
 void vfdco_clock_lights_routine() {
   global_light_instance->Update(global_light_instance);
 
+  if(global_button_F2_state == BUTTON_STATE_SHORTPRESS) {
+    global_light_instance->Delete(global_light_instance);
+    switch(global_light_instance_counter) {
+      case LIGHT_PATTERN_STATIC: { // Go to spectrum
+        struct Light_Pattern_Spectrum *light_pattern_instance = (struct Light_Pattern_Spectrum *)calloc(1, sizeof(struct Light_Pattern_Spectrum));
+        Light_Pattern_Spectrum_Init(light_pattern_instance);
+        global_light_instance = (struct Light_Pattern *)light_pattern_instance;
+        global_light_instance->Hello(global_light_instance);
+        global_light_instance_counter = LIGHT_PATTERN_SPECTRUM;
+        break;
+      }
+      case LIGHT_PATTERN_SPECTRUM: {
+        struct Light_Pattern_Rainbow *light_pattern_instance = (struct Light_Pattern_Rainbow *)calloc(1, sizeof(struct Light_Pattern_Rainbow));
+        Light_Pattern_Rainbow_Init(light_pattern_instance);
+        global_light_instance = (struct Light_Pattern *)light_pattern_instance;
+        global_light_instance->Hello(global_light_instance);
+        global_light_instance_counter = LIGHT_PATTERN_RAINBOW;
+        break;
+      }
+      case LIGHT_PATTERN_RAINBOW: {
+        struct Light_Pattern_Chase *light_pattern_instance = (struct Light_Pattern_Chase *)calloc(1, sizeof(struct Light_Pattern_Chase));
+        Light_Pattern_Chase_Init(light_pattern_instance, &global_time, 0);
+        global_light_instance = (struct Light_Pattern *)light_pattern_instance;
+        global_light_instance->Hello(global_light_instance);
+        global_light_instance_counter = LIGHT_PATTERN_CHASE;
+        break;
+      }
+      case LIGHT_PATTERN_CHASE: {
+        struct Light_Pattern_Time_Code *light_pattern_instance = (struct Light_Pattern_Time_Code *)calloc(1, sizeof(struct Light_Pattern_Time_Code));
+        Light_Pattern_Time_Code_Init(light_pattern_instance, &global_time);
+        global_light_instance = (struct Light_Pattern *)light_pattern_instance;
+        global_light_instance->Hello(global_light_instance);
+        global_light_instance_counter = LIGHT_PATTERN_TIME_CODE;
+        break;
+      }
+      case LIGHT_PATTERN_TIME_CODE: {
+        struct Light_Pattern_Static *light_pattern_instance = (struct Light_Pattern_Static *)calloc(1, sizeof(struct Light_Pattern_Static));
+        Light_Pattern_Static_Init(light_pattern_instance);
+        global_light_instance = (struct Light_Pattern *)light_pattern_instance;
+        global_light_instance->Hello(global_light_instance);
+        global_light_instance_counter = LIGHT_PATTERN_STATIC;
+        break;
+      }
+      default: break;
+    }
+
+    global_button_F2_state = BUTTON_STATE_OFF; // Priority clear
+  }
+
   switch(global_button_F3_state) {
     case BUTTON_STATE_SHORTPRESS:
       if(global_light_instance->F3(global_light_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      vfdco_display_render_message("NOTIF ", 0, 200); // filthy
       break;
     case BUTTON_STATE_LONGPRESS:
       if(global_light_instance->F3Var(global_light_instance) == BUTTON_ACTION_PERFORMED) global_button_F3_state = BUTTON_STATE_OFF;
+      vfdco_display_render_message("NOTIF ", 0, 200); // dirty
       break;
     default:
       break;
