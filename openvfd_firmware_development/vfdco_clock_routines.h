@@ -36,7 +36,8 @@ typedef enum {
   LIGHT_PATTERN_SPECTRUM,
   LIGHT_PATTERN_RAINBOW,
   LIGHT_PATTERN_CHASE,
-  LIGHT_PATTERN_TIME_CODE
+  LIGHT_PATTERN_TIME_CODE,
+  LIGHT_PATTERN_COP
 } light_pattern_instance_t;
 
 // Initialize function. Run first.

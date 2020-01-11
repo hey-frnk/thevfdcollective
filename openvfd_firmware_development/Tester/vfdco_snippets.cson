@@ -1,0 +1,83 @@
+'.source.cpp, .source.c':
+
+  'VFD Collective Light Pattern Declaration':
+      'prefix': 'vfdco_lp_h'
+      'body': '''
+/** Begin of:
+  * @toc SECTION_LIGHT_PATTERN_###
+**/
+/**
+  * @brief  Definition of Light_Pattern_### class
+**/
+struct Light_Pattern_### {
+  struct Light_Pattern super;
+
+  // Attributes here
+};
+
+/**
+  * @brief  Constructor of Light_Pattern_### class
+**/
+void Light_Pattern_###_Init(struct Light_Pattern_### *self);
+      '''
+
+
+  'VFD Collective Light Pattern Definition':
+    'prefix': 'vfdco_lp_c'
+    'body': '''
+/** Begin of:
+* @toc SECTION_LIGHT_PATTERN_###
+**/
+/**
+* @brief  Implementation of virtual function Light_Pattern_###::Update (static void _Light_Pattern_###_Update)
+**/
+static void _Light_Pattern_###_Update(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_### *self = (struct Light_Pattern_### *)unsafe_self;
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_###::F3 (static void _Light_Pattern_###_F3)
+**/
+static void _Light_Pattern_###_F3(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_### *self = (struct Light_Pattern_### *)unsafe_self;
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_###::F3Var (static void _Light_Pattern_###_F3Var)
+**/
+static void _Light_Pattern_###_F3Var(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_### *self = (struct Light_Pattern_### *)unsafe_self;
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_###::Hello (static void _Light_Pattern_###_Hello)
+**/
+static inline void _Light_Pattern_###_Hello(void) {
+  char message[6] = {' ', ' ', ' ', ' ', ' ', ' '};
+  vfdco_display_render_message(message, 0, MESSAGE_LONG);
+}
+
+/**
+* @brief  Implementation of virtual destructor Light_Pattern_###::~Light_Pattern_### (static void _Light_Pattern_###_Delete)
+**/
+static inline void _Light_Pattern_###_Delete(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_### *self = (struct Light_Pattern_### *)unsafe_self;
+  free(self);
+}
+
+/**
+* @brief  Constructor of Light_Pattern_### class Light_Pattern_###::Light_Pattern_### (static void Light_Pattern_###_Init)
+**/
+void Light_Pattern_###_Init(struct Light_Pattern_### *self) {
+  Light_Pattern_Init(&self->super);
+
+  struct Light_Pattern_VTable _vtable = {
+    .F3      = _Light_Pattern_###_F3,
+    .F3Var   = _Light_Pattern_###_F3Var,
+    .Update  = _Light_Pattern_###_Update,
+    .Hello   = _Light_Pattern_###_Hello,
+    .Delete  = _Light_Pattern_###_Delete
+  };
+  self->super.VTable = _vtable;
+}
+    '''

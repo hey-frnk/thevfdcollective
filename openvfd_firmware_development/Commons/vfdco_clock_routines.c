@@ -250,6 +250,14 @@ void vfdco_clock_lights_routine() {
         break;
       }
       case LIGHT_PATTERN_TIME_CODE: {
+        struct Light_Pattern_Cop *light_pattern_instance = (struct Light_Pattern_Cop *)calloc(1, sizeof(struct Light_Pattern_Cop));
+        Light_Pattern_Cop_Init(light_pattern_instance);
+        global_light_instance = (struct Light_Pattern *)light_pattern_instance;
+        global_light_instance->Hello(global_light_instance);
+        global_light_instance_counter = LIGHT_PATTERN_COP;
+        break;
+      }
+      case LIGHT_PATTERN_COP: {
         struct Light_Pattern_Static *light_pattern_instance = (struct Light_Pattern_Static *)calloc(1, sizeof(struct Light_Pattern_Static));
         Light_Pattern_Static_Init(light_pattern_instance);
         global_light_instance = (struct Light_Pattern *)light_pattern_instance;

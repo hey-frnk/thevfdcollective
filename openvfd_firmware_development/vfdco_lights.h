@@ -34,6 +34,7 @@
 
 #define   SINGLE_COLOR_FADE_SPEED     2
 #define   SPECTRUM_FADE_SPEED         60
+#define   COP_FADE_SPEED              25
 
 enum {LIGHTNESS_H  = 127,   LIGHTNESS_M  = 90,   LIGHTNESS_L  = 50    };
 enum {SATURATION_H = 255,   SATURATION_M = 196,  SATURATION_L = 127   };
@@ -175,6 +176,26 @@ struct Light_Pattern_Time_Code {
   * @brief  Constructor of LED_Color_Time_Code class
  **/
 void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_time_t *time_instance);
+
+
+/** Begin of:
+  * @toc SECTION_LIGHT_PATTERN_COP
+**/
+/**
+  * @brief  Definition of Light_Pattern_Cop class
+**/
+struct Light_Pattern_Cop {
+  struct Light_Pattern super;
+
+  time_event_t          clock;
+  uint8_t               state;
+};
+
+/**
+  * @brief  Constructor of Light_Pattern_Cop class
+**/
+void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self);
+
 
 
 #endif

@@ -674,4 +674,82 @@ void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_ti
 }
 
 
+/** Begin of:
+* @toc SECTION_LIGHT_PATTERN_COP
+**/
+/**
+* @brief  Implementation of virtual function Light_Pattern_Cop::Update (static void _Light_Pattern_Cop_Update)
+**/
+static void _Light_Pattern_Cop_Update(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Cop *self = (struct Light_Pattern_Cop *)unsafe_self;
+
+  if(Time_Event_Update(&self->clock)) {
+    if(self->state < 13) self->state++;
+    else if(self->state == 13) self->state = 0;
+
+    // b | r fill
+    if(self->state == 0) {
+      for(uint_fast8_t i = 0;              i < (num_rgb >> 1); ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
+      for(uint_fast8_t i = (num_rgb >> 1); i < num_rgb;        ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
+    }
+    // off fill
+    else if(self->state == 5) vfdco_clr_set_all_RGBW(0, 0, 0, 0);
+    // b | r fill
+    else if(self->state == 6) {
+      for(uint_fast8_t i = 0;              i < (num_rgb >> 1); ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
+      for(uint_fast8_t i = (num_rgb >> 1); i < num_rgb;        ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
+    }
+    // r | b fill
+    else if(self->state == 7) {
+      for(uint_fast8_t i = 0;              i < (num_rgb >> 1); ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
+      for(uint_fast8_t i = (num_rgb >> 1); i < num_rgb;        ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
+    }
+    // white fill
+    else if(self->state == 12) vfdco_clr_set_all_RGBW(255, 255, 255, 0);
+
+    // r | b fill
+    else if(self->state == 13) {
+      for(uint_fast8_t i = 0;              i < (num_rgb >> 1); ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
+      for(uint_fast8_t i = (num_rgb >> 1); i < num_rgb;        ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
+    }
+    vfdco_clr_render();
+  }
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_Cop::Hello (static void _Light_Pattern_Cop_Hello)
+**/
+static inline void _Light_Pattern_Cop_Hello(void) {
+  char message[6] = {'C', ' ', ' ', 'C', 'O', 'P'};
+  vfdco_display_render_message(message, 0, MESSAGE_LONG);
+}
+
+/**
+* @brief  Implementation of virtual destructor Light_Pattern_Cop::~Light_Pattern_Cop (static void _Light_Pattern_Cop_Delete)
+**/
+static inline void _Light_Pattern_Cop_Delete(struct Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Cop *self = (struct Light_Pattern_Cop *)unsafe_self;
+  free(self);
+}
+
+/**
+* @brief  Constructor of Light_Pattern_Cop class Light_Pattern_Cop::Light_Pattern_Cop (static void Light_Pattern_Cop_Init)
+**/
+void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self) {
+  Light_Pattern_Init(&self->super);
+
+  self->clock = Time_Event_Init(COP_FADE_SPEED);
+  self->state = 0;
+
+  struct Light_Pattern_VTable _vtable = {
+    .F3      = NULL,
+    .F3Var   = NULL,
+    .Update  = _Light_Pattern_Cop_Update,
+    .Hello   = _Light_Pattern_Cop_Hello,
+    .Delete  = _Light_Pattern_Cop_Delete
+  };
+  self->super.VTable = _vtable;
+}
+
+
 // Hello World
