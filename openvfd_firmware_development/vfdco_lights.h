@@ -19,9 +19,6 @@
 #include "vfdco_hid.h"
 #include <stdint.h>
 
-// If legacy patterns are enabled, the color modes are just like in v2.x
-#define   LEGACY_LIGHT_PATTERNS       1
-
 #define   NUM_STATIC_COLOR_SPECIAL    3
 #define   NUM_STATIC_COLOR_HUES       8
 #define   NUM_STATIC_COLOR_RAINBOWS   2
@@ -31,13 +28,6 @@
 #define   NUM_STATIC_T2               (NUM_STATIC_T1 + NUM_STATIC_COLOR_HUES)
 #define   NUM_STATIC_T3               (NUM_STATIC_T2 + NUM_STATIC_COLOR_RAINBOWS)
 #define   NUM_STATIC_T4               (NUM_STATIC_T3 + NUM_STATIC_COLOR_PRESETS)
-
-#define   SINGLE_COLOR_FADE_SPEED     2
-#define   SPECTRUM_FADE_SPEED         60
-#define   COP_FADE_SPEED              25
-
-enum {LIGHTNESS_H  = 127,   LIGHTNESS_M  = 90,   LIGHTNESS_L  = 50    };
-enum {SATURATION_H = 255,   SATURATION_M = 196,  SATURATION_L = 127   };
 
 /** Begin of:
  * @toc SECTION_LED_COLOR_MODE
@@ -196,6 +186,25 @@ struct Light_Pattern_Cop {
 **/
 void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self);
 
+
+/** Begin of:
+  * @toc SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
+**/
+/**
+  * @brief  Definition of Light_Pattern_MomentsOfBliss class
+**/
+struct Light_Pattern_MomentsOfBliss {
+  struct Light_Pattern super;
+
+  hsl_t                 **colors;
+  uint_fast8_t          moment;
+  struct LED_Color      *base_fader;
+};
+
+/**
+  * @brief  Constructor of Light_Pattern_MomentsOfBliss class
+**/
+void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint_fast8_t moment);
 
 
 #endif

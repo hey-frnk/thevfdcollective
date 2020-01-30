@@ -13,14 +13,6 @@ extern "C" {
 #ifndef _VFDCO_CLOCK_ROUTINES_H
 #define _VFDCO_CLOCK_ROUTINES_H
 
-// Number of digits and pixels
-#define GLOBAL_NUM_DIGITS_NUM_PIXELS 6
-
-// How often should we ask the RTC what time it is? (Milliseconds)
-#define GLOBAL_TIME_UPDATE_INTERVAL 111
-#define GLOBAL_GUI_TIME_UPDATE_INTERVAL 18
-#define GLOBAL_GUI_DATE_UPDATE_INTERVAL 240
-
 // GUIs tell what kind of data will shuttle through the shift registers and the display render function(s) will render accordingly.
 typedef enum {
   GUI_TIME,             // Display the current time (default of default)

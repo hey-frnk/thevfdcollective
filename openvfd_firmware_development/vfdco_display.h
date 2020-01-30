@@ -16,7 +16,7 @@ extern "C" {
 #include <stdint.h>
 #include "vfdco_time.h"
 
-uint8_t     num_digits;
+// uint8_t     num_digits;
 
 uint8_t     vfdco_display_char_convert(char input);
 

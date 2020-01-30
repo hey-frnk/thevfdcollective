@@ -7,6 +7,7 @@
  */
 
 #include <stdlib.h>
+#include "../vfdco_config.h"
 #include "../vfdco_gui.h"
 #include "../vfdco_hid.h"
 #include "../vfdco_display.h"
@@ -114,18 +115,18 @@ static void _GUI_Format_Time_F4Var(struct GUI_Format *unsafe_self) {
 
   if(self->time_mode == TIME_FORMAT_24H) {
     self->time_mode = TIME_FORMAT_12H;
-    char _message[GUI_MESSAGE_LENGTH] = {1, 2, 'H', ' ', ' ', ' '};
-    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+    char _message[CONFIG_NUM_DIGITS] = {1, 2, 'H', ' ', ' ', ' '};
+    vfdco_display_render_message(_message, 0, CONFIG_MESSAGE_LONG);
   }
   else if(self->time_mode == TIME_FORMAT_12H) {
     self->time_mode = TIME_FORMAT_12H_NO_LZ;
-    char _message[GUI_MESSAGE_LENGTH] = {1, 2, 'H', ' ', 'N', 0};
-    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+    char _message[CONFIG_NUM_DIGITS] = {1, 2, 'H', ' ', 'N', 0};
+    vfdco_display_render_message(_message, 0, CONFIG_MESSAGE_LONG);
   }
   else {
     self->time_mode = TIME_FORMAT_24H;
-    char _message[GUI_MESSAGE_LENGTH] = {2, 4, 'H', ' ', ' ', ' '};
-    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+    char _message[CONFIG_NUM_DIGITS] = {2, 4, 'H', ' ', ' ', ' '};
+    vfdco_display_render_message(_message, 0, CONFIG_MESSAGE_LONG);
   }
 }
 
@@ -171,13 +172,13 @@ static void _GUI_Format_Date_F4Var(struct GUI_Format *unsafe_self) {
 
   if(self->date_mode == DATE_FORMAT_DDMMYY) {
     self->date_mode = DATE_FORMAT_MMDDYY;
-    char _message[GUI_MESSAGE_LENGTH] = {'D', ' ', ' ', 'G', 'E', 'R'};
-    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+    char _message[CONFIG_NUM_DIGITS] = {'D', ' ', ' ', 'G', 'E', 'R'};
+    vfdco_display_render_message(_message, 0, CONFIG_MESSAGE_LONG);
   }
   else {
     self->date_mode = DATE_FORMAT_DDMMYY;
-    char _message[GUI_MESSAGE_LENGTH] = {'D', ' ', 'I', 'N', 'T', 'L'};
-    vfdco_display_render_message(_message, 0, GUI_MESSAGE_LONG);
+    char _message[CONFIG_NUM_DIGITS] = {'D', ' ', 'I', 'N', 'T', 'L'};
+    vfdco_display_render_message(_message, 0, CONFIG_MESSAGE_LONG);
   }
 }
 
@@ -347,7 +348,7 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
   self->blank_active = 0;
   self->active_digit = 0;
 
-  self->blank_alt_message = calloc(GUI_MESSAGE_LENGTH, sizeof(char));
+  self->blank_alt_message = malloc(CONFIG_NUM_DIGITS * sizeof(char));
   self->blank_timer = Time_Event_Init(500);
 
   self->new_time = global_time;
@@ -374,7 +375,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
 
   if(Time_Event_Update(&unsafe_self->update_timer)) {
     if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
-      char zeros[GUI_MESSAGE_LENGTH] = {0};
+      char zeros[CONFIG_NUM_DIGITS] = {0};
       vfdco_display_render_message(zeros, 0b000010100, 0);
     }
 
@@ -392,7 +393,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
         };
         vfdco_display_render_time(&new_time, 0, TIME_FORMAT_24H);
       } else {
-        char digits[GUI_MESSAGE_LENGTH];
+        char digits[CONFIG_NUM_DIGITS];
         uint8_t running_millis = ((self->elapsed_milliseconds +
           vfdco_time_get_milliseconds() -
           self->initial_milliseconds) % 1000) / 10;
@@ -409,22 +410,24 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
     else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_PAUSED) {
       // running time: elapsed base
       uint32_t elapsed_time = self->elapsed_time;
+      uint8_t elapsed_m = elapsed_time / 60 % 60;
+      uint8_t elapsed_s = elapsed_time % 60;
 
       if(elapsed_time > 3599) {
         vfdco_time_t new_time = {
           .h = elapsed_time / 3600 % 24,
-          .m = elapsed_time / 60 % 60,
-          .s = elapsed_time % 60
+          .m = elapsed_m,
+          .s = elapsed_s
         };
 
         vfdco_display_render_time(&new_time, 0, TIME_FORMAT_24H);
       } else {
-        char digits[GUI_MESSAGE_LENGTH];
+        char digits[CONFIG_NUM_DIGITS];
         uint8_t running_millis = (self->elapsed_milliseconds % 1000) / 10;
-        digits[0] = (elapsed_time / 60 % 60) / 10;
-        digits[1] = (elapsed_time / 60 % 60) % 10;
-        digits[2] = (elapsed_time % 60) / 10;
-        digits[3] = (elapsed_time % 60) % 10;
+        digits[0] = elapsed_m / 10;
+        digits[1] = elapsed_m % 10;
+        digits[2] = elapsed_s / 10;
+        digits[3] = elapsed_s % 10;
         digits[4] = running_millis / 10;
         digits[5] = running_millis % 10;
 

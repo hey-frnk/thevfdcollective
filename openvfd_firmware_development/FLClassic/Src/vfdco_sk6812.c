@@ -5,10 +5,11 @@
  *      Author: HARDWARECOP
  */
 
-#include "../../vfdco_led.h"
 #include <stdlib.h>
 #include <string.h>
 #include "stm32f0xx_hal.h"
+#include "../../vfdco_config.h"
+#include "../../vfdco_led.h"
 
 #define SK6812_PWM_DUTY_HI 38
 #define SK6812_PWM_DUTY_LO 19
@@ -25,15 +26,15 @@ uint_fast8_t write_buf_pos;
 extern TIM_HandleTypeDef htim2;
 
 void vfdco_clr_init(uint8_t num_pixels) {
-	num_rgb = num_pixels;									// Number of physical LEDs
-	num_bpp = 4;													// SK6812 Bytes per LED. 4: G(8), R(8), B(8), W(8)
-	num_bytes = num_bpp * num_pixels;			// Bytes of static color array
+	//n um_rgb = n um_pixels;									// Number of physical LEDs
+	//n um_bpp = 4;													// SK6812 Bytes per LED. 4: G(8), R(8), B(8), W(8)
+	//n um_bytes = n um_bpp * n um_pixels;			// Bytes of static color array
 
-	write_buf_length = num_bpp * 8; 			// For every bit, there's a new PWM byte -> 8 * bpp
+	write_buf_length = CONFIG_NUM_BPP * 8; 			// For every bit, there's a new PWM byte -> 8 * bpp
 
 	// Allocate color array and DMA buffer
-	rgb_arr = (uint8_t *)malloc(num_bytes * sizeof(uint8_t));
-	write_buf = (uint8_t *)malloc(write_buf_length * sizeof(uint8_t));
+	rgb_arr = (uint8_t *)calloc(CONFIG_NUM_BYTES, sizeof(uint8_t));
+	write_buf = (uint8_t *)calloc(write_buf_length, sizeof(uint8_t));
 
 	write_buf_pos = 0;
 	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, write_buf_length);
@@ -56,10 +57,10 @@ inline void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, u
 	rgb_arr[4 * index + 3] = w;
 }
 inline void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
-	for(uint_fast8_t i = 0; i < num_rgb; ++i) vfdco_clr_set_RGB(i, r, g, b);
+	for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
 inline void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-	for(uint_fast8_t i = 0; i < num_rgb; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
+	for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
 }
 
 inline void vfdco_clr_render() {
@@ -78,7 +79,7 @@ inline void vfdco_clr_render() {
 
 void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
 	// DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
-	if(write_buf_pos < num_rgb) {
+	if(write_buf_pos < CONFIG_NUM_PIXELS) {
 		// We're in. Let's fill the mem
 		for(uint_fast8_t i = 0; i < 8; ++i) {
 			write_buf[i     ] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4    ] << i) & 0x80) > 0);
@@ -87,12 +88,12 @@ void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
 			write_buf[i + 24] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4 + 3] << i) & 0x80) > 0);
 		}
 		write_buf_pos++;
-	} else if (write_buf_pos >= num_rgb + 1) {
+	} else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {
 		// Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
 		memset(write_buf, 0x00, write_buf_length);
 		write_buf_pos++;
 
-		if(write_buf_pos >= num_rgb + 2) {
+		if(write_buf_pos >= CONFIG_NUM_PIXELS + 2) {
 			// Stop transfer, we're done for now until someone needs us again
 			write_buf_pos = 0;
 			HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);

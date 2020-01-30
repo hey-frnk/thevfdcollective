@@ -49,10 +49,10 @@ extern "C" {
 // #define HARDWARE_OPTION_WS2812B
 #define HARDWARE_OPTION_SK6812
 
-extern uint8_t  num_rgb;                  // Number of physical LEDs (pixels)
-extern uint8_t  num_bpp;                  // Number of bytes per pixel bpp
-extern uint8_t  num_bytes;                // Number of bytes per pixel bpp (3: RGB, 4: RGBW) * num_rgb
-                // Array of color values of size num_bytes to be written in the next write cycle
+// extern uint8_t  n um_rgb;                  // Number of physical LEDs (pixels)
+// extern uint8_t  n um_bpp;                  // Number of bytes per pixel bpp
+// extern uint8_t  n um_bytes;                // Number of bytes per pixel bpp (3: RGB, 4: RGBW) * CONFIG_NUM_PIXELS
+                // Array of color values of size n um_bytes to be written in the next write cycle
                 // to the physical WS2812B/SK6812 LEDs
 extern uint8_t  *rgb_arr;
 
@@ -131,20 +131,22 @@ hsl_t *HSL_Init_Range(    uint8_t h, uint8_t s, uint8_t l, // Like above
 void HSL_Delete(hsl_t *self);
 void RGB_Delete(rgb_t *self);
 
+int8_t led_color_simple_randomizer(int8_t min, int8_t max);
 uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
 
 /** Begin of:
   * @toc SECTION_BLENDING_FUNCTIONS
  **/
-typedef enum {
+// typedef enum {
   // Blend mode implementation according to https://en.wikipedia.org/wiki/Blend_modes
   // Assume R, G, B in [0 ... 1], f(a, b) = blended with a = existing value, b = blend layer
-   LED_COLOR_BLEND_MODE_NORMAL      =   0,  // f(a, b) = b
-   LED_COLOR_BLEND_MODE_MULTIPLY    =   1,  // f(a, b) = ab
-   LED_COLOR_BLEND_MODE_SCREEN      =   2,  // f(a, b) = 1 - (1-a)*(1-b)
-   LED_COLOR_BLEND_MODE_OVERLAY     =   3,  // f(a, b) = {2ab, a < 0.5} {1 - 2(1-a)(1-b), else}
-   LED_COLOR_BLEND_MODE_SOFT_LIGHT  =   4,  // f(a, b) = (1-2b) * a^2 + 2ba
-} LED_COLOR_BLEND_MODE_t;
+   //LED_COLOR_BLEND_MODE_NORMAL      =   0,  // f(a, b) = b, asynchronous
+   /*LED_COLOR_BLEND_MODE_SYNC_NORMAL =   1,  // f(a, b) = b, synchronous
+   LED_COLOR_BLEND_MODE_MULTIPLY    =   2,  // f(a, b) = ab, synchronous
+   LED_COLOR_BLEND_MODE_SCREEN      =   3,  // f(a, b) = 1 - (1-a)*(1-b), synchronous
+   LED_COLOR_BLEND_MODE_OVERLAY     =   4,  // f(a, b) = {2ab, a < 0.5} {1 - 2(1-a)(1-b), else}, synchronous
+   LED_COLOR_BLEND_MODE_SOFT_LIGHT  =   5,  // f(a, b) = (1-2b) * a^2 + 2ba, synchronous*/
+//} LED_COLOR_BLEND_MODE_t;
 
 /** Begin of:
   * @toc SECTION_LED_COLOR
@@ -209,7 +211,7 @@ struct LED_Color_Fader {
   // Functions
   struct LED_Color super;
 
-  void          (*_blend)         (uint8_t, uint8_t, uint8_t, uint8_t);
+  // void          (*_blend)         (uint8_t, uint8_t, uint8_t, uint8_t);
 
   // Option: Peaks
   uint8_t       num_pks;        // Number of peaks
@@ -232,7 +234,7 @@ struct LED_Color_Fader {
  **/
 struct LED_Color_Fader *LED_Color_Fader_Init(
   uint_fast32_t             timer1_interval,        // Timer interval
-  LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.
+  /*LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.*/
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Fade N cycles
   uint8_t                   num_pks,                // Number of HSL colors
@@ -248,7 +250,7 @@ struct LED_Color_Flasher {
   // Functions
   struct LED_Color super;
 
-  void          (*_blend)           (uint8_t, uint8_t, uint8_t, uint8_t);
+  // void          (*_blend)           (uint8_t, uint8_t, uint8_t, uint8_t);
   rgb_t         *pk;                // Peaks array
 
   uint8_t       flash_duration;     // Duration of each flash
@@ -267,7 +269,7 @@ struct LED_Color_Flasher {
  **/
 struct LED_Color_Flasher *LED_Color_Flasher_Init(
   uint_fast32_t             timer1_interval,        // Timer interval
-  LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.
+  /*LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.*/
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat flash how many times?
   rgb_t                     *pk,                    // Array of RGB colors
@@ -303,7 +305,7 @@ struct LED_Color_Chaser {
   // Functions
   struct LED_Color super;
 
-  void          (*_blend)             (uint8_t, uint8_t, uint8_t, uint8_t);
+  // void          (*_blend)             (uint8_t, uint8_t, uint8_t, uint8_t);
   hsl_t         *pk;                  // Fade to peak
   hsl_d_t       *pk_diff;             // Difference of each new peak to initial peak (factorized)
 
@@ -328,7 +330,7 @@ struct LED_Color_Chaser {
  **/
 struct LED_Color_Chaser *LED_Color_Chaser_Init(
   uint_fast32_t             timer1_interval,        // Timer interval
-  LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.
+  /*LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.*/
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat N times
   uint8_t                   length,                 // Pixel index to start
@@ -344,22 +346,29 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
   * @toc SECTION_COLOR_MANAGER
   * @brief COLOR_MANAGER is a class providing scheduling and execution of objects of LED_Color class.
  **/
-struct LED_Color_Manager {
-  struct LED_Color  **process_list;             // Queue of active LED_Color processes
-  uint_fast8_t      process_count;              // Number of active LED_Color processes
+/*struct LED_Color_Manager {
+  time_event_t synchronous_updater;
+  uint8_t      render_state;
+
+  struct LED_Color  **process_active_list;             // Queue of active LED_Color processes
+  struct LED_Color  **process_preempted_list;        // Queue of preempted LED_Color processes
+  uint_fast8_t      process_active;             // Number of active LED_Color processes
+  uint_fast8_t      process_active_max;         // Max active processes
+  uint_fast8_t      process_preempted;             // Number of total LED_Color processes
+  uint_fast8_t      process_preempted_max;          // Max number of processes
 
   // Run every process that is not in LED_COLOR_STATE_COMPLETE once (internal)
-  void              (*_Run_All)          (void);
+  void              (*_Run_All)          (struct LED_Color_Manager *self);
   // Enqueue given process into process_list and mark as active/running
-  void              (*Create_Process)    (struct LED_Color *process);
+  void              (*Create_Process)    (struct LED_Color_Manager *self, struct LED_Color *process);
   // Dequeue given PID of process list
-  void              (*Remove_Process)    (uint_fast8_t pid);
-  void              (*_Process_Finished_Callback) (uint_fast8_t pid); // (Automatic call version)
+  void              (*Remove_Process)    (struct LED_Color_Manager *self, uint_fast8_t pid);
+  void              (*_Process_Finished_Callback) (struct LED_Color_Manager *self, uint_fast8_t pid); // (Automatic call version)
 
   struct LED_Color_Fader *     (*Init_LED_Color_Fader_From_Bitstream)   (uint8_t *p, uint_fast16_t length);
   struct LED_Color_Flasher *   (*Init_LED_Color_Flasher_From_Bitstream) (uint8_t *p, uint_fast16_t length);
   struct LED_Color_Chaser *    (*Init_LED_Color_Chaser_From_Bitstream)  (uint8_t *p, uint_fast16_t length);
-};
+};*/
 
 
 

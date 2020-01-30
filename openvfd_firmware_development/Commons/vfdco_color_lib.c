@@ -23,6 +23,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "../vfdco_config.h"
 #include "../vfdco_color_lib.h"
 
 /** Begin of:
@@ -31,7 +32,7 @@
 /**
  * @brief Fast hsl2rgb algorithm: https://stackoverflow.com/questions/13105185/fast-algorithm-for-rgb-hsl-conversion
 **/
-inline uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
+uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
   if(l == 0) return 0;
 
   uint8_t  r, g, b, lo, c, x, m;
@@ -62,27 +63,8 @@ inline uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
 
 #define GAUSSIAN_MAGIC_NUMBER 0.424660900144f
 
-/**
- * @brief Supporting inverse sampling function
-**/
-static float box_muller_transform(float mu, float sigma) {
-  static float t = 0.0f;
-  double x, w1, w2, r;
-
-  if(t == 0.0f) {
-    do {
-      w1 = 2.0f * rand() * (1.0f / RAND_MAX) - 1.0f;
-      w2 = 2.0f * rand() * (1.0f / RAND_MAX) - 1.0f;
-      r = w1 * w1 + w2 * w2;
-    } while(r >= 1.0f);
-    r = sqrt(-2.0f * logf(r) / r);
-    t = w2 * r;
-    return(mu + w1 * r * sigma);
-  } else {
-    x = t;
-    t = .0f;
-    return (mu + x * sigma);
-  }
+int8_t led_color_simple_randomizer(int8_t min, int8_t max) {
+  return (rand() % ((uint32_t)max + 1 - (uint32_t)min)) + (uint32_t)min;
 }
 
 /** Begin of:
@@ -107,18 +89,6 @@ rgb_t *RGB_Init(uint8_t r, uint8_t g, uint8_t b) {
 }
 
 /**
- * @brief  Implementation of alt. constructor HSL class, HSL::HSL(h, s, l, dh, ds, dl)
-**/
-hsl_t *HSL_Init_Range(uint8_t h, uint8_t s, uint8_t l, float dh, float ds, float dl) {
-  hsl_t *hsl = (hsl_t *)malloc(sizeof(hsl_t));
-  // Get randomized color
-  hsl->h = fmodf(box_muller_transform(h, GAUSSIAN_MAGIC_NUMBER * dh), 255.0f);
-  hsl->s = fmodf(box_muller_transform(h, GAUSSIAN_MAGIC_NUMBER * ds), 255.0f);
-  hsl->l = fmodf(box_muller_transform(h, GAUSSIAN_MAGIC_NUMBER * dl), 255.0f);
-  return hsl;
-}
-
-/**
  * @brief  Declaration of destructor HSL class, HSL::~HSL
 **/
 inline void HSL_Delete(hsl_t *self) {
@@ -135,62 +105,70 @@ inline void RGB_Delete(rgb_t *self) {
 /**
  * @brief  Implementation of blend mode normal f(a, b) = b
 **/
-static inline void _blend_normal(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
-  rgb_arr[num_bpp * i    ] = bg;
-  rgb_arr[num_bpp * i + 1] = br;
-  rgb_arr[num_bpp * i + 2] = bb;
-	// vfdco_clr_set_RGB(i, br, bg, bb);
-}
+/*static void _blend(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[CONFIG_NUM_BPP * i    ] = bg;
+  rgb_arr[CONFIG_NUM_BPP * i + 1] = br;
+  rgb_arr[CONFIG_NUM_BPP * i + 2] = bb;
+}*/
+/**
+ * @brief  Implementation of blend mode synchronous normal f(a, b) = b
+**/
+/*static inline void _blend_snormal(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[CONFIG_NUM_BPP * i    ] = bg;
+  rgb_arr[CONFIG_NUM_BPP * i + 1] = br;
+  rgb_arr[CONFIG_NUM_BPP * i + 2] = bb;
+}*/
 /**
  * @brief  Implementation of blend mode multiply f(a, b) = ab
 **/
-static inline void _blend_mup(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
-  rgb_arr[num_bpp * i    ] = ((uint16_t)bg * rgb_arr[num_bpp * i    ]) >> 8;
-  rgb_arr[num_bpp * i + 1] = ((uint16_t)br * rgb_arr[num_bpp * i + 1]) >> 8;
-  rgb_arr[num_bpp * i + 2] = ((uint16_t)bb * rgb_arr[num_bpp * i + 2]) >> 8;
-}
+/*static inline void _blend_mup(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[CONFIG_NUM_BPP * i    ] = ((uint16_t)bg * rgb_arr[CONFIG_NUM_BPP * i    ]) >> 8;
+  rgb_arr[CONFIG_NUM_BPP * i + 1] = ((uint16_t)br * rgb_arr[CONFIG_NUM_BPP * i + 1]) >> 8;
+  rgb_arr[CONFIG_NUM_BPP * i + 2] = ((uint16_t)bb * rgb_arr[CONFIG_NUM_BPP * i + 2]) >> 8;
+}*/
 /**
  * @brief  Implementation of blend mode screen f(a, b) = 1 - (1-a)*(1-b)
 **/
-static inline void _blend_scr(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
-  rgb_arr[num_bpp * i    ] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i    ])) >> 8;
-  rgb_arr[num_bpp * i + 1] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 1])) >> 8;
-  rgb_arr[num_bpp * i + 2] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 2])) >> 8;
-}
+/*static inline void _blend_scr(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[CONFIG_NUM_BPP * i    ] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[CONFIG_NUM_BPP * i    ])) >> 8;
+  rgb_arr[CONFIG_NUM_BPP * i + 1] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[CONFIG_NUM_BPP * i + 1])) >> 8;
+  rgb_arr[CONFIG_NUM_BPP * i + 2] = (uint16_t)((255 - bg) * (uint16_t)(255 - rgb_arr[CONFIG_NUM_BPP * i + 2])) >> 8;
+}*/
 /**
  * @brief  Implementation of blend mode overlay f(a, b) = {2ab, a < 0.5} {1 - 2(1-a)(1-b), else}
 **/
-static inline void _blend_overlay(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
-  rgb_arr[num_bpp * i    ] = rgb_arr[num_bpp * i    ] < 128 ?
-                                (2 * (uint16_t)bg * rgb_arr[num_bpp * i    ]) >> 8 :
-                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i    ])) >> 8;
-  rgb_arr[num_bpp * i + 1] = rgb_arr[num_bpp * i + 1] < 128 ?
-                                (2 * (uint16_t)bg * rgb_arr[num_bpp * i + 1]) >> 8 :
-                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 1])) >> 8;
-  rgb_arr[num_bpp * i + 2] = rgb_arr[num_bpp * i + 2] < 128 ?
-                                (2 * (uint16_t)bg * rgb_arr[num_bpp * i + 2]) >> 8 :
-                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[num_bpp * i + 2])) >> 8;
-}
+/*static inline void _blend_overlay(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+  rgb_arr[CONFIG_NUM_BPP * i    ] = rgb_arr[CONFIG_NUM_BPP * i    ] < 128 ?
+                                (2 * (uint16_t)bg * rgb_arr[CONFIG_NUM_BPP * i    ]) >> 8 :
+                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[CONFIG_NUM_BPP * i    ])) >> 8;
+  rgb_arr[CONFIG_NUM_BPP * i + 1] = rgb_arr[CONFIG_NUM_BPP * i + 1] < 128 ?
+                                (2 * (uint16_t)bg * rgb_arr[CONFIG_NUM_BPP * i + 1]) >> 8 :
+                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[CONFIG_NUM_BPP * i + 1])) >> 8;
+  rgb_arr[CONFIG_NUM_BPP * i + 2] = rgb_arr[CONFIG_NUM_BPP * i + 2] < 128 ?
+                                (2 * (uint16_t)bg * rgb_arr[CONFIG_NUM_BPP * i + 2]) >> 8 :
+                                (uint16_t)(2 * (255 - bg) * (uint16_t)(255 - rgb_arr[CONFIG_NUM_BPP * i + 2])) >> 8;
+}*/
 /**
  * @brief  Implementation of blend mode soft light f(a, b) = (1-2b) * a^2 + 2ba
 **/
-static inline void _blend_s_li(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
+/*static inline void _blend_s_li(uint8_t i, uint8_t br, uint8_t bg, uint8_t bb) {
 
-}
+}*/
 
 /**
  * @brief Map given LED_COLOR_BLEND_MODE_t to a function. Oh dear hope you don't have to debug this...
 **/
-static void (*_blend_init(LED_COLOR_BLEND_MODE_t m)) (uint8_t, uint8_t, uint8_t, uint8_t) {
+/*static void (*_blend_init(LED_COLOR_BLEND_MODE_t m)) (uint8_t, uint8_t, uint8_t, uint8_t) {
   switch(m) {
     case LED_COLOR_BLEND_MODE_NORMAL:     return _blend_normal;   break;
+    case LED_COLOR_BLEND_MODE_SYNC_NORMAL:return _blend_snormal;  break;
     case LED_COLOR_BLEND_MODE_MULTIPLY:   return _blend_mup;      break;
     case LED_COLOR_BLEND_MODE_SCREEN:     return _blend_scr;      break;
     case LED_COLOR_BLEND_MODE_OVERLAY:    return _blend_overlay;  break;
     case LED_COLOR_BLEND_MODE_SOFT_LIGHT: return _blend_s_li;     break;
     default:                              return _blend_normal;   break;
   }
-}
+}*/
 
 
 
@@ -281,7 +259,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
   	for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
   		int16_t i_h = i * self->chain_huediff;
   		uint32_t target_color = _led_color_hsl2rgb(target->h + i_h, i_s, i_l);
-  		self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+  		vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
   	}
   	vfdco_clr_render();
   }
@@ -331,8 +309,8 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
       self->state = LED_COLOR_STATE_COMPLETE;
 
       uint_fast8_t end_pos = self->start_pos + self->num_chain;
-      if(end_pos > num_rgb) end_pos = num_rgb;
-      for(uint8_t i = self->start_pos; i < end_pos; ++i) self->_blend(i, 0, 0, 0); // clr
+      if(end_pos > CONFIG_NUM_PIXELS) end_pos = CONFIG_NUM_PIXELS;
+      for(uint8_t i = self->start_pos; i < end_pos; ++i) vfdco_clr_set_RGB(i, 0, 0, 0); // clr
       vfdco_clr_render();
     }
   } else if(self->state == LED_COLOR_STATE_ACTIVE) {
@@ -377,12 +355,12 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
   if(render_enable) {
   	// Write to array
   	uint_fast8_t end_pos = self->start_pos + self->num_chain;
-  	if(end_pos > num_rgb) end_pos = num_rgb;
+  	if(end_pos > CONFIG_NUM_PIXELS) end_pos = CONFIG_NUM_PIXELS;
 
   	for(uint_fast8_t i = self->start_pos; i < end_pos; ++i) {
   		i_h += i * (int16_t)self->chain_huediff;                    // i-th hue difference (delta), intended angle overflow
   		uint32_t target_color = _led_color_hsl2rgb(i_h, i_s, i_l);  // Get target RGB
-  		self->_blend(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+  		vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
   	}
   	// Write to LEDs, physically
   	vfdco_clr_render();
@@ -402,7 +380,7 @@ void _LED_Color_Fader_Delete(struct LED_Color *unsafe_self) {
 **/
 struct LED_Color_Fader *LED_Color_Fader_Init(
   uint_fast32_t             timer1_interval,
-  LED_COLOR_BLEND_MODE_t    blend_mode,
+  /*LED_COLOR_BLEND_MODE_t    blend_mode,*/
   uint8_t                   start_pos,
   int8_t                    repeat,
   uint8_t                   num_pks,
@@ -430,7 +408,7 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   };
 
   f->super.VTable = _fader_vtable;
-  f->_blend = _blend_init(blend_mode);
+  /*f->_blend = _blend_init(blend_mode);*/
 
   f->fade_pos = 0;
   f->state = LED_COLOR_STATE_FADE_IN;
@@ -451,12 +429,12 @@ static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe
     if(Time_Event_Update(&unsafe_self->timer)) {
     	++self->flash_pos;
 
-    	self->_blend(self->start_pos, self->pk->r, self->pk->g, self->pk->b);
+    	vfdco_clr_set_RGB(self->start_pos, self->pk->r, self->pk->g, self->pk->b);
 
     	if(!(self->flash_pos < self->flash_duration)) {
     		self->flash_pos = 0;
     		self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
-    		self->_blend(self->start_pos, 0, 0, 0);           // Zero out
+    		vfdco_clr_set_RGB(self->start_pos, 0, 0, 0);           // Zero out
     	}
     	// Write to LEDs, physically
     	vfdco_clr_render();
@@ -493,7 +471,7 @@ void _LED_Color_Flasher_Delete(struct LED_Color *unsafe_self) {
 **/
 struct LED_Color_Flasher *LED_Color_Flasher_Init(
   uint_fast32_t             timer1_interval,
-  LED_COLOR_BLEND_MODE_t    blend_mode,
+  /*LED_COLOR_BLEND_MODE_t    blend_mode,*/
   uint8_t                   start_pos,
   int8_t                    repeat,
   rgb_t                     *pk,
@@ -517,7 +495,7 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
   };
 
   f->super.VTable = _flasher_vtable;
-  f->_blend = _blend_init(blend_mode);
+  /*f->_blend = _blend_init(blend_mode);*/
 
   f->flash_pos = 0;
   f->state = LED_COLOR_STATE_ACTIVE;
@@ -586,12 +564,12 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
           repeat_restore:
           if(chase_cpreserving) {
             for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
-              if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < num_rgb))             self->_blend(self->start_pos + i, 0, 0, 0);
-              if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - i >= 0))                  self->_blend(self->start_pos - i, 0, 0, 0);
+              if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < CONFIG_NUM_PIXELS)) vfdco_clr_set_RGB(self->start_pos + i, 0, 0, 0);
+              if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - i >= 0))                vfdco_clr_set_RGB(self->start_pos - i, 0, 0, 0);
             }
           } else {
-            if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb))  self->_blend(self->start_pos + self->pk_state, 0, 0, 0);
-            if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0))       self->_blend(self->start_pos - self->pk_state, 0, 0, 0);
+            if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < CONFIG_NUM_PIXELS)) vfdco_clr_set_RGB(self->start_pos + self->pk_state, 0, 0, 0);
+            if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0))                vfdco_clr_set_RGB(self->start_pos - self->pk_state, 0, 0, 0);
           }
           vfdco_clr_render();
 
@@ -605,47 +583,46 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
       }
     }
 
-
     if(chase_cpreserving) {
       // pk_state +1 determines the amount of single sided LEDs to be written
       for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
         // Right sided write. Only write if pixel is in range and LR or Split is active
-        if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < num_rgb)) {
+        if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < CONFIG_NUM_PIXELS)) {
           int16_t lightness = self->pk->l + i * self->pk_diff->l;
           // Ugly AF, sorry
           if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
-            int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
-                                / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
+            uint32_t attenuation = ((uint32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (uint32_t)self->chase_pos))
+                                / (uint32_t)(chase_cpreserving * (uint32_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
           uint32_t target_right = _led_color_hsl2rgb(self->pk->h + i * self->pk_diff->h, self->pk->s + i * self->pk_diff->s, lightness);
-          self->_blend(self->start_pos + i, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
+          vfdco_clr_set_RGB(self->start_pos + i, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
         }
         // Left sided write
         if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) /*&& (self->pk_state > 0)*/ && (self->start_pos - i >= 0)) {
           uint8_t lightness = self->pk->l - i * self->pk_diff->l;
           // Ugly AF, sorry
           if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
-            int32_t attenuation = ((int32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (int32_t)self->chase_pos))
-                                / (int32_t)(chase_cpreserving * (int32_t)chase_duration);
+            uint32_t attenuation = ((uint32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (uint32_t)self->chase_pos))
+                                / (uint32_t)(chase_cpreserving * (uint32_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
           uint32_t target_left = _led_color_hsl2rgb(self->pk->h - i * self->pk_diff->h, self->pk->s - i * self->pk_diff->s, lightness);
-          self->_blend(self->start_pos - i, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
+          vfdco_clr_set_RGB(self->start_pos - i, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
         }
       }
     } else {
       // Right sided write. Only write if pixel is in range and LR or Split is active
-      if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < num_rgb)) {
+      if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < CONFIG_NUM_PIXELS)) {
         uint8_t lightness = self->pk->l + self->pk_state * self->pk_diff->l;
         uint32_t target_right = _led_color_hsl2rgb(self->pk->h + self->pk_state * self->pk_diff->h, self->pk->s + self->pk_state * self->pk_diff->s, lightness);
-        self->_blend(self->start_pos + self->pk_state, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
+        vfdco_clr_set_RGB(self->start_pos + self->pk_state, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
       }
       // Left sided write
       if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0)) {
         uint8_t lightness = self->pk->l - self->pk_state * self->pk_diff->l;
         uint32_t target_left = _led_color_hsl2rgb(self->pk->h - self->pk_state * self->pk_diff->h, self->pk->s - self->pk_state * self->pk_diff->s, lightness);
-        self->_blend(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
+        vfdco_clr_set_RGB(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
       }
     }
   }
@@ -668,7 +645,7 @@ void _LED_Color_Chaser_Delete(struct LED_Color *unsafe_self) {
  **/
 struct LED_Color_Chaser *LED_Color_Chaser_Init(
   uint_fast32_t             timer1_interval,
-  LED_COLOR_BLEND_MODE_t    blend_mode,
+  /*LED_COLOR_BLEND_MODE_t    blend_mode,*/
   uint8_t                   start_pos,
   int8_t                    repeat,
   uint8_t                   length,
@@ -693,7 +670,7 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
 
   // Chase length init clipper
   if(mode <= LED_COLOR_CHASER_MODE_SPLITDEC) {
-    f->chase_length = (length + start_pos > num_rgb) ? length - start_pos + 1 : length;
+    f->chase_length = (length + start_pos > CONFIG_NUM_PIXELS) ? length - start_pos + 1 : length;
   } else {
     f->chase_length = (length > start_pos) ? start_pos + 1 : length;
   }
@@ -705,7 +682,7 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
   };
 
   f->super.VTable = _chaser_vtable;
-  f->_blend = _blend_init(blend_mode);
+  /*f->_blend = _blend_init(blend_mode);*/
 
   f->chase_pos = 0;
   f->pk_state = 0;
@@ -715,8 +692,60 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
 
 
 
+/*void _LED_Color_Manager_Run_All(struct LED_Color_Manager *self) {
+  for(uint_fast8_t i = 0; i < self->process_active; ++i) {
+    if(self->process_list[i]->Next(self->process_list[i])) {
+      ++self->render_state;
+    } else {
+      self->_Process_Finished_Callback(self, i);
+    }
+  }
+  if(Time_Event_Update(&self->synchronous_updater)) {
+    self->render_state = 0;
+    vfdco_clr_render();
+  }
+
+  // Random preempting higher order processes
+
+}
+
+void _LED_Color_Manager_Create_Process(struct LED_Color_Manager *self, struct LED_Color *process) {
+  // Enqueue to active directly
+  if(self->process_active < self->process_active_max) {
+    ++self->process_active;
+    self->process_active_list[self->process_active - 1] = process;
+  } else {
+    if(self->process_preempted < self->process_preempted_max) {
+      ++self->process_preempted;
+      self->process_preempted_list[self->process_preempted - 1] = process;
+    } else {
+
+    }
+  }
+}
 
 
+void _LED_Color_Manager_Remove_Process(struct LED_Color_Manager *self, uint_fast8_t pid) {
+  if(pid < process_active) { // Kill active process
+    self->process_active_list[pid]->Delete(self->process_active_list[pid]);
+    // Shrink process list
+    for(uint_fast8_t i = pid; i < self->process_active; ++i) {
+      self->process_active_list[i] = self->process_active_list[i + 1];
+      --self->process_active;
+    }
+  } else { // Kill preempted process
+    uint_fast8_t ipid = pid - process_active;
+  }
+}
+
+void _LED_Color_Manager_Process_Finished_Callback(struct LED_Color_Manager *self, uint_fast8_t pid) {
+
+}
+
+void LED_Color_Manager_Init(struct LED_Color_Manager *self, uint_fast8_t process_active_max, uint_fast8_t process_preempted_max) {
+  self->process_active_list = (LED_Color **)calloc(process_active_max, sizeof(LED_Color *)); // NULL-Array
+  self->process_preempted_list = (LED_Color **)calloc(process_preempted_max, sizeof(LED_Color *)); // NULL-Array
+}*/
 
 
 // Go vegan

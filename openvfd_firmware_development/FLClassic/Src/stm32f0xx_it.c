@@ -63,7 +63,7 @@ extern DMA_HandleTypeDef hdma_tim2_ch1;
 /* USER CODE END EV */
 
 /******************************************************************************/
-/*           Cortex-M0 Processor Interruption and Exception Handlers          */ 
+/*           Cortex-M0 Processor Interruption and Exception Handlers          */
 /******************************************************************************/
 /**
   * @brief This function handles Non maskable interrupt.
@@ -181,14 +181,6 @@ void DMA1_Channel4_5_IRQHandler(void)
   /* USER CODE END DMA1_Channel4_5_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_tim2_ch1);
   /* USER CODE BEGIN DMA1_Channel4_5_IRQn 1 */
-
-  	// For current single pixel
-  /*for(uint8_t i = 0; i < 8; ++i)
-  		for(uint8_t j = 0; j < 4; ++j)
-  			write_buf[i + (j << 3)] = (rgb_arr[(write_buf_pos << 2) + j] & (1 << i)) ? DUTY1 : DUTY0; // Fill RGBW
-  write_buf[32] = 6; // Just to make sure that the last bit is a reset pulse
-
-  if(++write_buf_pos >= num_rgb) write_buf_pos = 0; // Start over*/
 
   /* USER CODE END DMA1_Channel4_5_IRQn 1 */
 }

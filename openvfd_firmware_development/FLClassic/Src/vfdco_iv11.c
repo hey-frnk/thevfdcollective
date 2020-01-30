@@ -7,11 +7,12 @@
  */
 
 #include "stm32f0xx_hal.h"
+#include "../../vfdco_config.h"
 #include "../../vfdco_display.h"
 #include "../../vfdco_time.h"
 
 extern SPI_HandleTypeDef hspi1;
-uint8_t     num_digits = 0;
+// uint8_t     num_digits = 0;
 
 uint8_t vfdco_display_char_convert(char input) {
   // Takes char value (0 to 255) and converts to VFD clock display pattern
@@ -69,7 +70,7 @@ void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register,
     else if  (_hour == 0) _hour  = 12; // 12 AM fix
   }
 
-  uint8_t _rreg[num_digits];
+  uint8_t _rreg[CONFIG_NUM_DIGITS];
   _rreg[0] = vfdco_display_char_convert(time->s % 10) | ( decimal_dot_register       & 0x01);
   _rreg[1] = vfdco_display_char_convert(time->s / 10) | ((decimal_dot_register >> 1) & 0x01);
   _rreg[2] = vfdco_display_char_convert(time->m % 10) | ((decimal_dot_register >> 2) & 0x01);
@@ -85,7 +86,7 @@ void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register,
 }
 
 void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register, date_format_t date_mode) {
-  uint8_t _rreg[num_digits];
+  uint8_t _rreg[CONFIG_NUM_DIGITS];
   _rreg[0] = vfdco_display_char_convert(date->y % 10) | (decimal_dot_register & 0x01);
   _rreg[1] = vfdco_display_char_convert((date->y % 100) / 10) | ((decimal_dot_register >> 1) & 0x01);
 
@@ -104,9 +105,9 @@ void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register,
 }
 
 void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay) {
-  uint8_t _rreg[num_digits];
-  for(uint8_t i = 0; i < num_digits; ++i) {
-    _rreg[num_digits - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
+  uint8_t _rreg[CONFIG_NUM_DIGITS];
+  for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
+    _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
   vfdco_display_render_direct(_rreg);
   vfdco_time_delay_milliseconds(delay);
@@ -114,12 +115,12 @@ void vfdco_display_render_message(const char *message, uint8_t decimal_dot_regis
 
 void vfdco_display_render_direct(uint8_t *data) {
   // Write to SPI buffer & toggle latch
-  HAL_SPI_Transmit(&hspi1, data, num_digits, 40);
+  HAL_SPI_Transmit(&hspi1, data, CONFIG_NUM_DIGITS, 40);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
 // Function mapping
 void vfdco_display_init(uint_fast8_t _num_digits) {
-  num_digits = _num_digits;
+  // num_digits = _num_digits;
 }

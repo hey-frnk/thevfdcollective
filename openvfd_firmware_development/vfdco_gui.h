@@ -17,10 +17,6 @@ extern "C" {
 #include "vfdco_time.h"
 #include "vfdco_hid.h"
 
-#define GUI_MESSAGE_LENGTH  6
-#define GUI_MESSAGE_SHORT   250
-#define GUI_MESSAGE_LONG    1000
-
 struct GUI_Format;
 struct GUI_Format_VTable {
   void        (*F2)(struct GUI_Format *self);

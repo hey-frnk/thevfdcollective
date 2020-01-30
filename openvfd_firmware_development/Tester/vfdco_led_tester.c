@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "../vfdco_led.h"
 #include "../vfdco_color_lib.h"
 #include "../vfdco_lights.h"
@@ -15,10 +16,11 @@ gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c ..
 
 #define ever (;;)
 
-//#define TEST0
+#define TEST0
 // #define TEST1
 // #define TEST2
-#define TEST3
+//#define TEST3
+//#define TEST4
 
 void test0() {
   hsl_t *c1 = HSL_Init(0, 255, 127);
@@ -27,9 +29,9 @@ void test0() {
   hsl_d_t d = {0, 0, 0};
   hsl_t *cArr[2] = {c1, c2};
 
-  struct LED_Color *f1 //= (struct LED_Color *)LED_Color_Fader_Init(20, LED_COLOR_BLEND_MODE_NORMAL, 0, LED_COLOR_REPEAT_FOREVER, 2, cArr, 6, 0);
-                       = (struct LED_Color *)LED_Color_Flasher_Init(20, LED_COLOR_BLEND_MODE_NORMAL, 0, LED_COLOR_REPEAT_ONCE, r1, 31, 3);
-                      // (struct LED_Color *)LED_Color_Chaser_Init(4, LED_COLOR_BLEND_MODE_NORMAL, 0, 1, 6, c1, &d, 174, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  struct LED_Color *f1 //= (struct LED_Color *)LED_Color_Fader_Init(20, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_FOREVER, 2, cArr, 6, 0);
+                       //= (struct LED_Color *)LED_Color_Flasher_Init(20, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_ONCE, r1, 31, 3);
+                       = (struct LED_Color *)LED_Color_Chaser_Init(4, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_FOREVER, 6, c1, &d, 31, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
   for(;;) {
     int q;
     while((q = getchar()) != '\n' && q != EOF);
@@ -89,34 +91,34 @@ void test1() {
   int cr = LED_COLOR_REPEAT_ONCE;
   int ce = 4;
   int ct = 32;
-  tester[0] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[1] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[2] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITACC);
-  tester[3] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITLIN);
-  tester[4] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITLIN);
-  tester[5] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
+  tester[0] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[1] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[2] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITACC);
+  tester[3] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_SPLITLIN);
+  tester[4] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_SPLITLIN);
+  tester[5] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ cs, cr, ce, c1, &d, ct, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_SPLITLIN);
 
   int rs = 5;
   int rr = LED_COLOR_REPEAT_ONCE;
   int re = 6;
   int rt = 64;
-  tester[6] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[7] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[8] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
-  tester[9] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_LINEAR);
-  tester[10] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_LINEAR);
-  tester[11] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_LINEAR);
+  tester[6] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[7] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[8] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_ACCELERATING);
+  tester[9] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_RL_LINEAR);
+  tester[10] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_RL_LINEAR);
+  tester[11] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ rs, rr, re, c1, &d, rt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_RL_LINEAR);
 
   int ls = 0;
   int lr = LED_COLOR_REPEAT_ONCE;
   int le = 6;
   int lt = 64;
-  tester[12] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[13] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[14] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
-  tester[15] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_LINEAR);
-  tester[16] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
-  tester[17] = (struct LED_Color *)LED_Color_Chaser_Init(1, LED_COLOR_BLEND_MODE_NORMAL, ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  tester[12] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[13] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[14] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_ACCELERATING);
+  tester[15] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_NON_PRESERVING, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  tester[16] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  tester[17] = (struct LED_Color *)LED_Color_Chaser_Init(1, /*LED_COLOR_BLEND_MODE_NORMAL,*/ ls, lr, le, c1, &d, lt, LED_COLOR_CHASER_PRESERVING_DECAY_SLOW, LED_COLOR_CHASER_MODE_LR_LINEAR);
 
   for(uint8_t i = 0; i < 18; ++i) {
     printf("Testing Unit: %hhu %p\n", i, tester[i]);
@@ -224,7 +226,112 @@ void test3() {
   }
 }
 
+int random_generated(int min, int max) {
+  return (rand() % (max + 1 - min)) + min;
+}
+
+void test4() {
+  hsl_t *mysterious_blue = HSL_Init/*_Range*/(120, 200, 130/*, 5.0, 20.0, 20.0*/);
+  hsl_t *mysterious_purple = HSL_Init/*_Range*/(177, 200, 130/*, 5.0, 20.0, 20.0*/);
+  printf("%hhu, %hhu, %hhu", mysterious_blue->h, mysterious_blue->s, mysterious_blue->l);
+  printf("%hhu, %hhu, %hhu", mysterious_purple->h, mysterious_purple->s, mysterious_purple->l);
+  rgb_t *random_flasher = RGB_Init(255, 255, 255);
+
+  hsl_t *main_colors[2] = {mysterious_blue, mysterious_purple};
+
+  struct LED_Color *grundschwingung;
+  struct LED_Color *blink;
+  struct LED_Color *ueberlagerung1;
+
+  grundschwingung = (struct LED_Color *)LED_Color_Fader_Init(
+    20,        // Timer interval
+    /*LED_COLOR_BLEND_MODE_NORMAL,*/             // Pixel blend setting.
+    0,              // Pixel index to start
+    LED_COLOR_REPEAT_FOREVER,                 // Fade N cycles
+    2,                // Number of HSL colors
+    main_colors,                  // Array of HSL colors
+    6,              // Number of chained pixels
+    -4          // Hue difference between chained pixels
+  );
+
+  blink = (struct LED_Color *)LED_Color_Flasher_Init(
+    20,        // Timer interval
+    /*LED_COLOR_BLEND_MODE_NORMAL,*/             // Pixel blend setting.
+    random_generated(0, 5),              // Pixel index to start
+    random_generated(0, 3),                 // Repeat flash how many times?
+    random_flasher,
+    random_generated(10, 30),               // Duration of each flash
+    3
+  );
+
+  // LED_Color_Fader_Init(20, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_FOREVER, 2, cArr, 6, 0);
+                       // = (struct LED_Color *)LED_Color_Flasher_Init(20, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_ONCE, r1, 31, 3);
+                      // (struct LED_Color *)LED_Color_Chaser_Init(4, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, 1, 6, c1, &d, 174, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+  for(;;) {
+    int q;
+    while((q = getchar()) != '\n' && q != EOF);
+
+    char c;
+    printf("Button input: ");
+    scanf("%c", &c);
+
+    if(c <= 'm' && c > '0') {
+      for(uint8_t i = 0; i < (c - '0'); ++i) {
+        if(!grundschwingung->Next(grundschwingung)) {
+          grundschwingung->Delete(grundschwingung);
+          grundschwingung = (struct LED_Color *)LED_Color_Fader_Init(
+            20,        // Timer interval
+            /*LED_COLOR_BLEND_MODE_NORMAL,*/             // Pixel blend setting.
+            0,              // Pixel index to start
+            LED_COLOR_REPEAT_FOREVER,                 // Fade N cycles
+            2,                // Number of HSL colors
+            main_colors,                  // Array of HSL colors
+            6,              // Number of chained pixels
+            -4          // Hue difference between chained pixels
+          );
+        }
+        if(!blink->Next(blink)) {
+          blink->Delete(blink);
+          blink = (struct LED_Color *)LED_Color_Flasher_Init(
+            20,        // Timer interval
+            /*LED_COLOR_BLEND_MODE_NORMAL,*/             // Pixel blend setting.
+            random_generated(0, 5),              // Pixel index to start
+            random_generated(0, 3),                 // Repeat flash how many times?
+            random_flasher,
+            random_generated(10, 30),               // Duration of each flash
+            3
+          );
+        }
+      }
+    }
+
+    switch(c) {
+      case 'E': exit(0); break;
+      case 'F': break;
+      /*case 'n': {
+        if(!grundschwingung->Next(grundschwingung)) {
+          grundschwingung->Delete(grundschwingung);
+          grundschwingung = (struct LED_Color *)LED_Color_Fader_Init(
+            20,        // Timer interval
+            LED_COLOR_BLEND_MODE_NORMAL,             // Pixel blend setting.
+            0,              // Pixel index to start
+            LED_COLOR_REPEAT_FOREVER,                 // Fade N cycles
+            2,                // Number of HSL colors
+            main_colors,                  // Array of HSL colors
+            6,              // Number of chained pixels
+            -4          // Hue difference between chained pixels
+          );
+        }
+        break;
+      }*/
+      default: break;
+    }
+  }
+}
+
 int main(void) {
+  srand (time(NULL));
+
   #ifndef TEST3
   vfdco_clr_init(6);
   vfdco_display_init(6);
@@ -244,6 +351,10 @@ int main(void) {
 
   #ifdef TEST3
   test3();
+  #endif
+
+  #ifdef TEST4
+  test4();
   #endif
 
   return 0;

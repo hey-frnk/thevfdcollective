@@ -20,6 +20,7 @@ extern I2C_HandleTypeDef hi2c1;
 uint32_t (*vfdco_time_get_milliseconds)(void) = HAL_GetTick;
 void (*vfdco_time_delay_milliseconds)(uint32_t) = HAL_Delay;
 
+
 static inline uint8_t _vfdco_bcd2dec(uint8_t input) {
   return (input >> 4) * 10 + (input & 0x0F);
 }
