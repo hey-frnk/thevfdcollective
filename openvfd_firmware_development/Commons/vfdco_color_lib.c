@@ -61,10 +61,20 @@ uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
   return ((r + m) << 8) | ((g + m) << 16) | (b + m);
 }
 
-#define GAUSSIAN_MAGIC_NUMBER 0.424660900144f
 
-int8_t led_color_simple_randomizer(int8_t min, int8_t max) {
-  return (rand() % ((uint32_t)max + 1 - (uint32_t)min)) + (uint32_t)min;
+volatile uint8_t _rrx = 0;
+volatile uint8_t _rry = 0;
+volatile uint8_t _rrz = 0;
+volatile uint8_t _rra = 1;
+// Xorshift Randomizer
+uint8_t led_color_simple_randomizer(uint8_t bits) {
+  if(!bits) return 0;
+  uint8_t _rrt = _rrx ^ (_rrx >> 1);
+  _rrx = _rry;
+  _rry = _rrz;
+  _rrz = _rra;
+  _rra = _rrz ^ _rrt ^ (_rrz >> 3) ^ (_rrt << 1);
+  return _rra & ((1 << bits) - 1);
 }
 
 /** Begin of:
@@ -316,11 +326,24 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
   } else if(self->state == LED_COLOR_STATE_ACTIVE) {
     // Pick up current and target pix depending on position and
     uint_fast16_t t = self->fade_pos & (time_period - 1);      // Current time = fade_pos % time_period, always a value between [0 ... time_period - 1]
+    uint_fast8_t fast_time_bits = 1 << time_bits;
     uint_fast8_t access_index = self->fade_pos >> time_bits;   // Current access index = fade_pos / time_period, always between [0 ... num_pks - 1]
     hsl_t *current  = self->pks[access_index];
     hsl_t *target   = self->pks[access_index + 1];
     // Linearly transition HSL from curr -> target
-    i_h = (((target->h - (int_fast16_t)current->h) * (int_fast32_t)t) >> time_bits) + current->h;
+    /*
+      i_h = (((target->h - (int_fast16_t)current->h) * (int_fast32_t)t) >> time_bits) + current->h;
+      is suboptimal, as e.g. going from 250 (magenta red) to 30 (orange) is traveled through the whole spectrum instead of just overflowing
+      A workaround for this issue is proposed by the LerpHSL function.
+      LerpHSL does a linear interpolation of the Hue component and chooses the shortest distance in a cyclic way
+      The idea is visualized by Alan Zucconi https://www.alanzucconi.com/2016/01/06/colour-interpolation/
+      The code is largely based on https://github.com/yuichiroharai/glsl-y-hsv/blob/master/lerpHSV.glsl, rewritten for fixed point arithmetics
+      For an 8 bit interpolation state t [0 .. 255] and the 8 bit Hue values H1 and H2 of a color, the code simplifies to:
+      H_NEW = (((((int16_t)(383 + H2 - H1) % 255) - 127) * t) >> 8) + H1;
+      or any norm factor 1/k H_NEW = (((1.5k + H2 - H1) % k) - 0.5k) * t + H1 for t [0..1]
+      The i_h below is adapted to
+    */
+    i_h = (((((int16_t)(fast_time_bits + (fast_time_bits >> 1) + target->h - current->h) % fast_time_bits) - (fast_time_bits >> 1)) * t) >> 8) + current->h;  // what the actual fuck?!
     i_s = (((target->s - (int_fast16_t)current->s) * (int_fast32_t)t) >> time_bits) + current->s;
     i_l = (((target->l - (int_fast16_t)current->l) * (int_fast32_t)t) >> time_bits) + current->l;
 

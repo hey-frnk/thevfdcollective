@@ -131,7 +131,7 @@ hsl_t *HSL_Init_Range(    uint8_t h, uint8_t s, uint8_t l, // Like above
 void HSL_Delete(hsl_t *self);
 void RGB_Delete(rgb_t *self);
 
-int8_t led_color_simple_randomizer(int8_t min, int8_t max);
+uint8_t led_color_simple_randomizer(uint8_t bits);
 uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
 
 /** Begin of:

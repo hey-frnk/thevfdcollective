@@ -103,35 +103,40 @@ static const uint8_t Time_Code_Colors[][3] =  {{0, 0, 0}, {128, 255, 64}, {0, 25
 #define LIGHTS_SIGMA_S 20.0f
 #define LIGHTS_SIGMA_L 20.0f*/
 
-static const uint8_t MomentsOfBliss_Colors[LIGHTS_BLISS_MAXMOMENTS][6] = {
-// C1H, C1S, C1L, C2H, C2S, C2L
-  {  0,   0,   0,   0,   0,   0},
-  {  0,   0,   0,   0,   0,   0},
-  {  0,   0,   0,   0,   0,   0},
-  {  0,   0,   0,   0,   0,   0},
-  {  0,   0,   0,   0,   0,   0},
-  {  0,   0,   0,   0,   0,   0},
-  {  0,   0,   0,   0,   0,   0}
+static const uint8_t MomentsOfBliss_Colors[LIGHTS_BLISS_MAXMOMENTS][7] = { // (C) The VFD Collective
+  // Dev: SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
+  // D+: Hue difference between LEDs. Random number between 0..2^(D+), 4x MSB
+  // T: Peak differene tolerance. Random bumber between 0..2^(T), 4x LSB
+// C1H, C1S, C1L, C2H, C2S, C2L,  D+|T
+  {110, 220, 100, 190, 230,  90, 0x33}, // Nordlicht.          Ink: fluorescent green to teal, touches of purple
+  {140, 150,  65, 150, 255,  75, 0x32}, // Schneesturm.        Ink: acrylic. dark midnight blue, shades of gray and cold white
+  {125, 255, 160, 230, 255, 160, 0x13}, // Frühlingspastell.   Ink: pastel. cherry, pink, some light green and rarely drip of light blue
+  { 75, 255, 127, 145, 255, 127, 0x23}, // Hummelhonig.        Ink: highly saturated green and blue gradients
+  {125, 255, 127, 135, 255, 170, 0x23}, // Meeresgeflüster.    Ink: watercolor. light sky blue to turquoise, with white sparks and rarely some yellow
+  {  0, 255, 100,  14, 255, 120, 0x00}, // Herbstlagerfeuer.   Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red
+  {250, 255, 127, 255, 240, 127, 0x30}, // Some sunset name.   Ink: strong red. every warm red tone, some orange, some magenta
 };
 
-static inline void _target_RGB(uint8_t *tp, uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
-	tp[4 * index] = g;
-	tp[4 * index + 1] = r;
-	tp[4 * index + 2] = b;
-	tp[4 * index + 3] = 0;
+static void _target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
+  tp[0] = g;
+  tp[1] = r;
+  tp[2] = b;
+  tp[3] = 0;
 }
-static inline void _target_RGBW(uint8_t *tp, uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-	_target_RGB(tp, index, r, g, b);
-	tp[4 * index + 3] = w;
+static void _target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+  tp[0] = g;
+  tp[1] = r;
+  tp[2] = b;
+	tp[3] = w;
 }
-static inline void _target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
-	for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) _target_RGB(tp, i, r, g, b);
+static void _target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
+	for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGB(tp + i, r, g, b);
 }
-static inline void _target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-	for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) _target_RGBW(tp, i, r, g, b, w);
+static void _target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+	for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGBW(tp + i, r, g, b, w);
 }
 
-static inline void _minimize_difference(uint8_t *target_arr) {
+static /*inline*/ void _minimize_difference(uint8_t *target_arr) {
 	uint8_t dt = 0;
 	for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) { // Sorry for the ll-access
 		if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
@@ -220,7 +225,7 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
     // Multicolor, just use legacy colors, they are hand crafted and look better
     uint8_t t_pos = self->position - NUM_STATIC_T2;
     for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-      _target_RGB(self->target_arr, i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
+      _target_RGB(self->target_arr + 4 * i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
     }
   }
 
@@ -344,7 +349,6 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self) {
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
   self->spectrum_fader = (struct LED_Color *)LED_Color_Fader_Init(
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
-    /*LED_COLOR_BLEND_MODE_NORMAL,*/ // Pixel blend setting.
     0,                           // Pixel index to start
     LED_COLOR_REPEAT_FOREVER,    // Fade N cycles
     1,                           // Number of HSL colors
@@ -627,7 +631,7 @@ static void _Light_Pattern_Time_Code_Update(struct Light_Pattern *unsafe_self) {
     };
 
 		for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; i++)
-			_target_RGB(target_arr, i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
+			_target_RGB(target_arr + 4 * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
 
 		_minimize_difference(target_arr);
   }
@@ -681,30 +685,16 @@ static void _Light_Pattern_Cop_Update(struct Light_Pattern *unsafe_self) {
     if(self->state < 13) self->state++;
     else if(self->state == 13) self->state = 0;
 
-    // b | r fill
-    if(self->state == 0) {
-      for(uint_fast8_t i = 0;              i < (CONFIG_NUM_PIXELS >> 1); ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
-      for(uint_fast8_t i = (CONFIG_NUM_PIXELS >> 1); i < CONFIG_NUM_PIXELS;        ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
+    uint8_t _hl = (self->state & 0x01) ? 0x00 : 0xFF;
+
+    // b | r and r | b fill
+    if(self->state == 0 || self->state == 6 || self->state == 7 || self->state == 13) {
+      for(uint_fast8_t i = 0;                        i < (CONFIG_NUM_PIXELS >> 1); ++i) vfdco_clr_set_RGB(i,  _hl,   0, ~_hl);
+      for(uint_fast8_t i = (CONFIG_NUM_PIXELS >> 1); i < CONFIG_NUM_PIXELS;        ++i) vfdco_clr_set_RGB(i, ~_hl,   0,  _hl);
     }
     // off fill
-    else if(self->state == 5) vfdco_clr_set_all_RGBW(0, 0, 0, 0);
-    // b | r fill
-    else if(self->state == 6) {
-      for(uint_fast8_t i = 0;              i < (CONFIG_NUM_PIXELS >> 1); ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
-      for(uint_fast8_t i = (CONFIG_NUM_PIXELS >> 1); i < CONFIG_NUM_PIXELS;        ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
-    }
-    // r | b fill
-    else if(self->state == 7) {
-      for(uint_fast8_t i = 0;              i < (CONFIG_NUM_PIXELS >> 1); ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
-      for(uint_fast8_t i = (CONFIG_NUM_PIXELS >> 1); i < CONFIG_NUM_PIXELS;        ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
-    }
-    // white fill
-    else if(self->state == 12) vfdco_clr_set_all_RGBW(255, 255, 255, 0);
-
-    // r | b fill
-    else if(self->state == 13) {
-      for(uint_fast8_t i = 0;              i < (CONFIG_NUM_PIXELS >> 1); ++i) vfdco_clr_set_RGBW(i,   0,   0, 255, 0);
-      for(uint_fast8_t i = (CONFIG_NUM_PIXELS >> 1); i < CONFIG_NUM_PIXELS;        ++i) vfdco_clr_set_RGBW(i, 255,   0,   0, 0);
+    else if(self->state == 5 || self->state == 12) {
+      vfdco_clr_set_all_RGB(  _hl,   _hl,   _hl);
     }
     vfdco_clr_render();
   }
@@ -751,7 +741,7 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self) {
 
 
 /** Begin of:
-* @toc SECTION_LIGHT_PATTERN_MomentsOfBliss
+* @toc SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
 **/
 /**
 * @brief  Implementation of virtual function Light_Pattern_MomentsOfBliss::Update (static void _Light_Pattern_MomentsOfBliss_Update)
@@ -759,7 +749,23 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self) {
 static void _Light_Pattern_MomentsOfBliss_Update(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
 
-  self->base_fader->Next(self->base_fader);
+  LED_COLOR_STATE_t prev_state = ((struct LED_Color_Fader *)self->base_fader)->state;
+
+  if(self->base_fader->Next(self->base_fader) == LED_COLOR_STATE_CYCLIC_RECOVERY && prev_state == LED_COLOR_STATE_ACTIVE) {
+    uint8_t bits = MomentsOfBliss_Colors[self->moment][6];
+    // Randomize h
+    ++self->undrift_counter;
+    if(self->undrift_counter < self->undrift_max) {
+      // Randomize new hue & hue diff by a pos or neg number biased around 0 by (1<<bits) / 2
+      self->colors[0]->h = self->colors[0]->h -((1 << (bits & 0x0F)) >> 1) + led_color_simple_randomizer(bits & 0x0F);
+      // ((struct LED_Color_Fader *)self->base_fader)->chain_huediff = led_color_simple_randomizer(bits >> 4) - ((1 << (bits >> 4)) >> 1);
+    } else {
+      // Restore hue
+      self->colors[0]->h = MomentsOfBliss_Colors[self->moment][0];
+      self->undrift_counter = 0;
+      self->undrift_max = led_color_simple_randomizer(2) + 2;
+    }
+  }
 }
 
 static inline void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_MomentsOfBliss *self) {
@@ -777,15 +783,16 @@ static inline void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_M
   );
 
   self->base_fader = (struct LED_Color *)LED_Color_Fader_Init(
-    CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
-    /*LED_COLOR_BLEND_MODE_NORMAL,*/ // Pixel blend setting.
+    CONFIG_MOMENTSOFBLISS_FADE_SPEED,  // Timer interval
     0,                           // Pixel index to start
     LED_COLOR_REPEAT_FOREVER,    // Fade N cycles
     2,                           // Number of HSL colors
     self->colors,                // Array of HSL colors
     CONFIG_NUM_DIGITS,           // Number of chained pixels
-    led_color_simple_randomizer(2, 10) // Hue difference between chained pixels
+    led_color_simple_randomizer(MomentsOfBliss_Colors[self->moment][6] >> 4) - ((1 << (MomentsOfBliss_Colors[self->moment][6] >> 4)) >> 1)
   );
+
+  self->undrift_max = led_color_simple_randomizer(2) + 2; // some number between 2 and 5 lol
 }
 
 /**

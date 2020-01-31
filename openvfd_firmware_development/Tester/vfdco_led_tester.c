@@ -330,7 +330,6 @@ void test4() {
 }
 
 int main(void) {
-  srand (time(NULL));
 
   #ifndef TEST3
   vfdco_clr_init(6);
