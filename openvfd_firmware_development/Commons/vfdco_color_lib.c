@@ -19,10 +19,7 @@
   ******************************************************************************
  **/
 
-#include <time.h>
-#include <math.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include "../vfdco_config.h"
 #include "../vfdco_color_lib.h"
 
@@ -116,24 +113,30 @@ inline void RGB_Delete(rgb_t *self) {
 /**
  * @brief  Implementation of virtual method LED_Color::Next
 **/
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 static inline LED_COLOR_STATE_t _LED_Color_Next(struct LED_Color *unsafe_self) {
   return unsafe_self->VTable.Next(unsafe_self);
 }
+#endif
 /**
  * @brief  Implementation of virtual destructor LED_Color::~LED_Color
 **/
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 static inline void _LED_Color_Delete(struct LED_Color *unsafe_self) {
   unsafe_self->VTable.Delete(unsafe_self);
 }
+#endif
 /**
  * @brief  Implementation of constructor LED_Color::LED_Color
 **/
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 void LED_Color_Init(struct LED_Color *f, uint_fast32_t timer1_interval) {
   f->Next = _LED_Color_Next;
   f->Delete = _LED_Color_Delete;
 
   f->timer = Time_Event_Init(timer1_interval);
 }
+#endif
 
 /** Begin of:
   * @toc SUBSECTION_COLOR_FADER
@@ -141,11 +144,18 @@ void LED_Color_Init(struct LED_Color *f, uint_fast32_t timer1_interval) {
 /**
  * @brief  Implementation of method LED_Color_Fader::Next for single peak
 **/
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_Color *unsafe_self) {
   struct LED_Color_Fader *self = (struct LED_Color_Fader *)unsafe_self;
-
+#else
+static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_Color_Fader *self) {
+#endif
   hsl_t *target = self->pks[0]; // Just get the one pk
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
+  #else
+  uint8_t render_enable = Time_Event_Update(&self->timer);
+  #endif
 
   uint8_t i_s = target->s, i_l = 0;
   // State FSM output
@@ -212,13 +222,17 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
 /**
  * @brief  Implementation of method LED_Color_Fader::Next for multiple peaks
 **/
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *unsafe_self) {
   struct LED_Color_Fader *self = (struct LED_Color_Fader *)unsafe_self;
-
-  #ifdef DEBUG
-  printf("state %3d ", self->state);
-  #endif
+#else
+static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_Fader *self) {
+#endif
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
+  #else
+  uint8_t render_enable = Time_Event_Update(&self->timer);
+  #endif
   uint8_t i_h = 0, i_s = 0, i_l = 0;
   // State FSM output
   if(self->state == LED_COLOR_STATE_FADE_IN) {
@@ -336,14 +350,20 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color *
 /**
  * @brief  Implementation of destructor LED_Color_Fader::~LED_Color_Fader
 **/
-void _LED_Color_Fader_Delete(struct LED_Color *unsafe_self) {
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+void _LED_Color_Fader_Delete(struct LED_Color *unsafe_self)
+#else
+void LED_Color_Fader_Delete(struct LED_Color_Fader *unsafe_self)
+#endif
+{
   free((struct LED_Color_Fader *)unsafe_self);
 }
 
 /**
  * @brief  Implementation of constructor LED_Color_Fader::LED_Color_Fader
 **/
-struct LED_Color_Fader *LED_Color_Fader_Init(
+void LED_Color_Fader_Init(
+  struct LED_Color_Fader *f,
   uint_fast32_t             timer1_interval,
   #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t                   start_pos,
@@ -356,8 +376,11 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   #endif
   int8_t                    chain_hue_diff
 ) {
-  struct LED_Color_Fader *f = (struct LED_Color_Fader *)malloc(sizeof(struct LED_Color_Fader));
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   LED_Color_Init(&f->super, timer1_interval);
+  #else
+  f->timer = Time_Event_Init(timer1_interval);
+  #endif
 
   // LED Fader Attributes
   #ifdef LED_COLOR_FADER_EXTENDED
@@ -370,6 +393,7 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   f->repeat = repeat;
 
   // Method mapping
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   struct LED_Color_VTable _fader_vtable = {
     .Next = (num_pks > 1) ?
         _LED_Color_Fader_NextColorLin :
@@ -378,11 +402,12 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   };
 
   f->super.VTable = _fader_vtable;
-  /*f->_blend = _blend_init(blend_mode);*/
+  #else
+  f->Next = (num_pks > 1) ? _LED_Color_Fader_NextColorLin : _LED_Color_Fader_NextColorLinSingle;
+  #endif
 
   f->fade_pos = 0;
   f->state = LED_COLOR_STATE_FADE_IN;
-  return f;
 }
 
 
@@ -392,11 +417,21 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
 /**
  * @brief  Implementation of method LED_Color_Flasher::Next
 **/
+#ifdef LED_COLOR_FLASHER_ENABLE
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe_self) {
   struct LED_Color_Flasher *self = (struct LED_Color_Flasher *)unsafe_self;
-
+#else
+LED_COLOR_STATE_t LED_Color_Flasher_Next(struct LED_Color_Flasher *self) {
+#endif
   if(self->state == LED_COLOR_STATE_ACTIVE) {
-    if(Time_Event_Update(&unsafe_self->timer)) {
+    if(
+      #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+      Time_Event_Update(&unsafe_self->timer)
+      #else
+      Time_Event_Update(&self->timer)
+      #endif
+      ) {
     	++self->flash_pos;
 
     	vfdco_clr_set_RGB(self->start_pos, self->pk->r, self->pk->g, self->pk->b);
@@ -409,12 +444,14 @@ static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe
     	// Write to LEDs, physically
     	vfdco_clr_render();
     }
-  } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
-    if(Time_Event_Update(&unsafe_self->timer)) ++self->flash_pos;
-    #ifdef DEBUG
-    printf("Ghost Write\n");
-    #endif
-
+  } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) { // Ghost write
+    if(
+      #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+      Time_Event_Update(&unsafe_self->timer)
+      #else
+      Time_Event_Update(&self->timer)
+      #endif
+    ) ++self->flash_pos;
     if(!(self->flash_pos < self->flash_offtime)) {
       self->flash_pos = 0;
       if(self->flash_repeat != LED_COLOR_REPEAT_FOREVER) {
@@ -432,24 +469,32 @@ static inline LED_COLOR_STATE_t _LED_Color_Flasher_Next(struct LED_Color *unsafe
 /**
  * @brief  Destructor of LED_Color_Flasher class
 **/
-void _LED_Color_Flasher_Delete(struct LED_Color *unsafe_self) {
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+void _LED_Color_Flasher_Delete(struct LED_Color *unsafe_self)
+#else
+void LED_Color_Flasher_Delete(struct LED_Color_Flasher *unsafe_self)
+#endif
+{
   free((struct LED_Color_Flasher *)unsafe_self);
 }
 
 /**
  * @brief  Implementation of constructor LED_Color_Flasher::LED_Color_Flasher
 **/
-struct LED_Color_Flasher *LED_Color_Flasher_Init(
+void LED_Color_Flasher_Init(
+  struct LED_Color_Flasher *f,
   uint_fast32_t             timer1_interval,
-  /*LED_COLOR_BLEND_MODE_t    blend_mode,*/
   uint8_t                   start_pos,
   int8_t                    repeat,
   rgb_t                     *pk,
   uint8_t                   duration,
   uint8_t                   offtime
 ) {
-  struct LED_Color_Flasher *f = (struct LED_Color_Flasher *)malloc(sizeof(struct LED_Color_Flasher));
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   LED_Color_Init(&f->super, timer1_interval);
+  #else
+  f->timer = Time_Event_Init(timer1_interval);
+  #endif
 
   // LED Flasher Attributes
   f->start_pos = start_pos;
@@ -459,18 +504,19 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
   f->flash_repeat = repeat;
 
   // Method mapping
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   struct LED_Color_VTable _flasher_vtable = {
     .Next = _LED_Color_Flasher_Next,
     .Delete = _LED_Color_Flasher_Delete
   };
 
   f->super.VTable = _flasher_vtable;
-  /*f->_blend = _blend_init(blend_mode);*/
+  #endif
 
   f->flash_pos = 0;
   f->state = LED_COLOR_STATE_ACTIVE;
-  return f;
 }
+#endif
 
 
 /** Begin of:
@@ -479,13 +525,22 @@ struct LED_Color_Flasher *LED_Color_Flasher_Init(
 /**
  * @brief  Implementation of method LED_Color_Chaser::Next
 **/
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_self) {
   struct LED_Color_Chaser *self = (struct LED_Color_Chaser *)unsafe_self;
-
-  uint_fast16_t chase_duration = self->chase_duration;
+#else
+LED_COLOR_STATE_t LED_Color_Chaser_Next(struct LED_Color_Chaser *self) {
+#endif
+  #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   uint_fast16_t chase_cpreserving = self->chase_cpreserving;
+  uint_fast16_t chase_duration = self->chase_duration;
+  #endif
 
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
+  #else
+  uint8_t render_enable = Time_Event_Update(&self->timer);
+  #endif
 
   if(self->state == LED_COLOR_STATE_ACTIVE || self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     if(render_enable) ++self->chase_pos;
@@ -501,7 +556,14 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         else if   (self->chase_mode & 0x02) self->chase_duration *= 2;
 
         // If the last LED has reached, start over!
-        if(!(self->pk_state < self->chase_length)) {
+        if(
+          #ifdef LED_COLOR_CHASER_EXTENDED
+          !(self->pk_state < self->chase_length)
+          #else
+          !(self->pk_state < CONFIG_NUM_PIXELS)
+          #endif
+        ) {
+          #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
           if(!chase_cpreserving)  {
             // If NONPRESERVING, we're done
             self->pk_state = 0;
@@ -516,11 +578,21 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
 
             self->state = LED_COLOR_STATE_CYCLIC_RECOVERY;
           }
+          #else
+          // If NONPRESERVING, we're done
+          self->pk_state = 0;
+          // And if repeated enough, quit
+          if(self->chase_repeat != LED_COLOR_REPEAT_FOREVER) if(--self->chase_repeat < 0) self->state = LED_COLOR_STATE_COMPLETE;
+          #endif
         }
       }
     } else {
       // Full fade out cycle
-      if(!(self->chase_pos < self->chase_duration * (chase_cpreserving + 1))) {
+      if(!(self->chase_pos < self->chase_duration
+        #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
+        * (chase_cpreserving + 1)
+        #endif
+      )) {
         self->chase_pos = 0;
 
         // And if repeated enough, quit
@@ -532,6 +604,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
           else goto repeat_restore; // https://xkcd.com/292/
         } else {
           repeat_restore:
+          #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
           if(chase_cpreserving) {
             for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
               if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < CONFIG_NUM_PIXELS)) vfdco_clr_set_RGB(self->start_pos + i, 0, 0, 0);
@@ -541,6 +614,10 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
             if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < CONFIG_NUM_PIXELS)) vfdco_clr_set_RGB(self->start_pos + self->pk_state, 0, 0, 0);
             if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0))                vfdco_clr_set_RGB(self->start_pos - self->pk_state, 0, 0, 0);
           }
+          #else
+          if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < CONFIG_NUM_PIXELS)) vfdco_clr_set_RGB(self->start_pos + self->pk_state, 0, 0, 0);
+          if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0))                vfdco_clr_set_RGB(self->start_pos - self->pk_state, 0, 0, 0);
+          #endif
           vfdco_clr_render();
 
           self->pk_state = 0; // Reset position
@@ -552,7 +629,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         }
       }
     }
-
+    #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
     if(chase_cpreserving) {
       // pk_state +1 determines the amount of single sided LEDs to be written
       for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
@@ -562,7 +639,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
           // Ugly AF, sorry
           if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
             uint32_t attenuation = ((uint32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (uint32_t)self->chase_pos))
-                                / (uint32_t)(chase_cpreserving * (uint32_t)chase_duration);
+                                / (uint32_t)(chase_cpreserving * (uint16_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
           uint32_t target_right = _led_color_hsl2rgb(self->pk->h + i * self->pk_diff->h, self->pk->s + i * self->pk_diff->s, lightness);
@@ -574,7 +651,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
           // Ugly AF, sorry
           if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
             uint32_t attenuation = ((uint32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (uint32_t)self->chase_pos))
-                                / (uint32_t)(chase_cpreserving * (uint32_t)chase_duration);
+                                / (uint32_t)(chase_cpreserving * (uint16_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
           uint32_t target_left = _led_color_hsl2rgb(self->pk->h - i * self->pk_diff->h, self->pk->s - i * self->pk_diff->s, lightness);
@@ -595,6 +672,20 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
         vfdco_clr_set_RGB(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
       }
     }
+    #else
+    // Right sided write. Only write if pixel is in range and LR or Split is active
+    if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < CONFIG_NUM_PIXELS)) {
+      uint8_t lightness = self->pk->l + self->pk_state * self->pk_diff->l;
+      uint32_t target_right = _led_color_hsl2rgb(self->pk->h + self->pk_state * self->pk_diff->h, self->pk->s + self->pk_state * self->pk_diff->s, lightness);
+      vfdco_clr_set_RGB(self->start_pos + self->pk_state, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
+    }
+    // Left sided write
+    if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0)) {
+      uint8_t lightness = self->pk->l - self->pk_state * self->pk_diff->l;
+      uint32_t target_left = _led_color_hsl2rgb(self->pk->h - self->pk_state * self->pk_diff->h, self->pk->s - self->pk_state * self->pk_diff->s, lightness);
+      vfdco_clr_set_RGB(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
+    }
+    #endif
   }
 
 
@@ -606,32 +697,46 @@ static inline LED_COLOR_STATE_t _LED_Color_Chaser_Next(struct LED_Color *unsafe_
 /**
  * @brief  Destructor of LED_Color_Chaser class LED_Color_Chaser::~LED_Color_Chaser
 **/
-void _LED_Color_Chaser_Delete(struct LED_Color *unsafe_self) {
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+void _LED_Color_Chaser_Delete(struct LED_Color *unsafe_self)
+#else
+void LED_Color_Chaser_Delete(struct LED_Color_Chaser *unsafe_self)
+#endif
+{
   free((struct LED_Color_Chaser *)unsafe_self);
 }
 
 /**
   * @brief Implementation of constructor LED_Color_Chaser::LED_Color_Chaser
  **/
-struct LED_Color_Chaser *LED_Color_Chaser_Init(
+void LED_Color_Chaser_Init(
+  struct LED_Color_Chaser   *f,
   uint_fast32_t             timer1_interval,
-  /*LED_COLOR_BLEND_MODE_t    blend_mode,*/
   uint8_t                   start_pos,
   int8_t                    repeat,
+  #ifdef LED_COLOR_CHASER_EXTENDED
   uint8_t                   length,
+  #endif
   hsl_t                     *pk,
   hsl_d_t                   *pk_diff,
   uint16_t                  duration,
+  #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   uint8_t                   cpreserving,
+  #endif
   uint8_t                   mode
 ) {
-  struct LED_Color_Chaser *f = (struct LED_Color_Chaser *)malloc(sizeof(struct LED_Color_Chaser));
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   LED_Color_Init(&f->super, timer1_interval);
+  #else
+  f->timer = Time_Event_Init(timer1_interval);
+  #endif
 
   // LED Chaser Attributes
   f->pk = pk;
   f->pk_diff = pk_diff;
+  #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   f->chase_cpreserving = cpreserving;
+  #endif
   f->chase_mode = mode;
   f->chase_repeat = repeat;
   f->chase_duration = duration;
@@ -639,25 +744,28 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
   f->start_pos = start_pos;
 
   // Chase length init clipper
+  #ifdef LED_COLOR_CHASER_EXTENDED
   if(mode <= LED_COLOR_CHASER_MODE_SPLITDEC) {
     f->chase_length = (length + start_pos > CONFIG_NUM_PIXELS) ? length - start_pos + 1 : length;
   } else {
     f->chase_length = (length > start_pos) ? start_pos + 1 : length;
   }
+  #endif
 
   // Method mapping
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   struct LED_Color_VTable _chaser_vtable = {
     .Next = _LED_Color_Chaser_Next,
     .Delete = _LED_Color_Chaser_Delete
   };
 
   f->super.VTable = _chaser_vtable;
+  #endif
   /*f->_blend = _blend_init(blend_mode);*/
 
   f->chase_pos = 0;
   f->pk_state = 0;
   f->state = LED_COLOR_STATE_ACTIVE;
-  return f;
 }
 
 

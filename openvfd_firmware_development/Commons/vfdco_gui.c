@@ -172,12 +172,12 @@ static void _GUI_Format_Date_F4Var(struct GUI_Format *unsafe_self) {
 
   if(self->date_mode == DATE_FORMAT_DDMMYY) {
     self->date_mode = DATE_FORMAT_MMDDYY;
-    char _message[CONFIG_NUM_DIGITS] = {'D', ' ', ' ', 'G', 'E', 'R'};
+    char _message[CONFIG_NUM_DIGITS] = {'D', ' ', ' ',  1, 'S', 'T'};
     vfdco_display_render_message(_message, 0, CONFIG_MESSAGE_LONG);
   }
   else {
     self->date_mode = DATE_FORMAT_DDMMYY;
-    char _message[CONFIG_NUM_DIGITS] = {'D', ' ', 'I', 'N', 'T', 'L'};
+    char _message[CONFIG_NUM_DIGITS] = {'D', ' ', ' ', '2', 'N', 'D'};
     vfdco_display_render_message(_message, 0, CONFIG_MESSAGE_LONG);
   }
 }

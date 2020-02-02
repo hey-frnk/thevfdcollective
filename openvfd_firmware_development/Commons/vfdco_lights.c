@@ -23,11 +23,6 @@
 enum {LIGHTNESS_H  = CONFIG_LIGHTNESS_HIGH,   LIGHTNESS_M  = CONFIG_LIGHTNESS_MEDIUM,   LIGHTNESS_L  = CONFIG_LIGHTNESS_LOW    };
 enum {SATURATION_H = CONFIG_SATURATION_HIGH,   SATURATION_M = CONFIG_SATURATION_MEDIUM,  SATURATION_L = CONFIG_SATURATION_LOW   };
 
-/*static const hsl_t Static_Colors_Special[NUM_STATIC_COLOR_SPECIAL] = {
-  {.h =   0,   .s =   0,   .l =   0}, // Off (Black)
-  {.h =   0,   .s =   0,   .l = 255}  // White
-};*/
-
 static const uint8_t Static_Color_Hues[NUM_STATIC_COLOR_HUES] = {
   // As always the sat is 255, lightness 127, only memorize hues
     0, // Red      , also Red --> Blue
@@ -39,21 +34,6 @@ static const uint8_t Static_Color_Hues[NUM_STATIC_COLOR_HUES] = {
   240, // Magenta
   205  // Purple
 };
-
-/* static const int8_t Static_Color_Presets[NUM_STATIC_COLOR_PRESETS] = {
-   -17, // Difference to get from green to blue with n um_rgb == 6
-   -17, // Difference to get from red to green
-   -17  // Difference to get from green to blue
-}; */
-
-/*static const uint8_t Static_Color_Rainbow_Lightness[NUM_STATIC_COLOR_RAINBOWS] = {
-  127,
-  170
-};
-static const uint8_t Static_Color_Rainbow_Saturation[NUM_STATIC_COLOR_RAINBOWS] = {
-  255,
-  196
-};*/
 
 // Caution: G-R-B ordering (due to legacy copy & paste, sorry)
 static const uint8_t Static_Color_Rainbows[][6 * 3] =
@@ -105,14 +85,69 @@ static const uint8_t MomentsOfBliss_Colors[LIGHTS_BLISS_MAXMOMENTS][7] = { // (C
   // D+: Hue difference between LEDs. Random number between 0..2^(D+), 4x MSB
   // T: Peak differene tolerance. Random bumber between 0..2^(T), 4x LSB
 // C1H, C1S, C1L, C2H, C2S, C2L,  D+|T
-  {105, 220, 100, 190, 230,  90, 0x42}, // Nordlicht.          Ink: fluorescent green to teal, touches of purple
+  {105, 245, 100, 190, 245, 110, 0x42}, // Nordlicht.          Ink: fluorescent green to teal, touches of purple
   // {140, 150, 127, 150, 180, 127, 0x42}, // Schneesturm.        Ink: acrylic. dark midnight blue, shades of gray and cold white
-  {120, 180, 200, 230, 180, 200, 0x53}, // Frühlingspastell.   Ink: pastel. cherry, pink, some light green and rarely drip of light blue
+  {120, 255, 220, 230, 255, 200, 0x53}, // Frühlingspastell.   Ink: pastel. cherry, pink, some light green and rarely drip of light blue
   { 55, 255, 127, 145, 255, 127, 0x42}, // Hummelhonig.        Ink: highly saturated green and blue gradients
-  {125, 255, 160, 140, 255, 180, 0x42}, // Meeresgeflüster.    Ink: watercolor. light sky blue to turquoise, with white sparks and rarely some yellow
-  {  2, 255, 100,  14, 255, 120, 0x32}, // Herbstlagerfeuer.   Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red
-  {245, 255, 127,  10, 255, 127, 0x42}, // Some sunset name.   Ink: strong red. every warm red tone, some orange, some magenta
+  {140, 255, 127, 150, 255, 240, 0x52}, // Meeresgeflüster.    Ink: watercolor. light sky blue to turquoise, with white sparks and rarely some yellow
+  {  0, 255, 120,  35, 255, 120, 0x32}, // Herbstlagerfeuer.   Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red
+  {235, 255, 127,  10, 255, 127, 0x42}, // Some sunset name.   Ink: strong red. every warm red tone, some orange, some magenta
 };
+
+// Messaging
+static const char Messages_Color_Static[][4] = {
+  {' ', 'O', 'F', 'F'}, // Off
+  {' ', 'L', 'O', 'N'}, // Warm White
+  {' ', ' ', 'O', 'N'}, // Cold White
+  {' ', 'R', 'E', 'D'}, // Red
+  {' ', 'G', 'R', 'N'}, // Green
+  {'B', 'L', 'U', 'E'}, // Blue
+  {'Y', 'E', 'L', 'O'}, // Yellow
+  {'O', 'R', 'N', 'G'}, // Orange
+  {'C', 'Y', 'A', 'N'}, // Cyan
+  {'P', 'R', 'E', 'D'}, // Magenta
+  {'P', 'R', 'P', 'L'}, // Purple
+  {' ', 'R', 'N', 'B'}, // Rainbow
+  {'P', 'R', 'N', 'B'}, // Pastel Rainbow
+  {' ', 'G',   2, 'B'}, // Green to Blue
+  {' ', 'R',   2, 'B'}, // Red to Blue
+  {' ', 'R',   2, 'G'}  // Red to Green
+};
+static const char Messages_Color_Rainbow[][CONFIG_NUM_DIGITS] = {
+  {'C', 'H', 'I', 'L', 'L', ' '},
+  {'R', 'E', 'G', 'U', 'L', 'A'},
+  {'T', 'I', 'G', 'H', 'T', ' '}
+};
+static const char Messages_Color_Chase[][4] = {
+  {' ', 'R', '-', 'L'},
+  {' ', 'L', '-', 'R'},
+  {'F', 'L', 'I', 'P'},
+  {' ', ' ', 'O', 'N'},
+  {' ', 'O', 'F', 'F'}
+};
+
+static const char Messages_Color_Hello[][CONFIG_NUM_DIGITS] = {
+  {' ', 'C', 'O', 'L', 'O', 'R'},
+  {' ', 'B', 'L', 'I', 'S', 'S'},
+  {' ', ' ', 'F', 'A', 'D', 'E'},
+  {' ', 'R', 'N', 'B', 'F', 'D'},
+  {' ', 'C', 'H', 'A', 'S', 'E'},
+  {'T', 'I', 'C', 'O', 'D', 'E'},
+  {'C', ' ', ' ', 'C', 'O', 'P'}
+};
+
+static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
+  {'N', 'O', 'R', 'D', 'L', 'I'},
+  // {'S', 'C', 'H', 'N', 'E', 'E'},
+  {'P', 'A', 'S', 'T', 'E', 'L'},
+  {' ', 'H', 'O', 'N', 'I', 'G'},
+  {' ', 'O', 'C', 'E', 'A', 'N'},
+  {' ', 'F', 'E', 'U', 'E', 'R'},
+  {' ', 'A', 'B', 'E', 'N', 'D'}
+};
+
+
+
 
 static void _target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
   tp[0] = g;
@@ -226,7 +261,8 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
     }
   }
 
-  char k[CONFIG_NUM_DIGITS] = {'C', 'H', 'A', 'N', 'G', 'E'};
+  char k[CONFIG_NUM_DIGITS] = {'C', ' '};
+  for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) k[i + 2] = Messages_Color_Static[self->position][i];
   vfdco_display_render_message(k, 0, CONFIG_MESSAGE_SHORT);
 }
 
@@ -234,8 +270,7 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
   * @brief  Implementation of virtual function Light_Pattern_Static::Hello (static void _Light_Pattern_Static_Hello)
  **/
 static inline void _Light_Pattern_Static_Hello(void) {
-  char k[CONFIG_NUM_DIGITS] = {'C', ' ', ' ', 'C', 'L', 'R'};
-  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Color_Hello[0], 0, CONFIG_MESSAGE_LONG);
 }
 
 static inline void _Light_Pattern_Static_Delete(struct Light_Pattern *unsafe_self) {
@@ -277,7 +312,11 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self) {
 static void _Light_Pattern_Spectrum_Update(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Spectrum *self = (struct Light_Pattern_Spectrum *)unsafe_self;
 
-  self->spectrum_fader->Next(self->spectrum_fader);
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+  self->spectrum_fader.super.Next(&self->spectrum_fader.super);
+  #else
+  self->spectrum_fader.Next(&self->spectrum_fader);
+  #endif
 }
 
 /**
@@ -287,16 +326,19 @@ static void _Light_Pattern_Spectrum_F3(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Spectrum *self = (struct Light_Pattern_Spectrum *)unsafe_self;
   hsl_t *_color = self->color[0];
 
-  // char message[MESSAGE_LENGTH];
+  char k[CONFIG_NUM_DIGITS] = {'B', 'R', 'I', ' ', ' ', 1};
   if(_color->l == LIGHTNESS_M) {
     _color->l = LIGHTNESS_H;
+    k[5] = 3;
   }
   else if(_color->l == LIGHTNESS_H) {
     _color->l = LIGHTNESS_L;
   }
   else{
     _color->l = LIGHTNESS_M;
+    k[5] = 2;
   }
+  vfdco_display_render_message(k, 0b00000100, CONFIG_MESSAGE_SHORT);
 }
 
 /**
@@ -306,31 +348,32 @@ static void _Light_Pattern_Spectrum_F3Var(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Spectrum *self = (struct Light_Pattern_Spectrum *)unsafe_self;
   hsl_t *_color = self->color[0];
 
-  // char message[MESSAGE_LENGTH];
+  char k[CONFIG_NUM_DIGITS] = {'S', 'A', 'T', ' ', ' ', 1};
   if(_color->s == SATURATION_H) {
     _color->s = SATURATION_L;
   }
   else if(_color->s == SATURATION_L) {
     _color->s = SATURATION_M;
+    k[5] = 2;
   }
   else{
     _color->s = SATURATION_H;
+    k[5] = 3;
   }
+  vfdco_display_render_message(k, 0b00000100, CONFIG_MESSAGE_SHORT);
 }
 
 /**
 * @brief  Implementation of virtual function Light_Pattern_Spectrum::Hello (static void _Light_Pattern_Spectrum_Hello)
 **/
 static inline void _Light_Pattern_Spectrum_Hello(void) {
-  char k[CONFIG_NUM_DIGITS] = {'C', ' ', 'F', 'A', 'D', 'E'};
-  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Color_Hello[2], 0, CONFIG_MESSAGE_LONG);
 }
 
 static inline void _Light_Pattern_Spectrum_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Spectrum *self = (struct Light_Pattern_Spectrum *)unsafe_self;
   free(self->color[0]);
   free(self->color);
-  self->spectrum_fader->Delete(self->spectrum_fader);
   free(self);
 }
 
@@ -344,7 +387,8 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self) {
   self->color[0] = HSL_Init(0, SATURATION_H, LIGHTNESS_M);
 
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
-  self->spectrum_fader = (struct LED_Color *)LED_Color_Fader_Init(
+  LED_Color_Fader_Init(
+    &self->spectrum_fader,
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
     #ifdef LED_COLOR_FADER_EXTENDED
     0,                           // Pixel index to start
@@ -359,7 +403,7 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self) {
   );
 
   // Skip fade in
-  ((struct LED_Color_Fader *)self->spectrum_fader)->state = LED_COLOR_STATE_ACTIVE;
+  ((struct LED_Color_Fader *)&self->spectrum_fader)->state = LED_COLOR_STATE_ACTIVE;
 
   struct Light_Pattern_VTable _spectrum_vtable = {
     .F3 = _Light_Pattern_Spectrum_F3,
@@ -383,7 +427,11 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self) {
 static void _Light_Pattern_Rainbow_Update(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Rainbow *self = (struct Light_Pattern_Rainbow *)unsafe_self;
 
-  self->rainbow_fader->Next(self->rainbow_fader);
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+  self->rainbow_fader.super.Next(&self->rainbow_fader.super);
+  #else
+  self->rainbow_fader.Next(&self->rainbow_fader);
+  #endif
 }
 
 /**
@@ -392,17 +440,20 @@ static void _Light_Pattern_Rainbow_Update(struct Light_Pattern *unsafe_self) {
 static void _Light_Pattern_Rainbow_F3(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Rainbow *self = (struct Light_Pattern_Rainbow *)unsafe_self;
 
-  struct LED_Color_Fader *_f = (struct LED_Color_Fader *)self->rainbow_fader;
+  struct LED_Color_Fader *_f = (struct LED_Color_Fader *)&self->rainbow_fader;
 
   // char message[MESSAGE_LENGTH];
   if(_f->chain_huediff == 10) {
     _f->chain_huediff = 21;
+    vfdco_display_render_message(Messages_Color_Rainbow[1], 0, CONFIG_MESSAGE_SHORT);
   }
   else if(_f->chain_huediff == 21) {
     _f->chain_huediff = 42;
+    vfdco_display_render_message(Messages_Color_Rainbow[2], 0, CONFIG_MESSAGE_SHORT);
   }
   else{
     _f->chain_huediff = 10;
+    vfdco_display_render_message(Messages_Color_Rainbow[0], 0, CONFIG_MESSAGE_SHORT);
   }
 }
 
@@ -413,31 +464,32 @@ static void _Light_Pattern_Rainbow_F3Var(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Rainbow *self = (struct Light_Pattern_Rainbow *)unsafe_self;
   hsl_t *_color = self->color[0];
 
-  // char message[MESSAGE_LENGTH];
+  char k[CONFIG_NUM_DIGITS] = {'S', 'A', 'T', ' ', ' ', 1};
   if(_color->s == SATURATION_H) {
     _color->s = SATURATION_L;
   }
   else if(_color->s == SATURATION_L) {
     _color->s = SATURATION_M;
+    k[5] = 2;
   }
   else{
     _color->s = SATURATION_H;
+    k[5] = 3;
   }
+  vfdco_display_render_message(k, 0b00000100, CONFIG_MESSAGE_SHORT);
 }
 
 /**
 * @brief  Implementation of virtual function Light_Pattern_Rainbow::Hello (static void _Light_Pattern_Rainbow_Hello)
 **/
 static inline void _Light_Pattern_Rainbow_Hello(void) {
-  char k[CONFIG_NUM_DIGITS] = {'C', 'C', 'R', 'O', 'S', 'S'};
-  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Color_Hello[3], 0, CONFIG_MESSAGE_LONG);
 }
 
 static inline void _Light_Pattern_Rainbow_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Rainbow *self = (struct Light_Pattern_Rainbow *)unsafe_self;
   free(self->color[0]);
   free(self->color);
-  self->rainbow_fader->Delete(self->rainbow_fader);
   free(self);
 }
 
@@ -451,7 +503,8 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self) {
   self->color[0] = HSL_Init(0, SATURATION_H, LIGHTNESS_M);
 
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
-  self->rainbow_fader = (struct LED_Color *)LED_Color_Fader_Init(
+  LED_Color_Fader_Init(
+    &self->rainbow_fader,
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
     /*LED_COLOR_BLEND_MODE_NORMAL,*/ // Pixel blend setting.
     #ifdef LED_COLOR_FADER_EXTENDED
@@ -467,7 +520,7 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self) {
   );
 
   // Skip fade in
-  ((struct LED_Color_Fader *)self->rainbow_fader)->state = LED_COLOR_STATE_ACTIVE;
+  ((struct LED_Color_Fader *)&self->rainbow_fader)->state = LED_COLOR_STATE_ACTIVE;
 
   struct Light_Pattern_VTable _rainbow_vtable = {
     .F3 = _Light_Pattern_Rainbow_F3,
@@ -494,8 +547,14 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self) {
 static void _Light_Pattern_Chase_Update(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Chase *self = (struct Light_Pattern_Chase *)unsafe_self;
 
-  struct LED_Color_Chaser *_chaser = (struct LED_Color_Chaser *)self->chase_fader;
-  if(_chaser->state != LED_COLOR_STATE_CYCLIC_RECOVERY) self->chase_fader->Next(self->chase_fader);
+  struct LED_Color_Chaser *_chaser = (struct LED_Color_Chaser *)&self->chase_fader;
+  if(_chaser->state != LED_COLOR_STATE_CYCLIC_RECOVERY) {
+    #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+    _chaser->super.Next(&_chaser->super);
+    #else
+    LED_Color_Chaser_Next(_chaser);
+    #endif
+  }
 
   // If second has changed
   if(self->flip_timer->s != self->flip_timer_previous_second) {
@@ -527,21 +586,24 @@ static void _Light_Pattern_Chase_Update(struct Light_Pattern *unsafe_self) {
 static void _Light_Pattern_Chase_F3(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Chase *self = (struct Light_Pattern_Chase *)unsafe_self;
 
+
   if(self->chase_mode == 0) { // L->R to R->L
     self->chase_mode = 1;
-    struct LED_Color_Chaser *_chaser = (struct LED_Color_Chaser *)self->chase_fader;
+    struct LED_Color_Chaser *_chaser = (struct LED_Color_Chaser *)&self->chase_fader;
     _chaser->start_pos = CONFIG_NUM_PIXELS - 1;
     _chaser->chase_mode = LED_COLOR_CHASER_MODE_RL_LINEAR;
-
   } else if(self->chase_mode == 1) { // To flipper
     self->chase_mode = 2;
 
   } else {
     self->chase_mode = 0;
-    struct LED_Color_Chaser *_chaser = (struct LED_Color_Chaser *)self->chase_fader;
+    struct LED_Color_Chaser *_chaser = (struct LED_Color_Chaser *)&self->chase_fader;
     _chaser->start_pos = 0;
     _chaser->chase_mode = LED_COLOR_CHASER_MODE_LR_LINEAR;
   }
+  char k[CONFIG_NUM_DIGITS] = {' ', ' '};
+  for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Chase[self->chase_mode][i];
+  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_SHORT);
 }
 
 /**
@@ -550,25 +612,27 @@ static void _Light_Pattern_Chase_F3(struct Light_Pattern *unsafe_self) {
 static void _Light_Pattern_Chase_F3Var(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Chase *self = (struct Light_Pattern_Chase *)unsafe_self;
 
+  char k[CONFIG_NUM_DIGITS] = {'G', 'R'};
   if(self->diff_color.h == 0) {
     self->diff_color.h = 6;
+    for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Chase[3][i];
   } else {
     self->diff_color.h = 0;
+    for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Chase[4][i];
   }
+  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_SHORT);
 }
 
 /**
 * @brief  Implementation of virtual function Light_Pattern_Chase::Hello (static void _Light_Pattern_Chase_Hello)
 **/
 static inline void _Light_Pattern_Chase_Hello(void) {
-  char k[CONFIG_NUM_DIGITS] = {'C', ' ', 'C', 'H', 'F', 'D'};
-  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Color_Hello[4], 0, CONFIG_MESSAGE_LONG);
 }
 
 static inline void _Light_Pattern_Chase_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Chase *self = (struct Light_Pattern_Chase *)unsafe_self;
   free(self->color);
-  self->chase_fader->Delete(self->chase_fader);
   free(self);
 }
 
@@ -586,16 +650,21 @@ void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *ti
   self->chase_mode = chase_mode;
 
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
-  self->chase_fader = (struct LED_Color *)LED_Color_Chaser_Init(
+  LED_Color_Chaser_Init(
+    &self->chase_fader, // viel sympathischer...
     2,
     /*LED_COLOR_BLEND_MODE_NORMAL,*/
     (chase_mode == 1) ? CONFIG_NUM_PIXELS - 1 : 0, // 1: start right, else start left (usual)
     LED_COLOR_REPEAT_FOREVER, // Repeat N times
+    #ifdef LED_COLOR_CHASER_EXTENDED
     CONFIG_NUM_PIXELS,
+    #endif
     self->color,
     &self->diff_color,
     18,
+    #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
     LED_COLOR_CHASER_NON_PRESERVING,
+    #endif
     (chase_mode == 1) ? LED_COLOR_CHASER_MODE_RL_LINEAR : LED_COLOR_CHASER_MODE_LR_LINEAR
   );
 
@@ -646,8 +715,7 @@ static void _Light_Pattern_Time_Code_Update(struct Light_Pattern *unsafe_self) {
   * @brief  Implementation of virtual function LED_Color_Resistor::Hello (static void _LED_Color_Resistor_Hello)
  **/
 static inline void _Light_Pattern_Time_Code_Hello(void) {
-	char k[CONFIG_NUM_DIGITS] = {'C', 'T', 'C', 'O', 'D', 'E'};
-  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_LONG);
+	vfdco_display_render_message(Messages_Color_Hello[5], 0, CONFIG_MESSAGE_LONG);
 }
 
 static inline void _Light_Pattern_Time_Code_Delete(struct Light_Pattern *unsafe_self) {
@@ -709,8 +777,7 @@ static void _Light_Pattern_Cop_Update(struct Light_Pattern *unsafe_self) {
 * @brief  Implementation of virtual function Light_Pattern_Cop::Hello (static void _Light_Pattern_Cop_Hello)
 **/
 static inline void _Light_Pattern_Cop_Hello(void) {
-  char message[CONFIG_NUM_DIGITS] = {'C', ' ', ' ', 'C', 'O', 'P'};
-  vfdco_display_render_message(message, 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Color_Hello[6], 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
@@ -754,10 +821,16 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self) {
 static void _Light_Pattern_MomentsOfBliss_Update(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
 
-  struct LED_Color_Fader *base = (struct LED_Color_Fader *)self->base_fader;
+  struct LED_Color_Fader *base = (struct LED_Color_Fader *)&self->base_fader;
   LED_COLOR_STATE_t prev_state = base->state;
 
-  if(self->base_fader->Next(self->base_fader) == LED_COLOR_STATE_CYCLIC_RECOVERY && prev_state == LED_COLOR_STATE_ACTIVE) {
+  if(
+    #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
+    self->base_fader.super.Next(&self->base_fader.super)
+    #else
+    self->base_fader.Next(&self->base_fader)
+    #endif
+    == LED_COLOR_STATE_CYCLIC_RECOVERY && prev_state == LED_COLOR_STATE_ACTIVE) {
     uint8_t bits = MomentsOfBliss_Colors[self->moment][6];
     // Randomize h
     ++self->undrift_counter;
@@ -810,7 +883,8 @@ static inline void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_M
     //LIGHTS_SIGMA_H, LIGHTS_SIGMA_S, LIGHTS_SIGMA_L
   );
 
-  self->base_fader = (struct LED_Color *)LED_Color_Fader_Init(
+  LED_Color_Fader_Init(
+    &self->base_fader,
     CONFIG_MOMENTSOFBLISS_FADE_SPEED,  // Timer interval
     #ifdef LED_COLOR_FADER_EXTENDED
     0,                           // Pixel index to start
@@ -836,7 +910,6 @@ static void _Light_Pattern_MomentsOfBliss_F3(struct Light_Pattern *unsafe_self) 
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
 
   // Go to next moment
-  self->base_fader->Delete(self->base_fader);
   free(self->colors[0]);
   free(self->colors[1]);
 
@@ -844,23 +917,21 @@ static void _Light_Pattern_MomentsOfBliss_F3(struct Light_Pattern *unsafe_self) 
   if(!(self->moment < LIGHTS_BLISS_MAXMOMENTS)) self->moment = 0;
   _Light_Pattern_MomentsOfBliss_Remoment(self);
 
-  char message[6] = {'R', 'E', 'B', 'L', 'I', 'S'};
-  vfdco_display_render_message(message, 0, CONFIG_MESSAGE_SHORT);
+  vfdco_display_render_message(Messages_Color_Bliss[self->moment], 0, CONFIG_MESSAGE_SHORT);
 }
 
 /**
 * @brief  Implementation of virtual function Light_Pattern_MomentsOfBliss::F3Var (static void _Light_Pattern_MomentsOfBliss_F3Var)
 **/
-static void _Light_Pattern_MomentsOfBliss_F3Var(struct Light_Pattern *unsafe_self) {
+/*static void _Light_Pattern_MomentsOfBliss_F3Var(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
-}
+}*/
 
 /**
 * @brief  Implementation of virtual function Light_Pattern_MomentsOfBliss::Hello (static void _Light_Pattern_MomentsOfBliss_Hello)
 **/
 static inline void _Light_Pattern_MomentsOfBliss_Hello(void) {
-  char message[6] = {' ', 'B', 'L', 'I', 'S', 'S'};
-  vfdco_display_render_message(message, 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Color_Hello[1], 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
@@ -868,7 +939,6 @@ static inline void _Light_Pattern_MomentsOfBliss_Hello(void) {
 **/
 static inline void _Light_Pattern_MomentsOfBliss_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
-  self->base_fader->Delete(self->base_fader);
   free(self->colors[0]);
   free(self->colors[1]);
   free(self->colors);
@@ -888,7 +958,7 @@ void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self
 
   struct Light_Pattern_VTable _vtable = {
     .F3      = _Light_Pattern_MomentsOfBliss_F3,
-    .F3Var   = _Light_Pattern_MomentsOfBliss_F3Var,
+    .F3Var   = NULL,//_Light_Pattern_MomentsOfBliss_F3Var,
     .Update  = _Light_Pattern_MomentsOfBliss_Update,
     .Hello   = _Light_Pattern_MomentsOfBliss_Hello,
     .Delete  = _Light_Pattern_MomentsOfBliss_Delete
@@ -901,5 +971,8 @@ void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self
 
 
 
-
-// Hello World
+/*
+Waiting for your call and for the mood
+to release me from the longest afternoon
+I'm da 1000th line.
+*/

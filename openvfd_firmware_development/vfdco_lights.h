@@ -96,7 +96,7 @@ struct Light_Pattern_Spectrum {
   struct Light_Pattern super;
 
   hsl_t                **color;
-  struct LED_Color     *spectrum_fader;
+  struct LED_Color_Fader spectrum_fader;
 };
 
 /**
@@ -115,7 +115,7 @@ struct Light_Pattern_Rainbow {
   struct Light_Pattern super;
 
   hsl_t                **color;
-  struct LED_Color     *rainbow_fader;
+  struct LED_Color_Fader rainbow_fader;
 };
 
 /**
@@ -139,7 +139,7 @@ struct Light_Pattern_Chase {
 
   hsl_t                *color;
   hsl_d_t              diff_color;
-  struct LED_Color     *chase_fader;
+  struct LED_Color_Chaser chase_fader;
 };
 
 /**
@@ -202,7 +202,7 @@ struct Light_Pattern_MomentsOfBliss {
   uint_fast8_t          undrift_max;
   int_fast8_t           undrift_huediff_max;
 
-  struct LED_Color      *base_fader;
+  struct LED_Color_Fader base_fader;
 };
 
 /**

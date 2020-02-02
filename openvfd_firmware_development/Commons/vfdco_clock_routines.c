@@ -70,7 +70,7 @@ void vfdco_welcome(char *message) {
   }
 
   char empty[] = {' ', ' ', ' ', ' ', ' ', ' '};
-  vfdco_display_render_message(empty, 0, 2 * CONFIG_MESSAGE_SHORT);
+  vfdco_display_render_message(empty, 0, CONFIG_MESSAGE_SHORT);
   vfdco_display_render_message(message, 0, CONFIG_MESSAGE_LONG);
 }
 
@@ -85,7 +85,7 @@ void vfdco_clock_initializer() {
   vfdco_clock_lights_initializer();
   vfdco_clock_display_initializer();
 
-  char welcome[] = {'H', 'E', 'L', 'L', 'O', ' '};
+  char welcome[] = {'V', 'F', 'D', '.', 'C', 'O'};
   vfdco_welcome(welcome);
 }
 
@@ -268,11 +268,9 @@ void vfdco_clock_lights_routine() {
   switch(global_button_F3_state) {
     case BUTTON_STATE_SHORTPRESS:
       if(global_light_instance->F3(global_light_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
-      vfdco_display_render_message("NOTIF ", 0, 200); // filthy
       break;
     case BUTTON_STATE_LONGPRESS:
       if(global_light_instance->F3Var(global_light_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
-      vfdco_display_render_message("NOTIF ", 0, 200); // dirty
       break;
     default:
       break;

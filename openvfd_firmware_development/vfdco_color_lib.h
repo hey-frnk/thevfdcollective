@@ -43,8 +43,28 @@ extern "C" {
 
 #define     LED_COLOR_FADER_TIME_BITS       8
 #define     LED_COLOR_FADER_PERIOD        255
+
+// To obtain maximum performance and least memory use, leave all options #undef-ed
+// If enabled, the LED Colors can be used as polymorphic objects, i.e. instances can use a base class pointer
+// Comment #undef directive to enable the chad fader
+#define     LED_COLOR_ENABLE_POLYMORPHIC_USE
+#undef      LED_COLOR_ENABLE_POLYMORPHIC_USE
 // If enabled, a start and end LED can be set. If not, it's full length (CONFIG_NUM_PIXELS)
-// #define     LED_COLOR_FADER_EXTENDED
+// Comment #undef directive to enable the chad fader
+#define     LED_COLOR_FADER_EXTENDED
+#undef      LED_COLOR_FADER_EXTENDED
+// If enabled, the LED color flasher class can be used
+// Comment #undef directive to enable
+#define     LED_COLOR_FLASHER_ENABLE
+#undef      LED_COLOR_FLASHER_ENABLE
+// If enabled, the length of the chase can be set. If not, it's always full length (CONFIG_NUM_PIXELS)
+// Comment #undef directive to enable the chad chaser
+#define     LED_COLOR_CHASER_EXTENDED
+#undef      LED_COLOR_CHASER_EXTENDED
+// If enabled, the chaser can draw traces and preserve the color through 1 or 2 LEDs
+// Comment #undef directive to enable
+#define     LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
+#undef      LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
 
 // Array of color values of size n um_bytes to be written in the next write cycle
 // to the physical WS2812B/SK6812 LEDs
@@ -67,10 +87,6 @@ extern void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w);
   * @brief  This is the interface between the time driver and the color lib
             the color lib will work, when every declaration here is implemented in the driver
  **/
-/*  typedef struct time_event_t{
-      unsigned long interval;
-      unsigned long previousTime;
-    } time_event_t; */
 
 // Create new timer (updates every p1 milliseconds)
 extern struct time_event_t Time_Event_Init(long interval);
@@ -129,20 +145,6 @@ uint8_t led_color_simple_randomizer(uint8_t bits);
 uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
 
 /** Begin of:
-  * @toc SECTION_BLENDING_FUNCTIONS
- **/
-// typedef enum {
-  // Blend mode implementation according to https://en.wikipedia.org/wiki/Blend_modes
-  // Assume R, G, B in [0 ... 1], f(a, b) = blended with a = existing value, b = blend layer
-   //LED_COLOR_BLEND_MODE_NORMAL      =   0,  // f(a, b) = b, asynchronous
-   /*LED_COLOR_BLEND_MODE_SYNC_NORMAL =   1,  // f(a, b) = b, synchronous
-   LED_COLOR_BLEND_MODE_MULTIPLY    =   2,  // f(a, b) = ab, synchronous
-   LED_COLOR_BLEND_MODE_SCREEN      =   3,  // f(a, b) = 1 - (1-a)*(1-b), synchronous
-   LED_COLOR_BLEND_MODE_OVERLAY     =   4,  // f(a, b) = {2ab, a < 0.5} {1 - 2(1-a)(1-b), else}, synchronous
-   LED_COLOR_BLEND_MODE_SOFT_LIGHT  =   5,  // f(a, b) = (1-2b) * a^2 + 2ba, synchronous*/
-//} LED_COLOR_BLEND_MODE_t;
-
-/** Begin of:
   * @toc SECTION_LED_COLOR
   * @brief LED_COLOR is an abstract class with each child class implementing a type of action performed
   *        by LEDs. For example LED_Color_Flasher flashes an LED upon instantiation with a given LED color
@@ -173,6 +175,7 @@ enum {
   * @brief  Definition of the abstract LED_Color action class.
   *         For an LED_Color class to become a valid action, the mapping of Next and Delete is required
 **/
+#ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
 struct LED_Color;
 struct LED_Color_VTable {
   LED_COLOR_STATE_t     (*Next)             (struct LED_Color *unsafe_self);
@@ -194,7 +197,7 @@ struct LED_Color {
  * @brief  Declaration of constructor LED_Color::LED_Color
 **/
 void LED_Color_Init(struct LED_Color *f, uint_fast32_t timer1_interval);
-
+#endif
 
 
 
@@ -203,9 +206,12 @@ void LED_Color_Init(struct LED_Color *f, uint_fast32_t timer1_interval);
 **/
 struct LED_Color_Fader {
   // Functions
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   struct LED_Color super;
-
-  // void          (*_blend)         (uint8_t, uint8_t, uint8_t, uint8_t);
+  #else
+  time_event_t  timer;
+  LED_COLOR_STATE_t (*Next)(struct LED_Color_Fader *self);
+  #endif
 
   // Option: Peaks
   uint8_t       num_pks;        // Number of peaks
@@ -230,7 +236,8 @@ struct LED_Color_Fader {
 /**
   * @brief  Constructor of LED_Color_Fader class
  **/
-struct LED_Color_Fader *LED_Color_Fader_Init(
+void LED_Color_Fader_Init(
+  struct LED_Color_Fader    *instance,              // Instance
   uint_fast32_t             timer1_interval,        // Timer interval
   #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t                   start_pos,              // Pixel index to start
@@ -243,13 +250,21 @@ struct LED_Color_Fader *LED_Color_Fader_Init(
   #endif
   int8_t                    chain_hue_diff          // Hue difference between chained pixels
 );
+#ifndef LED_COLOR_ENABLE_POLYMORPHIC_USE
+void LED_Color_Fader_Delete(struct LED_Color_Fader *self);
+#endif
 
 /** Begin of:
  * @toc SUBSECTION_COLOR_FLASHER
 **/
+#ifdef LED_COLOR_FLASHER_ENABLE
 struct LED_Color_Flasher {
   // Functions
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   struct LED_Color super;
+  #else
+  time_event_t  timer;
+  #endif
 
   // void          (*_blend)           (uint8_t, uint8_t, uint8_t, uint8_t);
   rgb_t         *pk;                // Peaks array
@@ -268,25 +283,33 @@ struct LED_Color_Flasher {
 /**
   * @brief  Constructor of LED_Color_Flasher class
  **/
-struct LED_Color_Flasher *LED_Color_Flasher_Init(
+void LED_Color_Flasher_Init(
+  struct LED_Color_Flasher  *instance,              // Instance
   uint_fast32_t             timer1_interval,        // Timer interval
-  /*LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.*/
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat flash how many times?
   rgb_t                     *pk,                    // Array of RGB colors
   uint8_t                   duration,               // Duration of each flash
   uint8_t                   offtime                 // Duration of flash offtime (factor)
 );
+#ifndef LED_COLOR_ENABLE_POLYMORPHIC_USE
+LED_COLOR_STATE_t LED_Color_Flasher_Next(struct LED_Color_Flasher *self);
+void LED_Color_Flasher_Delete(struct LED_Color_Flasher *self);
+#endif
+
+#endif
 
 /** Begin of:
  * @toc SUBSECTION_COLOR_CHASER
 **/
+#ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
 enum {
   LED_COLOR_CHASER_NON_PRESERVING         = 0,       // Only one pixel is on during the chase
   LED_COLOR_CHASER_PRESERVING_DECAY_FAST  = 1,       // Preserve active LED and fade out past LEDs quickly
   LED_COLOR_CHASER_PRESERVING_DECAY_SLOW  = 2,       // Preserve active LED and fade out past LEDs slowly
   LED_COLOR_CHASER_PRESERVING             = 3        // The one active pixel and its past pixels are on during the chase
 };
+#endif
 
 enum {
   LED_COLOR_CHASER_MODE_LR_LINEAR         = 0,       // Chase in a linear way (from left to right)
@@ -304,22 +327,29 @@ enum {
 
 struct LED_Color_Chaser {
   // Functions
+  #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   struct LED_Color super;
+  #else
+  time_event_t  timer;
+  #endif
 
-  // void          (*_blend)             (uint8_t, uint8_t, uint8_t, uint8_t);
   hsl_t         *pk;                  // Fade to peak
   hsl_d_t       *pk_diff;             // Difference of each new peak to initial peak (factorized)
 
+  #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   uint8_t        chase_cpreserving;   // Restore past pixels or replace
+  #endif
   uint8_t        chase_mode;          // Chase mode
   int8_t         chase_repeat;        // Repeat
 
   uint16_t       chase_duration;      // (Min (acc), Max (dec)) time diff between LED chase
-  uint16_t       _chase_duration_restore; // Backup variable
+  uint8_t        _chase_duration_restore; // Backup variable
 
   // Option: Start & Length
   uint8_t        start_pos;           // LED start index < end index
+  #ifdef LED_COLOR_CHASER_EXTENDED
   uint8_t        chase_length;        // start_pos + chase_length = end pos
+  #endif
 
   // State Variables
   LED_COLOR_STATE_t state;            // Color Chaser FSM
@@ -329,18 +359,26 @@ struct LED_Color_Chaser {
 /**
   * @brief  Constructor of LED_Color_Chaser class
  **/
-struct LED_Color_Chaser *LED_Color_Chaser_Init(
+void LED_Color_Chaser_Init(
+  struct LED_Color_Chaser   *instance,              // Instance
   uint_fast32_t             timer1_interval,        // Timer interval
-  /*LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.*/
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat N times
+  #ifdef LED_COLOR_CHASER_EXTENDED
   uint8_t                   length,                 // Pixel index to start
+  #endif
   hsl_t                     *pk,                    // Array of HSL colors
   hsl_d_t                   *pk_diff,               // Difference peaks
   uint16_t                  duration,               // Chase duration
+  #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   uint8_t                   cpreserving,            // Color preserving?
+  #endif
   uint8_t                   mode                    // Chase mode
 );
+#ifndef LED_COLOR_ENABLE_POLYMORPHIC_USE
+LED_COLOR_STATE_t LED_Color_Chaser_Next(struct LED_Color_Chaser *self);
+void LED_Color_Chaser_Delete(struct LED_Color_Chaser *self);
+#endif
 
 
 

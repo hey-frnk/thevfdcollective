@@ -33,7 +33,7 @@ extern "C" {
 
 // DISPLAY SETTINGS
 // How many milliseconds should a short notice last?
-#define CONFIG_MESSAGE_SHORT      200
+#define CONFIG_MESSAGE_SHORT      500
 // How many milliseconds should a regular message last?
 #define CONFIG_MESSAGE_LONG       1000
 
