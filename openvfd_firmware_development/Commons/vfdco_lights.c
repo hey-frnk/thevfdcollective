@@ -98,23 +98,20 @@ static const uint8_t Static_Color_Rainbows[][6 * 3] =
 // ---- LED Resistor preset GRB     0: Off     1: Brown        2: Red       3: Orange     4: Yellow      5: Green     6: Blue      7: Purple      8: Gray       9: White
 static const uint8_t Time_Code_Colors[][3] =  {{0, 0, 0}, {128, 255, 64}, {0, 255, 0}, {30, 255, 0}, {125, 255, 0}, {255, 0, 0}, {0, 0, 255}, {0, 200, 255}, {40, 40, 60}, {255, 255, 255}};
 
-#define LIGHTS_BLISS_MAXMOMENTS 7
-/*#define LIGHTS_SIGMA_H 10.0f
-#define LIGHTS_SIGMA_S 20.0f
-#define LIGHTS_SIGMA_L 20.0f*/
+#define LIGHTS_BLISS_MAXMOMENTS 6
 
 static const uint8_t MomentsOfBliss_Colors[LIGHTS_BLISS_MAXMOMENTS][7] = { // (C) The VFD Collective
   // Dev: SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
   // D+: Hue difference between LEDs. Random number between 0..2^(D+), 4x MSB
   // T: Peak differene tolerance. Random bumber between 0..2^(T), 4x LSB
 // C1H, C1S, C1L, C2H, C2S, C2L,  D+|T
-  {110, 220, 100, 190, 230,  90, 0x33}, // Nordlicht.          Ink: fluorescent green to teal, touches of purple
-  {140, 150,  65, 150, 255,  75, 0x32}, // Schneesturm.        Ink: acrylic. dark midnight blue, shades of gray and cold white
-  {125, 255, 160, 230, 255, 160, 0x13}, // Frühlingspastell.   Ink: pastel. cherry, pink, some light green and rarely drip of light blue
-  { 75, 255, 127, 145, 255, 127, 0x23}, // Hummelhonig.        Ink: highly saturated green and blue gradients
-  {125, 255, 127, 135, 255, 170, 0x23}, // Meeresgeflüster.    Ink: watercolor. light sky blue to turquoise, with white sparks and rarely some yellow
-  {  0, 255, 100,  14, 255, 120, 0x00}, // Herbstlagerfeuer.   Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red
-  {250, 255, 127, 255, 240, 127, 0x30}, // Some sunset name.   Ink: strong red. every warm red tone, some orange, some magenta
+  {105, 220, 100, 190, 230,  90, 0x42}, // Nordlicht.          Ink: fluorescent green to teal, touches of purple
+  // {140, 150, 127, 150, 180, 127, 0x42}, // Schneesturm.        Ink: acrylic. dark midnight blue, shades of gray and cold white
+  {120, 180, 200, 230, 180, 200, 0x53}, // Frühlingspastell.   Ink: pastel. cherry, pink, some light green and rarely drip of light blue
+  { 55, 255, 127, 145, 255, 127, 0x42}, // Hummelhonig.        Ink: highly saturated green and blue gradients
+  {125, 255, 160, 140, 255, 180, 0x42}, // Meeresgeflüster.    Ink: watercolor. light sky blue to turquoise, with white sparks and rarely some yellow
+  {  2, 255, 100,  14, 255, 120, 0x32}, // Herbstlagerfeuer.   Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red
+  {245, 255, 127,  10, 255, 127, 0x42}, // Some sunset name.   Ink: strong red. every warm red tone, some orange, some magenta
 };
 
 static void _target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
@@ -349,11 +346,15 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self) {
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
   self->spectrum_fader = (struct LED_Color *)LED_Color_Fader_Init(
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
+    #ifdef LED_COLOR_FADER_EXTENDED
     0,                           // Pixel index to start
+    #endif
     LED_COLOR_REPEAT_FOREVER,    // Fade N cycles
     1,                           // Number of HSL colors
     self->color,                 // Array of HSL colors
+    #ifdef LED_COLOR_FADER_EXTENDED
     CONFIG_NUM_DIGITS,           // Number of chained pixels
+    #endif
     0                            // Hue difference between chained pixels
   );
 
@@ -453,11 +454,15 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self) {
   self->rainbow_fader = (struct LED_Color *)LED_Color_Fader_Init(
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
     /*LED_COLOR_BLEND_MODE_NORMAL,*/ // Pixel blend setting.
+    #ifdef LED_COLOR_FADER_EXTENDED
     0,                           // Pixel index to start
+    #endif
     LED_COLOR_REPEAT_FOREVER,    // Fade N cycles
     1,                           // Number of HSL colors
     self->color,                 // Array of HSL colors
+    #ifdef LED_COLOR_FADER_EXTENDED
     CONFIG_NUM_DIGITS,           // Number of chained pixels
+    #endif
     10                           // Hue difference between chained pixels
   );
 
@@ -749,7 +754,8 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self) {
 static void _Light_Pattern_MomentsOfBliss_Update(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
 
-  LED_COLOR_STATE_t prev_state = ((struct LED_Color_Fader *)self->base_fader)->state;
+  struct LED_Color_Fader *base = (struct LED_Color_Fader *)self->base_fader;
+  LED_COLOR_STATE_t prev_state = base->state;
 
   if(self->base_fader->Next(self->base_fader) == LED_COLOR_STATE_CYCLIC_RECOVERY && prev_state == LED_COLOR_STATE_ACTIVE) {
     uint8_t bits = MomentsOfBliss_Colors[self->moment][6];
@@ -764,6 +770,28 @@ static void _Light_Pattern_MomentsOfBliss_Update(struct Light_Pattern *unsafe_se
       self->colors[0]->h = MomentsOfBliss_Colors[self->moment][0];
       self->undrift_counter = 0;
       self->undrift_max = led_color_simple_randomizer(2) + 2;
+    }
+
+    // Huediff variation, operates independently from color diff
+    if(self->undrift_huediff_max > 0) {
+      if(base->chain_huediff < self->undrift_huediff_max) {
+        ++base->chain_huediff;
+      } else {
+        self->undrift_huediff_max = -self->undrift_huediff_max;
+        --base->chain_huediff;
+      }
+    }
+    else {
+      if(base->chain_huediff > self->undrift_huediff_max) {
+        --base->chain_huediff;
+      } else {
+        self->undrift_huediff_max = -self->undrift_huediff_max;
+        ++base->chain_huediff;
+      }
+    }
+    if(!base->chain_huediff) {
+      uint8_t huediff_max = MomentsOfBliss_Colors[self->moment][6] >> 4;
+      self->undrift_huediff_max = led_color_simple_randomizer(huediff_max) - ((1 << huediff_max) >> 1) + 1;
     }
   }
 }
@@ -784,15 +812,21 @@ static inline void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_M
 
   self->base_fader = (struct LED_Color *)LED_Color_Fader_Init(
     CONFIG_MOMENTSOFBLISS_FADE_SPEED,  // Timer interval
+    #ifdef LED_COLOR_FADER_EXTENDED
     0,                           // Pixel index to start
+    #endif
     LED_COLOR_REPEAT_FOREVER,    // Fade N cycles
     2,                           // Number of HSL colors
     self->colors,                // Array of HSL colors
+    #ifdef LED_COLOR_FADER_EXTENDED
     CONFIG_NUM_DIGITS,           // Number of chained pixels
-    led_color_simple_randomizer(MomentsOfBliss_Colors[self->moment][6] >> 4) - ((1 << (MomentsOfBliss_Colors[self->moment][6] >> 4)) >> 1)
+    #endif
+    0
   );
 
   self->undrift_max = led_color_simple_randomizer(2) + 2; // some number between 2 and 5 lol
+  uint8_t huediff_max = MomentsOfBliss_Colors[self->moment][6] >> 4;
+  self->undrift_huediff_max = led_color_simple_randomizer(huediff_max) - ((1 << huediff_max) >> 1);
 }
 
 /**

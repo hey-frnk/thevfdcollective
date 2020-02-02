@@ -21,6 +21,8 @@ extern "C" {
 #define CONFIG_NUM_BPP ((uint8_t) 4)
 #define CONFIG_NUM_BYTES ((uint8_t)(CONFIG_NUM_PIXELS * CONFIG_NUM_BPP))
 
+#define CONFIG_ENABLE_GAMMACORRECTION
+
 // ROUTINE SETTINGS
 // How often should we ask the RTC what time it is? (Milliseconds)
 #define CONFIG_RTC_UPDATE_INTERVAL 111
@@ -49,7 +51,7 @@ extern "C" {
 #define CONFIG_SINGLE_COLOR_FADE_SPEED     2
 #define CONFIG_SPECTRUM_FADE_SPEED         60
 #define CONFIG_COP_FADE_SPEED              25
-#define CONFIG_MOMENTSOFBLISS_FADE_SPEED   3
+#define CONFIG_MOMENTSOFBLISS_FADE_SPEED   10
 
 #endif
 

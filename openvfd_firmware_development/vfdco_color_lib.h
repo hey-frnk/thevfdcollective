@@ -8,7 +8,6 @@
   *           Designed to be used with Fluorescence by The VFD Collective
   ******************************************************************************
   * @toc      Table of contents, enter to navigate:
-  *           SECTION_ADJUSTABLE_PARAMETERS
   *           SECTION_DRIVER_INTERFACE
   *           SECTION_TIMER_INTERFACE
   *           SECTION_HSL
@@ -32,13 +31,6 @@ extern "C" {
 #include "vfdco_time.h"
 
 /** Begin of:
-  * @toc SECTION_ADJUSTABLE_PARAMETERS
-  * @brief  Here are some adjustable parameters to tune the library
- **/
-// 7 bit time fading
-#define     LED_COLOR_FADER_TIME_BITS       8
-
-/** Begin of:
   * @toc SECTION_DRIVER_INTERFACE
   * @brief  This is the interface between the physical driver and the color lib
             the color lib will work, when every declaration here is implemented in the driver
@@ -49,11 +41,13 @@ extern "C" {
 // #define HARDWARE_OPTION_WS2812B
 #define HARDWARE_OPTION_SK6812
 
-// extern uint8_t  n um_rgb;                  // Number of physical LEDs (pixels)
-// extern uint8_t  n um_bpp;                  // Number of bytes per pixel bpp
-// extern uint8_t  n um_bytes;                // Number of bytes per pixel bpp (3: RGB, 4: RGBW) * CONFIG_NUM_PIXELS
-                // Array of color values of size n um_bytes to be written in the next write cycle
-                // to the physical WS2812B/SK6812 LEDs
+#define     LED_COLOR_FADER_TIME_BITS       8
+#define     LED_COLOR_FADER_PERIOD        255
+// If enabled, a start and end LED can be set. If not, it's full length (CONFIG_NUM_PIXELS)
+// #define     LED_COLOR_FADER_EXTENDED
+
+// Array of color values of size n um_bytes to be written in the next write cycle
+// to the physical WS2812B/SK6812 LEDs
 extern uint8_t  *rgb_arr;
 
 // Initialize SW/HW of num_pixels * SK6812 LEDs
@@ -217,12 +211,16 @@ struct LED_Color_Fader {
   uint8_t       num_pks;        // Number of peaks
   hsl_t         **pks;        // Peaks array
   // Option: Chaining
+  #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t       num_chain;      // Number of chained pixels. 0 = singular
+  #endif
   int8_t        chain_huediff;  // Constant difference of hue between chained pixels
   // Option: Time
   int8_t        repeat;         // If == k: pk[n] -> pk[0] for k cycles, else fade in & out once
   // Option: StartPos
+  #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t       start_pos;      // LED start index < end index
+  #endif
 
   // State Variables
   LED_COLOR_STATE_t state;      // Color Fader FSM
@@ -234,12 +232,15 @@ struct LED_Color_Fader {
  **/
 struct LED_Color_Fader *LED_Color_Fader_Init(
   uint_fast32_t             timer1_interval,        // Timer interval
-  /*LED_COLOR_BLEND_MODE_t    blend_mode,             // Pixel blend setting.*/
+  #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t                   start_pos,              // Pixel index to start
+  #endif
   int8_t                    repeat,                 // Fade N cycles
   uint8_t                   num_pks,                // Number of HSL colors
   hsl_t                     **pks,                  // Array of HSL colors
+  #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t                   num_chain,              // Number of chained pixels
+  #endif
   int8_t                    chain_hue_diff          // Hue difference between chained pixels
 );
 
@@ -341,34 +342,6 @@ struct LED_Color_Chaser *LED_Color_Chaser_Init(
   uint8_t                   mode                    // Chase mode
 );
 
-
-/** Begin of:
-  * @toc SECTION_COLOR_MANAGER
-  * @brief COLOR_MANAGER is a class providing scheduling and execution of objects of LED_Color class.
- **/
-/*struct LED_Color_Manager {
-  time_event_t synchronous_updater;
-  uint8_t      render_state;
-
-  struct LED_Color  **process_active_list;             // Queue of active LED_Color processes
-  struct LED_Color  **process_preempted_list;        // Queue of preempted LED_Color processes
-  uint_fast8_t      process_active;             // Number of active LED_Color processes
-  uint_fast8_t      process_active_max;         // Max active processes
-  uint_fast8_t      process_preempted;             // Number of total LED_Color processes
-  uint_fast8_t      process_preempted_max;          // Max number of processes
-
-  // Run every process that is not in LED_COLOR_STATE_COMPLETE once (internal)
-  void              (*_Run_All)          (struct LED_Color_Manager *self);
-  // Enqueue given process into process_list and mark as active/running
-  void              (*Create_Process)    (struct LED_Color_Manager *self, struct LED_Color *process);
-  // Dequeue given PID of process list
-  void              (*Remove_Process)    (struct LED_Color_Manager *self, uint_fast8_t pid);
-  void              (*_Process_Finished_Callback) (struct LED_Color_Manager *self, uint_fast8_t pid); // (Automatic call version)
-
-  struct LED_Color_Fader *     (*Init_LED_Color_Fader_From_Bitstream)   (uint8_t *p, uint_fast16_t length);
-  struct LED_Color_Flasher *   (*Init_LED_Color_Flasher_From_Bitstream) (uint8_t *p, uint_fast16_t length);
-  struct LED_Color_Chaser *    (*Init_LED_Color_Chaser_From_Bitstream)  (uint8_t *p, uint_fast16_t length);
-};*/
 
 
 

@@ -25,7 +25,8 @@ uint_fast8_t write_buf_pos;
 
 extern TIM_HandleTypeDef htim2;
 
-/*static const uint8_t gamma8[] = { // Cheap ass gamma correction https://learn.adafruit.com/led-tricks-gamma-correction/the-quick-fix
+#ifdef CONFIG_ENABLE_GAMMACORRECTION
+static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafruit.com/led-tricks-gamma-correction/the-quick-fix
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
     1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
@@ -41,7 +42,8 @@ extern TIM_HandleTypeDef htim2;
   115,117,119,120,122,124,126,127,129,131,133,135,137,138,140,142,
   144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
-  215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255};*/
+  215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255};
+#endif
 
 void vfdco_clr_init(uint8_t num_pixels) {
 	//n um_rgb = n um_pixels;									// Number of physical LEDs
@@ -65,9 +67,15 @@ void vfdco_clr_deInit(void) {
 }
 
 inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
-	rgb_arr[4 * index] = g;
+  #ifdef CONFIG_ENABLE_GAMMACORRECTION
+  rgb_arr[4 * index] = gamma8[g];
+	rgb_arr[4 * index + 1] = gamma8[r];
+	rgb_arr[4 * index + 2] = gamma8[b];
+  #else
+  rgb_arr[4 * index] = g;
 	rgb_arr[4 * index + 1] = r;
 	rgb_arr[4 * index + 2] = b;
+  #endif
 	rgb_arr[4 * index + 3] = 0;
 }
 inline void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {

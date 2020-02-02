@@ -16,10 +16,10 @@ gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c ..
 
 #define ever (;;)
 
-#define TEST0
+//#define TEST0
 // #define TEST1
 // #define TEST2
-//#define TEST3
+#define TEST3
 //#define TEST4
 
 void test0() {
@@ -29,9 +29,21 @@ void test0() {
   hsl_d_t d = {0, 0, 0};
   hsl_t *cArr[2] = {c1, c2};
 
-  struct LED_Color *f1 //= (struct LED_Color *)LED_Color_Fader_Init(20, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_FOREVER, 2, cArr, 6, 0);
+  struct LED_Color *f1 = (struct LED_Color *)LED_Color_Fader_Init(
+    20,
+    #ifdef LED_COLOR_FADER_EXTENDED
+    0,
+    #endif
+    LED_COLOR_REPEAT_FOREVER,
+    2,
+    cArr,
+    #ifdef LED_COLOR_FADER_EXTENDED
+    6,
+    #endif
+    0
+  );
                        //= (struct LED_Color *)LED_Color_Flasher_Init(20, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_ONCE, r1, 31, 3);
-                       = (struct LED_Color *)LED_Color_Chaser_Init(4, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_FOREVER, 6, c1, &d, 31, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
+                       //= (struct LED_Color *)LED_Color_Chaser_Init(4, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_FOREVER, 6, c1, &d, 31, LED_COLOR_CHASER_PRESERVING_DECAY_FAST, LED_COLOR_CHASER_MODE_LR_LINEAR);
   for(;;) {
     int q;
     while((q = getchar()) != '\n' && q != EOF);
@@ -192,7 +204,9 @@ void test3() {
     while((q = getchar()) != '\n' && q != EOF);
 
     char c;
+    printf("1: F1, 2: F2, 3: F3, 4: F4\n5: F1Var, 6: F2Var, 7: F3Var, 8: F4Var\nn: Execute n times\n");
     printf("Button input: ");
+
     scanf("%c", &c);
 
     switch(c) {
@@ -245,12 +259,15 @@ void test4() {
 
   grundschwingung = (struct LED_Color *)LED_Color_Fader_Init(
     20,        // Timer interval
-    /*LED_COLOR_BLEND_MODE_NORMAL,*/             // Pixel blend setting.
+    #ifdef LED_COLOR_FADER_EXTENDED
     0,              // Pixel index to start
+    #endif
     LED_COLOR_REPEAT_FOREVER,                 // Fade N cycles
     2,                // Number of HSL colors
     main_colors,                  // Array of HSL colors
+    #ifdef LED_COLOR_FADER_EXTENDED
     6,              // Number of chained pixels
+    #endif
     -4          // Hue difference between chained pixels
   );
 
@@ -281,12 +298,15 @@ void test4() {
           grundschwingung->Delete(grundschwingung);
           grundschwingung = (struct LED_Color *)LED_Color_Fader_Init(
             20,        // Timer interval
-            /*LED_COLOR_BLEND_MODE_NORMAL,*/             // Pixel blend setting.
+            #ifdef LED_COLOR_FADER_EXTENDED
             0,              // Pixel index to start
+            #endif
             LED_COLOR_REPEAT_FOREVER,                 // Fade N cycles
             2,                // Number of HSL colors
             main_colors,                  // Array of HSL colors
+            #ifdef LED_COLOR_FADER_EXTENDED
             6,              // Number of chained pixels
+            #endif
             -4          // Hue difference between chained pixels
           );
         }

@@ -21,7 +21,7 @@ uint32_t (*vfdco_time_get_milliseconds)(void) = _vfdco_time_get_milliseconds;
 void (*vfdco_time_delay_milliseconds)(uint32_t) = _vfdco_time_delay_milliseconds;
 
 void vfdco_get_date_time(vfdco_date_t *_date, vfdco_time_t *_time) {
-  time_t rawtime;
+  /*time_t rawtime;
   struct tm *timeinfo;
 
   time(&rawtime);
@@ -32,7 +32,13 @@ void vfdco_get_date_time(vfdco_date_t *_date, vfdco_time_t *_time) {
   _date->d = timeinfo->tm_mday; // Happy halloween
   _time->h = timeinfo->tm_hour;
   _time->m = timeinfo->tm_min;
-  _time->s = timeinfo->tm_sec;
+  _time->s = timeinfo->tm_sec;*/
+  _date->y = 20;
+  _date->m = 1;
+  _date->d = 1; // Happy halloween
+  _time->h = 1;
+  _time->m = 1;
+  _time->s = 1;
 }
 
 void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {

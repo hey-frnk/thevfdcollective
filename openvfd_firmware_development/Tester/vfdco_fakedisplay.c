@@ -13,6 +13,8 @@
 #include "../vfdco_display.h"
 #include "../vfdco_time.h"
 
+#define NORENDER
+
 // uint8_t     num_digits = 0;
 
 uint8_t vfdco_display_char_convert(char input) {
@@ -137,6 +139,7 @@ void _reverse(char *str) { // copypasta https://codingpuzzles.com/reverse-a-null
  }
 
 void vfdco_display_render_direct(uint8_t *data) {
+  #ifndef NORENDER
   // Five lines
   char seg_h_on[]  = "---";
   char seg_h_off[] = "   ";
@@ -176,6 +179,7 @@ void vfdco_display_render_direct(uint8_t *data) {
   for(int_fast8_t i = CONFIG_NUM_DIGITS - 1; i >= 0; --i)
     printf("%s    ", ((data[i] >> 4) & 0x01) ? seg_h_on : seg_h_off);
   printf("\n");
+  #endif
 }
 
 // Function mapping

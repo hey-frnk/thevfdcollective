@@ -200,6 +200,7 @@ struct Light_Pattern_MomentsOfBliss {
   uint_fast8_t          moment;
   uint_fast8_t          undrift_counter;
   uint_fast8_t          undrift_max;
+  int_fast8_t           undrift_huediff_max;
 
   struct LED_Color      *base_fader;
 };
