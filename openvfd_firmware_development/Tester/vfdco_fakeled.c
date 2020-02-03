@@ -9,7 +9,6 @@
   * @toc      Table of contents, enter to navigate:
   ******************************************************************************
  **/
-#include <stdlib.h>
 #include <stdio.h>
 #include "../vfdco_config.h"
 #include "../vfdco_led.h"
@@ -17,10 +16,6 @@
 uint8_t rgb_arr[CONFIG_NUM_BYTES] = {0};
 
 void vfdco_clr_init(uint8_t num_pixels) {
-	// n um_rgb = n um_pixels;									// Number of physical LEDs
-	// n um_bpp = 4;													// SK6812 Bytes per LED. 4: G(8), R(8), B(8), W(8)
-	// n um_bytes = n um_bpp * n um_pixels;			// Bytes of static color array
-
 	// Allocate color array and DMA buffer
   printf("SK6812 tester: Init with %hhu pixels, %hhu bpp, %hhu bytes.\n", CONFIG_NUM_PIXELS, CONFIG_NUM_BPP, CONFIG_NUM_BYTES);
 }

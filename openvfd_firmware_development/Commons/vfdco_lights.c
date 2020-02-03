@@ -17,9 +17,6 @@
 #include "../vfdco_display.h"
 #include <stdlib.h>
 #include <string.h>
-#ifdef DEBUG
-#include <stdio.h>
-#endif
 
 enum {LIGHTNESS_H  = CONFIG_LIGHTNESS_HIGH,   LIGHTNESS_M  = CONFIG_LIGHTNESS_MEDIUM,   LIGHTNESS_L  = CONFIG_LIGHTNESS_LOW    };
 enum {SATURATION_H = CONFIG_SATURATION_HIGH,   SATURATION_M = CONFIG_SATURATION_MEDIUM,  SATURATION_L = CONFIG_SATURATION_LOW   };
@@ -196,10 +193,10 @@ static inline void _Light_Pattern_Update(struct Light_Pattern *unsafe_self) {
  // if(!self->VTable.Update) return; Will make sure this never happens. Optimize for loop performance
  unsafe_self->VTable.Update(unsafe_self);
 }
-static inline void _Light_Pattern_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_Delete(struct Light_Pattern *unsafe_self) {
  // if(!self->VTable.Update) return; Will make sure this never happens. Optimize for loop performance
  unsafe_self->VTable.Delete(unsafe_self);
-}
+}*/
 static inline void _Light_Pattern_Hello(struct Light_Pattern *unsafe_self) {
   if(!unsafe_self->VTable.Hello) return;
   unsafe_self->VTable.Hello();
@@ -213,7 +210,7 @@ void Light_Pattern_Init(struct Light_Pattern *self) {
   self->F3Var = _Light_Pattern_F3Var;
   self->Update = _Light_Pattern_Update;
   self->Hello = _Light_Pattern_Hello;
-  self->Delete = _Light_Pattern_Delete;
+  // self->Delete = _Light_Pattern_Delete;
 }
 
 /** Begin of:
@@ -237,10 +234,6 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
 
   self->position++;
   if(self->position >= NUM_STATIC_T4) self->position = 0;
-
-	#ifdef DEBUG
-  printf("%d ", self->position);
-	#endif
 
   if(self->position < NUM_STATIC_T1) {
     // Single Color Special
@@ -274,10 +267,10 @@ static inline void _Light_Pattern_Static_Hello(void) {
   vfdco_display_render_message(Messages_Color_Hello[0], 0, CONFIG_MESSAGE_LONG);
 }
 
-static inline void _Light_Pattern_Static_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_Static_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
   free(self);
-}
+} */
 
 /**
   * @brief  Constructor of Light_Pattern_Static class
@@ -293,8 +286,8 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self) {
     .F3 = _Light_Pattern_Static_F3,
     .F3Var = NULL,
     .Update = _Light_Pattern_Static_Update,
-    .Hello = _Light_Pattern_Static_Hello,
-		.Delete = _Light_Pattern_Static_Delete
+    .Hello = _Light_Pattern_Static_Hello
+		// .Delete = _Light_Pattern_Static_Delete
   };
   self->super.VTable = _static_vtable;
 }
@@ -370,10 +363,10 @@ static inline void _Light_Pattern_Spectrum_Hello(void) {
   vfdco_display_render_message(Messages_Color_Hello[2], 0, CONFIG_MESSAGE_LONG);
 }
 
-static inline void _Light_Pattern_Spectrum_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_Spectrum_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Spectrum *self = (struct Light_Pattern_Spectrum *)unsafe_self;
   free(self);
-}
+}*/
 
 /**
 * @brief  Constructor of Light_Pattern_Spectrum class
@@ -404,8 +397,8 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self) {
     .F3 = _Light_Pattern_Spectrum_F3,
     .F3Var = _Light_Pattern_Spectrum_F3Var,
     .Update = _Light_Pattern_Spectrum_Update,
-    .Hello = _Light_Pattern_Spectrum_Hello,
-    .Delete = _Light_Pattern_Spectrum_Delete
+    .Hello = _Light_Pattern_Spectrum_Hello
+    // .Delete = _Light_Pattern_Spectrum_Delete
   };
   self->super.VTable = _spectrum_vtable;
 }
@@ -481,10 +474,10 @@ static inline void _Light_Pattern_Rainbow_Hello(void) {
   vfdco_display_render_message(Messages_Color_Hello[3], 0, CONFIG_MESSAGE_LONG);
 }
 
-static inline void _Light_Pattern_Rainbow_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_Rainbow_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Rainbow *self = (struct Light_Pattern_Rainbow *)unsafe_self;
   free(self);
-}
+} */
 
 /**
 * @brief  Constructor of Light_Pattern_Rainbow class
@@ -516,8 +509,8 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self) {
     .F3 = _Light_Pattern_Rainbow_F3,
     .F3Var = _Light_Pattern_Rainbow_F3Var,
     .Update = _Light_Pattern_Rainbow_Update,
-    .Hello = _Light_Pattern_Rainbow_Hello,
-    .Delete = _Light_Pattern_Rainbow_Delete
+    .Hello = _Light_Pattern_Rainbow_Hello
+    // .Delete = _Light_Pattern_Rainbow_Delete
   };
   self->super.VTable = _rainbow_vtable;
 }
@@ -620,10 +613,10 @@ static inline void _Light_Pattern_Chase_Hello(void) {
   vfdco_display_render_message(Messages_Color_Hello[4], 0, CONFIG_MESSAGE_LONG);
 }
 
-static inline void _Light_Pattern_Chase_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_Chase_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Chase *self = (struct Light_Pattern_Chase *)unsafe_self;
   free(self);
-}
+} */
 
 /**
 * @brief  Constructor of Light_Pattern_Chase class
@@ -659,8 +652,8 @@ void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *ti
     .F3 = _Light_Pattern_Chase_F3,
     .F3Var = _Light_Pattern_Chase_F3Var,
     .Update = _Light_Pattern_Chase_Update,
-    .Hello = _Light_Pattern_Chase_Hello,
-    .Delete = _Light_Pattern_Chase_Delete
+    .Hello = _Light_Pattern_Chase_Hello
+    // .Delete = _Light_Pattern_Chase_Delete
   };
   self->super.VTable = _chase_vtable;
 }
@@ -705,10 +698,10 @@ static inline void _Light_Pattern_Time_Code_Hello(void) {
 	vfdco_display_render_message(Messages_Color_Hello[5], 0, CONFIG_MESSAGE_LONG);
 }
 
-static inline void _Light_Pattern_Time_Code_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_Time_Code_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Time_Code *self = (struct Light_Pattern_Time_Code *)unsafe_self;
   free(self);
-}
+} */
 
 /**
   * @brief  Constructor of LED_Color_Resistor class
@@ -724,8 +717,8 @@ void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_ti
     .F3 = NULL,
     .F3Var = NULL,
     .Update = _Light_Pattern_Time_Code_Update,
-    .Hello = _Light_Pattern_Time_Code_Hello,
-		.Delete = _Light_Pattern_Time_Code_Delete
+    .Hello = _Light_Pattern_Time_Code_Hello
+		// .Delete = _Light_Pattern_Time_Code_Delete
   };
   self->super.VTable = _time_code_vtable;
 }
@@ -769,10 +762,10 @@ static inline void _Light_Pattern_Cop_Hello(void) {
 /**
 * @brief  Implementation of virtual destructor Light_Pattern_Cop::~Light_Pattern_Cop (static void _Light_Pattern_Cop_Delete)
 **/
-static inline void _Light_Pattern_Cop_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_Cop_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_Cop *self = (struct Light_Pattern_Cop *)unsafe_self;
   free(self);
-}
+} */
 
 /**
 * @brief  Constructor of Light_Pattern_Cop class Light_Pattern_Cop::Light_Pattern_Cop (static void Light_Pattern_Cop_Init)
@@ -787,8 +780,8 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self) {
     .F3      = NULL,
     .F3Var   = NULL,
     .Update  = _Light_Pattern_Cop_Update,
-    .Hello   = _Light_Pattern_Cop_Hello,
-    .Delete  = _Light_Pattern_Cop_Delete
+    .Hello   = _Light_Pattern_Cop_Hello
+    // .Delete  = _Light_Pattern_Cop_Delete
   };
   self->super.VTable = _vtable;
 }
@@ -906,10 +899,10 @@ static inline void _Light_Pattern_MomentsOfBliss_Hello(void) {
 /**
 * @brief  Implementation of virtual destructor Light_Pattern_MomentsOfBliss::~Light_Pattern_MomentsOfBliss (static void _Light_Pattern_MomentsOfBliss_Delete)
 **/
-static inline void _Light_Pattern_MomentsOfBliss_Delete(struct Light_Pattern *unsafe_self) {
+/* static inline void _Light_Pattern_MomentsOfBliss_Delete(struct Light_Pattern *unsafe_self) {
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
   free(self);
-}
+} */
 
 /**
 * @brief  Constructor of Light_Pattern_MomentsOfBliss class Light_Pattern_MomentsOfBliss::Light_Pattern_MomentsOfBliss (static void Light_Pattern_MomentsOfBliss_Init)
@@ -924,14 +917,24 @@ void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self
     .F3      = _Light_Pattern_MomentsOfBliss_F3,
     .F3Var   = NULL,//_Light_Pattern_MomentsOfBliss_F3Var,
     .Update  = _Light_Pattern_MomentsOfBliss_Update,
-    .Hello   = _Light_Pattern_MomentsOfBliss_Hello,
-    .Delete  = _Light_Pattern_MomentsOfBliss_Delete
+    .Hello   = _Light_Pattern_MomentsOfBliss_Hello
+    // .Delete  = _Light_Pattern_MomentsOfBliss_Delete
   };
   self->super.VTable = _vtable;
 }
 
 
 
+
+
+
+
+/**
+  * @brief  Definition of Container_Light_Pattern_Clear to set all components to zero
+**/
+void Container_Light_Pattern_Clear(Container_Light_Pattern_t *self) {
+  memset(self, 0, sizeof(Container_Light_Pattern_t));
+}
 
 
 

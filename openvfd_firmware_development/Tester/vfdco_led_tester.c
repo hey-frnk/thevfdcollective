@@ -16,14 +16,14 @@ gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c ..
 
 #define ever (;;)
 
-#define TEST0
+// #define TEST0
 // #define TEST1
-// #define TEST2
-// #define TEST3 // gets real
+#define TEST2
+ //#define TEST3 // gets real
 
 void test0() {
   hsl_t c1 = HSL_Init(0, 255, 127);
-  hsl_t c2 = HSL_Init(85, 255, 127);
+  // hsl_t c2 = HSL_Init(85, 255, 127);
   hsl_t c3 = HSL_Init(0, 0, 0);
   // rgb_t *r1 = RGB_Init(33, 44, 55);
   hsl_d_t d = {0, 0, 0};
@@ -149,46 +149,24 @@ void test0() {
 }*/
 
 void test2() {
-  struct Light_Pattern_Static ledInstance;
-  Light_Pattern_Static_Init(&ledInstance);
+  printf("LED_Color_Fader: %lu\n",               sizeof(struct LED_Color_Fader));
+  printf("LED_Color_Chaser: %lu\n",              sizeof(struct LED_Color_Chaser));
 
+  printf("Light_Pattern: %lu\n",                 sizeof(struct Light_Pattern));
+  printf("Light_Pattern_Static: %lu\n",          sizeof(struct Light_Pattern_Static));
+  printf("Light_Pattern_Spectrum: %lu\n",        sizeof(struct Light_Pattern_Spectrum));
+  printf("Light_Pattern_Rainbow: %lu\n",         sizeof(struct Light_Pattern_Rainbow));
+  printf("Light_Pattern_Chase: %lu\n",           sizeof(struct Light_Pattern_Chase));
+  printf("Light_Pattern_Time_Code: %lu\n",       sizeof(struct Light_Pattern_Time_Code));
+  printf("Light_Pattern_MomentsOfBliss: %lu\n",  sizeof(struct Light_Pattern_MomentsOfBliss));
+  printf("Container_Light_Pattern_t: %lu\n",     sizeof(Container_Light_Pattern_t));
 
-  vfdco_time_t time;
-  vfdco_date_t date;
-  vfdco_get_date_time(&date, &time);
-  struct Light_Pattern_Time_Code ledTime;
-  Light_Pattern_Time_Code_Init(&ledTime, &time);
-
-  struct Light_Pattern *virtualMode = NULL;
-  virtualMode = (struct Light_Pattern *)&ledTime;
-
-  while(1) {
-    int q;
-    while((q = getchar()) != '\n' && q != EOF);
-
-    char c;
-    printf("Button input: ");
-    scanf("%c", &c);
-
-    switch(c) {
-      case 'e': exit(0); break;
-      case 'f': break;
-      case 'g': virtualMode->F3((void *)virtualMode); break;
-      case 'G': virtualMode->F3Var((void *)virtualMode); break;
-      default: break;
-    }
-
-    int r;
-    while((r = getchar()) != '\n' && r != EOF);
-
-    int n;
-    printf("Loop count: ");
-    scanf("%d", &n);
-
-    for(int i = 0; i < n; ++i) {
-      virtualMode->Update((void *)virtualMode);
-    }
-  }
+  printf("GUI_Format: %lu\n",                    sizeof(struct GUI_Format));
+  printf("GUI_Format_Time_Date_Setter: %lu\n",   sizeof(struct GUI_Format_Time_Date_Setter));
+  printf("GUI_Format_Time: %lu\n",               sizeof(struct GUI_Format_Time));
+  printf("GUI_Format_Date: %lu\n",               sizeof(struct GUI_Format_Date));
+  printf("GUI_Format_Time_Date_Setter: %lu\n",   sizeof(struct GUI_Format_Time_Date_Setter));
+  printf("GUI_Format_Stopwatch: %lu\n",          sizeof(struct GUI_Format_Stopwatch));
 }
 
 // SH... gets real

@@ -41,7 +41,7 @@ struct Light_Pattern_VTable {
   void                  (*F3Var)            (struct Light_Pattern *unsafe_self);
   void                  (*Update)           (struct Light_Pattern *unsafe_self);
   void                  (*Hello)            (void);
-  void                  (*Delete)           (struct Light_Pattern *unsafe_self);
+  // void                  (*Delete)           (struct Light_Pattern *unsafe_self);
 };
 
 /**
@@ -53,7 +53,7 @@ struct Light_Pattern {
   vfdco_hid_action_status_t   (*F3Var)            (struct Light_Pattern *unsafe_self);
   void                        (*Update)           (struct Light_Pattern *unsafe_self);
   void                        (*Hello)            (struct Light_Pattern *unsafe_self);
-  void                        (*Delete)           (struct Light_Pattern *unsafe_self);
+  // void                        (*Delete)           (struct Light_Pattern *unsafe_self);
 
   struct Light_Pattern_VTable VTable;
 };
@@ -203,6 +203,29 @@ struct Light_Pattern_MomentsOfBliss {
 **/
 void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint_fast8_t moment);
 
+
+/** Begin of:
+  * @toc SECTION_CONTAINER_LIGHT_PATTERN
+  * Unions are awesome
+**/
+/**
+  * @brief  Definition of The Light Pattern container
+**/
+typedef union Container_Light_Pattern_t {
+  struct Light_Pattern                  base;
+  struct Light_Pattern_Static           _lp_static;
+  struct Light_Pattern_Spectrum         _lp_spectrum;
+  struct Light_Pattern_Rainbow          _lp_rainbow;
+  struct Light_Pattern_Chase            _lp_chase;
+  struct Light_Pattern_Time_Code        _lp_timecode;
+  struct Light_Pattern_Cop              _lp_cop;
+  struct Light_Pattern_MomentsOfBliss   _lp_bliss;
+} Container_Light_Pattern_t;
+
+/**
+  * @brief  Definition of Container_Light_Pattern_Clear to set all components to zero
+**/
+void Container_Light_Pattern_Clear(Container_Light_Pattern_t *self);
 
 #endif
 

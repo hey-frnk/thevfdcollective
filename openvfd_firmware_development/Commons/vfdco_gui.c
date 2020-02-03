@@ -7,22 +7,14 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include "../vfdco_config.h"
 #include "../vfdco_gui.h"
 #include "../vfdco_hid.h"
 #include "../vfdco_display.h"
 
-#ifndef DEBUG
-#include "stm32f0xx_hal.h"
-#endif
-
 extern vfdco_time_t global_time;
 extern vfdco_date_t global_date;
-
-/*extern uint8_t global_button_F1_state;
-extern uint8_t global_button_F2_state;
-extern uint8_t global_button_F3_state;
-extern uint8_t global_button_F4_state;*/
 
 static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
   800,
@@ -39,7 +31,7 @@ static inline vfdco_hid_action_status_t _GUI_Format_F2Var(struct GUI_Format *uns
 static inline vfdco_hid_action_status_t _GUI_Format_F3Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F3Var) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F3Var(unsafe_self); return BUTTON_ACTION_PERFORMED;}
 static inline vfdco_hid_action_status_t _GUI_Format_F4Var(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F4Var) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F4Var(unsafe_self); return BUTTON_ACTION_PERFORMED;}
 static inline void _GUI_Format_Update(struct GUI_Format *unsafe_self) { unsafe_self->VTable.Update(unsafe_self); }
-static inline void _GUI_Format_Delete(struct GUI_Format *unsafe_self) { unsafe_self->VTable.Delete(unsafe_self); }
+// static inline void _GUI_Format_Delete(struct GUI_Format *unsafe_self) { unsafe_self->VTable.Delete(unsafe_self); }
 
 void GUI_Format_Init(struct GUI_Format *self, uint_fast8_t update_timer_interval) {
   self->F2 = _GUI_Format_F2;
@@ -49,7 +41,7 @@ void GUI_Format_Init(struct GUI_Format *self, uint_fast8_t update_timer_interval
   self->F3Var = _GUI_Format_F3Var;
   self->F4Var = _GUI_Format_F4Var;
   self->Update = _GUI_Format_Update;
-  self->Delete = _GUI_Format_Delete;
+  // self->Delete = _GUI_Format_Delete;
 
   self->update_timer = Time_Event_Init(update_timer_interval);
 }
@@ -130,10 +122,10 @@ static void _GUI_Format_Time_F4Var(struct GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Time_Delete(struct GUI_Format *unsafe_self) {
+/* void _GUI_Format_Time_Delete(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
   free(self);
-}
+} */
 
 void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, time_format_t time_mode, uint8_t dot_mode) {
   GUI_Format_Init(&self->super, update_timer_interval);
@@ -152,8 +144,8 @@ void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_time
     .F2Var = NULL,
     .F3Var = NULL,
     .F4Var = _GUI_Format_Time_F4Var,
-    .Update = _GUI_Format_Time_Update,
-    .Delete = _GUI_Format_Time_Delete
+    .Update = _GUI_Format_Time_Update
+    // .Delete = _GUI_Format_Time_Delete
   };
   self->super.VTable = _time_vtable;
 }
@@ -182,10 +174,10 @@ static void _GUI_Format_Date_F4Var(struct GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Date_Delete(struct GUI_Format *unsafe_self) {
+/* void _GUI_Format_Date_Delete(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
   free(self);
-}
+} */
 
 void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, date_format_t date_mode) {
   GUI_Format_Init(&self->super, update_timer_interval);
@@ -199,8 +191,8 @@ void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_time
     .F2Var = NULL,
     .F3Var = NULL,
     .F4Var = _GUI_Format_Date_F4Var,
-    .Update = _GUI_Format_Date_Update,
-    .Delete = _GUI_Format_Date_Delete
+    .Update = _GUI_Format_Date_Update
+    // .Delete = _GUI_Format_Date_Delete
   };
   self->super.VTable = _date_vtable;
 }
@@ -330,14 +322,14 @@ static void _GUI_Format_Time_Date_Setter_F4(struct GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Time_Date_Setter_Delete(struct GUI_Format *unsafe_self) {
+/* void _GUI_Format_Time_Date_Setter_Delete(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
   // Set time before we leave
   if(self->set_mode == 0) vfdco_set_date_time(&global_date,    &self->new_time);
   else                    vfdco_set_date_time(&self->new_date, &global_time   );
 
   free(self);
-}
+} */
 
 void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, uint_fast8_t update_timer_interval, uint_fast8_t set_mode) {
   GUI_Format_Init(&self->super, update_timer_interval);
@@ -359,8 +351,8 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
     .F2Var = NULL,
     .F3Var = NULL,
     .F4Var = NULL,
-    .Update = _GUI_Format_Time_Date_Setter_Update,
-    .Delete = _GUI_Format_Time_Date_Setter_Delete
+    .Update = _GUI_Format_Time_Date_Setter_Update
+    // .Delete = _GUI_Format_Time_Date_Setter_Delete
   };
   self->super.VTable = _time_date_setter_vtable;
 }
@@ -381,7 +373,7 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
       // running time: elapsed base + current time - start timestamp
       uint32_t running_time = self->elapsed_time +
         (        global_time.h * 3600 +         global_time.m * 60 +         global_time.s) -
-        (self->initial_time->h * 3600 + self->initial_time->m * 60 + self->initial_time->s);
+        ( self->initial_time.h * 3600 +  self->initial_time.m * 60 +  self->initial_time.s);
 
       if(running_time > 3599) {
         vfdco_time_t new_time = {
@@ -440,11 +432,11 @@ static void _GUI_Format_Stopwatch_F2(struct GUI_Format *unsafe_self) {
 
   // Initialize
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
-    if(!self->initial_time) {
-      self->initial_time = (vfdco_time_t *)malloc(sizeof(vfdco_time_t));
-      self->initial_time->h = global_time.h;
-      self->initial_time->m = global_time.m;
-      self->initial_time->s = global_time.s;
+    if(!self->not_initial) {
+      self->initial_time.h = global_time.h;
+      self->initial_time.m = global_time.m;
+      self->initial_time.s = global_time.s;
+      self->not_initial = 1;
     }
     #ifndef DEBUG // Needs platform independency
     self->initial_milliseconds = vfdco_time_get_milliseconds();
@@ -458,8 +450,7 @@ static void _GUI_Format_Stopwatch_F2(struct GUI_Format *unsafe_self) {
 
   // Reset
   else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_PAUSED) {
-    free(self->initial_time);
-    self->initial_time = NULL;
+    self->not_initial = 0;
     self->elapsed_time = 0;
     self->initial_milliseconds = 0;
     self->elapsed_milliseconds = 0;
@@ -476,7 +467,7 @@ static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
     // Save seconds
     self->elapsed_time +=
       (        global_time.h * 3600 +         global_time.m * 60 +         global_time.s) -
-      (self->initial_time->h * 3600 + self->initial_time->m * 60 + self->initial_time->s);
+      ( self->initial_time.h * 3600 +  self->initial_time.m * 60 +  self->initial_time.s);
 
     // Save milliseconds
     self->elapsed_milliseconds += vfdco_time_get_milliseconds() - self->initial_milliseconds;
@@ -486,9 +477,9 @@ static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
 
   // Resume
   else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_PAUSED) {
-    self->initial_time->h = global_time.h;
-    self->initial_time->m = global_time.m;
-    self->initial_time->s = global_time.s;
+    self->initial_time.h = global_time.h;
+    self->initial_time.m = global_time.m;
+    self->initial_time.s = global_time.s;
     #ifndef DEBUG
     self->initial_milliseconds = vfdco_time_get_milliseconds();
     #endif
@@ -496,17 +487,18 @@ static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Stopwatch_Delete(struct GUI_Format *unsafe_self) {
+/* void _GUI_Format_Stopwatch_Delete(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
   free(self);
-}
+} */
 
 void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t update_timer_interval) {
   GUI_Format_Init(&self->super, update_timer_interval);
 
   self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_INITIALIZED;
 
-  self->initial_time = NULL;
+  // self->initial_time = NULL;
+  self->not_initial = 0;
   self->elapsed_time = 0;
   self->initial_milliseconds = 0;
   self->elapsed_milliseconds = 0;
@@ -518,13 +510,18 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t u
     .F2Var = NULL,
     .F3Var = NULL,
     .F4Var = NULL,
-    .Update = _GUI_Format_Stopwatch_Update,
-    .Delete = _GUI_Format_Stopwatch_Delete
+    .Update = _GUI_Format_Stopwatch_Update
+    // .Delete = _GUI_Format_Stopwatch_Delete
   };
   self->super.VTable = _stopwatch_vtable;
 }
 
-
+/**
+  * @brief  Definition of Container_GUI_Clear to set all components to zero
+**/
+void Container_GUI_Clear(Container_GUI_t *self) {
+  memset(self, 0, sizeof(Container_GUI_t));
+}
 
 
 // Rip a line from a page watch it fade up in smoke hope rise through the rain higher than we'd ever go

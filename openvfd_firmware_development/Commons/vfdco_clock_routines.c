@@ -9,19 +9,20 @@
 // Here everything comes together!
 #include <stdint.h>
 #include <stdlib.h>
+// Configuration header
 #include "../vfdco_config.h"
-#include "../vfdco_clock_routines.h"
-#include "../vfdco_hid.h"
-#include "../vfdco_time.h"
-#include "../vfdco_display.h"
-#include "../vfdco_gui.h"
-#include "../vfdco_led.h"
-#include "../vfdco_color_lib.h"
-#include "../vfdco_lights.h"
-
-#ifndef DEBUG
-#include "stm32f0xx_hal.h"
-#endif
+// Low Level/Primitive libraries
+#include "../vfdco_led.h"             // Physical LED driver
+#include "../vfdco_display.h"         // Physical display driver
+#include "../vfdco_time.h"            // Physical timing & RTC driver
+#include "../vfdco_hid.h"             // Physical HID driver
+// Implicitly included prim. library extensions
+// #include "../vfdco_color_lib.h"    // Basic color structures
+// Application specific libraries
+#include "../vfdco_lights.h"          // Library of light patterns
+#include "../vfdco_gui.h"             // Library of different user interfaces
+// Clock routine scheduler
+#include "../vfdco_clock_routines.h"  // Clock routine
 
 // Globally accessible parameters
 vfdco_time_t global_time;
@@ -35,10 +36,13 @@ uint8_t global_button_F4_state = BUTTON_STATE_OFF;
 time_event_t global_time_updater;
 time_event_t display_updater;
 
-struct Light_Pattern *global_light_instance = NULL;
+// struct Light_Pattern *global_light_instance = NULL;
+Container_Light_Pattern_t _global_light_instance;
+struct Light_Pattern *global_light_instance = &_global_light_instance.base;
 light_pattern_instance_t global_light_instance_counter;
 
-struct GUI_Format *global_gui_instance = NULL;
+Container_GUI_t _global_gui_instance;
+struct GUI_Format *global_gui_instance = &_global_gui_instance.base;
 gui_instance_t global_gui_instance_counter;
 
 // Not sure if it makes things clearer or more fuzzy.
@@ -110,7 +114,7 @@ void vfdco_clock_time_routine() {
 void vfdco_clock_display_initializer() {
   // Start by creating a time instance
   // struct GUI_Format_Time *initial_time = (struct GUI_Format_Time *)malloc(sizeof(struct GUI_Format_Time));
-  global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time));
+  // global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time));
   GUI_Format_Time_Init((struct GUI_Format_Time *)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
 
   GLOBAL_SET_NEXT_GUI_INSTANCE(0);
@@ -121,28 +125,37 @@ void vfdco_clock_display_routine() {
 	global_gui_instance->Update(global_gui_instance);
 
   if(global_button_F1_state == BUTTON_STATE_SHORTPRESS) {
-    global_gui_instance->Delete(global_gui_instance);
+
+    if(global_gui_instance_counter == GUI_TIME_DATE_SET) {
+      // Sorry ugly AF but saves a truck load of code memory
+      struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter*)global_gui_instance;
+      if(self->set_mode == 0) vfdco_set_date_time(&global_date,    &self->new_time);
+      else                    vfdco_set_date_time(&self->new_date, &global_time   );
+    }
+
+    // global_gui_instance->Delete(global_gui_instance);
+    Container_GUI_Clear(&_global_gui_instance);
     switch(global_gui_instance_counter) {
       case GUI_TIME: {
-        global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Date));
+        // global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Date));
         GUI_Format_Date_Init((struct GUI_Format_Date*)global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, DATE_FORMAT_DDMMYY);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_DATE);
         break;
       }
       case GUI_DATE: {
-        global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Stopwatch));
+        // global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Stopwatch));
         GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_STOPWATCH);
         break;
       }
       case GUI_STOPWATCH: {
-        global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time));
+        // global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time));
         GUI_Format_Time_Init((struct GUI_Format_Time*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
         break;
       }
       case GUI_TIME_DATE_SET: {
-        global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time));
+        // global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time));
         GUI_Format_Time_Init((struct GUI_Format_Time*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
         break;
@@ -152,17 +165,18 @@ void vfdco_clock_display_routine() {
     GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
   } else if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
     // To time set menu
-    global_gui_instance->Delete(global_gui_instance);
+    //global_gui_instance->Delete(global_gui_instance);
+    Container_GUI_Clear(&_global_gui_instance);
 
     switch(global_gui_instance_counter) {
       case GUI_TIME: {
-        global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time_Date_Setter));
+        // global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time_Date_Setter));
         GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, 0);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
         break;
       }
       case GUI_DATE: {
-        global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time_Date_Setter));
+        // global_gui_instance = (struct GUI_Format *)malloc(sizeof(struct GUI_Format_Time_Date_Setter));
         GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, 1);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
         break;
@@ -203,9 +217,8 @@ void vfdco_clock_lights_initializer() {
 	vfdco_time_delay_milliseconds(2);
   vfdco_clr_render();
 
-  global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Static));;
+  // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Static));;
   Light_Pattern_Static_Init((struct Light_Pattern_Static *)global_light_instance);
-
   GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
 }
 
@@ -214,46 +227,47 @@ void vfdco_clock_lights_routine() {
   global_light_instance->Update(global_light_instance);
 
   if(global_button_F2_state == BUTTON_STATE_SHORTPRESS) {
-    global_light_instance->Delete(global_light_instance);
+    // global_light_instance->Delete(global_light_instance);
+    Container_Light_Pattern_Clear(&_global_light_instance);
     switch(global_light_instance_counter) {
       case LIGHT_PATTERN_STATIC: { // Go to spectrum
-        global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_MomentsOfBliss));
+        // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_MomentsOfBliss));
         Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)global_light_instance, 0);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_MOMENTSOFBLISS);
         break;
       }
       case LIGHT_PATTERN_MOMENTSOFBLISS: {
-        global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Spectrum));
+        // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Spectrum));
         Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SPECTRUM);
         break;
       }
       case LIGHT_PATTERN_SPECTRUM: {
-        global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Rainbow));
+        // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Rainbow));
         Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_RAINBOW);
         break;
       }
       case LIGHT_PATTERN_RAINBOW: {
-        global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Chase));
+        // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Chase));
         Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)global_light_instance, &global_time, 0);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_CHASE);
         break;
       }
       case LIGHT_PATTERN_CHASE: {
-        global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Time_Code));
+        // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Time_Code));
         Light_Pattern_Time_Code_Init((struct Light_Pattern_Time_Code *)global_light_instance, &global_time);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_TIME_CODE);
         break;
       }
       case LIGHT_PATTERN_TIME_CODE: {
-        global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Cop));
+        // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Cop));
         Light_Pattern_Cop_Init((struct Light_Pattern_Cop *)global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_COP);
         break;
       }
       case LIGHT_PATTERN_COP: {
-        global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Static));
+        // global_light_instance = (struct Light_Pattern *)malloc(sizeof(struct Light_Pattern_Static));
         Light_Pattern_Static_Init((struct Light_Pattern_Static *)global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
         break;

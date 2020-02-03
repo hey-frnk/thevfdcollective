@@ -28,7 +28,7 @@ struct GUI_Format_VTable {
   void        (*F4Var)(struct GUI_Format *self);
 
   void        (*Update)(struct GUI_Format *self);
-  void        (*Delete)(struct GUI_Format *self);
+  // void        (*Delete)(struct GUI_Format *self);
 };
 
 struct GUI_Format {
@@ -41,7 +41,7 @@ struct GUI_Format {
   vfdco_hid_action_status_t        (*F4Var)(struct GUI_Format *self);
 
   void        (*Update)(struct GUI_Format *self);
-  void        (*Delete)(struct GUI_Format *self);
+  // void        (*Delete)(struct GUI_Format *self);
 
   struct GUI_Format_VTable VTable;
   time_event_t update_timer;
@@ -105,13 +105,35 @@ struct GUI_Format_Stopwatch {
 
   uint_fast8_t      stopwatch_state;
 
-  vfdco_time_t      *initial_time;
+  vfdco_time_t      initial_time;
+  uint8_t           not_initial;
   uint32_t          elapsed_time;
   uint32_t          initial_milliseconds;
   uint32_t          elapsed_milliseconds;
 };
 
 void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t update_timer_interval);
+
+
+/** Begin of:
+  * @toc SECTION_CONTAINER_GUI
+  * Unions are awesome
+**/
+/**
+  * @brief  Definition of The GUI container
+**/
+typedef union Container_GUI_t {
+  struct GUI_Format                   base;
+  struct GUI_Format_Time              _gui_time;
+  struct GUI_Format_Date              _gui_date;
+  struct GUI_Format_Time_Date_Setter  _gui_set;
+  struct GUI_Format_Stopwatch         _gui_watch;
+} Container_GUI_t;
+
+/**
+  * @brief  Definition of Container_GUI_Clear to set all components to zero
+**/
+void Container_GUI_Clear(Container_GUI_t *self);
 
 
 #endif
