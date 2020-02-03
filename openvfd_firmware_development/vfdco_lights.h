@@ -77,7 +77,7 @@ struct Light_Pattern_Static {
   time_event_t          t;
 
   uint8_t               position;   // Color lookup array index
-  uint8_t               *target_arr;
+  uint8_t               target_arr[CONFIG_NUM_BYTES];
 };
 
 /**
@@ -94,8 +94,6 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
  **/
 struct Light_Pattern_Spectrum {
   struct Light_Pattern super;
-
-  hsl_t                **color;
   struct LED_Color_Fader spectrum_fader;
 };
 
@@ -113,8 +111,6 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self);
  **/
 struct Light_Pattern_Rainbow {
   struct Light_Pattern super;
-
-  hsl_t                **color;
   struct LED_Color_Fader rainbow_fader;
 };
 
@@ -137,8 +133,6 @@ struct Light_Pattern_Chase {
   uint8_t              flip_timer_previous_second;
   vfdco_time_t         *flip_timer;
 
-  hsl_t                *color;
-  hsl_d_t              diff_color;
   struct LED_Color_Chaser chase_fader;
 };
 
@@ -159,7 +153,7 @@ struct Light_Pattern_Time_Code {
   time_event_t          clock;
 
   vfdco_time_t          *time;
-  uint8_t               *target_arr;
+  uint8_t               target_arr[CONFIG_NUM_BYTES];
 };
 
 /**
@@ -196,7 +190,6 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self);
 struct Light_Pattern_MomentsOfBliss {
   struct Light_Pattern super;
 
-  hsl_t                 **colors;
   uint_fast8_t          moment;
   uint_fast8_t          undrift_counter;
   uint_fast8_t          undrift_max;

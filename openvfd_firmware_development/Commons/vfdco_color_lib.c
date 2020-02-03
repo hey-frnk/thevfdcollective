@@ -80,31 +80,22 @@ uint8_t led_color_simple_randomizer(uint8_t bits) {
 /**
   * @brief  Implementation of constructor HSL class, HSL::HSL(h, s, l)
  **/
-hsl_t *HSL_Init(uint8_t h, uint8_t s, uint8_t l) {
-  hsl_t *hsl = (hsl_t *)malloc(sizeof(hsl_t));
-  hsl->h = h;
-  hsl->s = s;
-  hsl->l = l;
-  return hsl;
+hsl_t HSL_Init(uint8_t h, uint8_t s, uint8_t l) {
+  hsl_t _hsl = {
+    .h = h,
+    .s = s,
+    .l = l,
+  };
+  return _hsl;
 }
-rgb_t *RGB_Init(uint8_t r, uint8_t g, uint8_t b) {
-  rgb_t *_rgb = (rgb_t *)malloc(sizeof(rgb_t));
-  _rgb->r = r;
-  _rgb->g = g;
-  _rgb->b = b;
+rgb_t RGB_Init(uint8_t r, uint8_t g, uint8_t b) {
+  rgb_t _rgb = {
+    .r = r,
+    .g = g,
+    .b = b,
+  };
   return _rgb;
 }
-
-/**
- * @brief  Declaration of destructor HSL class, HSL::~HSL
-**/
-inline void HSL_Delete(hsl_t *self) {
-  free(self);
-}
-inline void RGB_Delete(rgb_t *self) {
-  free(self);
-}
-
 
 
 /** Begin of:
@@ -150,7 +141,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
 #else
 static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_Color_Fader *self) {
 #endif
-  hsl_t *target = self->pks[0]; // Just get the one pk
+  hsl_t *target = &self->pk_1;
   #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   uint8_t render_enable = Time_Event_Update(&unsafe_self->timer);
   #else
@@ -168,7 +159,9 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
       self->fade_pos = 0;
       self->state = LED_COLOR_STATE_ACTIVE;
     }
-  } else if(self->state == LED_COLOR_STATE_FADE_OUT) {
+  }
+  #ifdef LED_COLOR_ENABLE_FADE_OUT
+  else if(self->state == LED_COLOR_STATE_FADE_OUT) {
     // Let the light fade out by decreasing lightness linearly until 0 is reached
     i_l = (int32_t)target->l - (((int32_t)target->l * (int32_t)self->fade_pos) >> LED_COLOR_FADER_TIME_BITS);
 
@@ -178,14 +171,16 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
       self->fade_pos = 0;
       self->state = LED_COLOR_STATE_COMPLETE;
     }
-  } else if(self->state == LED_COLOR_STATE_ACTIVE) {
+  }
+  #endif
+  else if(self->state == LED_COLOR_STATE_ACTIVE) {
     i_l = target->l;
 
     if(render_enable) {
     	++self->fade_pos;
 
     	// Obtain next hue value, forever and overwrite starting point color
-    	++(self->pks[0]->h);
+    	++(self->pk_1.h);
     	// State transition if time_period has elapsed.
     	// Next state: Cyclic rollover if --repeat is >= 0, else fade out
     	if(!(self->fade_pos < LED_COLOR_FADER_PERIOD)) {
@@ -237,7 +232,8 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_F
   // State FSM output
   if(self->state == LED_COLOR_STATE_FADE_IN) {
     // Pick up first pix as target
-    hsl_t *target = self->pks[0];
+    // hsl_t *target = self->pks[0];
+    hsl_t *target = &self->pk_1;
     // Let the light fade in by increasing lightness linearly until target->l is reached
     i_h = target->h;
     i_s = target->s;
@@ -249,9 +245,11 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_F
       self->fade_pos = 0;
       self->state = LED_COLOR_STATE_ACTIVE;
     }
-  } else if(self->state == LED_COLOR_STATE_FADE_OUT) {
+  }
+  #ifdef LED_COLOR_ENABLE_FADE_OUT
+  else if(self->state == LED_COLOR_STATE_FADE_OUT) {
     // Pick up last pix as current
-    hsl_t *current = self->pks[self->num_pks - 1];
+    hsl_t *current = &self->pk_2;
     // And let the light fade out by decreasing lightness linearly until 0 is reached
     i_h = current->h;
     i_s = current->s;
@@ -272,12 +270,14 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_F
       #endif
       vfdco_clr_render();
     }
-  } else if(self->state == LED_COLOR_STATE_ACTIVE) {
+  }
+  #endif
+  else if(self->state == LED_COLOR_STATE_ACTIVE) {
     // Pick up current and target pix depending on position and
-    uint16_t t = self->fade_pos & LED_COLOR_FADER_PERIOD;                 // Current time = fade_pos % time_period, always a value between [0 ... time_period - 1]
-    uint8_t access_index = self->fade_pos >> LED_COLOR_FADER_TIME_BITS;   // Current access index = fade_pos / time_period, always between [0 ... num_pks - 1]
-    hsl_t *current  = self->pks[access_index];
-    hsl_t *target   = self->pks[access_index + 1];
+    // uint16_t t = self->fade_pos & LED_COLOR_FADER_PERIOD;                 // Current time = fade_pos % time_period, always a value between [0 ... time_period - 1]
+    // uint8_t access_index = self->fade_pos >> LED_COLOR_FADER_TIME_BITS;   // Current access index = fade_pos / time_period, always between [0 ... num_pks - 1]
+    hsl_t *current  = &self->pk_1; //self->pks[access_index];
+    hsl_t *target   = &self->pk_2; //self->pks[access_index + 1];
     // Linearly transition HSL from curr -> target
     /*
       i_h = (((target->h - (int_fast16_t)current->h) * (int_fast32_t)t) >> LED_COLOR_FADER_TIME_BITS) + current->h;
@@ -291,14 +291,14 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_F
       or any norm factor 1/k H_NEW = (((1.5k + H2 - H1) % k) - 0.5k) * t + H1 for t [0..1]
       The i_h below is adapted to
     */
-    i_h = (((((uint16_t)(384 + target->h - current->h) % 255) - 127) * t) >> LED_COLOR_FADER_TIME_BITS) + current->h;  // what the actual fuck?!
-    i_s = (((target->s - (int16_t)current->s) * (int16_t)t) >> LED_COLOR_FADER_TIME_BITS) + current->s;
-    i_l = (((target->l - (int16_t)current->l) * (int16_t)t) >> LED_COLOR_FADER_TIME_BITS) + current->l;
+    i_h = (((((uint16_t)(384 + target->h - current->h) % 255) - 127) * self->fade_pos) >> LED_COLOR_FADER_TIME_BITS) + current->h;  // what the actual fuck?!
+    i_s = (((target->s - (int16_t)current->s) * (int16_t)self->fade_pos) >> LED_COLOR_FADER_TIME_BITS) + current->s;
+    i_l = (((target->l - (int16_t)current->l) * (int16_t)self->fade_pos) >> LED_COLOR_FADER_TIME_BITS) + current->l;
 
     if(render_enable) ++self->fade_pos;
     // State transistion if time_period has elapsed.
     // Next state: Cyclic rollover if --repeat is >= 0, else fade out
-    if(!(self->fade_pos < LED_COLOR_FADER_PERIOD * (self->num_pks - 1))) {
+    if(!(self->fade_pos < LED_COLOR_FADER_PERIOD /** (self->num_pks - 1)*/)) {
       self->fade_pos = 0;
       if(self->repeat != LED_COLOR_REPEAT_FOREVER) {
         if(--self->repeat < 0)  self->state = LED_COLOR_STATE_FADE_OUT;
@@ -308,8 +308,8 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_F
     }
   } else if(self->state == LED_COLOR_STATE_CYCLIC_RECOVERY) {
     // Special case where we need to fade from last pix to first pix
-    hsl_t *current = self->pks[self->num_pks - 1];
-    hsl_t *target = self->pks[0];
+    hsl_t *current = &self->pk_2; // self->pks[self->num_pks - 1];
+    hsl_t *target  = &self->pk_1; //self->pks[0];
     // Linearly transition HSL from curr -> target
     // i_h = (((target->h - (int16_t)current->h) * (int16_t)self->fade_pos) >> LED_COLOR_FADER_TIME_BITS) + current->h;
     i_h = (((((uint16_t)(384 + target->h - current->h) % 255) - 127) * self->fade_pos) >> LED_COLOR_FADER_TIME_BITS) + current->h;
@@ -369,8 +369,8 @@ void LED_Color_Fader_Init(
   uint8_t                   start_pos,
   #endif
   int8_t                    repeat,
-  uint8_t                   num_pks,
-  hsl_t                     **pks,
+  hsl_t                     pk_1,
+  hsl_t                     pk_2,
   #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t                   num_chain,
   #endif
@@ -387,23 +387,24 @@ void LED_Color_Fader_Init(
   f->start_pos = start_pos;
   f->num_chain = num_chain;
   #endif
-  f->num_pks = num_pks;
-  f->pks = pks;
+  // f->num_pks = num_pks;
+  f->pk_1 = pk_1;
+  f->pk_2 = pk_2;
   f->chain_huediff = chain_hue_diff;
   f->repeat = repeat;
 
   // Method mapping
   #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
   struct LED_Color_VTable _fader_vtable = {
-    .Next = (num_pks > 1) ?
-        _LED_Color_Fader_NextColorLin :
-        _LED_Color_Fader_NextColorLinSingle,
+    .Next = (pk_2.h == 0 && pk_2.s == 0 && pk_2.l == 0) ?
+        _LED_Color_Fader_NextColorLinSingle :
+        _LED_Color_Fader_NextColorLin,
     .Delete = _LED_Color_Fader_Delete
   };
 
   f->super.VTable = _fader_vtable;
   #else
-  f->Next = (num_pks > 1) ? _LED_Color_Fader_NextColorLin : _LED_Color_Fader_NextColorLinSingle;
+  f->Next = (pk_2.h == 0 && pk_2.s == 0 && pk_2.l == 0) ? _LED_Color_Fader_NextColorLinSingle : _LED_Color_Fader_NextColorLin;
   #endif
 
   f->fade_pos = 0;
@@ -434,7 +435,7 @@ LED_COLOR_STATE_t LED_Color_Flasher_Next(struct LED_Color_Flasher *self) {
       ) {
     	++self->flash_pos;
 
-    	vfdco_clr_set_RGB(self->start_pos, self->pk->r, self->pk->g, self->pk->b);
+    	vfdco_clr_set_RGB(self->start_pos, self->pk.r, self->pk.g, self->pk.b);
 
     	if(!(self->flash_pos < self->flash_duration)) {
     		self->flash_pos = 0;
@@ -486,7 +487,7 @@ void LED_Color_Flasher_Init(
   uint_fast32_t             timer1_interval,
   uint8_t                   start_pos,
   int8_t                    repeat,
-  rgb_t                     *pk,
+  rgb_t                     pk,
   uint8_t                   duration,
   uint8_t                   offtime
 ) {
@@ -635,54 +636,54 @@ LED_COLOR_STATE_t LED_Color_Chaser_Next(struct LED_Color_Chaser *self) {
       for(uint_fast8_t i = 0; i < self->pk_state + 1; ++i) {
         // Right sided write. Only write if pixel is in range and LR or Split is active
         if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + i < CONFIG_NUM_PIXELS)) {
-          int16_t lightness = self->pk->l + i * self->pk_diff->l;
+          int16_t lightness = self->pk.l + i * self->pk_diff.l;
           // Ugly AF, sorry
           if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
             uint32_t attenuation = ((uint32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (uint32_t)self->chase_pos))
                                 / (uint32_t)(chase_cpreserving * (uint16_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
-          uint32_t target_right = _led_color_hsl2rgb(self->pk->h + i * self->pk_diff->h, self->pk->s + i * self->pk_diff->s, lightness);
+          uint32_t target_right = _led_color_hsl2rgb(self->pk.h + i * self->pk_diff.h, self->pk.s + i * self->pk_diff.s, lightness);
           vfdco_clr_set_RGB(self->start_pos + i, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
         }
         // Left sided write
         if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) /*&& (self->pk_state > 0)*/ && (self->start_pos - i >= 0)) {
-          uint8_t lightness = self->pk->l - i * self->pk_diff->l;
+          uint8_t lightness = self->pk.l - i * self->pk_diff.l;
           // Ugly AF, sorry
           if((self->state == LED_COLOR_STATE_CYCLIC_RECOVERY || self->pk_state != i) && chase_cpreserving != LED_COLOR_CHASER_PRESERVING) {
             uint32_t attenuation = ((uint32_t)lightness * (chase_duration * (self->pk_state - i - 1) + (uint32_t)self->chase_pos))
                                 / (uint32_t)(chase_cpreserving * (uint16_t)chase_duration);
             lightness -= (attenuation > lightness) ? lightness : attenuation;
           }
-          uint32_t target_left = _led_color_hsl2rgb(self->pk->h - i * self->pk_diff->h, self->pk->s - i * self->pk_diff->s, lightness);
+          uint32_t target_left = _led_color_hsl2rgb(self->pk.h - i * self->pk_diff.h, self->pk.s - i * self->pk_diff.s, lightness);
           vfdco_clr_set_RGB(self->start_pos - i, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
         }
       }
     } else {
       // Right sided write. Only write if pixel is in range and LR or Split is active
       if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < CONFIG_NUM_PIXELS)) {
-        uint8_t lightness = self->pk->l + self->pk_state * self->pk_diff->l;
-        uint32_t target_right = _led_color_hsl2rgb(self->pk->h + self->pk_state * self->pk_diff->h, self->pk->s + self->pk_state * self->pk_diff->s, lightness);
+        uint8_t lightness = self->pk.l + self->pk_state * self->pk_diff.l;
+        uint32_t target_right = _led_color_hsl2rgb(self->pk.h + self->pk_state * self->pk_diff.h, self->pk.s + self->pk_state * self->pk_diff.s, lightness);
         vfdco_clr_set_RGB(self->start_pos + self->pk_state, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
       }
       // Left sided write
       if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0)) {
-        uint8_t lightness = self->pk->l - self->pk_state * self->pk_diff->l;
-        uint32_t target_left = _led_color_hsl2rgb(self->pk->h - self->pk_state * self->pk_diff->h, self->pk->s - self->pk_state * self->pk_diff->s, lightness);
+        uint8_t lightness = self->pk.l - self->pk_state * self->pk_diff.l;
+        uint32_t target_left = _led_color_hsl2rgb(self->pk.h - self->pk_state * self->pk_diff.h, self->pk.s - self->pk_state * self->pk_diff.s, lightness);
         vfdco_clr_set_RGB(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
       }
     }
     #else
     // Right sided write. Only write if pixel is in range and LR or Split is active
     if((self->chase_mode <= LED_COLOR_CHASER_MODE_SPLITDEC) && (self->start_pos + self->pk_state < CONFIG_NUM_PIXELS)) {
-      uint8_t lightness = self->pk->l + self->pk_state * self->pk_diff->l;
-      uint32_t target_right = _led_color_hsl2rgb(self->pk->h + self->pk_state * self->pk_diff->h, self->pk->s + self->pk_state * self->pk_diff->s, lightness);
+      uint8_t lightness = self->pk.l + self->pk_state * self->pk_diff.l;
+      uint32_t target_right = _led_color_hsl2rgb(self->pk.h + self->pk_state * self->pk_diff.h, self->pk.s + self->pk_state * self->pk_diff.s, lightness);
       vfdco_clr_set_RGB(self->start_pos + self->pk_state, (target_right >> 8) & 0xFF, (target_right >> 16) & 0xFF, target_right & 0xFF);
     }
     // Left sided write
     if((self->chase_mode >= LED_COLOR_CHASER_MODE_SPLITLIN) && (self->start_pos - self->pk_state >= 0)) {
-      uint8_t lightness = self->pk->l - self->pk_state * self->pk_diff->l;
-      uint32_t target_left = _led_color_hsl2rgb(self->pk->h - self->pk_state * self->pk_diff->h, self->pk->s - self->pk_state * self->pk_diff->s, lightness);
+      uint8_t lightness = self->pk.l - self->pk_state * self->pk_diff.l;
+      uint32_t target_left = _led_color_hsl2rgb(self->pk.h - self->pk_state * self->pk_diff.h, self->pk.s - self->pk_state * self->pk_diff.s, lightness);
       vfdco_clr_set_RGB(self->start_pos - self->pk_state, (target_left >> 8) & 0xFF, (target_left >> 16) & 0xFF, target_left & 0xFF);
     }
     #endif
@@ -717,8 +718,8 @@ void LED_Color_Chaser_Init(
   #ifdef LED_COLOR_CHASER_EXTENDED
   uint8_t                   length,
   #endif
-  hsl_t                     *pk,
-  hsl_d_t                   *pk_diff,
+  hsl_t                     pk,
+  hsl_d_t                   pk_diff,
   uint16_t                  duration,
   #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   uint8_t                   cpreserving,

@@ -19,14 +19,14 @@ gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c ..
 #define TEST0
 // #define TEST1
 // #define TEST2
-// #define TEST3
+// #define TEST3 // gets real
 
 void test0() {
-  hsl_t *c1 = HSL_Init(0, 255, 127);
-  hsl_t *c2 = HSL_Init(85, 255, 127);
+  hsl_t c1 = HSL_Init(0, 255, 127);
+  hsl_t c2 = HSL_Init(85, 255, 127);
+  hsl_t c3 = HSL_Init(0, 0, 0);
   // rgb_t *r1 = RGB_Init(33, 44, 55);
   hsl_d_t d = {0, 0, 0};
-  hsl_t *cArr[2] = {c1, c2};
 
   struct LED_Color_Fader f1;
   LED_Color_Fader_Init(
@@ -36,8 +36,8 @@ void test0() {
     0,
     #endif
     LED_COLOR_REPEAT_FOREVER,
-    2,
-    cArr,
+    c1,
+    c3,
     #ifdef LED_COLOR_FADER_EXTENDED
     6,
     #endif
@@ -87,9 +87,6 @@ void test0() {
   }
 
   d.h = 1;
-  cArr[0] = NULL;
-  HSL_Delete(c1);
-  HSL_Delete(c2);
 }
 
 

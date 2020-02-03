@@ -18,13 +18,11 @@ extern "C" {
 #define _VFDCO_LED_DRIVER
 
 #include <stdint.h>
+#include "vfdco_config.h"
 
-// uint8_t  // n um_rgb,                  // Number of physical LEDs (pixels)
-         // n um_bpp,                  // Number of bytes per pixel bpp
-         // n um_bytes;                // Number of bytes per pixel bpp (3: RGB, 4: RGBW) * n um_rgb
          // Array of color values of size n um_bytes to be written in the next write cycle
          // to the physical WS2812B/SK6812 LEDs
-uint8_t  *rgb_arr;
+extern uint8_t rgb_arr[CONFIG_NUM_BYTES];
 
 // Initialize SW/HW of num_pixels * SK6812 LEDs
 void vfdco_clr_init(uint8_t num_pixels);

@@ -49,6 +49,10 @@ extern "C" {
 // Comment #undef directive to enable the chad fader
 #define     LED_COLOR_ENABLE_POLYMORPHIC_USE
 #undef      LED_COLOR_ENABLE_POLYMORPHIC_USE
+// If enabled, the LED instances can smoothly fade out to black
+// Comment #undef directive to enable
+#define     LED_COLOR_ENABLE_FADE_OUT
+#undef      LED_COLOR_ENABLE_FADE_OUT
 // If enabled, a start and end LED can be set. If not, it's full length (CONFIG_NUM_PIXELS)
 // Comment #undef directive to enable the chad fader
 #define     LED_COLOR_FADER_EXTENDED
@@ -68,7 +72,7 @@ extern "C" {
 
 // Array of color values of size n um_bytes to be written in the next write cycle
 // to the physical WS2812B/SK6812 LEDs
-extern uint8_t  *rgb_arr;
+extern uint8_t  rgb_arr[CONFIG_NUM_BYTES];
 
 // Initialize SW/HW of num_pixels * SK6812 LEDs
 extern void vfdco_clr_init(uint8_t num_pixels);
@@ -116,30 +120,19 @@ typedef struct rgb_t {uint8_t r, g, b; } rgb_t; // Red Green Blue
 /**
  * @brief  Declaration of constructor HSL class, HSL::HSL(h, s, l)
 **/
-hsl_t *HSL_Init(  uint8_t h, // Hue value
-                  uint8_t s, // Saturation value
-                  uint8_t l  // Lightness value
+hsl_t HSL_Init( uint8_t h, // Hue value
+                uint8_t s, // Saturation value
+                uint8_t l  // Lightness value
 );
 
-rgb_t *RGB_Init(
-                  uint8_t r,
-                  uint8_t g,
-                  uint8_t b
-);
-
-/**
- * @brief  Declaration of alternative constructor HSL class, HSL::HSL(h, s, l, dh, ds, dl)
-**/
-hsl_t *HSL_Init_Range(    uint8_t h, uint8_t s, uint8_t l, // Like above
-                          // FWHW: Transforms tolerance into gaussian distributed color value using box muller transform (3x)
-                          float dh, float ds, float dl
+rgb_t RGB_Init( uint8_t r,
+                uint8_t g,
+                uint8_t b
 );
 
 /**
  * @brief  Declaration of destructor HSL class, HSL::* HSL(h, s, l)
 **/
-void HSL_Delete(hsl_t *self);
-void RGB_Delete(rgb_t *self);
 
 uint8_t led_color_simple_randomizer(uint8_t bits);
 uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
@@ -213,9 +206,8 @@ struct LED_Color_Fader {
   LED_COLOR_STATE_t (*Next)(struct LED_Color_Fader *self);
   #endif
 
-  // Option: Peaks
-  uint8_t       num_pks;        // Number of peaks
-  hsl_t         **pks;        // Peaks array
+  hsl_t         pk_1;
+  hsl_t         pk_2;
   // Option: Chaining
   #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t       num_chain;      // Number of chained pixels. 0 = singular
@@ -243,8 +235,8 @@ void LED_Color_Fader_Init(
   uint8_t                   start_pos,              // Pixel index to start
   #endif
   int8_t                    repeat,                 // Fade N cycles
-  uint8_t                   num_pks,                // Number of HSL colors
-  hsl_t                     **pks,                  // Array of HSL colors
+  hsl_t                     pk_1,
+  hsl_t                     pk_2,
   #ifdef LED_COLOR_FADER_EXTENDED
   uint8_t                   num_chain,              // Number of chained pixels
   #endif
@@ -265,9 +257,7 @@ struct LED_Color_Flasher {
   #else
   time_event_t  timer;
   #endif
-
-  // void          (*_blend)           (uint8_t, uint8_t, uint8_t, uint8_t);
-  rgb_t         *pk;                // Peaks array
+  rgb_t         pk;                 // Peak
 
   uint8_t       flash_duration;     // Duration of each flash
   uint16_t      flash_offtime;      // Duration of off time, 0: as long as flash, 1: twice as long, 2: 4x as long, ...
@@ -288,7 +278,7 @@ void LED_Color_Flasher_Init(
   uint_fast32_t             timer1_interval,        // Timer interval
   uint8_t                   start_pos,              // Pixel index to start
   int8_t                    repeat,                 // Repeat flash how many times?
-  rgb_t                     *pk,                    // Array of RGB colors
+  rgb_t                     pk,                     // Array of RGB colors
   uint8_t                   duration,               // Duration of each flash
   uint8_t                   offtime                 // Duration of flash offtime (factor)
 );
@@ -333,8 +323,8 @@ struct LED_Color_Chaser {
   time_event_t  timer;
   #endif
 
-  hsl_t         *pk;                  // Fade to peak
-  hsl_d_t       *pk_diff;             // Difference of each new peak to initial peak (factorized)
+  hsl_t          pk;                  // Fade to peak
+  hsl_d_t        pk_diff;             // Difference of each new peak to initial peak (factorized)
 
   #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   uint8_t        chase_cpreserving;   // Restore past pixels or replace
@@ -367,8 +357,8 @@ void LED_Color_Chaser_Init(
   #ifdef LED_COLOR_CHASER_EXTENDED
   uint8_t                   length,                 // Pixel index to start
   #endif
-  hsl_t                     *pk,                    // Array of HSL colors
-  hsl_d_t                   *pk_diff,               // Difference peaks
+  hsl_t                     pk,                     // Array of HSL colors
+  hsl_d_t                   pk_diff,                // Difference peaks
   uint16_t                  duration,               // Chase duration
   #ifdef LED_COLOR_CHASER_ENABLE_COLOR_PRESERVING
   uint8_t                   cpreserving,            // Color preserving?

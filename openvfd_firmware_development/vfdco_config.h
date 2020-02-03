@@ -19,9 +19,11 @@ extern "C" {
 // Number of LEDs.
 #define CONFIG_NUM_PIXELS ((uint8_t) 6)
 #define CONFIG_NUM_BPP ((uint8_t) 4)
+// Do not touch this.
 #define CONFIG_NUM_BYTES ((uint8_t)(CONFIG_NUM_PIXELS * CONFIG_NUM_BPP))
 
-#define CONFIG_ENABLE_GAMMACORRECTION
+// #define CONFIG_ENABLE_GAMMACORRECTION
+#define CONFIG_ENABLE_COLORCORRECTION
 
 // ROUTINE SETTINGS
 // How often should we ask the RTC what time it is? (Milliseconds)

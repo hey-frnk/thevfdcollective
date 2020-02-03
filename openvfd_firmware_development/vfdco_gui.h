@@ -82,7 +82,7 @@ struct GUI_Format_Time_Date_Setter {
   uint_fast8_t      blank_active; // Blank period?
   uint_fast8_t      active_digit; // Group with blank digits
 
-  char              *blank_alt_message; // Since render time is bad, use alt renderer
+  char              blank_alt_message[CONFIG_NUM_DIGITS]; // Since render time is bad, use alt renderer
 
   time_event_t      blank_timer; // Blank timer
 

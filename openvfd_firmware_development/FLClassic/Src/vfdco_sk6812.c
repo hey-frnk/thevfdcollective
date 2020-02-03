@@ -16,11 +16,12 @@
 #define RESET_SLOT 82 //41
 #define LED_NUMBER 6
 
-uint8_t  *write_buf;
-uint8_t	 *rgb_arr;
+#define WRITE_BUF_LENGTH (CONFIG_NUM_BPP * 8)
+
+uint8_t  write_buf[WRITE_BUF_LENGTH] = {0};
+uint8_t	 rgb_arr[CONFIG_NUM_BYTES] = {0};
 
 // Write buffer with two
-uint16_t write_buf_length;
 uint_fast8_t write_buf_pos;
 
 extern TIM_HandleTypeDef htim2;
@@ -46,25 +47,19 @@ static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafru
 #endif
 
 void vfdco_clr_init(uint8_t num_pixels) {
-	//n um_rgb = n um_pixels;									// Number of physical LEDs
-	//n um_bpp = 4;													// SK6812 Bytes per LED. 4: G(8), R(8), B(8), W(8)
-	//n um_bytes = n um_bpp * n um_pixels;			// Bytes of static color array
-
-	write_buf_length = CONFIG_NUM_BPP * 8; 			// For every bit, there's a new PWM byte -> 8 * bpp
-
-	// Allocate color array and DMA buffer
-	rgb_arr = (uint8_t *)calloc(CONFIG_NUM_BYTES, sizeof(uint8_t));
-	write_buf = (uint8_t *)calloc(write_buf_length, sizeof(uint8_t));
-
 	write_buf_pos = 0;
-	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, write_buf_length);
+	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
 }
 
 void vfdco_clr_deInit(void) {
 	HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
-	free(rgb_arr);
-	free(write_buf);
 }
+
+#ifdef CONFIG_ENABLE_COLORCORRECTION
+static inline uint8_t _vfdco_clr_scale8(uint8_t x, uint8_t scale) {
+  return ((uint16_t)x * scale) >> 8;
+}
+#endif
 
 inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
   #ifdef CONFIG_ENABLE_GAMMACORRECTION
@@ -72,10 +67,18 @@ inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
 	rgb_arr[4 * index + 1] = gamma8[r];
 	rgb_arr[4 * index + 2] = gamma8[b];
   #else
-  rgb_arr[4 * index] = g;
-	rgb_arr[4 * index + 1] = r;
-	rgb_arr[4 * index + 2] = b;
+    #ifdef CONFIG_ENABLE_COLORCORRECTION
+    // TypicalLEDStrip = 0xFFB0F0: 255(R), 176(G), 240(B)
+    rgb_arr[4 * index] = _vfdco_clr_scale8(g, 0xB0);
+  	rgb_arr[4 * index + 1] = r; // no scale
+    rgb_arr[4 * index + 2] = _vfdco_clr_scale8(b, 0xF0);
+    #else
+    rgb_arr[4 * index] = g;
+  	rgb_arr[4 * index + 1] = r;
+  	rgb_arr[4 * index + 2] = b;
+    #endif
   #endif
+
 	rgb_arr[4 * index + 3] = 0;
 }
 inline void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
@@ -100,7 +103,7 @@ inline void vfdco_clr_render() {
 	}
 
 	write_buf_pos++; // Since we're ready for the next buffer
-	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, write_buf_length);
+	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
 }
 
 void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
@@ -116,7 +119,7 @@ void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
 		write_buf_pos++;
 	} else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {
 		// Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
-		memset(write_buf, 0x00, write_buf_length);
+		memset(write_buf, 0x00, WRITE_BUF_LENGTH);
 		write_buf_pos++;
 
 		if(write_buf_pos >= CONFIG_NUM_PIXELS + 2) {

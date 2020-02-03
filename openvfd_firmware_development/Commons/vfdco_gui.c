@@ -336,7 +336,6 @@ void _GUI_Format_Time_Date_Setter_Delete(struct GUI_Format *unsafe_self) {
   if(self->set_mode == 0) vfdco_set_date_time(&global_date,    &self->new_time);
   else                    vfdco_set_date_time(&self->new_date, &global_time   );
 
-  free(self->blank_alt_message);
   free(self);
 }
 
@@ -348,7 +347,6 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
   self->blank_active = 0;
   self->active_digit = 0;
 
-  self->blank_alt_message = malloc(CONFIG_NUM_DIGITS * sizeof(char));
   self->blank_timer = Time_Event_Init(500);
 
   self->new_time = global_time;
