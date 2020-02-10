@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file     vfdco_color_mode.h
+  * @file     vfdco_lights.h
   * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
   * @version  V1.0
   * @date     23-December-2019
-  * @brief    This file contains declarations for color modes
+  * @brief    This file contains declarations for light patterns
   *           Designed to be used with Fluorescence by The VFD Collective
   ******************************************************************************
   * @toc      Table of contents, enter to navigate:

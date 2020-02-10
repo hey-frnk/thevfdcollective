@@ -117,7 +117,7 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t u
 
 /** Begin of:
   * @toc SECTION_CONTAINER_GUI
-  * Unions are awesome
+  * Unions are awesome http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2544.pdf
 **/
 /**
   * @brief  Definition of The GUI container

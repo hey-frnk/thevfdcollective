@@ -1,0 +1,26 @@
+{
+    "options": {
+        "cwd": "${workspaceFolder}/openvfd_firmware_development/Tester/"
+    },
+    "version": "2.0.0",
+    "command": "gcc",
+    "args": [
+        "vfdco_led_tester.c",
+        "../Commons/vfdco_color_lib.c",
+        "../Commons/vfdco_lights.c",
+        "../Commons/vfdco_clock_routines.c",
+        "../Commons/vfdco_gui.c",
+        "vfdco_fakedisplay.c",
+        "vfdco_hid.c",
+        "vfdco_fakeled.c",
+        "vfdco_time.c",
+        "-DDEBUG",
+        "-std=c11",
+        "-Wall",
+        "-o",
+        "vfdco_led_tester"
+    ],
+    "problemMatchers": [
+        "$gcc"
+    ],
+}

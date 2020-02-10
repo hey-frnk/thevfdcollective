@@ -124,18 +124,21 @@ static const char Messages_Color_Chase[][4] = {
   {' ', 'O', 'F', 'F'}
 };
 
-static const char Messages_Color_Hello[][CONFIG_NUM_DIGITS] = {
-  {' ', 'C', 'O', 'L', 'O', 'R'},
-  {' ', 'B', 'L', 'I', 'S', 'S'},
-  {' ', ' ', 'F', 'A', 'D', 'E'},
-  {' ', 'R', 'N', 'B', 'F', 'D'},
-  {' ', 'C', 'H', 'A', 'S', 'E'},
-  {'T', 'I', 'C', 'O', 'D', 'E'},
-  {'C', ' ', ' ', 'C', 'O', 'P'}
-};
+// Preprocessor abuse. Generate synchronous arrays with static const char Messages_Hello_IDENTIFIER[6] = {_A, _B, _C, _D, _E, F};
+#define GENERATE_HELLO_PAIR(ENTRY) \
+  ENTRY(Static,     ' ', 'C', 'O', 'L', 'O', 'R') \
+  ENTRY(Spectrum,   ' ', ' ', 'F', 'A', 'D', 'E') \
+  ENTRY(Rainbow,    'R', 'A', 'I', 'N', 'B', 'O') \
+  ENTRY(Chase,      ' ', 'C', 'H', 'A', 'S', 'E') \
+  ENTRY(Time_Code,  'T', 'I', 'C', 'O', 'D', 'E') \
+  ENTRY(Cop,        'P', 'O', 'L', 'I', 'C', 'E') \
+  ENTRY(Bliss,      ' ', 'B', 'L', 'I', 'S', 'S')
+
+#define GENERATE_HELLO_STRING(_IDENTIFIER, _A, _B, _C, _D, _E, _F) static const char Messages_Hello_ ## _IDENTIFIER[6] = {_A, _B, _C, _D, _E, _F};
+GENERATE_HELLO_PAIR(GENERATE_HELLO_STRING)
 
 static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
-  {'N', 'O', 'R', 'D', 'L', 'I'},
+  {'A', 'U', 'R', 'O', 'R', 'A'},
   // {'S', 'C', 'H', 'N', 'E', 'E'},
   {'P', 'A', 'S', 'T', 'E', 'L'},
   {' ', 'H', 'O', 'N', 'I', 'G'},
@@ -264,7 +267,7 @@ static void _Light_Pattern_Static_F3(struct Light_Pattern *unsafe_self) {
   * @brief  Implementation of virtual function Light_Pattern_Static::Hello (static void _Light_Pattern_Static_Hello)
  **/
 static inline void _Light_Pattern_Static_Hello(void) {
-  vfdco_display_render_message(Messages_Color_Hello[0], 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Hello_Static, 0, CONFIG_MESSAGE_LONG);
 }
 
 /* static inline void _Light_Pattern_Static_Delete(struct Light_Pattern *unsafe_self) {
@@ -360,7 +363,7 @@ static void _Light_Pattern_Spectrum_F3Var(struct Light_Pattern *unsafe_self) {
 * @brief  Implementation of virtual function Light_Pattern_Spectrum::Hello (static void _Light_Pattern_Spectrum_Hello)
 **/
 static inline void _Light_Pattern_Spectrum_Hello(void) {
-  vfdco_display_render_message(Messages_Color_Hello[2], 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Hello_Spectrum, 0, CONFIG_MESSAGE_LONG);
 }
 
 /* static inline void _Light_Pattern_Spectrum_Delete(struct Light_Pattern *unsafe_self) {
@@ -471,7 +474,7 @@ static void _Light_Pattern_Rainbow_F3Var(struct Light_Pattern *unsafe_self) {
 * @brief  Implementation of virtual function Light_Pattern_Rainbow::Hello (static void _Light_Pattern_Rainbow_Hello)
 **/
 static inline void _Light_Pattern_Rainbow_Hello(void) {
-  vfdco_display_render_message(Messages_Color_Hello[3], 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Hello_Rainbow, 0, CONFIG_MESSAGE_LONG);
 }
 
 /* static inline void _Light_Pattern_Rainbow_Delete(struct Light_Pattern *unsafe_self) {
@@ -610,7 +613,7 @@ static void _Light_Pattern_Chase_F3Var(struct Light_Pattern *unsafe_self) {
 * @brief  Implementation of virtual function Light_Pattern_Chase::Hello (static void _Light_Pattern_Chase_Hello)
 **/
 static inline void _Light_Pattern_Chase_Hello(void) {
-  vfdco_display_render_message(Messages_Color_Hello[4], 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Hello_Chase, 0, CONFIG_MESSAGE_LONG);
 }
 
 /* static inline void _Light_Pattern_Chase_Delete(struct Light_Pattern *unsafe_self) {
@@ -695,7 +698,7 @@ static void _Light_Pattern_Time_Code_Update(struct Light_Pattern *unsafe_self) {
   * @brief  Implementation of virtual function LED_Color_Resistor::Hello (static void _LED_Color_Resistor_Hello)
  **/
 static inline void _Light_Pattern_Time_Code_Hello(void) {
-	vfdco_display_render_message(Messages_Color_Hello[5], 0, CONFIG_MESSAGE_LONG);
+	vfdco_display_render_message(Messages_Hello_Time_Code, 0, CONFIG_MESSAGE_LONG);
 }
 
 /* static inline void _Light_Pattern_Time_Code_Delete(struct Light_Pattern *unsafe_self) {
@@ -756,7 +759,7 @@ static void _Light_Pattern_Cop_Update(struct Light_Pattern *unsafe_self) {
 * @brief  Implementation of virtual function Light_Pattern_Cop::Hello (static void _Light_Pattern_Cop_Hello)
 **/
 static inline void _Light_Pattern_Cop_Hello(void) {
-  vfdco_display_render_message(Messages_Color_Hello[6], 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Hello_Cop, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
@@ -893,7 +896,7 @@ static void _Light_Pattern_MomentsOfBliss_F3(struct Light_Pattern *unsafe_self) 
 * @brief  Implementation of virtual function Light_Pattern_MomentsOfBliss::Hello (static void _Light_Pattern_MomentsOfBliss_Hello)
 **/
 static inline void _Light_Pattern_MomentsOfBliss_Hello(void) {
-  vfdco_display_render_message(Messages_Color_Hello[1], 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Hello_Bliss, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
