@@ -7,7 +7,18 @@
   * @brief    This file contains declarations for light patterns
   *           Designed to be used with Fluorescence by The VFD Collective
   ******************************************************************************
-  * @toc      Table of contents, enter to navigate:
+  * @tableofcontents Table of contents, enter to navigate:
+  * SECTION_HSL
+  * SECTION_COLOR_FADER
+  * SECTION_LIGHT_PATTERN
+  * SECTION_LIGHT_PATTERN_STATIC
+  * SECTION_LIGHT_PATTERN_SPECTRUM
+  * SECTION_LIGHT_PATTERN_RAINBOW
+  * SECTION_LIGHT_PATTERN_CHASE
+  * SECTION_LIGHT_PATTERN_TIME_CODE
+  * SECTION_LIGHT_PATTERN_COP
+  * SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
+  * SECTION_CONTAINER_LIGHT_PATTERN
   ******************************************************************************
  **/
 
@@ -19,11 +30,9 @@
 #include <stdint.h>
 
 /** Begin of:
-  * @toc SECTION_SUPPORTING_FUNCTIONS
- **/
-/** Begin of:
-  * @toc SECTION_HSL
-  * @brief  Definition of the HSL class. An HSL color is fully defined by:
+  * @tableofcontents SECTION_HSL
+  * @details  
+  *         Definition of the HSL class. An HSL color is fully defined by:
   *         H: Hue, circular color value between 0 (red) ... 85 (green) ... finally 255 (red again)
   *         S: Saturation, between 0 (grayscale) ... 255 (fully saturated)
   *         L: Lightness, between 0 (essentially black/off), 127 (full), 255 (essentially white)
@@ -32,152 +41,55 @@
   * @brief  Definition of HSL class as hsl_t
  **/
 typedef struct hsl_t { uint8_t h, s, l; } hsl_t; // Hue Saturation Lightness
-typedef struct hsl_d_t { int8_t h, s, l; } hsl_d_t; // Hue Saturation Lightness Difference
-typedef struct rgb_t {uint8_t r, g, b; } rgb_t; // Red Green Blue
 
 /**
- * @brief  Declaration of constructor HSL class, HSL::HSL(h, s, l)
-**/
-hsl_t HSL_Init( uint8_t h, // Hue value
-                uint8_t s, // Saturation value
-                uint8_t l  // Lightness value
-);
-
-uint8_t led_color_simple_randomizer(uint8_t bits);
-uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
+ * @brief Initializes an hsl_t item
+ * @param h Hue: uint8_t
+ * @param s Saturation: uint8_t
+ * @param l Lightness: uint8_t
+ * @return hsl_t 
+ */
+hsl_t HSL_Init( uint8_t h, uint8_t s, uint8_t l);
 
 /** Begin of:
-  * @toc SECTION_LED_COLOR
-  * @brief LED_COLOR is an abstract class with each child class implementing a type of action performed
-  *        by LEDs. For example LED_Color_Flasher flashes an LED upon instantiation with a given LED color
-  *        at a given position. By calling the next method (virt.), the next action is performed for all
-  *        active instances of LED_Color
- **/
-/*
- * @brief  Different states of an LED_Color object
- *         In for any state != COMPLETE, LED_Color::Next will be called, or else the destructor LED_Color::~LED_Color
+ * @tableofcontents SECTION_COLOR_FADER
+ * @brief The classes Spectrum, Rainbow and Bliss use the Color Fader
 **/
 typedef enum {
-  LED_COLOR_STATE_COMPLETE          =   0,  // Fade stopped. All colors done, color manager will call destructor
-  LED_COLOR_STATE_ACTIVE            =   1,  // Stationary state: Regular operation
-  LED_COLOR_STATE_FADE_IN           =  10,  // Transient state: Fading in
-  LED_COLOR_STATE_FADE_OUT          =  11,  // Transient state: Fading out
-  LED_COLOR_STATE_CYCLIC_RECOVERY   =  20,  // Special case: Cyclic rollover
-  LED_COLOR_STATE_ALWAYS_ACTIVE     =  22   // Repeat forever until external change of state
+  FADER_STATE_ACTIVE            =   1,  // Stationary state: Regular operation
+  FADER_STATE_CYCLIC_RECOVERY   =   0,  // Special case: Cyclic rollover
 } LED_COLOR_STATE_t;
 
-enum {
-  LED_COLOR_REPEAT_RUN_ONCE         =   0,  // Only one run
-  LED_COLOR_REPEAT_ONCE             =   1,  // Repeat once
-  LED_COLOR_REPEAT_TWICE            =   2,  // Repeat twice (lol)
-  LED_COLOR_REPEAT_FOREVER          = -42,  // Repeat forever
-};
-
-/** Begin of:
- * @toc SUBSECTION_COLOR_FADER
-**/
-#define     LED_COLOR_FADER_TIME_BITS       8
-#define     LED_COLOR_FADER_PERIOD        255
-
 struct LED_Color_Fader {
-  // Functions
-  time_event_t  timer;
-
-  hsl_t         pk_1;
-  hsl_t         pk_2;
-  // Option: Chaining
-  int8_t        chain_huediff;  // Constant difference of hue between chained pixels
-  // Option: Time
-  int8_t        repeat;         // If == k: pk[n] -> pk[0] for k cycles, else fade in & out once
-  // Option: StartPos
-
-  // State Variables
-  LED_COLOR_STATE_t state;      // Color Fader FSM
-  uint8_t      fade_pos;        // Fade position (substate)
+  LED_COLOR_STATE_t state;            // Color Fader FSM
+  time_event_t      timer;
+  hsl_t             color_1, color_2;
+  int8_t            chain_hue_diff;   // Constant difference of hue between chained pixels
+  uint8_t           fade_pos;         // Fade position (substate)
 };
-
 /**
-  * @brief  Constructor of LED_Color_Fader class
- **/
+ * @brief Constructor of LED_Color_Fader class
+ */
 void LED_Color_Fader_Init(
-  struct LED_Color_Fader    *instance,              // Instance
-  uint_fast32_t             timer1_interval,        // Timer interval
-  int8_t                    repeat,                 // Fade N cycles
-  hsl_t                     pk_1,
-  hsl_t                     pk_2,
-  int8_t                    chain_hue_diff          // Hue difference between chained pixels
+  struct LED_Color_Fader    *instance,      // Instance
+  uint_fast32_t             timer_interval, // Timer interval
+  hsl_t                     color_1,        // Color 1
+  hsl_t                     color_2,        // Color 2. Set all components to 0 for single color fade
+  int8_t                    chain_hue_diff  // Hue difference between chained pixels
 );
 LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
 
-enum {
-  LED_COLOR_CHASER_MODE_LR_LINEAR         = 0,       // Chase in a linear way (from left to right)
-  LED_COLOR_CHASER_MODE_LR_ACCELERATING   = 1,       // Become faster with every chasing step (exponential)
-  LED_COLOR_CHASER_MODE_LR_DECELERATING   = 2,       // Become slower with every chasing step (exponential)
-
-  LED_COLOR_CHASER_MODE_RL_LINEAR         = 8,       // Chase in a linear way (from right to left)
-  LED_COLOR_CHASER_MODE_RL_ACCELERATING   = 9,       // Become faster with every chasing step (exponential)
-  LED_COLOR_CHASER_MODE_RL_DECELERATING   = 10,      // Become slower with every chasing step (exponential)
-
-  LED_COLOR_CHASER_MODE_SPLITLIN          = 4,       // Split in the middle and chase in both directions
-  LED_COLOR_CHASER_MODE_SPLITACC          = 5,       // -||- accelerating
-  LED_COLOR_CHASER_MODE_SPLITDEC          = 6        // -||- decelerating
-}; // Trust me this sort of encoding actually makes sense
-
-struct LED_Color_Chaser {
-  // Functions
-  time_event_t  timer;
-
-  hsl_t          pk;                  // Fade to peak
-  hsl_d_t        pk_diff;             // Difference of each new peak to initial peak (factorized)
-
-  uint8_t        chase_mode;          // Chase mode
-  int8_t         chase_repeat;        // Repeat
-
-  uint16_t       chase_duration;      // (Min (acc), Max (dec)) time diff between LED chase
-  uint8_t        _chase_duration_restore; // Backup variable
-
-  // Option: Start & Length
-  uint8_t        start_pos;           // LED start index < end index
-
-  // State Variables
-  LED_COLOR_STATE_t state;            // Color Chaser FSM
-  uint8_t        pk_state;            // Peak state FSM
-  uint16_t       chase_pos;           // Fade position (substate)
-};
-/**
-  * @brief  Constructor of LED_Color_Chaser class
- **/
-void LED_Color_Chaser_Init(
-  struct LED_Color_Chaser   *instance,              // Instance
-  uint_fast32_t             timer1_interval,        // Timer interval
-  uint8_t                   start_pos,              // Pixel index to start
-  int8_t                    repeat,                 // Repeat N times
-  hsl_t                     pk,                     // Array of HSL colors
-  hsl_d_t                   pk_diff,                // Difference peaks
-  uint16_t                  duration,               // Chase duration
-  uint8_t                   mode                    // Chase mode
-);
-LED_COLOR_STATE_t LED_Color_Chaser_Next(struct LED_Color_Chaser *self);
-
-
-
-
-
-#define   NUM_STATIC_COLOR_SPECIAL    3
-#define   NUM_STATIC_COLOR_HUES       8
-#define   NUM_STATIC_COLOR_RAINBOWS   2
-#define   NUM_STATIC_COLOR_PRESETS    3
-
-#define   NUM_STATIC_T1               (NUM_STATIC_COLOR_SPECIAL)
-#define   NUM_STATIC_T2               (NUM_STATIC_T1 + NUM_STATIC_COLOR_HUES)
-#define   NUM_STATIC_T3               (NUM_STATIC_T2 + NUM_STATIC_COLOR_RAINBOWS)
-#define   NUM_STATIC_T4               (NUM_STATIC_T3 + NUM_STATIC_COLOR_PRESETS)
-
 /** Begin of:
- * @toc SECTION_LED_COLOR_MODE
+ * @tableofcontents SECTION_LIGHT_PATTERN
+ * @details Light_Pattern is the virtual base class. Its children perform operations 
+ * to LED lights to generate patterns. Each child class must overwrite the following virtual methods:
+ * - F3: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - F3Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
+ * - Hello: This method called upon initialization and typically displays a message. Can be set to NULL
 **/
 /**
-  * @brief  Virtual table for LED_Color_Mode
+  * @brief  Virtual table for Light_Pattern
 **/
 struct Light_Pattern;
 struct Light_Pattern_VTable {
@@ -188,7 +100,7 @@ struct Light_Pattern_VTable {
 };
 
 /**
-  * @brief  Definition of LED_Color_Mode class
+  * @brief  Definition of Light_Pattern class
 **/
 struct Light_Pattern {
   // VTable (virtual) functions
@@ -200,19 +112,16 @@ struct Light_Pattern {
   struct Light_Pattern_VTable VTable;
 };
 /**
-  * @brief  Constructor of LED_Color_Mode class
+  * @brief  Constructor of Light_Pattern class
 **/
 void Light_Pattern_Init(struct Light_Pattern *self);
 
 
-
-
-
 /** Begin of:
-  * @toc SECTION_LED_COLOR_STATIC
+  * @tableofcontents SECTION_LIGHT_PATTERN_STATIC
  **/
 /**
-  * @brief  Definition of LED_Color_Static class
+  * @brief  Definition of Light_Pattern_Static class
  **/
 struct Light_Pattern_Static {
   struct Light_Pattern super;
@@ -223,13 +132,13 @@ struct Light_Pattern_Static {
 };
 
 /**
-  * @brief  Constructor of LED_Color_Static class
+  * @brief  Constructor of Light_Pattern_Static class
  **/
 void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
 
 
 /** Begin of:
-  * @toc
+  * @tableofcontents SECTION_LIGHT_PATTERN_SPECTRUM
  **/
 /**
   * @brief  Definition of Light_Pattern_Spectrum class
@@ -246,7 +155,7 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self);
 
 
 /** Begin of:
-  * @toc
+  * @tableofcontents SECTION_LIGHT_PATTERN_RAINBOW
  **/
 /**
   * @brief  Definition of Light_Pattern_Rainbow class
@@ -263,7 +172,7 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self);
 
 
 /** Begin of:
-  * @toc
+  * @tableofcontents SECTION_LIGHT_PATTERN_CHASE
  **/
 /**
   * @brief  Definition of Light_Pattern_Chase class
@@ -271,11 +180,14 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self);
 struct Light_Pattern_Chase {
   struct Light_Pattern super;
 
-  uint_fast8_t         chase_mode;
-  uint8_t              flip_timer_previous_second;
-  vfdco_time_t         *flip_timer;
-
-  struct LED_Color_Chaser chase_fader;
+  uint8_t         chase_mode;
+  uint8_t         direction_flag;
+  uint8_t         color_pos;
+  uint8_t         color_peak_diff;
+  uint8_t         state;
+  uint8_t         flip_timer_previous_second;
+  vfdco_time_t    *flip_timer;
+  time_event_t    update_timer;
 };
 
 /**
@@ -285,10 +197,10 @@ void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *ti
 
 
 /** Begin of:
-  * @toc SECTION_LED_COLOR_TIME_CODE
+  * @tableofcontents SECTION_LIGHT_PATTERN_TIME_CODE
  **/
 /**
-  * @brief  Definition of LED_Color_Time_Code class
+  * @brief  Definition of Light_Pattern_Time_Code class
  **/
 struct Light_Pattern_Time_Code {
   struct Light_Pattern super;
@@ -299,13 +211,13 @@ struct Light_Pattern_Time_Code {
 };
 
 /**
-  * @brief  Constructor of LED_Color_Time_Code class
+  * @brief  Constructor of Light_Pattern_Time_Code class
  **/
 void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_time_t *time_instance);
 
 
 /** Begin of:
-  * @toc SECTION_LIGHT_PATTERN_COP
+  * @tableofcontents SECTION_LIGHT_PATTERN_COP
 **/
 /**
   * @brief  Definition of Light_Pattern_Cop class
@@ -324,7 +236,7 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self);
 
 
 /** Begin of:
-  * @toc SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
+  * @tableofcontents SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
 **/
 /**
   * @brief  Definition of Light_Pattern_MomentsOfBliss class
@@ -345,13 +257,12 @@ struct Light_Pattern_MomentsOfBliss {
 **/
 void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint_fast8_t moment);
 
-
 /** Begin of:
-  * @toc SECTION_CONTAINER_LIGHT_PATTERN
-  * Unions are awesome
-**/
-/**
-  * @brief  Definition of The Light Pattern container
+  * @tableofcontents SECTION_CONTAINER_LIGHT_PATTERN
+  * @details The Light Pattern container. C Unions are awesome, the German Union party not so.
+  * The container is a single element memory pool consisting of a base member and all used childs
+  * with the size of the largest child member. By type-punning them into child types, 
+  * static polymorphism is achieved. Use the Clear() function to zero out the Light Pattern Container
 **/
 typedef union Container_Light_Pattern_t {
   struct Light_Pattern                  base;
@@ -365,7 +276,7 @@ typedef union Container_Light_Pattern_t {
 } Container_Light_Pattern_t;
 
 /**
-  * @brief  Definition of Container_Light_Pattern_Clear to set all components to zero
+  * @brief Zero out the Light Pattern Container
 **/
 void Container_Light_Pattern_Clear(Container_Light_Pattern_t *self);
 

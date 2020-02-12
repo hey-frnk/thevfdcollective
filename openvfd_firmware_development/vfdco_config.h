@@ -52,6 +52,7 @@ extern "C" {
 // Legacy fade speeds
 #define CONFIG_SINGLE_COLOR_FADE_SPEED     2
 #define CONFIG_SPECTRUM_FADE_SPEED         60
+#define CONFIG_CHASE_FADE_SPEED            60
 #define CONFIG_COP_FADE_SPEED              25
 #define CONFIG_MOMENTSOFBLISS_FADE_SPEED   10
 

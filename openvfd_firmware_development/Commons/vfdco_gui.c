@@ -1,10 +1,22 @@
-/*
- * Being part of something special makes you special
- *
- * Created winter 2020
- * Author: Copyright (C) The VFD Collective, Frank Zheng
- *
- */
+/**
+  ******************************************************************************
+  * @file     vfdco_gui.c
+  * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
+  * @version  V1.0
+  * @date     12-February-2020
+  * @brief    This file contains definitions for the GUI
+  *           Designed to be used with Fluorescence by The VFD Collective
+  ******************************************************************************
+  * @tableofcontents Table of contents, enter to navigate:
+  * SECTION_GUI_FORMAT_CONSTANTS
+  * SECTION_GUI_FORMAT
+  * SECTION_GUI_FORMAT_TIME
+  * SECTION_GUI_FORMAT_DATE
+  * SECTION_GUI_FORMAT_TIME_DATE_SET
+  * SECTION_GUI_FORMAT_STOPWATCH
+  * SECTION_CONTAINER_GUI
+  ******************************************************************************
+ **/
 
 #include <stdlib.h>
 #include <string.h>
@@ -13,9 +25,15 @@
 #include "../vfdco_hid.h"
 #include "../vfdco_display.h"
 
+// vfdco_clock_routines.c dependence. Baad thing, but...
 extern vfdco_time_t global_time;
 extern vfdco_date_t global_date;
 
+
+/** Begin of:
+ * @tableofcontents SECTION_GUI_FORMAT_CONSTANTS
+ * @brief Definition of all constants used in the GUI. Customizable constants are defined in vfdco_config.h
+**/
 static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
   800,
   450,
@@ -23,7 +41,10 @@ static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
   800
 };
 
-// Virtual function implementation
+
+/** Begin of:
+ * @tableofcontents SECTION_GUI_FORMAT
+**/
 static inline vfdco_hid_action_status_t _GUI_Format_F2(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F2) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F2(unsafe_self); return BUTTON_ACTION_PERFORMED;}
 static inline vfdco_hid_action_status_t _GUI_Format_F3(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F3) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F3(unsafe_self); return BUTTON_ACTION_PERFORMED;}
 static inline vfdco_hid_action_status_t _GUI_Format_F4(struct GUI_Format *unsafe_self) { if(!unsafe_self->VTable.F4) return BUTTON_ACTION_NOT_PERFORMED; unsafe_self->VTable.F4(unsafe_self); return BUTTON_ACTION_PERFORMED;}
@@ -46,12 +67,14 @@ void GUI_Format_Init(struct GUI_Format *self, uint_fast8_t update_timer_interval
   self->update_timer = Time_Event_Init(update_timer_interval);
 }
 
-// Time
+
+/** Begin of:
+  * @tableofcontents SECTION_GUI_FORMAT_TIME
+ **/
 static void _GUI_Format_Time_Update(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
 
   if(Time_Event_Update(&self->dot_timer)) self->dot_position++;
-
   if(Time_Event_Update(&unsafe_self->update_timer)) {
     if(self->dot_mode == 0) { // Standard
       if      (self->dot_position == 0) vfdco_display_render_time(&global_time, 0b00010100, self->time_mode);
@@ -151,7 +174,9 @@ void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_time
 }
 
 
-// Date
+/** Begin of:
+  * @tableofcontents SECTION_GUI_FORMAT_DATE
+ **/
 static void _GUI_Format_Date_Update(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
   if(Time_Event_Update(&unsafe_self->update_timer)) {
@@ -161,7 +186,6 @@ static void _GUI_Format_Date_Update(struct GUI_Format *unsafe_self) {
 
 static void _GUI_Format_Date_F4Var(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
-
   if(self->date_mode == DATE_FORMAT_DDMMYY) {
     self->date_mode = DATE_FORMAT_MMDDYY;
     char _message[CONFIG_NUM_DIGITS] = {'D', ' ', ' ',  1, 'S', 'T'};
@@ -181,9 +205,7 @@ static void _GUI_Format_Date_F4Var(struct GUI_Format *unsafe_self) {
 
 void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, date_format_t date_mode) {
   GUI_Format_Init(&self->super, update_timer_interval);
-
   self->date_mode = date_mode;
-
   struct GUI_Format_VTable _date_vtable = {
     .F2 = NULL,
     .F3 = NULL,
@@ -198,14 +220,12 @@ void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_time
 }
 
 
-
-
-// Time_Set
+/** Begin of:
+  * @tableofcontents SECTION_GUI_FORMAT_TIME_DATE_SET
+ **/
 static void _GUI_Format_Time_Date_Setter_Update(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
-
   if(Time_Event_Update(&self->blank_timer)) self->blank_active = !self->blank_active;
-
   if(self->set_mode == 0) {
     self->blank_alt_message[0] = self->new_time.h / 10;
     self->blank_alt_message[1] = self->new_time.h % 10;
@@ -237,10 +257,8 @@ static void _GUI_Format_Time_Date_Setter_Update(struct GUI_Format *unsafe_self) 
   vfdco_display_render_message(self->blank_alt_message, 0, 0);
 }
 
-
 static void _GUI_Format_Time_Date_Setter_F2(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
-
   // Short press on F2 changes the active parameter (h/m/s)
   ++self->active_digit;
   if(self->active_digit == 3) self->active_digit = 0;
@@ -248,7 +266,6 @@ static void _GUI_Format_Time_Date_Setter_F2(struct GUI_Format *unsafe_self) {
 
 static void _GUI_Format_Time_Date_Setter_F3(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
-
   // Short press on F3 decreases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
     if      (self->active_digit == 0) { // Set hour
@@ -286,7 +303,6 @@ static void _GUI_Format_Time_Date_Setter_F3(struct GUI_Format *unsafe_self) {
 
 static void _GUI_Format_Time_Date_Setter_F4(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
-
   // Short press on F4 increases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
     if      (self->active_digit == 0) { // Set hour
@@ -335,10 +351,8 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
   GUI_Format_Init(&self->super, update_timer_interval);
 
   self->set_mode = set_mode;
-
-  self->blank_active = 0;
   self->active_digit = 0;
-
+  self->blank_active = 0;
   self->blank_timer = Time_Event_Init(500);
 
   self->new_time = global_time;
@@ -359,16 +373,16 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
 
 
 
-// Stopwatch
+/** Begin of:
+  * @tableofcontents SECTION_GUI_FORMAT_STOPWATCH
+ **/
 static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
-
   if(Time_Event_Update(&unsafe_self->update_timer)) {
     if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
       char zeros[CONFIG_NUM_DIGITS] = {0};
       vfdco_display_render_message(zeros, 0b000010100, 0);
     }
-
     else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_RUNNING) {
       // running time: elapsed base + current time - start timestamp
       uint32_t running_time = self->elapsed_time +
@@ -396,20 +410,17 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
         vfdco_display_render_message(digits, 0, 0);
       }
     }
-
     else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_PAUSED) {
       // running time: elapsed base
       uint32_t elapsed_time = self->elapsed_time;
       uint8_t elapsed_m = elapsed_time / 60 % 60;
       uint8_t elapsed_s = elapsed_time % 60;
-
       if(elapsed_time > 3599) {
         vfdco_time_t new_time = {
           .h = elapsed_time / 3600 % 24,
           .m = elapsed_m,
           .s = elapsed_s
         };
-
         vfdco_display_render_time(&new_time, 0, TIME_FORMAT_24H);
       } else {
         char digits[CONFIG_NUM_DIGITS];
@@ -420,7 +431,6 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
         digits[3] = elapsed_s % 10;
         digits[4] = running_millis / 10;
         digits[5] = running_millis % 10;
-
         vfdco_display_render_message(digits, 0, 0);
       }
     }
@@ -429,7 +439,6 @@ static void _GUI_Format_Stopwatch_Update(struct GUI_Format *unsafe_self) {
 
 static void _GUI_Format_Stopwatch_F2(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
-
   // Initialize
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
     if(!self->not_initial) {
@@ -438,30 +447,25 @@ static void _GUI_Format_Stopwatch_F2(struct GUI_Format *unsafe_self) {
       self->initial_time.s = global_time.s;
       self->not_initial = 1;
     }
-    #ifndef DEBUG // Needs platform independency
+    #ifndef DEBUG // TODO: platform independency
     self->initial_milliseconds = vfdco_time_get_milliseconds();
     #endif
-
     self->elapsed_time = 0;
     self->elapsed_milliseconds = 0;
-
     self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_RUNNING;
   }
-
   // Reset
   else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_PAUSED) {
     self->not_initial = 0;
     self->elapsed_time = 0;
     self->initial_milliseconds = 0;
     self->elapsed_milliseconds = 0;
-
     self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_INITIALIZED;
   }
 }
 
 static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
-
   // Pause
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_RUNNING) {
     // Save seconds
@@ -474,7 +478,6 @@ static void _GUI_Format_Stopwatch_F3(struct GUI_Format *unsafe_self) {
     self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_PAUSED;
 
   }
-
   // Resume
   else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_PAUSED) {
     self->initial_time.h = global_time.h;
@@ -496,7 +499,6 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t u
   GUI_Format_Init(&self->super, update_timer_interval);
 
   self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_INITIALIZED;
-
   // self->initial_time = NULL;
   self->not_initial = 0;
   self->elapsed_time = 0;
@@ -516,8 +518,8 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t u
   self->super.VTable = _stopwatch_vtable;
 }
 
-/**
-  * @brief  Definition of Container_GUI_Clear to set all components to zero
+/** Begin of:
+  * @tableofcontents SECTION_CONTAINER_GUI
 **/
 void Container_GUI_Clear(Container_GUI_t *self) {
   memset(self, 0, sizeof(Container_GUI_t));

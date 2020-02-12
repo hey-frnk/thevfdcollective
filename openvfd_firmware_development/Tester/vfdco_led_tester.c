@@ -25,14 +25,11 @@ void test0() {
   hsl_t c1 = HSL_Init(0, 255, 127);
   // hsl_t c2 = HSL_Init(85, 255, 127);
   hsl_t c3 = HSL_Init(0, 0, 0);
-  // rgb_t *r1 = RGB_Init(33, 44, 55);
-  hsl_d_t d = {0, 0, 0};
 
   struct LED_Color_Fader f1;
   LED_Color_Fader_Init(
     &f1,
     20,
-    LED_COLOR_REPEAT_FOREVER,
     c1,
     c3,
     0
@@ -67,8 +64,6 @@ void test0() {
       default: break;
     }
   }
-
-  d.h = 1;
 }
 
 
@@ -132,7 +127,6 @@ void test0() {
 
 void test2() {
   printf("LED_Color_Fader: %lu\n",               sizeof(struct LED_Color_Fader));
-  printf("LED_Color_Chaser: %lu\n",              sizeof(struct LED_Color_Chaser));
 
   printf("Light_Pattern: %lu\n",                 sizeof(struct Light_Pattern));
   printf("Light_Pattern_Static: %lu\n",          sizeof(struct Light_Pattern_Static));

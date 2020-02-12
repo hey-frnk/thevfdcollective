@@ -1,10 +1,18 @@
-/*
- * Being part of something special makes you special
- *
- * Created winter 2020
- * Author: Copyright (C) The VFD Collective, Frank Zheng
- *
- */
+/**
+  ******************************************************************************
+  * @file     vfdco_routines.c
+  * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
+  * @version  V1.0
+  * @date     12-February-2020
+  * @brief    Each (peripheral) component has an initializer and a routine function
+  *           The routine function is desiged to be called periodically in main()
+  *           The initializers and routines are defined here
+  *           Designed to be used with Fluorescence by The VFD Collective
+  ******************************************************************************
+  * @tableofcontents Table of contents, enter to navigate:
+  * TODO
+  ******************************************************************************
+ **/
 
 // Here everything comes together!
 #include <stdint.h>
