@@ -16,8 +16,6 @@
 #include "../vfdco_display.h"         // Physical display driver
 #include "../vfdco_time.h"            // Physical timing & RTC driver
 #include "../vfdco_hid.h"             // Physical HID driver
-// Implicitly included prim. library extensions
-// #include "../vfdco_color_lib.h"    // Basic color structures
 // Application specific libraries
 #include "../vfdco_lights.h"          // Library of light patterns
 #include "../vfdco_gui.h"             // Library of different user interfaces

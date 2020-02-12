@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "../vfdco_led.h"
-#include "../vfdco_color_lib.h"
+
 #include "../vfdco_lights.h"
 #include "../vfdco_display.h"
 #include "../vfdco_hid.h"
@@ -11,7 +11,7 @@
 
 // cd documents/github/thevfdcollective/openvfd_firmware_development
 /*
-gcc vfdco_led_tester.c ../Commons/vfdco_color_lib.c ../Commons/vfdco_lights.c ../Commons/vfdco_clock_routines.c ../Commons/vfdco_gui.c vfdco_fakedisplay.c vfdco_hid.c vfdco_fakeled.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
+gcc vfdco_led_tester.c ../Commons/vfdco_lights.c ../Commons/vfdco_clock_routines.c ../Commons/vfdco_gui.c vfdco_fakedisplay.c vfdco_hid.c vfdco_fakeled.c vfdco_time.c -DDEBUG -std=c11 -Wall -o vfdco_led_tester
 */
 
 #define ever (;;)
@@ -32,15 +32,9 @@ void test0() {
   LED_Color_Fader_Init(
     &f1,
     20,
-    #ifdef LED_COLOR_FADER_EXTENDED
-    0,
-    #endif
     LED_COLOR_REPEAT_FOREVER,
     c1,
     c3,
-    #ifdef LED_COLOR_FADER_EXTENDED
-    6,
-    #endif
     0
   );
                        //= (struct LED_Color *)LED_Color_Flasher_Init(20, /*LED_COLOR_BLEND_MODE_NORMAL,*/ 0, LED_COLOR_REPEAT_ONCE, r1, 31, 3);
@@ -55,13 +49,7 @@ void test0() {
 
     if(c <= 'm' && c > '0') {
       for(uint8_t i = 0; i < (c - '0'); ++i) {
-        if(
-          #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
-          !f1.super.Next(&f1.super)
-          #else
-          !f1.Next(&f1)
-          #endif
-        ) {
+        if(!LED_Color_Fader_Next(&f1)) {
           exit(1);
         }
       }
@@ -71,13 +59,7 @@ void test0() {
       case 'E': exit(0); break;
       case 'F': break;
       case 'n': {
-        if(
-          #ifdef LED_COLOR_ENABLE_POLYMORPHIC_USE
-          !f1.super.Next(&f1.super)
-          #else
-          !f1.Next(&f1)
-          #endif
-        ) {
+        if(!LED_Color_Fader_Next(&f1)) {
           exit(1);
         }
         break;

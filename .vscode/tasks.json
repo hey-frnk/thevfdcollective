@@ -6,7 +6,6 @@
     "command": "gcc",
     "args": [
         "vfdco_led_tester.c",
-        "../Commons/vfdco_color_lib.c",
         "../Commons/vfdco_lights.c",
         "../Commons/vfdco_clock_routines.c",
         "../Commons/vfdco_gui.c",
