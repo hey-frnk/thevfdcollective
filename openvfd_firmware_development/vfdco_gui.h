@@ -40,48 +40,25 @@ extern "C" {
  * - F4Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
  * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
 **/
-/**
-  * @brief  Virtual table for Light_Pattern
-**/
-struct GUI_Format;
-struct GUI_Format_VTable {
-  void        (*F2)(struct GUI_Format *self);
-  void        (*F3)(struct GUI_Format *self);
-  void        (*F4)(struct GUI_Format *self);
+typedef union GUI_Format GUI_Format;
+void         (*GUI_Format_F2)(GUI_Format *self);
+void         (*GUI_Format_F3)(GUI_Format *self);
+void         (*GUI_Format_F4)(GUI_Format *self);
+void         (*GUI_Format_F2Var)(GUI_Format *self);
+void         (*GUI_Format_F3Var)(GUI_Format *self);
+void         (*GUI_Format_F4Var)(GUI_Format *self);
+void         (*GUI_Format_Update)(GUI_Format *self);
 
-  void        (*F2Var)(struct GUI_Format *self);
-  void        (*F3Var)(struct GUI_Format *self);
-  void        (*F4Var)(struct GUI_Format *self);
-
-  void        (*Update)(struct GUI_Format *self);
-  // void        (*Delete)(struct GUI_Format *self);
-};
-
-struct GUI_Format {
-  vfdco_hid_action_status_t        (*F2)(struct GUI_Format *self);
-  vfdco_hid_action_status_t        (*F3)(struct GUI_Format *self);
-  vfdco_hid_action_status_t        (*F4)(struct GUI_Format *self);
-
-  vfdco_hid_action_status_t        (*F2Var)(struct GUI_Format *self);
-  vfdco_hid_action_status_t        (*F3Var)(struct GUI_Format *self);
-  vfdco_hid_action_status_t        (*F4Var)(struct GUI_Format *self);
-
-  void        (*Update)(struct GUI_Format *self);
-  // void        (*Delete)(struct GUI_Format *self);
-
-  struct GUI_Format_VTable VTable;
-  time_event_t update_timer;
-};
 /**
   * @brief  Constructor of GUI_Format class
 **/
-void GUI_Format_Init(struct GUI_Format *self, uint_fast8_t update_timer_interval);
+// void GUI_Format_Init(GUI_Format *self, uint_fast8_t update_timer_interval);
 
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_TIME
  **/
 struct GUI_Format_Time {
-  struct GUI_Format super;
+  time_event_t      update_timer;
   time_format_t     time_mode;
   uint_fast8_t      dot_mode;
   uint8_t           dot_position;
@@ -95,7 +72,7 @@ void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_time
   * @tableofcontents SECTION_GUI_FORMAT_DATE
  **/
 struct GUI_Format_Date {
-  struct GUI_Format super;
+  time_event_t       update_timer;
   date_format_t      date_mode;
 };
 
@@ -106,7 +83,7 @@ void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_time
   * @tableofcontents SECTION_GUI_FORMAT_TIME_DATE_SET
  **/
 struct GUI_Format_Time_Date_Setter {
-  struct GUI_Format super;
+  time_event_t      update_timer;
   uint_fast8_t      set_mode; // Set date or time?
   uint_fast8_t      active_digit; // Group with blank digits
 
@@ -131,7 +108,7 @@ enum {
   * @tableofcontents SECTION_GUI_FORMAT_STOPWATCH
  **/
 struct GUI_Format_Stopwatch {
-  struct GUI_Format super;
+  time_event_t      update_timer;
 
   uint_fast8_t      stopwatch_state;
 
@@ -152,18 +129,18 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t u
   * with the size of the largest child member. By type-punning them into child types, 
   * static polymorphism is achieved. Use the Clear() function to zero out the GUI Container
 **/
-typedef union Container_GUI_t {
-  struct GUI_Format                   base;
+typedef union GUI_Format {
+  // GUI_Format                   base;
   struct GUI_Format_Time              _gui_time;
   struct GUI_Format_Date              _gui_date;
   struct GUI_Format_Time_Date_Setter  _gui_set;
   struct GUI_Format_Stopwatch         _gui_watch;
-} Container_GUI_t;
+} GUI_Format;
 
 /**
   * @brief Zero out the GUI Container
 **/
-void Container_GUI_Clear(Container_GUI_t *self);
+void Container_GUI_Clear(GUI_Format *self);
 
 
 #endif

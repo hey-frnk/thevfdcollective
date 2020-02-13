@@ -13,7 +13,9 @@
 #include "../vfdco_display.h"
 #include "../vfdco_time.h"
 
+
 #define NORENDER
+#undef NORENDER
 
 // uint8_t     num_digits = 0;
 

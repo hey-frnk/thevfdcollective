@@ -88,33 +88,12 @@ LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
  * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
  * - Hello: This method called upon initialization and typically displays a message. Can be set to NULL
 **/
-/**
-  * @brief  Virtual table for Light_Pattern
-**/
-struct Light_Pattern;
-struct Light_Pattern_VTable {
-  void                  (*F3)               (struct Light_Pattern *unsafe_self);
-  void                  (*F3Var)            (struct Light_Pattern *unsafe_self);
-  void                  (*Update)           (struct Light_Pattern *unsafe_self);
-  void                  (*Hello)            (void);
-};
+typedef union Light_Pattern Light_Pattern;
+void (*Light_Pattern_F3)     (Light_Pattern *unsafe_self);
+void (*Light_Pattern_F3Var)  (Light_Pattern *unsafe_self);
+void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
+void (*Light_Pattern_Hello)  (void);
 
-/**
-  * @brief  Definition of Light_Pattern class
-**/
-struct Light_Pattern {
-  // VTable (virtual) functions
-  vfdco_hid_action_status_t   (*F3)               (struct Light_Pattern *unsafe_self);
-  vfdco_hid_action_status_t   (*F3Var)            (struct Light_Pattern *unsafe_self);
-  void                        (*Update)           (struct Light_Pattern *unsafe_self);
-  void                        (*Hello)            (struct Light_Pattern *unsafe_self);
-
-  struct Light_Pattern_VTable VTable;
-};
-/**
-  * @brief  Constructor of Light_Pattern class
-**/
-void Light_Pattern_Init(struct Light_Pattern *self);
 
 
 /** Begin of:
@@ -124,9 +103,7 @@ void Light_Pattern_Init(struct Light_Pattern *self);
   * @brief  Definition of Light_Pattern_Static class
  **/
 struct Light_Pattern_Static {
-  struct Light_Pattern super;
   time_event_t          t;
-
   uint8_t               position;   // Color lookup array index
   uint8_t               target_arr[CONFIG_NUM_BYTES];
 };
@@ -144,7 +121,6 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
   * @brief  Definition of Light_Pattern_Spectrum class
  **/
 struct Light_Pattern_Spectrum {
-  struct Light_Pattern super;
   struct LED_Color_Fader spectrum_fader;
 };
 
@@ -161,7 +137,6 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self);
   * @brief  Definition of Light_Pattern_Rainbow class
  **/
 struct Light_Pattern_Rainbow {
-  struct Light_Pattern super;
   struct LED_Color_Fader rainbow_fader;
 };
 
@@ -178,10 +153,7 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self);
   * @brief  Definition of Light_Pattern_Chase class
  **/
 struct Light_Pattern_Chase {
-  struct Light_Pattern super;
-
   uint8_t         chase_mode;
-  uint8_t         direction_flag;
   uint8_t         color_pos;
   uint8_t         color_peak_diff;
   uint8_t         state;
@@ -203,7 +175,6 @@ void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *ti
   * @brief  Definition of Light_Pattern_Time_Code class
  **/
 struct Light_Pattern_Time_Code {
-  struct Light_Pattern super;
   time_event_t          clock;
 
   vfdco_time_t          *time;
@@ -223,8 +194,6 @@ void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_ti
   * @brief  Definition of Light_Pattern_Cop class
 **/
 struct Light_Pattern_Cop {
-  struct Light_Pattern super;
-
   time_event_t          clock;
   uint8_t               state;
 };
@@ -242,8 +211,6 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self);
   * @brief  Definition of Light_Pattern_MomentsOfBliss class
 **/
 struct Light_Pattern_MomentsOfBliss {
-  struct Light_Pattern super;
-
   uint_fast8_t          moment;
   uint_fast8_t          undrift_counter;
   uint_fast8_t          undrift_max;
@@ -264,8 +231,7 @@ void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self
   * with the size of the largest child member. By type-punning them into child types, 
   * static polymorphism is achieved. Use the Clear() function to zero out the Light Pattern Container
 **/
-typedef union Container_Light_Pattern_t {
-  struct Light_Pattern                  base;
+typedef union Light_Pattern {
   struct Light_Pattern_Static           _lp_static;
   struct Light_Pattern_Spectrum         _lp_spectrum;
   struct Light_Pattern_Rainbow          _lp_rainbow;
@@ -273,12 +239,12 @@ typedef union Container_Light_Pattern_t {
   struct Light_Pattern_Time_Code        _lp_timecode;
   struct Light_Pattern_Cop              _lp_cop;
   struct Light_Pattern_MomentsOfBliss   _lp_bliss;
-} Container_Light_Pattern_t;
+} Light_Pattern;
 
 /**
   * @brief Zero out the Light Pattern Container
 **/
-void Container_Light_Pattern_Clear(Container_Light_Pattern_t *self);
+void Container_Light_Pattern_Clear(Light_Pattern *self);
 
 #endif
 

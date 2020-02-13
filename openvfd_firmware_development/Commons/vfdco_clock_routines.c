@@ -42,13 +42,12 @@ uint8_t global_button_F4_state = BUTTON_STATE_OFF;
 time_event_t global_time_updater;
 time_event_t display_updater;
 
-Container_Light_Pattern_t _global_light_instance;
-struct Light_Pattern *global_light_instance = &_global_light_instance.base;
+Light_Pattern global_light_instance;
 light_pattern_instance_t global_light_instance_counter;
 
-Container_GUI_t _global_gui_instance;
-struct GUI_Format *global_gui_instance = &_global_gui_instance.base;
+GUI_Format global_gui_instance;
 gui_instance_t global_gui_instance_counter;
+
 
 // Not sure if it makes things clearer or more fuzzy.
 #define GLOBAL_SET_NEXT_LIGHT_INSTANCE(_counter) {global_light_instance_counter = _counter;}
@@ -120,40 +119,40 @@ void vfdco_clock_time_routine() {
 
 void vfdco_clock_display_initializer() {
   // Start by creating a time instance
-  GUI_Format_Time_Init((struct GUI_Format_Time *)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
+  GUI_Format_Time_Init((struct GUI_Format_Time *)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
   GLOBAL_SET_NEXT_GUI_INSTANCE(0);
 }
 
 // VFD display data render routine
 void vfdco_clock_display_routine() {
-	global_gui_instance->Update(global_gui_instance);
+	GUI_Format_Update(&global_gui_instance);
   if(global_button_F1_state == BUTTON_STATE_SHORTPRESS) {
     if(global_gui_instance_counter == GUI_TIME_DATE_SET) {
       // Sorry ugly AF but saves a truck load of code memory
-      struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter*)global_gui_instance;
+      struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter*)&global_gui_instance;
       if(self->set_mode == 0) vfdco_set_date_time(&global_date,    &self->new_time);
       else                    vfdco_set_date_time(&self->new_date, &global_time   );
     }
 
-    Container_GUI_Clear(&_global_gui_instance);
+    Container_GUI_Clear(&global_gui_instance);
     switch(global_gui_instance_counter) {
       case GUI_TIME: {
-        GUI_Format_Date_Init((struct GUI_Format_Date*)global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, DATE_FORMAT_DDMMYY);
+        GUI_Format_Date_Init((struct GUI_Format_Date*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, DATE_FORMAT_DDMMYY);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_DATE);
         break;
       }
       case GUI_DATE: {
-        GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL);
+        GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_STOPWATCH);
         break;
       }
       case GUI_STOPWATCH: {
-        GUI_Format_Time_Init((struct GUI_Format_Time*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
+        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
         break;
       }
       case GUI_TIME_DATE_SET: {
-        GUI_Format_Time_Init((struct GUI_Format_Time*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
+        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
         break;
       }
@@ -162,15 +161,15 @@ void vfdco_clock_display_routine() {
     GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
   } else if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
     // To time set menu
-    Container_GUI_Clear(&_global_gui_instance);
+    Container_GUI_Clear(&global_gui_instance);
     switch(global_gui_instance_counter) {
       case GUI_TIME: {
-        GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, 0);
+        GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, 0);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
         break;
       }
       case GUI_DATE: {
-        GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, 1);
+        GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, 1);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
         break;
       }
@@ -181,26 +180,26 @@ void vfdco_clock_display_routine() {
 
   switch(global_button_F2_state) {
     case BUTTON_STATE_SHORTPRESS:
-      if(global_gui_instance->F2(global_gui_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F2_state);
+      if(GUI_Format_F2) {GUI_Format_F2(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F2_state);}
       break;
     case BUTTON_STATE_LONGPRESS:
-      if(global_gui_instance->F2Var(global_gui_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F2_state);
+      if(GUI_Format_F2Var) {GUI_Format_F2Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F2_state);}
       break;
   }
   switch(global_button_F3_state) {
     case BUTTON_STATE_SHORTPRESS:
-      if(global_gui_instance->F3(global_gui_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
+      if(GUI_Format_F3) {GUI_Format_F3(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state);}
       break;
     case BUTTON_STATE_LONGPRESS:
-      if(global_gui_instance->F3Var(global_gui_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
+      if(GUI_Format_F3Var) {GUI_Format_F3Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state);}
       break;
   }
   switch(global_button_F4_state) {
     case BUTTON_STATE_SHORTPRESS:
-      if(global_gui_instance->F4(global_gui_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
+      if(GUI_Format_F4) {GUI_Format_F4(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F4_state);}
       break;
     case BUTTON_STATE_LONGPRESS:
-      if(global_gui_instance->F4Var(global_gui_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
+      if(GUI_Format_F4Var) {GUI_Format_F4Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F4_state);}
       break;
   }
 }
@@ -210,64 +209,63 @@ void vfdco_clock_lights_initializer() {
 	vfdco_time_delay_milliseconds(2);
   vfdco_clr_render();
 
-  Light_Pattern_Static_Init((struct Light_Pattern_Static *)global_light_instance);
+  Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance);
   GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
 }
 
 // VFD LED light illumination routine
 void vfdco_clock_lights_routine() {
-  global_light_instance->Update(global_light_instance);
+  Light_Pattern_Update(&global_light_instance);
   if(global_button_F2_state == BUTTON_STATE_SHORTPRESS) {
-    Container_Light_Pattern_Clear(&_global_light_instance);
+    Container_Light_Pattern_Clear(&global_light_instance);
     switch(global_light_instance_counter) {
       case LIGHT_PATTERN_STATIC: {
-        Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)global_light_instance, 0);
+        Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)&global_light_instance, 0);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_MOMENTSOFBLISS);
         break;
       }
       case LIGHT_PATTERN_MOMENTSOFBLISS: {
-        Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)global_light_instance);
+        Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SPECTRUM);
         break;
       }
       case LIGHT_PATTERN_SPECTRUM: {
-        Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)global_light_instance);
+        Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)&global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_RAINBOW);
         break;
       }
       case LIGHT_PATTERN_RAINBOW: {
-        Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)global_light_instance, &global_time, 0);
+        Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_light_instance, &global_time, 0);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_CHASE);
         break;
       }
       case LIGHT_PATTERN_CHASE: {
-        Light_Pattern_Time_Code_Init((struct Light_Pattern_Time_Code *)global_light_instance, &global_time);
+        Light_Pattern_Time_Code_Init((struct Light_Pattern_Time_Code *)&global_light_instance, &global_time);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_TIME_CODE);
         break;
       }
       case LIGHT_PATTERN_TIME_CODE: {
-        Light_Pattern_Cop_Init((struct Light_Pattern_Cop *)global_light_instance);
+        Light_Pattern_Cop_Init((struct Light_Pattern_Cop *)&global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_COP);
         break;
       }
       case LIGHT_PATTERN_COP: {
-        Light_Pattern_Static_Init((struct Light_Pattern_Static *)global_light_instance);
+        Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
         break;
       }
       default: break;
     }
-
-    global_light_instance->Hello(global_light_instance);
+    if(Light_Pattern_Hello) Light_Pattern_Hello();
     GLOBAL_CLEAR_BUTTON(global_button_F2_state); // Priority clear
   }
 
   switch(global_button_F3_state) {
     case BUTTON_STATE_SHORTPRESS:
-      if(global_light_instance->F3(global_light_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
+      if(Light_Pattern_F3) { Light_Pattern_F3(&global_light_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state); } 
       break;
     case BUTTON_STATE_LONGPRESS:
-      if(global_light_instance->F3Var(global_light_instance) == BUTTON_ACTION_PERFORMED) GLOBAL_CLEAR_BUTTON(global_button_F3_state);
+      if(Light_Pattern_F3Var) { Light_Pattern_F3Var(&global_light_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state); }
       break;
     default: break;
   }

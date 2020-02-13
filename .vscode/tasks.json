@@ -13,6 +13,7 @@
         "vfdco_hid.c",
         "vfdco_fakeled.c",
         "vfdco_time.c",
+        "vfdco_text_serialization.c",
         "-DDEBUG",
         "-std=c11",
         "-Wall",

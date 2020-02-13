@@ -67,12 +67,12 @@ void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time);
  * @brief Class time_event. Software timer, used as alternative for hardware timer instances
 **/
 typedef struct time_event_t{
-  unsigned long interval;
+  uint16_t interval;
   unsigned long previousTime;
 } time_event_t;
 
 // Create new timer (updates every p1 milliseconds)
-struct time_event_t Time_Event_Init(long interval);
+struct time_event_t Time_Event_Init(uint16_t interval);
 // Reset timer milliseconds to 0
 void Time_Event_Reset(time_event_t *input);
 // Check if p1 has elapsed. If yes, return 1, else return 0

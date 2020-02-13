@@ -47,7 +47,7 @@ void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {
   );
 }
 
-time_event_t Time_Event_Init(long interval) {
+time_event_t Time_Event_Init(uint16_t interval) {
   time_event_t iE;
   iE.interval = interval;
   iE.previousTime = 0;
