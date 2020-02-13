@@ -185,8 +185,6 @@ void vfdco_display_render_direct(uint8_t *data) {
 }
 
 // Function mapping
-void vfdco_display_init(uint_fast8_t _num_digits) {
-  // num_digits = _num_digits;
-
-  printf("IV-11 fake debug display init with %d digits, successful\n", _num_digits);
+void vfdco_display_init() {
+  printf("IV-11 fake debug display init with %d digits, successful\n", CONFIG_NUM_DIGITS);
 }

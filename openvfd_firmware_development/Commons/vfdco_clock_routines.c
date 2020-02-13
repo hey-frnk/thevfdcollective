@@ -20,6 +20,7 @@
 // Configuration header
 #include "../vfdco_config.h"
 // Low Level/Primitive libraries
+#include "../vfdco_serialization.h"		// Physical serialization driver
 #include "../vfdco_led.h"             // Physical LED driver
 #include "../vfdco_display.h"         // Physical display driver
 #include "../vfdco_time.h"            // Physical timing & RTC driver
@@ -47,6 +48,39 @@ light_pattern_instance_t global_light_instance_counter;
 
 GUI_Format global_gui_instance;
 gui_instance_t global_gui_instance_counter;
+
+/* Preprocessor absuse starts here.
+
+  INSTANCE_GLOBAL will create a SIZE bit uint8_t array with its struct member initialized.
+  The corresponsing expanded syntax will look exactly like this:
+
+  uint8_t _serializable_identifier_arr[size];
+  const uint8_t _serializable_identifier_INDEX = ...;
+  struct Serialized_Data _serializable_identifier_arr_serialized = {
+    .length = size,
+    .data = _serializable_identifier_arr_serialized
+  };
+
+
+  INSTANCE_GLOBAL_ARR will fill up the structs into an array of serialized data structs. It looks like this:
+
+  struct Serialized_Data *serialized_data[NUM_SERIALIZABLE] = {
+    &_serializable_identifier_arr_serialized, (1st entry)
+    &_serializable_identifier_arr_serialized, (2nd entry)
+    ...
+    &_serializable_identifier_arr_serialized ((NUM_SERIALIZABLE - 1)th entry)
+  };
+*/
+#define INSTANCE_GLOBAL(_index, _serializable_identifier, size) uint8_t _serializable_identifier ## _arr[size] = {0}; \
+  struct Serialized_Data _serializable_identifier ## _serialized = {.length = size, .data = _serializable_identifier ## _arr}; \
+  const uint8_t _serializable_identifier ## _INDEX = _index;
+
+CREATE_SERIALIZED_ENTRIES(INSTANCE_GLOBAL)
+
+struct Serialized_Data *settings_serialized[NUM_SERIALIZABLE] = {
+  #define INSTANCE_GLOBAL_ARR(_index, _serializable_identifier, size) &_serializable_identifier ## _serialized,
+  CREATE_SERIALIZED_ENTRIES(INSTANCE_GLOBAL_ARR)
+};
 
 
 // Not sure if it makes things clearer or more fuzzy.
@@ -87,17 +121,28 @@ void vfdco_welcome(char *message) {
 void vfdco_clock_initializer() {
   // Initialize display and LEDs
   vfdco_display_init(CONFIG_NUM_DIGITS);
-  vfdco_clr_init(CONFIG_NUM_PIXELS);
+  vfdco_clr_init();
 
   global_time_updater = Time_Event_Init(CONFIG_RTC_UPDATE_INTERVAL);
   display_updater = Time_Event_Init(100);
 
+  vfdco_clock_serialization_initializer();
   vfdco_clock_lights_initializer();
   vfdco_clock_display_initializer();
 
   char welcome[] = {'V', 'F', 'D', '.', 'C', 'O'};
   vfdco_welcome(welcome);
 }
+
+void vfdco_clock_serialization_initializer() {
+  vfdco_read_serialized(settings_serialized, NUM_SERIALIZABLE);
+}
+
+#ifdef DEBUG
+void vfdco_clock_serialization_routine() {
+  vfdco_write_serialized(settings_serialized, NUM_SERIALIZABLE);
+}
+#endif
 
 // Human interface device (Buttons) routine
 void vfdco_clock_hid_routine() {
@@ -119,7 +164,7 @@ void vfdco_clock_time_routine() {
 
 void vfdco_clock_display_initializer() {
   // Start by creating a time instance
-  GUI_Format_Time_Init((struct GUI_Format_Time *)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
+  GUI_Format_Time_Init((struct GUI_Format_Time *)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_TIME_INDEX]->data);
   GLOBAL_SET_NEXT_GUI_INSTANCE(0);
 }
 
@@ -134,10 +179,11 @@ void vfdco_clock_display_routine() {
       else                    vfdco_set_date_time(&self->new_date, &global_time   );
     }
 
+    if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
     Container_GUI_Clear(&global_gui_instance);
     switch(global_gui_instance_counter) {
       case GUI_TIME: {
-        GUI_Format_Date_Init((struct GUI_Format_Date*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, DATE_FORMAT_DDMMYY);
+        GUI_Format_Date_Init((struct GUI_Format_Date*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_DATE_INDEX]->data);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_DATE);
         break;
       }
@@ -147,12 +193,12 @@ void vfdco_clock_display_routine() {
         break;
       }
       case GUI_STOPWATCH: {
-        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
+        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_TIME_INDEX]->data);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
         break;
       }
       case GUI_TIME_DATE_SET: {
-        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, TIME_FORMAT_24H, 0);
+        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_TIME_INDEX]->data);
         GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
         break;
       }
@@ -161,6 +207,7 @@ void vfdco_clock_display_routine() {
     GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
   } else if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
     // To time set menu
+    if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
     Container_GUI_Clear(&global_gui_instance);
     switch(global_gui_instance_counter) {
       case GUI_TIME: {
@@ -209,7 +256,7 @@ void vfdco_clock_lights_initializer() {
 	vfdco_time_delay_milliseconds(2);
   vfdco_clr_render();
 
-  Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance);
+  Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_STATIC_INDEX]->data);
   GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
 }
 
@@ -217,25 +264,26 @@ void vfdco_clock_lights_initializer() {
 void vfdco_clock_lights_routine() {
   Light_Pattern_Update(&global_light_instance);
   if(global_button_F2_state == BUTTON_STATE_SHORTPRESS) {
+    if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
     Container_Light_Pattern_Clear(&global_light_instance);
     switch(global_light_instance_counter) {
       case LIGHT_PATTERN_STATIC: {
-        Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)&global_light_instance, 0);
+        Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_BLISS_INDEX]->data);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_MOMENTSOFBLISS);
         break;
       }
       case LIGHT_PATTERN_MOMENTSOFBLISS: {
-        Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_light_instance);
+        Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_SPECTRUM_INDEX]->data);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SPECTRUM);
         break;
       }
       case LIGHT_PATTERN_SPECTRUM: {
-        Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)&global_light_instance);
+        Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_RAINBOW_INDEX]->data);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_RAINBOW);
         break;
       }
       case LIGHT_PATTERN_RAINBOW: {
-        Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_light_instance, &global_time, 0);
+        Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_light_instance, &global_time, settings_serialized[SERIALIZABLE_LIGHTS_CHASE_INDEX]->data);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_CHASE);
         break;
       }
@@ -250,7 +298,7 @@ void vfdco_clock_lights_routine() {
         break;
       }
       case LIGHT_PATTERN_COP: {
-        Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance);
+        Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_STATIC_INDEX]->data);
         GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
         break;
       }
@@ -272,6 +320,6 @@ void vfdco_clock_lights_routine() {
 }
 
 // Communication (Serial/USB, Serial/Bluetooth) routine
-void vfdco_clock_com_routine() {
-
-}
+/* void vfdco_clock_com_routine() {
+  // TODO
+} */

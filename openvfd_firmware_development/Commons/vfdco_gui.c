@@ -41,6 +41,11 @@ static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
   800
 };
 
+// Settings access indices
+#define GUI_FORMAT_SETTING_TIME_time_mode         0
+#define GUI_FORMAT_SETTING_TIME_dot_mode          1
+
+#define GUI_FORMAT_SETTING_DATE_date_mode         0
 
 /** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT
@@ -123,15 +128,28 @@ void _GUI_Format_Time_F4Var(GUI_Format *unsafe_self) {
   }
 }
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, time_format_t time_mode, uint8_t dot_mode) {
+void _GUI_Format_Time_Save(GUI_Format *unsafe_self) {
+  struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
+  self->settings[GUI_FORMAT_SETTING_TIME_time_mode] = self->time_mode;
+  self->settings[GUI_FORMAT_SETTING_TIME_dot_mode] = self->dot_mode;
+}
+
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, uint8_t *settings) {
   // GUI_Format_Init(&self->super, update_timer_interval);
   self->update_timer = Time_Event_Init(update_timer_interval);
-  self->time_mode = time_mode;
 
-  self->dot_mode = dot_mode;
+  // Default loading if saved value is litter, then load by assignment
+  time_format_t _chk_time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
+  if((_chk_time_mode != TIME_FORMAT_12H) && (_chk_time_mode != TIME_FORMAT_24H) && (_chk_time_mode != TIME_FORMAT_12H_NO_LZ)) 
+    settings[GUI_FORMAT_SETTING_TIME_time_mode] = TIME_FORMAT_24H;
+  if(settings[GUI_FORMAT_SETTING_TIME_dot_mode] > 3) settings[GUI_FORMAT_SETTING_TIME_dot_mode] = 0;
+  self->time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
+  self->dot_mode = settings[GUI_FORMAT_SETTING_TIME_dot_mode];
+
   self->dot_position = 0;
   self->dot_direction = 0;
-  self->dot_timer = Time_Event_Init(GUI_Format_Time_Dot_Intervals[dot_mode]);
+  self->dot_timer = Time_Event_Init(GUI_Format_Time_Dot_Intervals[self->dot_mode]);
+  self->settings = settings;
 
   GUI_Format_F2 = NULL;
   GUI_Format_F3 = NULL;
@@ -140,6 +158,7 @@ void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_time
   GUI_Format_F3Var = NULL;
   GUI_Format_F4Var = _GUI_Format_Time_F4Var;
   GUI_Format_Update = _GUI_Format_Time_Update;
+  GUI_Format_Save = _GUI_Format_Time_Save;
 }
 
 
@@ -167,9 +186,20 @@ void _GUI_Format_Date_F4Var(GUI_Format *unsafe_self) {
   }
 }
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, date_format_t date_mode) {
+void _GUI_Format_Date_Save(GUI_Format *unsafe_self) {
+  struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
+  self->settings[GUI_FORMAT_SETTING_DATE_date_mode] = self->date_mode;
+}
+
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, uint8_t *settings) {
+  // Default loading if saved value is crap, then load by assignment
+  date_format_t _chk_date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
+  if((_chk_date_mode != DATE_FORMAT_DDMMYY) && (_chk_date_mode != DATE_FORMAT_MMDDYY)) 
+    settings[GUI_FORMAT_SETTING_TIME_time_mode] = DATE_FORMAT_DDMMYY;
+  
   self->update_timer = Time_Event_Init(update_timer_interval);
-  self->date_mode = date_mode;
+  self->date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
+  self->settings = settings;
 
   GUI_Format_F2 = NULL;
   GUI_Format_F3 = NULL;
@@ -178,6 +208,7 @@ void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_time
   GUI_Format_F3Var = NULL;
   GUI_Format_F4Var = _GUI_Format_Date_F4Var;
   GUI_Format_Update = _GUI_Format_Date_Update;
+  GUI_Format_Save = _GUI_Format_Date_Save;
 }
 
 
@@ -319,6 +350,7 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
   GUI_Format_F3Var = NULL;
   GUI_Format_F4Var = NULL;
   GUI_Format_Update = _GUI_Format_Time_Date_Setter_Update;
+  GUI_Format_Save = NULL;
 }
 
 
@@ -457,6 +489,7 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t u
   GUI_Format_F3Var = NULL;
   GUI_Format_F4Var = NULL;
   GUI_Format_Update = _GUI_Format_Stopwatch_Update;
+  GUI_Format_Save = NULL;
 }
 
 /** Begin of:

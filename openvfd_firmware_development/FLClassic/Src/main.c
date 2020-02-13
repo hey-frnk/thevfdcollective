@@ -129,7 +129,7 @@ int main(void)
   	vfdco_clock_time_routine();
   	vfdco_clock_display_routine();
   	vfdco_clock_lights_routine();
-  	vfdco_clock_com_routine();
+  	// vfdco_clock_com_routine();
 
   }
   /* USER CODE END 3 */

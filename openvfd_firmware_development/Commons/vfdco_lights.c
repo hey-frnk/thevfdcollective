@@ -303,6 +303,21 @@ static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
   {' ', 'A', 'B', 'E', 'N', 'D'}
 };
 
+// Settings access indices
+#define LIGHT_PATTERN_SETTING_STATIC_position         0
+
+#define LIGHT_PATTERN_SETTING_BLISS_moment            0
+
+#define LIGHT_PATTERN_SETTING_SPECTRUM_saturation     0
+#define LIGHT_PATTERN_SETTING_SPECTRUM_lightness      1
+
+#define LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff  0
+#define LIGHT_PATTERN_SETTING_RAINBOW_saturation      1
+
+#define LIGHT_PATTERN_SETTING_CHASE_chase_mode        0
+#define LIGHT_PATTERN_SETTING_CHASE_color_peak_diff   1
+
+
 /** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN
   */
@@ -360,18 +375,31 @@ static inline void _Light_Pattern_Static_Hello(void) {
 }
 
 /**
+  * @brief  Implementation of virtual function Light_Pattern_Static::Save (static void _Light_Pattern_Static_Save)
+ **/
+static inline void _Light_Pattern_Static_Save(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
+  self->settings[LIGHT_PATTERN_SETTING_STATIC_position] = self->position;
+}
+
+/**
   * @brief  Constructor of Light_Pattern_Static class
  **/
-void Light_Pattern_Static_Init(struct Light_Pattern_Static *self) {
-  self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
-
+void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *settings) {
   memset(self->target_arr, 0, CONFIG_NUM_BYTES);
-  self->position = 0;
+
+  // Default loading if saved value is rubbish, then load by assignment
+  if(settings[LIGHT_PATTERN_SETTING_STATIC_position] >= NUM_STATIC_T4) settings[LIGHT_PATTERN_SETTING_STATIC_position] = 0;
+  self->position = settings[LIGHT_PATTERN_SETTING_STATIC_position];
+
+  self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
+  self->settings = settings;
 
   Light_Pattern_F3 = _Light_Pattern_Static_F3;
   Light_Pattern_F3Var = NULL;
   Light_Pattern_Update = _Light_Pattern_Static_Update;
   Light_Pattern_Hello = _Light_Pattern_Static_Hello;
+  Light_Pattern_Save = _Light_Pattern_Static_Save;
 }
 
 /** Begin of:
@@ -437,25 +465,38 @@ static inline void _Light_Pattern_Spectrum_Hello(void) {
 }
 
 /**
+  * @brief  Implementation of virtual function Light_Pattern_Spectrum::Save (static void _Light_Pattern_Spectrum_Save)
+ **/
+static inline void _Light_Pattern_Spectrum_Save(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Spectrum *self = (struct Light_Pattern_Spectrum *)unsafe_self;
+  self->settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation] = self->spectrum_fader.color_1.s;
+  self->settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness]  = self->spectrum_fader.color_1.l;
+}
+
+/**
 * @brief  Constructor of Light_Pattern_Spectrum class
 **/
-void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self) {
+void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self, uint8_t *settings) {
+  // Default loading if saved value is trash, then load by assignment
+  if(settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation] == 0) settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation] = SATURATION_H;
+  if(settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness] == 0)  settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness] = LIGHTNESS_H;
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
   LED_Color_Fader_Init(
     &self->spectrum_fader,
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
-    HSL_Init(0, SATURATION_H, LIGHTNESS_H),
+    HSL_Init(0, settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation], settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness]),
     HSL_Init(0, 0, 0),
     0                            // Hue difference between chained pixels
   );
 
-  // Skip fade in
   self->spectrum_fader.state = FADER_STATE_ACTIVE;
+  self->settings = settings;
 
   Light_Pattern_F3 = _Light_Pattern_Spectrum_F3;
   Light_Pattern_F3Var = _Light_Pattern_Spectrum_F3Var;
   Light_Pattern_Update = _Light_Pattern_Spectrum_Update;
   Light_Pattern_Hello = _Light_Pattern_Spectrum_Hello;
+  Light_Pattern_Save = _Light_Pattern_Spectrum_Save;
 }
 
 /** Begin of:
@@ -519,25 +560,38 @@ static inline void _Light_Pattern_Rainbow_Hello(void) {
 }
 
 /**
+  * @brief  Implementation of virtual function Light_Pattern_Rainbow::Save (static void _Light_Pattern_Rainbow_Save)
+ **/
+static inline void _Light_Pattern_Rainbow_Save(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Rainbow *self = (struct Light_Pattern_Rainbow *)unsafe_self;
+  self->settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff]  = self->rainbow_fader.chain_hue_diff;
+  self->settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation]      = self->rainbow_fader.color_1.s;
+}
+
+/**
 * @brief  Constructor of Light_Pattern_Rainbow class
 **/
-void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self) {
+void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self, uint8_t *settings) {
+  // Default loading if saved value is garbage, then load by assignment
+  if(settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation] == 0) settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation] = SATURATION_H;
+  if(settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] == 0) settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] = 10;
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
   LED_Color_Fader_Init(
     &self->rainbow_fader,
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
-    HSL_Init(0, SATURATION_H, LIGHTNESS_H),
+    HSL_Init(0, settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation], LIGHTNESS_H),
     HSL_Init(0, 0, 0),
-    10                           // Hue difference between chained pixels
+    settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] // Hue difference between chained pixels
   );
 
-  // Skip fade in
   self->rainbow_fader.state = FADER_STATE_ACTIVE;
+  self->settings = settings;
 
   Light_Pattern_F3 = _Light_Pattern_Rainbow_F3;
   Light_Pattern_F3Var = _Light_Pattern_Rainbow_F3Var;
   Light_Pattern_Update = _Light_Pattern_Rainbow_Update;
   Light_Pattern_Hello = _Light_Pattern_Rainbow_Hello;
+  Light_Pattern_Save = _Light_Pattern_Rainbow_Save;
 }
 
 /** Begin of:
@@ -613,21 +667,35 @@ static inline void _Light_Pattern_Chase_Hello(void) {
 }
 
 /**
+  * @brief  Implementation of virtual function Light_Pattern_Chase::Save (static void _Light_Pattern_Chase_Save)
+ **/
+static inline void _Light_Pattern_Chase_Save(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Chase *self = (struct Light_Pattern_Chase *)unsafe_self;
+  self->settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode]      = self->chase_mode;
+  self->settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] = self->color_peak_diff;
+}
+
+/**
 * @brief  Constructor of Light_Pattern_Chase class
 **/
-void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *time, uint_fast8_t chase_mode) {
-  self->update_timer = Time_Event_Init(CONFIG_CHASE_FADE_SPEED);
+void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *time, uint8_t *settings) {
+  // Default loading if saved value is waste, then load by assignment
+  if(settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode] >= 3) settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode] = 0;
+  if(settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] > 6) settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] = 0;
 
+  self->update_timer = Time_Event_Init(CONFIG_CHASE_FADE_SPEED);
   self->flip_timer = time;
-  self->chase_mode = chase_mode;
+  self->chase_mode = settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode];
   self->color_pos = 0;
-  self->color_peak_diff = 0;
+  self->color_peak_diff = settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff];
   self->state = 0;
+  self->settings = settings;
 
   Light_Pattern_F3 = _Light_Pattern_Chase_F3;
   Light_Pattern_F3Var = _Light_Pattern_Chase_F3Var;
   Light_Pattern_Update = _Light_Pattern_Chase_Update;
   Light_Pattern_Hello = _Light_Pattern_Chase_Hello;
+  Light_Pattern_Save = _Light_Pattern_Chase_Save;
 }
 
 /** Begin of:
@@ -669,15 +737,15 @@ static inline void _Light_Pattern_Time_Code_Hello(void) {
   * @brief  Constructor of Light_Pattern_Time_Code class
  **/
 void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_time_t *time_instance) {
-	self->clock = Time_Event_Init(1);
-
 	memset(self->target_arr, 0, CONFIG_NUM_BYTES);
+  self->clock = Time_Event_Init(1);
   self->time = time_instance;
 
   Light_Pattern_F3 = NULL;
   Light_Pattern_F3Var = NULL;
   Light_Pattern_Update = _Light_Pattern_Time_Code_Update;
   Light_Pattern_Hello = _Light_Pattern_Time_Code_Hello;
+  Light_Pattern_Save = NULL;
 }
 
 /** Begin of:
@@ -726,6 +794,7 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self) {
   Light_Pattern_F3Var   = NULL;
   Light_Pattern_Update  = _Light_Pattern_Cop_Update;
   Light_Pattern_Hello   = _Light_Pattern_Cop_Hello;
+  Light_Pattern_Save    = NULL;
 }
 
 /** Begin of:
@@ -814,16 +883,29 @@ static inline void _Light_Pattern_MomentsOfBliss_Hello(void) {
 }
 
 /**
+  * @brief  Implementation of virtual function Light_Pattern_MomentsOfBliss::Save (static void _Light_Pattern_MomentsOfBliss_Save)
+ **/
+static inline void _Light_Pattern_MomentsOfBliss_Save(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
+  self->settings[LIGHT_PATTERN_SETTING_BLISS_moment] = self->moment;
+}
+
+/**
 * @brief  Constructor of Light_Pattern_MomentsOfBliss class Light_Pattern_MomentsOfBliss::Light_Pattern_MomentsOfBliss (static void Light_Pattern_MomentsOfBliss_Init)
 **/
-void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint_fast8_t moment) {
-  self->moment = moment;
+void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint8_t *settings) {
+  // Default loading if saved value is junk, then load by assignment
+  if(settings[LIGHT_PATTERN_SETTING_BLISS_moment] >= LIGHTS_BLISS_MAXMOMENTS) settings[LIGHT_PATTERN_SETTING_BLISS_moment] = 0;
+
+  self->moment = settings[LIGHT_PATTERN_SETTING_BLISS_moment];
   _Light_Pattern_MomentsOfBliss_Remoment(self);
+  self->settings = settings;
 
   Light_Pattern_F3      = _Light_Pattern_MomentsOfBliss_F3;
   Light_Pattern_F3Var   = NULL;
   Light_Pattern_Update  = _Light_Pattern_MomentsOfBliss_Update;
   Light_Pattern_Hello   = _Light_Pattern_MomentsOfBliss_Hello;
+  Light_Pattern_Save    = _Light_Pattern_MomentsOfBliss_Save;
 }
 
 

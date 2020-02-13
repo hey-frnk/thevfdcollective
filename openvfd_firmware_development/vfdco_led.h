@@ -25,7 +25,7 @@ extern "C" {
 extern uint8_t rgb_arr[CONFIG_NUM_BYTES];
 
 // Initialize SW/HW of num_pixels * SK6812 LEDs
-void vfdco_clr_init(uint8_t num_pixels);
+void vfdco_clr_init();
 // You might never ever make use of it but hey... in case
 void vfdco_clr_deInit(void);
 

@@ -86,13 +86,15 @@ LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
  * - F3: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
  * - F3Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
  * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
- * - Hello: This method called upon initialization and typically displays a message. Can be set to NULL
+ * - Hello: This method is called upon initialization and typically displays a message. Can be set to NULL
+ * - Save: This method is called before destruction and saves variables onto the same memory block used in the initializer
 **/
 typedef union Light_Pattern Light_Pattern;
 void (*Light_Pattern_F3)     (Light_Pattern *unsafe_self);
 void (*Light_Pattern_F3Var)  (Light_Pattern *unsafe_self);
 void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
 void (*Light_Pattern_Hello)  (void);
+void (*Light_Pattern_Save)   (Light_Pattern *unsafe_self);
 
 
 
@@ -103,6 +105,7 @@ void (*Light_Pattern_Hello)  (void);
   * @brief  Definition of Light_Pattern_Static class
  **/
 struct Light_Pattern_Static {
+  uint8_t               *settings;
   time_event_t          t;
   uint8_t               position;   // Color lookup array index
   uint8_t               target_arr[CONFIG_NUM_BYTES];
@@ -111,7 +114,7 @@ struct Light_Pattern_Static {
 /**
   * @brief  Constructor of Light_Pattern_Static class
  **/
-void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
+void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *settings);
 
 
 /** Begin of:
@@ -121,13 +124,14 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self);
   * @brief  Definition of Light_Pattern_Spectrum class
  **/
 struct Light_Pattern_Spectrum {
+  uint8_t                *settings;
   struct LED_Color_Fader spectrum_fader;
 };
 
 /**
   * @brief  Constructor of Light_Pattern_Spectrum class
  **/
-void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self);
+void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self, uint8_t *settings);
 
 
 /** Begin of:
@@ -137,13 +141,14 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self);
   * @brief  Definition of Light_Pattern_Rainbow class
  **/
 struct Light_Pattern_Rainbow {
+  uint8_t                *settings;
   struct LED_Color_Fader rainbow_fader;
 };
 
 /**
   * @brief  Constructor of Light_Pattern_Rainbow class
  **/
-void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self);
+void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self, uint8_t *settings);
 
 
 /** Begin of:
@@ -153,6 +158,7 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self);
   * @brief  Definition of Light_Pattern_Chase class
  **/
 struct Light_Pattern_Chase {
+  uint8_t         *settings;
   uint8_t         chase_mode;
   uint8_t         color_pos;
   uint8_t         color_peak_diff;
@@ -165,7 +171,7 @@ struct Light_Pattern_Chase {
 /**
   * @brief  Constructor of Light_Pattern_Chase class
  **/
-void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *time, uint_fast8_t chase_mode);
+void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *time, uint8_t *settings);
 
 
 /** Begin of:
@@ -211,6 +217,7 @@ void Light_Pattern_Cop_Init(struct Light_Pattern_Cop *self);
   * @brief  Definition of Light_Pattern_MomentsOfBliss class
 **/
 struct Light_Pattern_MomentsOfBliss {
+  uint8_t               *settings;
   uint_fast8_t          moment;
   uint_fast8_t          undrift_counter;
   uint_fast8_t          undrift_max;
@@ -222,7 +229,7 @@ struct Light_Pattern_MomentsOfBliss {
 /**
   * @brief  Constructor of Light_Pattern_MomentsOfBliss class
 **/
-void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint_fast8_t moment);
+void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint8_t *settings);
 
 /** Begin of:
   * @tableofcontents SECTION_CONTAINER_LIGHT_PATTERN

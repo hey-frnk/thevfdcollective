@@ -31,7 +31,7 @@ void        vfdco_display_render_message(const char *message, uint8_t decimal_do
 
 void        vfdco_display_render_direct(uint8_t *data);
 
-void        vfdco_display_init(uint_fast8_t _num_digits);
+void        vfdco_display_init();
 
 #endif
 

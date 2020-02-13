@@ -15,7 +15,7 @@
 
 uint8_t rgb_arr[CONFIG_NUM_BYTES] = {0};
 
-void vfdco_clr_init(uint8_t num_pixels) {
+void vfdco_clr_init() {
 	// Allocate color array and DMA buffer
   printf("SK6812 tester: Init with %hhu pixels, %hhu bpp, %hhu bytes.\n", CONFIG_NUM_PIXELS, CONFIG_NUM_BPP, CONFIG_NUM_BYTES);
 }

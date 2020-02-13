@@ -72,7 +72,8 @@ void test2() {
   	vfdco_clock_time_routine();
   	vfdco_clock_display_routine();
   	vfdco_clock_lights_routine();
-  	vfdco_clock_com_routine();
+    vfdco_clock_serialization_routine();
+  	// vfdco_clock_com_routine();
     if(--execute_n_times > 0) continue;
     int q; // loop breaker
     while((q = getchar()) != '\n' && q != EOF);
@@ -103,7 +104,7 @@ void test2() {
 }
 
 void test3() {
-  vfdco_write_serialized(serialized_data, NUM_SERIALIZABLE);
+  vfdco_write_serialized(settings_serialized, NUM_SERIALIZABLE);
 }
 
 int main(void) {

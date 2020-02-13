@@ -41,13 +41,14 @@ extern "C" {
  * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
 **/
 typedef union GUI_Format GUI_Format;
-void         (*GUI_Format_F2)(GUI_Format *self);
-void         (*GUI_Format_F3)(GUI_Format *self);
-void         (*GUI_Format_F4)(GUI_Format *self);
-void         (*GUI_Format_F2Var)(GUI_Format *self);
-void         (*GUI_Format_F3Var)(GUI_Format *self);
-void         (*GUI_Format_F4Var)(GUI_Format *self);
-void         (*GUI_Format_Update)(GUI_Format *self);
+void         (*GUI_Format_F2)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F3)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F4)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F2Var)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F3Var)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F4Var)(GUI_Format *unsafe_self);
+void         (*GUI_Format_Update)(GUI_Format *unsafe_self);
+void         (*GUI_Format_Save)(GUI_Format *unsafe_self);
 
 /**
   * @brief  Constructor of GUI_Format class
@@ -58,6 +59,7 @@ void         (*GUI_Format_Update)(GUI_Format *self);
   * @tableofcontents SECTION_GUI_FORMAT_TIME
  **/
 struct GUI_Format_Time {
+  uint8_t           *settings;
   time_event_t      update_timer;
   time_format_t     time_mode;
   uint_fast8_t      dot_mode;
@@ -66,17 +68,18 @@ struct GUI_Format_Time {
   time_event_t      dot_timer;
 };
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, time_format_t time_mode, uint8_t dot_mode);
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, uint8_t *settings);
 
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_DATE
  **/
 struct GUI_Format_Date {
+  uint8_t            *settings;
   time_event_t       update_timer;
   date_format_t      date_mode;
 };
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, date_format_t date_mode);
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, uint8_t *settings);
 
 
 /** Begin of:

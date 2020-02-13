@@ -46,7 +46,7 @@ static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafru
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255};
 #endif
 
-void vfdco_clr_init(uint8_t num_pixels) {
+void vfdco_clr_init() {
 	write_buf_pos = 0;
 	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
 }
