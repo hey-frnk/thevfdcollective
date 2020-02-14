@@ -70,9 +70,6 @@ void    vfdco_clock_lights_routine();
 
 
 #include "vfdco_serialization.h"
-#define NUM_SERIALIZABLE 8
-extern struct Serialized_Data *settings_serialized[NUM_SERIALIZABLE];
-
 /*
 Serialization Documentation (Bytes)
 
@@ -100,15 +97,37 @@ Serialization Documentation (Bytes)
 - (1) uint8_t, color_peak_diff
 */
 
-#define CREATE_SERIALIZED_ENTRIES(ENTRY) \
-  ENTRY(0, SERIALIZABLE_CLOCK_ROUTINE, 8) \
-  ENTRY(1, SERIALIZABLE_GUI_TIME, 2) \
-  ENTRY(2, SERIALIZABLE_GUI_DATE, 1) \
-  ENTRY(3, SERIALIZABLE_LIGHTS_STATIC, 1) \
-  ENTRY(4, SERIALIZABLE_LIGHTS_BLISS, 1) \
-  ENTRY(5, SERIALIZABLE_LIGHTS_SPECTRUM, 2) \
-  ENTRY(6, SERIALIZABLE_LIGHTS_RAINBOW, 2) \
-  ENTRY(7, SERIALIZABLE_LIGHTS_CHASE, 2)
+// SERIALIZATION MAPPING, ONLY MODIFY HERE
+                                                  //  Index|   Size|  Corresponding enum mapping     | Instance
+#define NUM_SERIALIZABLE_GLOBAL 1
+#define NUM_SERIALIZABLE_GUI 2
+#define NUM_SERIALIZABLE_LIGHTS 5
+                                                  //  Index|   Size|  Corresponding enum mapping     | Instance
+#define CREATE_SERIALIZED_GLOBAL(ENTRY) \
+                                              ENTRY(      0,       8, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
+#define CREATE_SERIALIZED_GUI(ENTRY) \
+                                              ENTRY(      1,       2, GUI_TIME                       , SERIALIZABLE_GUI_TIME         ) \
+                                              ENTRY(      2,       1, GUI_DATE                       , SERIALIZABLE_GUI_DATE         )
+#define CREATE_SERIALIZED_LIGHTS(ENTRY) \
+                                              ENTRY(      3,       1, LIGHT_PATTERN_STATIC           , SERIALIZABLE_LIGHTS_STATIC    ) \
+                                              ENTRY(      4,       1, LIGHT_PATTERN_MOMENTSOFBLISS   , SERIALIZABLE_LIGHTS_BLISS     ) \
+                                              ENTRY(      5,       2, LIGHT_PATTERN_SPECTRUM         , SERIALIZABLE_LIGHTS_SPECTRUM  ) \
+                                              ENTRY(      6,       2, LIGHT_PATTERN_RAINBOW          , SERIALIZABLE_LIGHTS_RAINBOW   ) \
+                                              ENTRY(      7,       2, LIGHT_PATTERN_CHASE            , SERIALIZABLE_LIGHTS_CHASE     )
+// END MODIFY
+#define NUM_SERIALIZABLE (NUM_SERIALIZABLE_GLOBAL + NUM_SERIALIZABLE_GUI + NUM_SERIALIZABLE_LIGHTS)
+
+// ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE, DO NOT CHANGE MANUALLY ########
+#define CREATE_SERIALIZED_INDEX(_globalindex, _size, _enum_map, _serializable_identifier) \
+  enum { _serializable_identifier ## _INDEX = _globalindex }; \
+  uint8_t _serializable_identifier ## _arr[_size];
+CREATE_SERIALIZED_GLOBAL(CREATE_SERIALIZED_INDEX)
+CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_INDEX)
+CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_INDEX)
+
+uint8_t _map_gui_instance_to_serialized_settings_size_index(gui_instance_t instance);
+uint8_t _map_lights_instance_to_serialized_settings_size_index(light_pattern_instance_t instance);
+// ######## END OF DO NOT TOUCH SECTION ########
 
 #endif
 

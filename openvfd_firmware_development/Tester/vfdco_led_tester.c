@@ -60,6 +60,8 @@ void test1() {
   printf("GUI_Format_Date: %lu\n",               sizeof(struct GUI_Format_Date));
   printf("GUI_Format_Time_Date_Setter: %lu\n",   sizeof(struct GUI_Format_Time_Date_Setter));
   printf("GUI_Format_Stopwatch: %lu\n",          sizeof(struct GUI_Format_Stopwatch));
+
+  // for(int i = 0; i < 8; ++i) printf("%hhu, \n", settings_offset_array[i]);
 }
 
 // Loop Tester
@@ -104,7 +106,7 @@ void test2() {
 }
 
 void test3() {
-  vfdco_write_serialized(settings_serialized, NUM_SERIALIZABLE);
+  // vfdco_write_serialized(settings_serialized, NUM_SERIALIZABLE);
 }
 
 int main(void) {

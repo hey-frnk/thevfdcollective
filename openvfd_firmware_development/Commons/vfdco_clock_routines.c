@@ -49,48 +49,28 @@ light_pattern_instance_t global_light_instance_counter;
 GUI_Format global_gui_instance;
 gui_instance_t global_gui_instance_counter;
 
-/* Preprocessor absuse starts here.
+uint8_t *const serialized_settings[NUM_SERIALIZABLE];
+const uint8_t serialized_settings_sizes[NUM_SERIALIZABLE];
 
-  INSTANCE_GLOBAL will create a SIZE bit uint8_t array with its struct member initialized.
-  The corresponsing expanded syntax will look exactly like this:
-
-  uint8_t _serializable_identifier_arr[size];
-  const uint8_t _serializable_identifier_INDEX = ...;
-  struct Serialized_Data _serializable_identifier_arr_serialized = {
-    .length = size,
-    .data = _serializable_identifier_arr_serialized
-  };
-
-
-  INSTANCE_GLOBAL_ARR will fill up the structs into an array of serialized data structs. It looks like this:
-
-  struct Serialized_Data *serialized_data[NUM_SERIALIZABLE] = {
-    &_serializable_identifier_arr_serialized, (1st entry)
-    &_serializable_identifier_arr_serialized, (2nd entry)
-    ...
-    &_serializable_identifier_arr_serialized ((NUM_SERIALIZABLE - 1)th entry)
-  };
-*/
-#define INSTANCE_GLOBAL(_index, _serializable_identifier, size) uint8_t _serializable_identifier ## _arr[size] = {0}; \
-  struct Serialized_Data _serializable_identifier ## _serialized = {.length = size, .data = _serializable_identifier ## _arr}; \
-  const uint8_t _serializable_identifier ## _INDEX = _index;
-
-CREATE_SERIALIZED_ENTRIES(INSTANCE_GLOBAL)
-
-struct Serialized_Data *settings_serialized[NUM_SERIALIZABLE] = {
-  #define INSTANCE_GLOBAL_ARR(_index, _serializable_identifier, size) &_serializable_identifier ## _serialized,
-  CREATE_SERIALIZED_ENTRIES(INSTANCE_GLOBAL_ARR)
-};
-
-
-// Not sure if it makes things clearer or more fuzzy.
 #define GLOBAL_SET_NEXT_LIGHT_INSTANCE(_counter) {global_light_instance_counter = _counter;}
 #define GLOBAL_SET_NEXT_GUI_INSTANCE(_counter) {global_gui_instance_counter = _counter;}
+
+// Load and save from instance
+#define GLOBAL_LOAD_GUI(_instance) serialized_settings[_map_gui_instance_to_serialized_settings_size_index(_instance)]
+#define GLOBAL_LOAD_LIGHTS(_instance) serialized_settings[_map_lights_instance_to_serialized_settings_size_index(_instance)]
+#define GLOBAL_SAVE_GUI(_instance) GUI_Format_Save(&global_gui_instance)
+#define GLOBAL_SAVE_LIGHTS(_instance) Light_Pattern_Save(&global_lights_instance)
+
 #define GLOBAL_CLEAR_BUTTON(_button) _button = BUTTON_STATE_OFF
 
+// Saved clock routine settings
+#define CLOCK_ROUTINE_SETTING_welcome                       0
+#define CLOCK_ROUTINE_SETTING_global_gui_instance_counter   6
+#define CLOCK_ROUTINE_SETTING_global_light_instance_counter 7
+
 void vfdco_welcome(char *message) {
-  uint8_t spaces = 0;                                                   // Empty spaces
-  for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; i++) if(message[i] == ' ') spaces++;   // Count all spaces
+  uint8_t spaces = 0; // Empty spaces
+  for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; i++) if(message[i] == ' ') spaces++; // Count all spaces
 
   const uint8_t delayMatrix[][6] = {
     { 30, 15,  15,  15,  15, 255},
@@ -130,17 +110,24 @@ void vfdco_clock_initializer() {
   vfdco_clock_lights_initializer();
   vfdco_clock_display_initializer();
 
-  char welcome[] = {'V', 'F', 'D', '.', 'C', 'O'};
+  char welcome[] = {'H', 'E', 'L', 'L', 'O', 'O'};
+  for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) welcome[i] = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i];
   vfdco_welcome(welcome);
 }
 
 void vfdco_clock_serialization_initializer() {
-  vfdco_read_serialized(settings_serialized, NUM_SERIALIZABLE);
+  // Load clock parameters
+  vfdco_read_serialized(serialized_settings, serialized_settings_sizes, NUM_SERIALIZABLE);
+  /* vfdco_serialization_read_serialized(
+    vfdco_serialization_calculate_access_offset(settings_offset_array, SERIALIZABLE_CLOCK_ROUTINE_INDEX),
+    serialized_clock_routine_data, settings_offset_array[SERIALIZABLE_CLOCK_ROUTINE_INDEX]
+  ); */
+
 }
 
 #ifdef DEBUG
 void vfdco_clock_serialization_routine() {
-  vfdco_write_serialized(settings_serialized, NUM_SERIALIZABLE);
+  // vfdco_write_serialized(settings_serialized, NUM_SERIALIZABLE);
 }
 #endif
 
@@ -162,15 +149,43 @@ void vfdco_clock_time_routine() {
 }
 
 
+void set_next_gui_instance_timeset(uint8_t set_mode) {
+  GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, set_mode);
+  GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
+}
+/**
+ * @brief Set the next GUI instance
+ * @param next_instance any regular GUI without special parameters (TIME/DATE_STOPWATCH)
+ */
+void set_next_gui_instance(gui_instance_t next_instance) {
+  switch(next_instance) {
+    case GUI_TIME: {
+      // GLOBAL_READ_GUI_INSTANCE(GUI_TIME);
+      GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, GLOBAL_LOAD_GUI(next_instance));
+      break;
+    }
+    case GUI_DATE: {
+      // GLOBAL_READ_GUI_INSTANCE(GUI_DATE);
+      GUI_Format_Date_Init((struct GUI_Format_Date*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, GLOBAL_LOAD_GUI(next_instance));
+      break;
+    }
+    case GUI_STOPWATCH: {
+      GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL);
+      break;
+    }
+    default: exit(-42); // Oops
+  }
+  GLOBAL_SET_NEXT_GUI_INSTANCE(next_instance);
+}
+
 void vfdco_clock_display_initializer() {
   // Start by creating a time instance
-  GUI_Format_Time_Init((struct GUI_Format_Time *)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_TIME_INDEX]->data);
-  GLOBAL_SET_NEXT_GUI_INSTANCE(0);
+  set_next_gui_instance((gui_instance_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_gui_instance_counter]);
 }
 
 // VFD display data render routine
 void vfdco_clock_display_routine() {
-	GUI_Format_Update(&global_gui_instance);
+  GUI_Format_Update(&global_gui_instance);
   if(global_button_F1_state == BUTTON_STATE_SHORTPRESS) {
     if(global_gui_instance_counter == GUI_TIME_DATE_SET) {
       // Sorry ugly AF but saves a truck load of code memory
@@ -178,30 +193,13 @@ void vfdco_clock_display_routine() {
       if(self->set_mode == 0) vfdco_set_date_time(&global_date,    &self->new_time);
       else                    vfdco_set_date_time(&self->new_date, &global_time   );
     }
-
     if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
     Container_GUI_Clear(&global_gui_instance);
     switch(global_gui_instance_counter) {
-      case GUI_TIME: {
-        GUI_Format_Date_Init((struct GUI_Format_Date*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_DATE_INDEX]->data);
-        GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_DATE);
-        break;
-      }
-      case GUI_DATE: {
-        GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL);
-        GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_STOPWATCH);
-        break;
-      }
-      case GUI_STOPWATCH: {
-        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_TIME_INDEX]->data);
-        GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
-        break;
-      }
-      case GUI_TIME_DATE_SET: {
-        GUI_Format_Time_Init((struct GUI_Format_Time*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, settings_serialized[SERIALIZABLE_GUI_TIME_INDEX]->data);
-        GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME);
-        break;
-      }
+      case GUI_TIME:          { set_next_gui_instance(GUI_DATE);      break; }
+      case GUI_DATE:          { set_next_gui_instance(GUI_STOPWATCH); break; }
+      case GUI_STOPWATCH:     { set_next_gui_instance(GUI_TIME);      break; }
+      case GUI_TIME_DATE_SET: { set_next_gui_instance(GUI_TIME);      break; }
       default: break;
     }
     GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
@@ -210,16 +208,8 @@ void vfdco_clock_display_routine() {
     if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
     Container_GUI_Clear(&global_gui_instance);
     switch(global_gui_instance_counter) {
-      case GUI_TIME: {
-        GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, 0);
-        GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
-        break;
-      }
-      case GUI_DATE: {
-        GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL, 1);
-        GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
-        break;
-      }
+      case GUI_TIME: { set_next_gui_instance_timeset(0); break; }
+      case GUI_DATE: { set_next_gui_instance_timeset(1); break; }
       default: break;
     }
     GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
@@ -251,13 +241,58 @@ void vfdco_clock_display_routine() {
   }
 }
 
+void set_next_lights_instance(light_pattern_instance_t next_instance) {
+  // if(!(next_instance == LIGHT_PATTERN_TIME_CODE || next_instance == LIGHT_PATTERN_COP)) GLOBAL_READ_LIGHTS_INSTANCE(next_instance);
+  switch(next_instance) {
+    case LIGHT_PATTERN_STATIC: {
+      // GLOBAL_READ_LIGHTS_INSTANCE(LIGHT_PATTERN_STATIC);
+      Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, GLOBAL_LOAD_LIGHTS(next_instance));
+      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
+      break;
+    }
+    case LIGHT_PATTERN_SPECTRUM: {
+      // GLOBAL_READ_LIGHTS_INSTANCE(LIGHT_PATTERN_SPECTRUM);
+      Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_light_instance, GLOBAL_LOAD_LIGHTS(next_instance));
+      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SPECTRUM);
+      break;
+    }
+    case LIGHT_PATTERN_RAINBOW: {
+      // GLOBAL_READ_LIGHTS_INSTANCE(LIGHT_PATTERN_RAINBOW);
+      Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)&global_light_instance, GLOBAL_LOAD_LIGHTS(next_instance));
+      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_RAINBOW);
+      break;
+    }
+    case LIGHT_PATTERN_CHASE: {
+      // GLOBAL_READ_LIGHTS_INSTANCE(LIGHT_PATTERN_CHASE);
+      Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_light_instance, &global_time, GLOBAL_LOAD_LIGHTS(next_instance));
+      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_CHASE);
+      break;
+    }
+    case LIGHT_PATTERN_TIME_CODE: {
+      Light_Pattern_Time_Code_Init((struct Light_Pattern_Time_Code *)&global_light_instance, &global_time);
+      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_TIME_CODE);
+      break;
+    }
+    case LIGHT_PATTERN_COP: {
+      Light_Pattern_Cop_Init((struct Light_Pattern_Cop *)&global_light_instance);
+      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_COP);
+      break;
+    }
+    case LIGHT_PATTERN_MOMENTSOFBLISS: {
+      // GLOBAL_READ_LIGHTS_INSTANCE(LIGHT_PATTERN_MOMENTSOFBLISS);
+      Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)&global_light_instance, GLOBAL_LOAD_LIGHTS(next_instance));
+      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_MOMENTSOFBLISS);
+      break;
+    }
+  }
+}
+
 void vfdco_clock_lights_initializer() {
   vfdco_clr_set_all_RGBW(0, 0, 0, 0);
-	vfdco_time_delay_milliseconds(2);
+  vfdco_time_delay_milliseconds(2);
   vfdco_clr_render();
 
-  Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_STATIC_INDEX]->data);
-  GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
+  set_next_lights_instance((light_pattern_instance_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter]);
 }
 
 // VFD LED light illumination routine
@@ -267,41 +302,13 @@ void vfdco_clock_lights_routine() {
     if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
     Container_Light_Pattern_Clear(&global_light_instance);
     switch(global_light_instance_counter) {
-      case LIGHT_PATTERN_STATIC: {
-        Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_BLISS_INDEX]->data);
-        GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_MOMENTSOFBLISS);
-        break;
-      }
-      case LIGHT_PATTERN_MOMENTSOFBLISS: {
-        Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_SPECTRUM_INDEX]->data);
-        GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SPECTRUM);
-        break;
-      }
-      case LIGHT_PATTERN_SPECTRUM: {
-        Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_RAINBOW_INDEX]->data);
-        GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_RAINBOW);
-        break;
-      }
-      case LIGHT_PATTERN_RAINBOW: {
-        Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_light_instance, &global_time, settings_serialized[SERIALIZABLE_LIGHTS_CHASE_INDEX]->data);
-        GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_CHASE);
-        break;
-      }
-      case LIGHT_PATTERN_CHASE: {
-        Light_Pattern_Time_Code_Init((struct Light_Pattern_Time_Code *)&global_light_instance, &global_time);
-        GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_TIME_CODE);
-        break;
-      }
-      case LIGHT_PATTERN_TIME_CODE: {
-        Light_Pattern_Cop_Init((struct Light_Pattern_Cop *)&global_light_instance);
-        GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_COP);
-        break;
-      }
-      case LIGHT_PATTERN_COP: {
-        Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, settings_serialized[SERIALIZABLE_LIGHTS_STATIC_INDEX]->data);
-        GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
-        break;
-      }
+      case LIGHT_PATTERN_STATIC:          { set_next_lights_instance(LIGHT_PATTERN_MOMENTSOFBLISS); break; }
+      case LIGHT_PATTERN_MOMENTSOFBLISS:  { set_next_lights_instance(LIGHT_PATTERN_SPECTRUM);       break; }
+      case LIGHT_PATTERN_SPECTRUM:        { set_next_lights_instance(LIGHT_PATTERN_RAINBOW);        break; }
+      case LIGHT_PATTERN_RAINBOW:         { set_next_lights_instance(LIGHT_PATTERN_CHASE);          break; }
+      case LIGHT_PATTERN_CHASE:           { set_next_lights_instance(LIGHT_PATTERN_TIME_CODE);      break; }
+      case LIGHT_PATTERN_TIME_CODE:       { set_next_lights_instance(LIGHT_PATTERN_COP);            break; }
+      case LIGHT_PATTERN_COP:             { set_next_lights_instance(LIGHT_PATTERN_STATIC);         break; }
       default: break;
     }
     if(Light_Pattern_Hello) Light_Pattern_Hello();
@@ -323,3 +330,43 @@ void vfdco_clock_lights_routine() {
 /* void vfdco_clock_com_routine() {
   // TODO
 } */
+
+
+
+// ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE, only change in designated section in vfdco_clock_routines.h! ########
+#define CREATE_SERIALIZED_ARR(_globalindex, _size, _enum_map, _serializable_identifier) \
+  uint8_t _serializable_identifier ## _arr[_size] = {0};
+
+CREATE_SERIALIZED_GLOBAL(CREATE_SERIALIZED_ARR)
+CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_ARR)
+CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_ARR)
+
+uint8_t *const serialized_settings[NUM_SERIALIZABLE] = {
+  #define CREATE_SERIALIZED_SETTING_ENTRIES(_globalindex, _size, _enum_map, _serializable_identifier) _serializable_identifier ## _arr,
+  CREATE_SERIALIZED_GLOBAL(CREATE_SERIALIZED_SETTING_ENTRIES)
+  CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_SETTING_ENTRIES)
+  CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_SETTING_ENTRIES)
+};
+const uint8_t serialized_settings_sizes[NUM_SERIALIZABLE] = {
+  #define CREATE_SERIALIZED_GLOBAL_SIZES(_globalindex, _size, _enum_map, _serializable_identifier) _size,
+  CREATE_SERIALIZED_GLOBAL(CREATE_SERIALIZED_GLOBAL_SIZES)
+  CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_GLOBAL_SIZES)
+  CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_GLOBAL_SIZES)
+};
+
+uint8_t _map_gui_instance_to_serialized_settings_size_index(gui_instance_t instance) {
+  switch(instance) {
+    #define CREATE_SERIALIZED_GUI_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
+    CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_GUI_SWITCHES)
+    default: return 0xFF;
+  }
+}
+
+uint8_t _map_lights_instance_to_serialized_settings_size_index(light_pattern_instance_t instance) {
+  switch(instance) {
+    #define CREATE_SERIALIZED_LIGHTS_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
+    CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_LIGHTS_SWITCHES)
+    default: return 0xFF;
+  }
+}
+// ######## END OF DO NOT TOUCH SECTION ########

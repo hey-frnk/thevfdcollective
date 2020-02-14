@@ -22,7 +22,7 @@ uint8_t  write_buf[WRITE_BUF_LENGTH] = {0};
 uint8_t	 rgb_arr[CONFIG_NUM_BYTES] = {0};
 
 // Write buffer with two
-uint_fast8_t write_buf_pos;
+uint8_t write_buf_pos;
 
 extern TIM_HandleTypeDef htim2;
 
