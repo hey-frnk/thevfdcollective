@@ -13,6 +13,10 @@
 #include "../vfdco_display.h"
 #include "../vfdco_time.h"
 
+#ifdef _DISPLAY_IMPLEMENTATION
+#error "An implementation of the display driver already exists!"
+#endif
+#define _DISPLAY_IMPLEMENTATION
 
 #define NORENDER
 #undef NORENDER

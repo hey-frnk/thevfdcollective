@@ -69,6 +69,7 @@ struct GUI_Format_Time {
 };
 
 void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, uint8_t *settings);
+void GUI_Format_Time_Default(uint8_t *settings);
 
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_DATE
@@ -80,6 +81,7 @@ struct GUI_Format_Date {
 };
 
 void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, uint8_t *settings);
+void GUI_Format_Date_Default(uint8_t *settings);
 
 
 /** Begin of:

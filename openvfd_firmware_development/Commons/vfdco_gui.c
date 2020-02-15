@@ -160,6 +160,10 @@ void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_time
   GUI_Format_Update = _GUI_Format_Time_Update;
   GUI_Format_Save = _GUI_Format_Time_Save;
 }
+void GUI_Format_Time_Default(uint8_t *settings) {
+  settings[GUI_FORMAT_SETTING_TIME_time_mode] = TIME_FORMAT_24H;
+  settings[GUI_FORMAT_SETTING_TIME_dot_mode] = 0;
+}
 
 
 /** Begin of:
@@ -209,6 +213,10 @@ void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_time
   GUI_Format_F4Var = _GUI_Format_Date_F4Var;
   GUI_Format_Update = _GUI_Format_Date_Update;
   GUI_Format_Save = _GUI_Format_Date_Save;
+}
+
+void GUI_Format_Date_Default(uint8_t *settings) {
+  settings[GUI_FORMAT_SETTING_DATE_date_mode] = DATE_FORMAT_DDMMYY;
 }
 
 

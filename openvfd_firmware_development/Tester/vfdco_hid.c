@@ -2,6 +2,11 @@
 
 #include "../vfdco_hid.h"
 
+#ifdef _HID_IMPLEMENTATION
+#error "An implementation of the HID driver already exists!"
+#endif
+#define _HID_IMPLEMENTATION
+
 uint8_t buttonRegister = 0;
 
 void _vfdco_hid_button_set(uint16_t count, uint8_t button) {

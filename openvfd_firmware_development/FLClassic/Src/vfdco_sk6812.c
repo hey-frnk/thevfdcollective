@@ -5,6 +5,11 @@
  *      Author: HARDWARECOP
  */
 
+#ifdef _LED_IMPLEMENTATION
+#error "An implementation of the LED driver already exists!"
+#endif
+#define _LED_IMPLEMENTATION
+
 #include <stdlib.h>
 #include <string.h>
 #include "stm32f0xx_hal.h"

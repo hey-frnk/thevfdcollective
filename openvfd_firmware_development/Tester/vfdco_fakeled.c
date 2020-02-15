@@ -13,6 +13,11 @@
 #include "../vfdco_config.h"
 #include "../vfdco_led.h"
 
+#ifdef _LED_IMPLEMENTATION
+#error "An implementation of the LED driver already exists!"
+#endif
+#define _LED_IMPLEMENTATION
+
 uint8_t rgb_arr[CONFIG_NUM_BYTES] = {0};
 
 void vfdco_clr_init() {

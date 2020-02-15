@@ -14,6 +14,11 @@
 #include <stdio.h>
 #include <time.h>
 
+#ifdef _TIME_IMPLEMENTATION
+#error "An implementation of the time driver already exists!"
+#endif
+#define _TIME_IMPLEMENTATION
+
 uint32_t _vfdco_time_get_milliseconds() { return 42; }
 void _vfdco_time_delay_milliseconds(uint32_t delay) { printf("Dummy delay of %u milliseconds.\n", delay); }
 

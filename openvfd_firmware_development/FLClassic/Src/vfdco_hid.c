@@ -3,6 +3,11 @@
 #include "stm32f0xx_hal.h"
 #include "../../vfdco_hid.h"
 
+#ifdef _HID_IMPLEMENTATION
+#error "An implementation of the HID driver already exists!"
+#endif
+#define _HID_IMPLEMENTATION
+
 uint8_t buttonRegister = 0;
 
 extern TIM_HandleTypeDef htim14;

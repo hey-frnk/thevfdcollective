@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file     vfdco_time.h
+  * @file     vfdco_time.c
   * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
   * @version  V1.0
   * @date     20-November-2019
@@ -12,6 +12,11 @@
 
 #include "stm32f0xx_hal.h"
 #include "../../vfdco_time.h"
+
+#ifdef _TIME_IMPLEMENTATION
+#error "An implementation of the time driver already exists!"
+#endif
+#define _TIME_IMPLEMENTATION
 
 #define   DS3231_ADDRESS 0xD0
 extern I2C_HandleTypeDef hi2c1;

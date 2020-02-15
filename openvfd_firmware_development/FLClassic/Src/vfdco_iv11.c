@@ -11,6 +11,11 @@
 #include "../../vfdco_display.h"
 #include "../../vfdco_time.h"
 
+#ifdef _DISPLAY_IMPLEMENTATION
+#error "An implementation of the display driver already exists!"
+#endif
+#define _DISPLAY_IMPLEMENTATION
+
 extern SPI_HandleTypeDef hspi1;
 // uint8_t     num_digits = 0;
 

@@ -306,6 +306,9 @@ static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
 // Settings access indices
 #define LIGHT_PATTERN_SETTING_STATIC_position         0
 
+#define LIGHT_PATTERN_SETTING_SERIAL0_colors          0
+#define LIGHT_PATTERN_SETTING_SERIAL1_colors          0
+
 #define LIGHT_PATTERN_SETTING_BLISS_moment            0
 
 #define LIGHT_PATTERN_SETTING_SPECTRUM_saturation     0
@@ -408,6 +411,58 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *setti
 void Light_Pattern_Static_Default(uint8_t *settings) {
   settings[LIGHT_PATTERN_SETTING_STATIC_position] = 0;
 }
+
+
+
+
+static void _Light_Pattern_Serial0_Update(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Serial0 *self = (struct Light_Pattern_Serial0 *)unsafe_self;
+  if(Time_Event_Update(&self->t)) {
+    // Repeated write
+    uint8_t *clr_arr = self->settings;
+    for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i)
+      vfdco_clr_set_RGBW(i, clr_arr[4 * i], clr_arr[4 * i + 1], clr_arr[4 * i + 2], clr_arr[4 * i + 3]);
+    vfdco_clr_render();
+  }
+}
+static inline void _Light_Pattern_Serial0_Save(Light_Pattern *unsafe_self) {
+  return; // No save needed. Already done.
+}
+void Light_Pattern_Serial0_Init(struct Light_Pattern_Serial0 *self, uint8_t *settings) {
+  self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
+  self->settings = settings; // Write into settings directly
+
+  Light_Pattern_F3 = NULL;
+  Light_Pattern_F3Var = NULL;
+  Light_Pattern_Update = _Light_Pattern_Serial0_Update;
+  Light_Pattern_Hello = NULL;
+  Light_Pattern_Save = _Light_Pattern_Serial0_Save;
+}
+
+static void _Light_Pattern_Serial1_Update(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Serial1 *self = (struct Light_Pattern_Serial1 *)unsafe_self;
+  if(Time_Event_Update(&self->t)) {
+    _minimize_difference(self->target_arr);
+  }
+}
+static inline void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
+  return;
+}
+void Light_Pattern_Serial1_Init(struct Light_Pattern_Serial1 *self, uint8_t *settings) {
+  for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i)
+    _target_RGBW(settings + i, settings[4 * i], settings[4 * i + 1], settings[4 * i + 2], settings[4 * i + 3]);
+  
+  self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
+  self->settings = settings;
+
+  Light_Pattern_F3 = NULL;
+  Light_Pattern_F3Var = NULL;
+  Light_Pattern_Update = _Light_Pattern_Serial1_Update;
+  Light_Pattern_Hello = NULL;
+  Light_Pattern_Save = _Light_Pattern_Serial1_Save;
+}
+
+
 
 
 /** Begin of:

@@ -118,6 +118,19 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *setti
  **/
 void Light_Pattern_Static_Default(uint8_t *settings);
 
+struct Light_Pattern_Serial0 {
+  uint8_t               *settings;
+  time_event_t          t;
+};
+void Light_Pattern_Serial0_Init(struct Light_Pattern_Serial0 *self, uint8_t *settings);
+
+struct Light_Pattern_Serial1 {
+  uint8_t               *settings;
+  time_event_t          t;
+  uint8_t               target_arr[CONFIG_NUM_BYTES];
+};
+void Light_Pattern_Serial1_Init(struct Light_Pattern_Serial1 *self, uint8_t *settings);
+
 
 /** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN_SPECTRUM
@@ -264,6 +277,8 @@ typedef union Light_Pattern {
   struct Light_Pattern_Time_Code        _lp_timecode;
   struct Light_Pattern_Cop              _lp_cop;
   struct Light_Pattern_MomentsOfBliss   _lp_bliss;
+  struct Light_Pattern_Serial0          _lp_ser0;
+  struct Light_Pattern_Serial1          _lp_ser1;
 } Light_Pattern;
 
 /**

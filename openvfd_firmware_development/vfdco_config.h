@@ -13,6 +13,11 @@ extern "C" {
 #ifndef _VFDCO_CONFIG_H
 #define _VFDCO_CONFIG_H
 
+#define CONFIG_SW_STRING_LENGTH 6
+#define CONFIG_SW_STRING {'3', '.', '0', 'f', ' ', ' '}
+#define CONFIG_HW_STRING_LENGTH 4
+#define CONFIG_HW_STRING {'3', '.', '0', ' '}
+
 // GENERAL SETTINGS
 // Number of digits. How many displays?
 #define CONFIG_NUM_DIGITS ((uint8_t) 6)

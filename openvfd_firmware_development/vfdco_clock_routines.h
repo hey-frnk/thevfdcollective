@@ -36,17 +36,17 @@ typedef enum {
   LIGHT_PATTERN_RAINBOW,
   LIGHT_PATTERN_CHASE,
   LIGHT_PATTERN_TIME_CODE,
-  LIGHT_PATTERN_COP
+  LIGHT_PATTERN_COP,
+
+  LIGHT_PATTERN_SERIAL0,
+  LIGHT_PATTERN_SERIAL1
 } light_pattern_instance_t;
 
 // Initialize function. Run first.
 void    vfdco_clock_initializer();
 
-// 
+// Serialization initializer
 void    vfdco_clock_serialization_initializer();
-#ifdef DEBUG
-void    vfdco_clock_serialization_routine();
-#endif
 
 // Human interface device (Buttons) routine
 void    vfdco_clock_hid_initializer();
@@ -64,6 +64,9 @@ void    vfdco_clock_display_routine();
 void    vfdco_clock_lights_initializer();
 void    vfdco_clock_lights_routine();
 
+void    vfdco_clock_settings_default();
+void    vfdco_clock_settings_save(uint8_t silent);
+
 // Communication (Serial/USB, Serial/Bluetooth) routine
 // void    vfdco_clock_com_initializer();
 // void    vfdco_clock_com_routine();
@@ -72,10 +75,8 @@ void    vfdco_clock_lights_routine();
 #include "vfdco_serialization.h"
 /*
 Serialization Documentation (Bytes)
-
-(8) SERIALIZABLE_CLOCK_ROUTINE: Routine Settings
+(7) SERIALIZABLE_CLOCK_ROUTINE: Routine Settings
 - (6) 6 * char, welcome
-- (1) uint8_t, global_gui_instance_counter
 - (1) uint8_t, global_light_instance_counter
 (2) SERIALIZABLE_GUI_TIME: Time Display Settings
 - (1) uint8_t, time_mode (12/24H/12HLZ)
@@ -95,16 +96,20 @@ Serialization Documentation (Bytes)
 (2) SERIALIZABLE_LIGHTS_CHASE: 
 - (1) uint8_t, chase_mode
 - (1) uint8_t, color_peak_diff
+(24) SERIALIZABLE_LIGHTS_SERIAL0:
+- (24) uint8_t[24], colors
+(24) SERIALIZABLE_LIGHTS_SERIAL1:
+- (24) uint8_t[24], colors
 */
 
 // SERIALIZATION MAPPING, ONLY MODIFY HERE
                                                   //  Index|   Size|  Corresponding enum mapping     | Instance
 #define NUM_SERIALIZABLE_GLOBAL 1
 #define NUM_SERIALIZABLE_GUI 2
-#define NUM_SERIALIZABLE_LIGHTS 5
+#define NUM_SERIALIZABLE_LIGHTS 7
                                                   //  Index|   Size|  Corresponding enum mapping     | Instance
 #define CREATE_SERIALIZED_GLOBAL(ENTRY) \
-                                              ENTRY(      0,       8, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
+                                              ENTRY(      0,       7, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
 #define CREATE_SERIALIZED_GUI(ENTRY) \
                                               ENTRY(      1,       2, GUI_TIME                       , SERIALIZABLE_GUI_TIME         ) \
                                               ENTRY(      2,       1, GUI_DATE                       , SERIALIZABLE_GUI_DATE         )
@@ -113,7 +118,9 @@ Serialization Documentation (Bytes)
                                               ENTRY(      4,       1, LIGHT_PATTERN_MOMENTSOFBLISS   , SERIALIZABLE_LIGHTS_BLISS     ) \
                                               ENTRY(      5,       2, LIGHT_PATTERN_SPECTRUM         , SERIALIZABLE_LIGHTS_SPECTRUM  ) \
                                               ENTRY(      6,       2, LIGHT_PATTERN_RAINBOW          , SERIALIZABLE_LIGHTS_RAINBOW   ) \
-                                              ENTRY(      7,       2, LIGHT_PATTERN_CHASE            , SERIALIZABLE_LIGHTS_CHASE     )
+                                              ENTRY(      7,       2, LIGHT_PATTERN_CHASE            , SERIALIZABLE_LIGHTS_CHASE     ) \
+                                              ENTRY(      8,      24, LIGHT_PATTERN_SERIAL0          , SERIALIZABLE_LIGHTS_SERIAL0   ) \
+                                              ENTRY(      9,      24, LIGHT_PATTERN_SERIAL1          , SERIALIZABLE_LIGHTS_SERIAL1   )
 // END MODIFY
 #define NUM_SERIALIZABLE (NUM_SERIALIZABLE_GLOBAL + NUM_SERIALIZABLE_GUI + NUM_SERIALIZABLE_LIGHTS)
 
@@ -127,6 +134,11 @@ CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_INDEX)
 
 uint8_t _map_gui_instance_to_serialized_settings_size_index(gui_instance_t instance);
 uint8_t _map_lights_instance_to_serialized_settings_size_index(light_pattern_instance_t instance);
+
+// All settings are tracked in serialized_settings
+uint8_t *const serialized_settings[NUM_SERIALIZABLE];
+// The size of each serialized setting is tracked in here
+const uint8_t serialized_settings_sizes[NUM_SERIALIZABLE];
 // ######## END OF DO NOT TOUCH SECTION ########
 
 #endif
