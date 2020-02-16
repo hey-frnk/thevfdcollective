@@ -16,8 +16,6 @@ extern "C" {
 #include <stdint.h>
 #include "vfdco_time.h"
 
-// uint8_t     num_digits;
-
 uint8_t     vfdco_display_char_convert(char input);
 
 // Given a time or date, the time or date will be sent to the display
@@ -29,7 +27,7 @@ void        vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_re
 
 void        vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay);
 
-void        vfdco_display_render_direct(uint8_t *data);
+// void        vfdco_display_render_direct(uint8_t *data);
 
 void        vfdco_display_init();
 

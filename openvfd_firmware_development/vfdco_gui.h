@@ -60,7 +60,7 @@ void         (*GUI_Format_Save)(GUI_Format *unsafe_self);
  **/
 struct GUI_Format_Time {
   uint8_t           *settings;
-  time_event_t      update_timer;
+  time_event_t      *update_timer;
   time_format_t     time_mode;
   uint_fast8_t      dot_mode;
   uint8_t           dot_position;
@@ -68,7 +68,7 @@ struct GUI_Format_Time {
   time_event_t      dot_timer;
 };
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, uint8_t *settings);
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, time_event_t *update_timer, uint8_t *settings);
 void GUI_Format_Time_Default(uint8_t *settings);
 
 /** Begin of:
@@ -76,11 +76,11 @@ void GUI_Format_Time_Default(uint8_t *settings);
  **/
 struct GUI_Format_Date {
   uint8_t            *settings;
-  time_event_t       update_timer;
+  time_event_t       *update_timer;
   date_format_t      date_mode;
 };
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, uint8_t *settings);
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, time_event_t *update_timer, uint8_t *settings);
 void GUI_Format_Date_Default(uint8_t *settings);
 
 
@@ -88,7 +88,7 @@ void GUI_Format_Date_Default(uint8_t *settings);
   * @tableofcontents SECTION_GUI_FORMAT_TIME_DATE_SET
  **/
 struct GUI_Format_Time_Date_Setter {
-  time_event_t      update_timer;
+  time_event_t      *update_timer;
   uint_fast8_t      set_mode; // Set date or time?
   uint_fast8_t      active_digit; // Group with blank digits
 
@@ -100,7 +100,7 @@ struct GUI_Format_Time_Date_Setter {
   vfdco_date_t      new_date;
 };
 
-void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, uint_fast8_t update_timer_interval, uint_fast8_t set_mode);
+void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, time_event_t *update_timer, uint_fast8_t set_mode);
 
 
 enum {
@@ -113,7 +113,7 @@ enum {
   * @tableofcontents SECTION_GUI_FORMAT_STOPWATCH
  **/
 struct GUI_Format_Stopwatch {
-  time_event_t      update_timer;
+  time_event_t      *update_timer;
 
   uint_fast8_t      stopwatch_state;
 
@@ -124,7 +124,7 @@ struct GUI_Format_Stopwatch {
   uint32_t          elapsed_milliseconds;
 };
 
-void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t update_timer_interval);
+void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, time_event_t *update_timer);
 
 
 /** Begin of:

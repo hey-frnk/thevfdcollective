@@ -58,7 +58,7 @@ void _GUI_Format_Time_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
 
   if(Time_Event_Update(&self->dot_timer)) self->dot_position++;
-  if(Time_Event_Update(&self->update_timer)) {
+  if(Time_Event_Update(self->update_timer)) {
     if(self->dot_mode == 0) { // Standard
       if      (self->dot_position == 0) vfdco_display_render_time(&global_time, 0b00010100, self->time_mode);
       else if (self->dot_position == 1) vfdco_display_render_time(&global_time, 0b00000000, self->time_mode);
@@ -134,9 +134,9 @@ void _GUI_Format_Time_Save(GUI_Format *unsafe_self) {
   self->settings[GUI_FORMAT_SETTING_TIME_dot_mode] = self->dot_mode;
 }
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint_fast8_t update_timer_interval, uint8_t *settings) {
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, time_event_t *update_timer, uint8_t *settings) {
   // GUI_Format_Init(&self->super, update_timer_interval);
-  self->update_timer = Time_Event_Init(update_timer_interval);
+  self->update_timer = update_timer;
 
   // Default loading if saved value is litter, then load by assignment
   time_format_t _chk_time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
@@ -171,7 +171,7 @@ void GUI_Format_Time_Default(uint8_t *settings) {
  **/
 void _GUI_Format_Date_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
-  if(Time_Event_Update(&self->update_timer)) {
+  if(Time_Event_Update(self->update_timer)) {
     vfdco_display_render_date(&global_date, 0b00010100, self->date_mode);
   }
 }
@@ -195,13 +195,13 @@ void _GUI_Format_Date_Save(GUI_Format *unsafe_self) {
   self->settings[GUI_FORMAT_SETTING_DATE_date_mode] = self->date_mode;
 }
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint_fast8_t update_timer_interval, uint8_t *settings) {
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, time_event_t *update_timer, uint8_t *settings) {
   // Default loading if saved value is crap, then load by assignment
   date_format_t _chk_date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
   if((_chk_date_mode != DATE_FORMAT_DDMMYY) && (_chk_date_mode != DATE_FORMAT_MMDDYY)) 
     settings[GUI_FORMAT_SETTING_TIME_time_mode] = DATE_FORMAT_DDMMYY;
   
-  self->update_timer = Time_Event_Init(update_timer_interval);
+  self->update_timer = update_timer;
   self->date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
   self->settings = settings;
 
@@ -340,8 +340,8 @@ void _GUI_Format_Time_Date_Setter_F4(GUI_Format *unsafe_self) {
   }
 }
 
-void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, uint_fast8_t update_timer_interval, uint_fast8_t set_mode) {
-  self->update_timer = Time_Event_Init(update_timer_interval);
+void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, time_event_t *update_timer, uint_fast8_t set_mode) {
+  self->update_timer = update_timer;
 
   self->set_mode = set_mode;
   self->active_digit = 0;
@@ -368,7 +368,7 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
  **/
 void _GUI_Format_Stopwatch_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
-  if(Time_Event_Update(&self->update_timer)) {
+  if(Time_Event_Update(self->update_timer)) {
     if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
       char zeros[CONFIG_NUM_DIGITS] = {0};
       vfdco_display_render_message(zeros, 0b000010100, 0);
@@ -480,8 +480,8 @@ void _GUI_Format_Stopwatch_F3(GUI_Format *unsafe_self) {
   }
 }
 
-void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, uint_fast8_t update_timer_interval) {
-  self->update_timer = Time_Event_Init(update_timer_interval);
+void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, time_event_t *update_timer) {
+  self->update_timer = update_timer;
 
   self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_INITIALIZED;
   // self->initial_time = NULL;

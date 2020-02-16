@@ -29,6 +29,7 @@ uint8_t	 rgb_arr[CONFIG_NUM_BYTES] = {0};
 // Write buffer with two
 uint8_t write_buf_pos;
 
+extern uint8_t global_dim_factor;
 extern TIM_HandleTypeDef htim2;
 
 #ifdef CONFIG_ENABLE_GAMMACORRECTION
@@ -101,10 +102,10 @@ inline void vfdco_clr_render() {
 	// Ooh boi the first data buffer!!
 	write_buf_pos = 0;
 	for(uint_fast8_t i = 0; i < 8; ++i) {
-		write_buf[i     ] = SK6812_PWM_DUTY_LO << (((rgb_arr[0] << i) & 0x80) > 0);
-		write_buf[i +  8] = SK6812_PWM_DUTY_LO << (((rgb_arr[1] << i) & 0x80) > 0);
-		write_buf[i + 16] = SK6812_PWM_DUTY_LO << (((rgb_arr[2] << i) & 0x80) > 0);
-		write_buf[i + 24] = SK6812_PWM_DUTY_LO << (((rgb_arr[3] << i) & 0x80) > 0);
+		write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[0] >> global_dim_factor) << i) & 0x80) > 0);
+		write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[1] >> global_dim_factor) << i) & 0x80) > 0);
+		write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[2] >> global_dim_factor) << i) & 0x80) > 0);
+		write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[3] >> global_dim_factor) << i) & 0x80) > 0);
 	}
 
 	write_buf_pos++; // Since we're ready for the next buffer
@@ -116,10 +117,10 @@ void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
 	if(write_buf_pos < CONFIG_NUM_PIXELS) {
 		// We're in. Let's fill the mem
 		for(uint_fast8_t i = 0; i < 8; ++i) {
-			write_buf[i     ] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4    ] << i) & 0x80) > 0);
-			write_buf[i +  8] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4 + 1] << i) & 0x80) > 0);
-			write_buf[i + 16] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4 + 2] << i) & 0x80) > 0);
-			write_buf[i + 24] = SK6812_PWM_DUTY_LO << (((rgb_arr[write_buf_pos * 4 + 3] << i) & 0x80) > 0);
+			write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4    ] >> global_dim_factor) << i) & 0x80) > 0);
+			write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 1] >> global_dim_factor) << i) & 0x80) > 0);
+			write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 2] >> global_dim_factor) << i) & 0x80) > 0);
+			write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 3] >> global_dim_factor) << i) & 0x80) > 0);
 		}
 		write_buf_pos++;
 	} else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {

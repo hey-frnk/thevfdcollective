@@ -21,7 +21,7 @@
 #define NORENDER
 #undef NORENDER
 
-// uint8_t     num_digits = 0;
+void _vfdco_display_render_direct(uint8_t *data);
 
 uint8_t vfdco_display_char_convert(char input) {
   // Takes char value (0 to 255) and converts to VFD clock display pattern
@@ -91,7 +91,7 @@ void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register,
   if(time_mode == TIME_FORMAT_12H_NO_LZ) {
     if(time->h > 12 && time->h < 22) _rreg[5] = ' ';
   }
-  vfdco_display_render_direct(_rreg);
+  _vfdco_display_render_direct(_rreg);
 }
 
 void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register, date_format_t date_mode) {
@@ -110,7 +110,7 @@ void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register,
     _rreg[2] = vfdco_display_char_convert(date->d % 10) | ((decimal_dot_register >> 2) & 0x01);
     _rreg[3] = vfdco_display_char_convert(date->d / 10) | ((decimal_dot_register >> 3) & 0x01);
   }
-  vfdco_display_render_direct(_rreg);
+  _vfdco_display_render_direct(_rreg);
 }
 
 void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay) {
@@ -118,7 +118,7 @@ void vfdco_display_render_message(const char *message, uint8_t decimal_dot_regis
   for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
     _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
-  vfdco_display_render_direct(_rreg);
+  _vfdco_display_render_direct(_rreg);
   printf("Delay of %hu milliseconds by message\n", delay);
 }
 
@@ -144,7 +144,7 @@ void _reverse(char *str) { // copypasta https://codingpuzzles.com/reverse-a-null
     }
  }
 
-void vfdco_display_render_direct(uint8_t *data) {
+void _vfdco_display_render_direct(uint8_t *data) {
   #ifndef NORENDER
   // Five lines
   char seg_h_on[]  = "---";

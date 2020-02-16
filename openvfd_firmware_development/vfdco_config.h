@@ -33,10 +33,8 @@ extern "C" {
 // ROUTINE SETTINGS
 // How often should we ask the RTC what time it is? (Milliseconds)
 #define CONFIG_RTC_UPDATE_INTERVAL 111
-// How quickly do we want to update the clock display?
-#define CONFIG_GUI_TIME_UPDATE_INTERVAL 18
-// How quickly do we want to update the date display?
-#define CONFIG_GUI_DATE_UPDATE_INTERVAL 240
+// How quickly do we want to update the display?
+#define CONFIG_DISPLAY_UPDATE_INTERVAL 6
 
 // DISPLAY SETTINGS
 // How many milliseconds should a short notice last?

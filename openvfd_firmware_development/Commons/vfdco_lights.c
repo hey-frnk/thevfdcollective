@@ -334,15 +334,11 @@ static void _Light_Pattern_Static_Update(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
   if(Time_Event_Update(&self->t)) {
     _minimize_difference(self->target_arr);
+    vfdco_clr_render();
   }
 }
 
-/**
-  * @brief  Implementation of virtual function Light_Pattern_Static::F3 (static void _Light_Pattern_Static_F3)
- **/
-static void _Light_Pattern_Static_F3(Light_Pattern *unsafe_self) {
-  struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
-  self->position++;
+static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) {
   if(self->position >= NUM_STATIC_T4) self->position = 0;
 
   if(self->position < NUM_STATIC_T1) {
@@ -364,6 +360,15 @@ static void _Light_Pattern_Static_F3(Light_Pattern *unsafe_self) {
       _target_RGB(self->target_arr + 4 * i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
     }
   }
+}
+
+/**
+  * @brief  Implementation of virtual function Light_Pattern_Static::F3 (static void _Light_Pattern_Static_F3)
+ **/
+static void _Light_Pattern_Static_F3(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
+  self->position++;
+  _Light_Pattern_Static_Next_Color(self);
 
   char k[CONFIG_NUM_DIGITS] = {'C', ' '};
   for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Static[self->position][i];
@@ -394,6 +399,8 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *setti
   // Default loading if saved value is rubbish, then load by assignment
   if(settings[LIGHT_PATTERN_SETTING_STATIC_position] >= NUM_STATIC_T4) Light_Pattern_Static_Default(settings);
   self->position = settings[LIGHT_PATTERN_SETTING_STATIC_position];
+  // Fill target array
+  _Light_Pattern_Static_Next_Color(self);
 
   self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
   self->settings = settings;
@@ -443,6 +450,7 @@ static void _Light_Pattern_Serial1_Update(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Serial1 *self = (struct Light_Pattern_Serial1 *)unsafe_self;
   if(Time_Event_Update(&self->t)) {
     _minimize_difference(self->target_arr);
+    vfdco_clr_render();
   }
 }
 static inline void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
@@ -690,7 +698,7 @@ static void _Light_Pattern_Chase_Update(Light_Pattern *unsafe_self) {
         int16_t i_h = i * self->color_peak_diff;
         uint32_t target_color = _led_color_hsl2rgb(self->color_pos + i_h, SATURATION_H, LIGHTNESS_H);
         uint8_t access_idx = i;
-        if(self->chase_mode == 1 || (self->chase_mode == 2 && (self->flip_timer->s & 0x01))) access_idx = CONFIG_NUM_PIXELS - i - 1;
+        if(self->chase_mode == 1 || (self->chase_mode == 2 && !(self->flip_timer->s & 0x01))) access_idx = CONFIG_NUM_PIXELS - i - 1;
         vfdco_clr_set_RGB(access_idx, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
       }
       vfdco_clr_render();
@@ -813,6 +821,7 @@ static void _Light_Pattern_Time_Code_Update(Light_Pattern *unsafe_self) {
 		for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; i++)
 			_target_RGB(target_arr + 4 * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
 		_minimize_difference(target_arr);
+    vfdco_clr_render();
   }
 }
 
@@ -1102,7 +1111,7 @@ static void _minimize_difference(uint8_t *target_arr) {
 		else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
 		else ++dt;
 	}
-	if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
+	// if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
 }
 
 

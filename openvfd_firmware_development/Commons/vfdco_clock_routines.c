@@ -49,6 +49,8 @@ light_pattern_instance_t global_light_instance_counter;
 GUI_Format global_gui_instance;
 gui_instance_t global_gui_instance_counter;
 
+uint8_t global_dim_factor;
+
 #define GLOBAL_SET_NEXT_LIGHT_INSTANCE(_counter) {global_light_instance_counter = _counter;}
 #define GLOBAL_SET_NEXT_GUI_INSTANCE(_counter) {global_gui_instance_counter = _counter;}
 
@@ -100,9 +102,10 @@ void vfdco_clock_initializer() {
   // Initialize display and LEDs
   vfdco_display_init();
   vfdco_clr_init();
+  global_dim_factor = 0; // TODO NSH
 
   global_time_updater = Time_Event_Init(CONFIG_RTC_UPDATE_INTERVAL);
-  display_updater = Time_Event_Init(100);
+  display_updater = Time_Event_Init(CONFIG_DISPLAY_UPDATE_INTERVAL);
 
   vfdco_clock_serialization_initializer();
   vfdco_clock_lights_initializer();
@@ -142,7 +145,7 @@ void vfdco_clock_time_routine() {
 
 
 void set_next_gui_instance_timeset(uint8_t set_mode) {
-  GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, CONFIG_GUI_DATE_UPDATE_INTERVAL, set_mode);
+  GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, &display_updater, set_mode);
   GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
 }
 /**
@@ -152,25 +155,23 @@ void set_next_gui_instance_timeset(uint8_t set_mode) {
 void set_next_gui_instance(gui_instance_t next_instance) {
   switch(next_instance) {
     case GUI_TIME: {
-      // GLOBAL_READ_GUI_INSTANCE(GUI_TIME);
       GUI_Format_Time_Init(
         (struct GUI_Format_Time*)&global_gui_instance, 
-        CONFIG_GUI_TIME_UPDATE_INTERVAL, 
+        &display_updater, 
         serialized_settings[_map_gui_instance_to_serialized_settings_size_index(next_instance)]
       );
       break;
     }
     case GUI_DATE: {
-      // GLOBAL_READ_GUI_INSTANCE(GUI_DATE);
       GUI_Format_Date_Init(
         (struct GUI_Format_Date*)&global_gui_instance, 
-        CONFIG_GUI_DATE_UPDATE_INTERVAL,
+        &display_updater,
         serialized_settings[_map_gui_instance_to_serialized_settings_size_index(next_instance)]
       );
       break;
     }
     case GUI_STOPWATCH: {
-      GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance, CONFIG_GUI_TIME_UPDATE_INTERVAL);
+      GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance, &display_updater);
       break;
     }
     default: exit(-42); // Oops
@@ -216,39 +217,27 @@ void vfdco_clock_display_routine() {
   }
 
   switch(global_button_F2_state) {
-    case BUTTON_STATE_SHORTPRESS:
-      if(GUI_Format_F2) {GUI_Format_F2(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F2_state);}
-      break;
+    case BUTTON_STATE_SHORTPRESS: 
+      if(GUI_Format_F2)         {GUI_Format_F2(&global_gui_instance);     GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
     case BUTTON_STATE_LONGPRESS:
-      if(GUI_Format_F2Var) {GUI_Format_F2Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F2_state);}
-      break;
+      if(GUI_Format_F2Var)      {GUI_Format_F2Var(&global_gui_instance);  GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
   }
   switch(global_button_F3_state) {
     case BUTTON_STATE_SHORTPRESS:
-      if(GUI_Format_F3) {GUI_Format_F3(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state);}
-      break;
+      if(GUI_Format_F3)         {GUI_Format_F3(&global_gui_instance);     GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
     case BUTTON_STATE_LONGPRESS:
-      if(GUI_Format_F3Var) {GUI_Format_F3Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state);}
-      break;
+      if(GUI_Format_F3Var)      {GUI_Format_F3Var(&global_gui_instance);  GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
   }
   switch(global_button_F4_state) {
     case BUTTON_STATE_SHORTPRESS: {
-      if(global_gui_instance_counter == GUI_STOPWATCH) {
-        // In stopwatch interface, F4 short press corresponds to settings saving!
-        vfdco_clock_settings_save(0);
-      } else {
-        if(GUI_Format_F4) GUI_Format_F4(&global_gui_instance);
-      }
+      if(global_gui_instance_counter == GUI_STOPWATCH) vfdco_clock_settings_save(0);
+      else if(GUI_Format_F4) GUI_Format_F4(&global_gui_instance);
       GLOBAL_CLEAR_BUTTON(global_button_F4_state); 
       break;
     }
     case BUTTON_STATE_LONGPRESS: {
-      if(global_gui_instance_counter == GUI_STOPWATCH) {
-        // In stopwatch interface, F4 long press corresponds to default loading!
-        vfdco_clock_settings_default();
-      } else {
-        if(GUI_Format_F4Var) GUI_Format_F4Var(&global_gui_instance);
-      }
+      if(global_gui_instance_counter == GUI_STOPWATCH) vfdco_clock_settings_default();
+      else if(GUI_Format_F4Var) GUI_Format_F4Var(&global_gui_instance);
       GLOBAL_CLEAR_BUTTON(global_button_F4_state); 
       break;
     }
