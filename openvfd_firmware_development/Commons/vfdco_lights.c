@@ -74,13 +74,13 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
   uint8_t render_enable = Time_Event_Update(&self->timer);
   if(render_enable) {
     ++(self->color_1.h);
-  	// Write to next color
+    // Write to next color
     for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-  		int16_t i_h = i * self->chain_hue_diff;
-  		uint32_t target_color = _led_color_hsl2rgb(self->color_1.h + i_h, self->color_1.s, self->color_1.l);
-  		vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
-  	}
-  	vfdco_clr_render();
+      int16_t i_h = i * self->chain_hue_diff;
+      uint32_t target_color = _led_color_hsl2rgb(self->color_1.h + i_h, self->color_1.s, self->color_1.l);
+      vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+    }
+    vfdco_clr_render();
   }
   return self->state;
 }
@@ -126,14 +126,14 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_F
       self->fade_pos = 0;
       self->state = self->state ? FADER_STATE_CYCLIC_RECOVERY : FADER_STATE_ACTIVE;
     }
-  	// Write to array
+    // Write to array
     for(int8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-  		uint8_t _h = i_h + (i - (CONFIG_NUM_PIXELS >> 1)) * (int8_t)self->chain_hue_diff; // i-th hue difference (delta), intended angle overflow
-  		uint32_t target_color = _led_color_hsl2rgb(_h, i_s, i_l);  // Get target RGB
-  		vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
-  	}
-  	// Write to LEDs, physically
-  	vfdco_clr_render();
+      uint8_t _h = i_h + (i - (CONFIG_NUM_PIXELS >> 1)) * (int8_t)self->chain_hue_diff; // i-th hue difference (delta), intended angle overflow
+      uint32_t target_color = _led_color_hsl2rgb(_h, i_s, i_l);  // Get target RGB
+      vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+    }
+    // Write to LEDs, physically
+    vfdco_clr_render();
   }
   return self->state;
 }
@@ -805,22 +805,22 @@ void Light_Pattern_Chase_Default(uint8_t *settings) {
 static void _Light_Pattern_Time_Code_Update(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Time_Code *self = (struct Light_Pattern_Time_Code *)unsafe_self;
 
-	if(Time_Event_Update(&self->clock)) {
-		// Dereference const (read only) variables
-	  uint8_t h = self->time->h;
-	  uint8_t m = self->time->m;
-	  uint8_t s = self->time->s;
-		uint8_t *target_arr = self->target_arr;
+  if(Time_Event_Update(&self->clock)) {
+    // Dereference const (read only) variables
+    uint8_t h = self->time->h;
+    uint8_t m = self->time->m;
+    uint8_t s = self->time->s;
+    uint8_t *target_arr = self->target_arr;
 
-		uint8_t digit_values[CONFIG_NUM_PIXELS] = {
+    uint8_t digit_values[CONFIG_NUM_PIXELS] = {
       s % 10, s / 10,
       m % 10, m / 10,
       h % 10, h / 10
     };
 
-		for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; i++)
-			_target_RGB(target_arr + 4 * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
-		_minimize_difference(target_arr);
+    for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; i++)
+      _target_RGB(target_arr + 4 * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
+    _minimize_difference(target_arr);
     vfdco_clr_render();
   }
 }
@@ -829,14 +829,14 @@ static void _Light_Pattern_Time_Code_Update(Light_Pattern *unsafe_self) {
   * @brief  Implementation of virtual function Light_Pattern_Time_Code::Hello (static void _Light_Pattern_Time_Code_Hello)
  **/
 static inline void _Light_Pattern_Time_Code_Hello(void) {
-	vfdco_display_render_message(Messages_Hello_Time_Code, 0, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Hello_Time_Code, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
   * @brief  Constructor of Light_Pattern_Time_Code class
  **/
 void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_time_t *time_instance) {
-	memset(self->target_arr, 0, CONFIG_NUM_BYTES);
+  memset(self->target_arr, 0, CONFIG_NUM_BYTES);
   self->clock = Time_Event_Init(1);
   self->time = time_instance;
 
@@ -1091,13 +1091,13 @@ static void _target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w
   tp[0] = g;
   tp[1] = r;
   tp[2] = b;
-	tp[3] = w;
+  tp[3] = w;
 }
 static void _target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
-	for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGB(tp + i, r, g, b);
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGB(tp + i, r, g, b);
 }
 static void _target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-	for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGBW(tp + i, r, g, b, w);
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGBW(tp + i, r, g, b, w);
 }
 
 /**
@@ -1105,13 +1105,13 @@ static void _target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8
  * @param target_arr base address of intermediate target array
  */
 static void _minimize_difference(uint8_t *target_arr) {
-	uint8_t dt = 0;
-	for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
-		if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
-		else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
-		else ++dt;
-	}
-	// if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
+  uint8_t dt = 0;
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
+    if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
+    else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
+    else ++dt;
+  }
+  // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
 }
 
 

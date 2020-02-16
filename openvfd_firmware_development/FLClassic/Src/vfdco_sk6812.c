@@ -53,12 +53,12 @@ static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafru
 #endif
 
 void vfdco_clr_init() {
-	write_buf_pos = 0;
-	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
+  write_buf_pos = 0;
+  HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
 }
 
 void vfdco_clr_deInit(void) {
-	HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
 }
 
 #ifdef CONFIG_ENABLE_COLORCORRECTION
@@ -70,70 +70,70 @@ static inline uint8_t _vfdco_clr_scale8(uint8_t x, uint8_t scale) {
 inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
   #ifdef CONFIG_ENABLE_GAMMACORRECTION
   rgb_arr[4 * index] = gamma8[g];
-	rgb_arr[4 * index + 1] = gamma8[r];
-	rgb_arr[4 * index + 2] = gamma8[b];
+  rgb_arr[4 * index + 1] = gamma8[r];
+  rgb_arr[4 * index + 2] = gamma8[b];
   #else
     #ifdef CONFIG_ENABLE_COLORCORRECTION
     // TypicalLEDStrip = 0xFFB0F0: 255(R), 176(G), 240(B)
     rgb_arr[4 * index] = _vfdco_clr_scale8(g, 0xB0);
-  	rgb_arr[4 * index + 1] = r; // no scale
+    rgb_arr[4 * index + 1] = r; // no scale
     rgb_arr[4 * index + 2] = _vfdco_clr_scale8(b, 0xF0);
     #else
     rgb_arr[4 * index] = g;
-  	rgb_arr[4 * index + 1] = r;
-  	rgb_arr[4 * index + 2] = b;
+    rgb_arr[4 * index + 1] = r;
+    rgb_arr[4 * index + 2] = b;
     #endif
   #endif
 
-	rgb_arr[4 * index + 3] = 0;
+  rgb_arr[4 * index + 3] = 0;
 }
 inline void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-	vfdco_clr_set_RGB(index, r, g, b);
-	rgb_arr[4 * index + 3] = w;
+  vfdco_clr_set_RGB(index, r, g, b);
+  rgb_arr[4 * index + 3] = w;
 }
 inline void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
-	for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
+  for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
 inline void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-	for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
+  for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
 }
 
 inline void vfdco_clr_render() {
-	// Ooh boi the first data buffer!!
-	write_buf_pos = 0;
-	for(uint_fast8_t i = 0; i < 8; ++i) {
-		write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[0] >> global_dim_factor) << i) & 0x80) > 0);
-		write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[1] >> global_dim_factor) << i) & 0x80) > 0);
-		write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[2] >> global_dim_factor) << i) & 0x80) > 0);
-		write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[3] >> global_dim_factor) << i) & 0x80) > 0);
-	}
+  // Ooh boi the first data buffer!!
+  write_buf_pos = 0;
+  for(uint_fast8_t i = 0; i < 8; ++i) {
+    write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[0] >> global_dim_factor) << i) & 0x80) > 0);
+    write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[1] >> global_dim_factor) << i) & 0x80) > 0);
+    write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[2] >> global_dim_factor) << i) & 0x80) > 0);
+    write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[3] >> global_dim_factor) << i) & 0x80) > 0);
+  }
 
-	write_buf_pos++; // Since we're ready for the next buffer
-	HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
+  write_buf_pos++; // Since we're ready for the next buffer
+  HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
 }
 
 void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
-	// DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
-	if(write_buf_pos < CONFIG_NUM_PIXELS) {
-		// We're in. Let's fill the mem
-		for(uint_fast8_t i = 0; i < 8; ++i) {
-			write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4    ] >> global_dim_factor) << i) & 0x80) > 0);
-			write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 1] >> global_dim_factor) << i) & 0x80) > 0);
-			write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 2] >> global_dim_factor) << i) & 0x80) > 0);
-			write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 3] >> global_dim_factor) << i) & 0x80) > 0);
-		}
-		write_buf_pos++;
-	} else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {
-		// Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
-		memset(write_buf, 0x00, WRITE_BUF_LENGTH);
-		write_buf_pos++;
+  // DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
+  if(write_buf_pos < CONFIG_NUM_PIXELS) {
+    // We're in. Let's fill the mem
+    for(uint_fast8_t i = 0; i < 8; ++i) {
+      write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4    ] >> global_dim_factor) << i) & 0x80) > 0);
+      write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 1] >> global_dim_factor) << i) & 0x80) > 0);
+      write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 2] >> global_dim_factor) << i) & 0x80) > 0);
+      write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 3] >> global_dim_factor) << i) & 0x80) > 0);
+    }
+    write_buf_pos++;
+  } else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {
+    // Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
+    memset(write_buf, 0x00, WRITE_BUF_LENGTH);
+    write_buf_pos++;
 
-		if(write_buf_pos >= CONFIG_NUM_PIXELS + 2) {
-			// Stop transfer, we're done for now until someone needs us again
-			write_buf_pos = 0;
-			HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
-		}
-	} else { // heart clap, we skip a beat
-		write_buf_pos++;
-	}
+    if(write_buf_pos >= CONFIG_NUM_PIXELS + 2) {
+      // Stop transfer, we're done for now until someone needs us again
+      write_buf_pos = 0;
+      HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
+    }
+  } else { // heart clap, we skip a beat
+    write_buf_pos++;
+  }
 }

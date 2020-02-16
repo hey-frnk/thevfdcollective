@@ -53,7 +53,7 @@ void vfdco_serialization_write(uint8_t *const data[], const uint8_t *length_arr,
     for(uint8_t j = 0; j < length_arr[i]; ++j) {
       uint8_t read_check = 0;
       if(HAL_I2C_Mem_Read(&hi2c1, EEPROM_24CXX_ADDRESS, header_offset + j, I2C_MEMADD_SIZE_8BIT, &read_check, sizeof(uint8_t), 100) != HAL_OK)
-      	exit(-100);
+        exit(-100);
       if(read_check != data[i][j])
         if(HAL_I2C_Mem_Write(&hi2c1, EEPROM_24CXX_ADDRESS, header_offset + j, I2C_MEMADD_SIZE_8BIT, data[i] + j, sizeof(uint8_t), 1000) != HAL_OK)
           exit(-101);
@@ -86,7 +86,7 @@ SERIALIZATION_HEADER_STATUS_t vfdco_serialization_read(uint8_t *const data[], co
 
   uint16_t header_offset = (uint16_t)sizeof(struct Serialization_Header);
   for(uint8_t i = 0; i < length_arr_length; ++i, header_offset += length_arr[i]) {
-  	volatile HAL_StatusTypeDef s = HAL_I2C_Mem_Read(&hi2c1, EEPROM_24CXX_ADDRESS, header_offset, I2C_MEMADD_SIZE_8BIT, data[i], length_arr[i], 1000);
+    volatile HAL_StatusTypeDef s = HAL_I2C_Mem_Read(&hi2c1, EEPROM_24CXX_ADDRESS, header_offset, I2C_MEMADD_SIZE_8BIT, data[i], length_arr[i], 1000);
       // exit(-110);
   }
 

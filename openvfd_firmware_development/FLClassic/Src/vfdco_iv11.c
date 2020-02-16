@@ -28,22 +28,22 @@ uint8_t display_dim_counter = 0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if(htim->Instance == TIM16) {
     if(display_dim_counter < 1) {
-    	// If the pulse is ON, write data to SPI
+      // If the pulse is ON, write data to SPI
       HAL_SPI_Transmit_DMA(&hspi1, display_buf, CONFIG_NUM_DIGITS);
     } else {
-    	// If the pulse is ON, else write zeros to SPI
+      // If the pulse is ON, else write zeros to SPI
       HAL_SPI_Transmit_DMA(&hspi1, _display_zeros, CONFIG_NUM_DIGITS);
     }
   }
 }
 
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
-	// Count dimmer
-	++display_dim_counter;
-	if(display_dim_counter == (1 << global_dim_factor)) display_dim_counter = 0;
-	// Toggle set/reset upon SPI transfer completion
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+  // Count dimmer
+  ++display_dim_counter;
+  if(display_dim_counter == (1 << global_dim_factor)) display_dim_counter = 0;
+  // Toggle set/reset upon SPI transfer completion
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
 
@@ -143,13 +143,13 @@ void vfdco_display_render_message(const char *message, uint8_t decimal_dot_regis
     _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
   if(delay) {
-  	// Temporarily disable interrupts, write message
-  	NVIC_DisableIRQ(TIM16_IRQn);
-  	HAL_SPI_Transmit(&hspi1, _rreg, CONFIG_NUM_DIGITS, 40);
-  	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
-  	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
-  	vfdco_time_delay_milliseconds(delay);
-  	NVIC_EnableIRQ(TIM16_IRQn);
+    // Temporarily disable interrupts, write message
+    NVIC_DisableIRQ(TIM16_IRQn);
+    HAL_SPI_Transmit(&hspi1, _rreg, CONFIG_NUM_DIGITS, 40);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+    vfdco_time_delay_milliseconds(delay);
+    NVIC_EnableIRQ(TIM16_IRQn);
   } else {
     memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
   }
