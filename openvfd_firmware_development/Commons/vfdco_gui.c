@@ -41,12 +41,6 @@ static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
   800
 };
 
-// Settings access indices
-#define GUI_FORMAT_SETTING_TIME_time_mode         0
-#define GUI_FORMAT_SETTING_TIME_dot_mode          1
-
-#define GUI_FORMAT_SETTING_DATE_date_mode         0
-
 /** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT
 **/

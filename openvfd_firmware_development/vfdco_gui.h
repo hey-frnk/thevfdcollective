@@ -13,6 +13,7 @@
   * SECTION_GUI_FORMAT_DATE
   * SECTION_GUI_FORMAT_TIME_DATE_SET
   * SECTION_GUI_FORMAT_STOPWATCH
+  * SECTION_GUI_BRIGHTNESS_SETTER
   * SECTION_CONTAINER_GUI
   ******************************************************************************
  **/
@@ -49,6 +50,11 @@ void         (*GUI_Format_F3Var)(GUI_Format *unsafe_self);
 void         (*GUI_Format_F4Var)(GUI_Format *unsafe_self);
 void         (*GUI_Format_Update)(GUI_Format *unsafe_self);
 void         (*GUI_Format_Save)(GUI_Format *unsafe_self);
+
+// Documentation see config.h::CONFIG_SAVED_SETTINGS_TABLE. Anonymous enums for setting offsets
+#define CREATE_SETTINGS_OFFSET_GUI(_offset, _size, _setting_identifier, _description) \
+  enum { _setting_identifier = _offset };
+CREATE_SERIALIZED_GUI_POSITIONS(CREATE_SETTINGS_OFFSET_GUI)
 
 /**
   * @brief  Constructor of GUI_Format class
@@ -111,6 +117,7 @@ enum {
 
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_STOPWATCH
+  * F2 to start, F3 to pause and resume. During pause, F2 to reset
  **/
 struct GUI_Format_Stopwatch {
   time_event_t      *update_timer;
@@ -126,6 +133,25 @@ struct GUI_Format_Stopwatch {
 
 void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, time_event_t *update_timer);
 
+/**
+ * @tableofcontents SECTION_GUI_BRIGHTNESS_SETTER
+ * F2 to set display brightness
+ * F3 to set LED brightness
+ * F4 to enable night shift set menu
+ *    - Step 1: Set starting time. F2: digit switch, F3: ++, F4: --. F4Var to next step
+ *    - Setp 2: Set ending time.   F2: digit switch, F3: ++, F4: --. F4Var to save
+ * F4Var to disable night shift, if enabled
+ */
+
+struct GUI_Format_Brightness_Setter {
+  uint8_t           *settings;
+  uint8_t           state;
+  uint8_t           night_shift_start_h, night_shift_start_m;
+  uint8_t           night_shift_end_h, night_shift_end_s;
+};
+
+void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self, time_event_t *update_timer);
+
 
 /** Begin of:
   * @tableofcontents SECTION_CONTAINER_GUI
@@ -136,10 +162,11 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, time_event_t *
 **/
 typedef union GUI_Format {
   // GUI_Format                   base;
-  struct GUI_Format_Time              _gui_time;
-  struct GUI_Format_Date              _gui_date;
-  struct GUI_Format_Time_Date_Setter  _gui_set;
-  struct GUI_Format_Stopwatch         _gui_watch;
+  struct GUI_Format_Time                _gui_time;
+  struct GUI_Format_Date                _gui_date;
+  struct GUI_Format_Time_Date_Setter    _gui_set;
+  struct GUI_Format_Stopwatch           _gui_watch;
+  struct GUI_Format_Brightness_Setter   _gui_bset;
 } GUI_Format;
 
 /**

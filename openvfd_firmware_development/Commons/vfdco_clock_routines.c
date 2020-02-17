@@ -56,9 +56,10 @@ uint8_t global_dim_factor;
 
 #define GLOBAL_CLEAR_BUTTON(_button) _button = BUTTON_STATE_OFF
 
-// Saved clock routine settings
-#define CLOCK_ROUTINE_SETTING_welcome                       0
-#define CLOCK_ROUTINE_SETTING_global_light_instance_counter 6
+// Documentation see config.h::CONFIG_SAVED_SETTINGS_TABLE. Anonymous enums for setting offsets
+#define CREATE_SETTINGS_OFFSET_GLOBAL(_offset, _size, _setting_identifier, _description) \
+  enum { _setting_identifier = _offset };
+CREATE_SERIALIZED_GLOBAL_POSITIONS(CREATE_SETTINGS_OFFSET_GLOBAL)
 
 const light_pattern_instance_t global_light_instance_default = LIGHT_PATTERN_STATIC;
 const char Messages_Welcome_Default[CONFIG_NUM_DIGITS]  = {'H', 'E', 'L', 'L', 'O', ' '};

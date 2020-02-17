@@ -27,6 +27,7 @@
 
 #include "vfdco_time.h"
 #include "vfdco_hid.h"
+#include "vfdco_config.h"
 #include <stdint.h>
 
 /** Begin of:
@@ -95,6 +96,11 @@ void (*Light_Pattern_F3Var)  (Light_Pattern *unsafe_self);
 void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
 void (*Light_Pattern_Hello)  (void);
 void (*Light_Pattern_Save)   (Light_Pattern *unsafe_self);
+
+// Documentation see config.h::CONFIG_SAVED_SETTINGS_TABLE. Anonymous enums for setting offsets
+#define CREATE_SETTINGS_OFFSET_LIGHT_PATTERN(_offset, _size, _setting_identifier, _description) \
+  enum { _setting_identifier = _offset };
+CREATE_SERIALIZED_LIGHTS_POSITIONS(CREATE_SETTINGS_OFFSET_LIGHT_PATTERN)
 
 /** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN_STATIC

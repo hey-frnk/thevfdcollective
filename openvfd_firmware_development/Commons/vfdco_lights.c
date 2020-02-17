@@ -303,23 +303,6 @@ static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
   {' ', 'A', 'B', 'E', 'N', 'D'}
 };
 
-// Settings access indices
-#define LIGHT_PATTERN_SETTING_STATIC_position         0
-
-#define LIGHT_PATTERN_SETTING_SERIAL0_colors          0
-#define LIGHT_PATTERN_SETTING_SERIAL1_colors          0
-
-#define LIGHT_PATTERN_SETTING_BLISS_moment            0
-
-#define LIGHT_PATTERN_SETTING_SPECTRUM_saturation     0
-#define LIGHT_PATTERN_SETTING_SPECTRUM_lightness      1
-
-#define LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff  0
-#define LIGHT_PATTERN_SETTING_RAINBOW_saturation      1
-
-#define LIGHT_PATTERN_SETTING_CHASE_chase_mode        0
-#define LIGHT_PATTERN_SETTING_CHASE_color_peak_diff   1
-
 
 /** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN
