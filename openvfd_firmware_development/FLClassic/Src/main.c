@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -51,8 +52,6 @@ TIM_HandleTypeDef htim14;
 TIM_HandleTypeDef htim16;
 DMA_HandleTypeDef hdma_tim2_ch1;
 
-PCD_HandleTypeDef hpcd_USB_FS;
-
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -61,7 +60,6 @@ PCD_HandleTypeDef hpcd_USB_FS;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
-static void MX_USB_PCD_Init(void);
 static void MX_DMA_Init(void);
 static void MX_TIM14_Init(void);
 static void MX_I2C1_Init(void);
@@ -107,11 +105,11 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_TIM2_Init();
-  MX_USB_PCD_Init();
   MX_TIM14_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_TIM16_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
   // Initialize clock
@@ -128,10 +126,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
   	// WoHOo hOw FuN iS tHhIis??
-  	vfdco_clock_hid_routine();
-  	vfdco_clock_time_routine();
-  	vfdco_clock_display_routine();
-  	vfdco_clock_lights_routine();
+  	vfdco_clock_routine();
   	// vfdco_clock_com_routine();
 
   }
@@ -386,38 +381,6 @@ static void MX_TIM16_Init(void)
   /* USER CODE BEGIN TIM16_Init 2 */
 
   /* USER CODE END TIM16_Init 2 */
-
-}
-
-/**
-  * @brief USB Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USB_PCD_Init(void)
-{
-
-  /* USER CODE BEGIN USB_Init 0 */
-
-  /* USER CODE END USB_Init 0 */
-
-  /* USER CODE BEGIN USB_Init 1 */
-
-  /* USER CODE END USB_Init 1 */
-  hpcd_USB_FS.Instance = USB;
-  hpcd_USB_FS.Init.dev_endpoints = 8;
-  hpcd_USB_FS.Init.speed = PCD_SPEED_FULL;
-  hpcd_USB_FS.Init.phy_itface = PCD_PHY_EMBEDDED;
-  hpcd_USB_FS.Init.low_power_enable = DISABLE;
-  hpcd_USB_FS.Init.lpm_enable = DISABLE;
-  hpcd_USB_FS.Init.battery_charging_enable = DISABLE;
-  if (HAL_PCD_Init(&hpcd_USB_FS) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USB_Init 2 */
-
-  /* USER CODE END USB_Init 2 */
 
 }
 

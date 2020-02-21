@@ -29,7 +29,8 @@ typedef enum {
   GUI_TIME,             // Display the current time (default of default)
   GUI_DATE,             // Display the current date
   GUI_STOPWATCH,        // Display stopwatch
-  GUI_TIME_DATE_SET     // Active when time set or date set is enabled
+  GUI_TIME_DATE_SET,    // Active when time set or date set is enabled
+  GUI_BRIGHTNESS_SET    // Active when brightness (night shift) set is enabled
 } gui_instance_t;
 
 typedef enum {
@@ -45,8 +46,14 @@ typedef enum {
   LIGHT_PATTERN_SERIAL1
 } light_pattern_instance_t;
 
+enum {
+  NIGHT_SHIFT_OFF,
+  NIGHT_SHIFT_ON
+};
+
 // Initialize function. Run first.
 void    vfdco_clock_initializer();
+void    vfdco_clock_routine();
 
 // Serialization initializer
 void    vfdco_clock_serialization_initializer();
@@ -60,19 +67,23 @@ void    vfdco_clock_time_initializer();
 void    vfdco_clock_time_routine();
 
 // VFD display data render routine
-void    vfdco_clock_display_initializer();
-void    vfdco_clock_display_routine();
+void    vfdco_clock_gui_initializer();
+void    vfdco_clock_gui_routine();
 
 // VFD LED light illumination routine
 void    vfdco_clock_lights_initializer();
 void    vfdco_clock_lights_routine();
 
+// Power management routine (Brightness, Night Shift/Energy saving)
+void    vfdco_clock_power_initializer();
+void    vfdco_clock_power_routine();
+
 void    vfdco_clock_settings_default();
 void    vfdco_clock_settings_save(uint8_t silent);
 
 // Communication (Serial/USB, Serial/Bluetooth) routine
-// void    vfdco_clock_com_initializer();
-// void    vfdco_clock_com_routine();
+void    vfdco_clock_com_initializer();
+void    vfdco_clock_com_routine();
 
 
 #include "vfdco_serialization.h"

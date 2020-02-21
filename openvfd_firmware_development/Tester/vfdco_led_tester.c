@@ -70,10 +70,7 @@ void test2() {
   int execute_n_times = 1;
   for ever {
     // WoHOo hOw FuN iS tHhIis??
-  	vfdco_clock_hid_routine();
-  	vfdco_clock_time_routine();
-  	vfdco_clock_display_routine();
-  	vfdco_clock_lights_routine();
+  	vfdco_clock_routine();
 
     // vfdco_clock_serialization_routine();
   	// vfdco_clock_com_routine();

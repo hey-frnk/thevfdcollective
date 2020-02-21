@@ -441,7 +441,7 @@ static inline void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
 }
 void Light_Pattern_Serial1_Init(struct Light_Pattern_Serial1 *self, uint8_t *settings) {
   for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i)
-    _target_RGBW(settings + i, settings[4 * i], settings[4 * i + 1], settings[4 * i + 2], settings[4 * i + 3]);
+    _target_RGBW(self->target_arr + 4 * i, settings[4 * i], settings[4 * i + 1], settings[4 * i + 2], settings[4 * i + 3]);
   
   self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
   self->settings = settings;

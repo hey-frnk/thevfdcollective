@@ -21,13 +21,22 @@ extern SPI_HandleTypeDef hspi1;
 extern TIM_HandleTypeDef htim16;
 
 uint8_t display_buf[CONFIG_NUM_DIGITS] = {0};
-uint8_t _display_zeros[CONFIG_NUM_DIGITS] = {0}; // Somehow DMA doesn't like stack memory
-extern uint8_t global_dim_factor;
-uint8_t display_dim_counter = 0;
+const uint8_t _display_zeros[CONFIG_NUM_DIGITS] = {0}; // Somehow DMA doesn't like stack memory
+
+struct Display_Dimmer {
+  uint8_t dim_factor;
+  uint8_t dim_counter;
+};
+struct Display_Dimmer display_dimmer;
+
+void vfdco_display_set_dim_factor(uint8_t dim_factor) {
+  display_dimmer.dim_factor = dim_factor;
+  display_dimmer.dim_counter = 0;
+}
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if(htim->Instance == TIM16) {
-    if(display_dim_counter < 1) {
+    if(display_dimmer.dim_counter < 1) {
       // If the pulse is ON, write data to SPI
       HAL_SPI_Transmit_DMA(&hspi1, display_buf, CONFIG_NUM_DIGITS);
     } else {
@@ -39,8 +48,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
   // Count dimmer
-  ++display_dim_counter;
-  if(display_dim_counter == (1 << global_dim_factor)) display_dim_counter = 0;
+  ++display_dimmer.dim_counter;
+  if(display_dimmer.dim_counter == (1 << display_dimmer.dim_factor)) display_dimmer.dim_counter = 0;
   // Toggle set/reset upon SPI transfer completion
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
@@ -96,7 +105,7 @@ uint8_t vfdco_display_char_convert(char input) {
 // Decimal dot overlay function: uint8_t decimal_dot_register
 // [ reserved | reserved | dot5. | dot4. | dot3. | dot2. | dot1. | dot0. ]
 // 7                                                                     0
-void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register, time_format_t time_mode) {
+void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_register, time_format_t time_mode) {
   uint8_t _hour = time->h; // 12h fix
   if(time_mode != TIME_FORMAT_24H) {
     if       (_hour > 12) _hour -= 12; // 12h offset
@@ -118,7 +127,7 @@ void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register,
   memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
 }
 
-void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register, date_format_t date_mode) {
+void vfdco_display_render_date(vfdco_date_t *date, const uint8_t decimal_dot_register, date_format_t date_mode) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   _rreg[0] = vfdco_display_char_convert(date->y % 10) | (decimal_dot_register & 0x01);
   _rreg[1] = vfdco_display_char_convert((date->y % 100) / 10) | ((decimal_dot_register >> 1) & 0x01);
@@ -137,7 +146,7 @@ void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register,
   memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
 }
 
-void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay) {
+void vfdco_display_render_message(const char *message, const uint8_t decimal_dot_register, uint16_t delay) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
     _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
@@ -156,7 +165,7 @@ void vfdco_display_render_message(const char *message, uint8_t decimal_dot_regis
 }
 
 // Function mapping
-void vfdco_display_init() {
-  // Only for aEsTHetICs
+void vfdco_display_init(uint8_t initial_dim_factor) {
+  vfdco_display_set_dim_factor(initial_dim_factor);
   HAL_TIM_Base_Start_IT(&htim16);
 }

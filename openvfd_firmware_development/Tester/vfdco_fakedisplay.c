@@ -23,6 +23,10 @@
 
 void _vfdco_display_render_direct(uint8_t *data);
 
+void vfdco_display_set_dim_factor(uint8_t dim_factor) {
+  printf("Setting Display Dim Factor: %hhu", dim_factor);
+}
+
 uint8_t vfdco_display_char_convert(char input) {
   // Takes char value (0 to 255) and converts to VFD clock display pattern
   switch(input) {
@@ -72,7 +76,7 @@ uint8_t vfdco_display_char_convert(char input) {
 // Decimal dot overlay function: uint8_t decimal_dot_register
 // [ reserved | reserved | dot5. | dot4. | dot3. | dot2. | dot1. | dot0. ]
 // 7                                                                     0
-void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register, time_format_t time_mode) {
+void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_register, time_format_t time_mode) {
   uint8_t _hour = time->h; // 12h fix
   if(time_mode != TIME_FORMAT_24H) {
     if       (_hour > 12) _hour -= 12; // 12h offset
@@ -94,7 +98,7 @@ void vfdco_display_render_time(vfdco_time_t *time, uint8_t decimal_dot_register,
   _vfdco_display_render_direct(_rreg);
 }
 
-void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register, date_format_t date_mode) {
+void vfdco_display_render_date(vfdco_date_t *date, const uint8_t decimal_dot_register, date_format_t date_mode) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   _rreg[0] = vfdco_display_char_convert(date->y % 10) | (decimal_dot_register & 0x01);
   _rreg[1] = vfdco_display_char_convert((date->y % 100) / 10) | ((decimal_dot_register >> 1) & 0x01);
@@ -113,7 +117,7 @@ void vfdco_display_render_date(vfdco_date_t *date, uint8_t decimal_dot_register,
   _vfdco_display_render_direct(_rreg);
 }
 
-void vfdco_display_render_message(const char *message, uint8_t decimal_dot_register, uint16_t delay) {
+void vfdco_display_render_message(const char *message, const uint8_t decimal_dot_register, uint16_t delay) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
     _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
@@ -189,6 +193,7 @@ void _vfdco_display_render_direct(uint8_t *data) {
 }
 
 // Function mapping
-void vfdco_display_init() {
+void vfdco_display_init(uint8_t initial_dim_factor) {
   printf("IV-11 fake debug display init with %d digits, successful\n", CONFIG_NUM_DIGITS);
+  printf("Setting Display Dim Factor: %hhu", initial_dim_factor);
 }

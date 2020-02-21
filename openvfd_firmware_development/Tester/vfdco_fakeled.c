@@ -20,13 +20,18 @@
 
 uint8_t rgb_arr[CONFIG_NUM_BYTES] = {0};
 
-void vfdco_clr_init() {
+void vfdco_clr_init(uint8_t initial_dim_factor) {
 	// Allocate color array and DMA buffer
   printf("SK6812 tester: Init with %hhu pixels, %hhu bpp, %hhu bytes.\n", CONFIG_NUM_PIXELS, CONFIG_NUM_BPP, CONFIG_NUM_BYTES);
+  printf("SK6812 tester: Init with dim factor %hhu.\n", initial_dim_factor);
 }
 
 void vfdco_clr_deInit(void) {
   printf("SK6812 tester: DeInit success.\n");
+}
+
+void vfdco_clr_set_dim_factor(uint8_t dim_factor) {
+  printf("SK6812 tester: Set with dim factor %hhu.\n", dim_factor);
 }
 
 void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
