@@ -14,6 +14,7 @@
         "vfdco_fakeled.c",
         "vfdco_time.c",
         "vfdco_text_serialization.c",
+        "vfdco_fakecom.c",
         "-DDEBUG",
         "-std=c11",
         "-Wall",

@@ -269,11 +269,11 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-  if(!global_com_data.rx_buffer_data_present) {
+  if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_IDLE) {
     // Set buffer & data present flag
     if(*Len <= CONFIG_COM_RX_BUF_MAX) {
       memcpy(global_com_data.rx_buffer, Buf, *Len);
-      global_com_data.rx_buffer_data_present = 1;
+      global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_USB_BUSY;
     } else {
       return (USBD_FAIL);
     }

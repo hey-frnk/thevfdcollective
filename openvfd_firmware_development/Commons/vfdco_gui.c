@@ -192,7 +192,7 @@ void GUI_Format_Time_Default(uint8_t *settings) {
  **/
 void _GUI_Format_Date_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
-  vfdco_display_render_date(&global_date, 0b00010100, self->date_mode);
+  vfdco_display_render_date(&global_date, self->date_mode);
 }
 
 void _GUI_Format_Date_F4Var(GUI_Format *unsafe_self) {

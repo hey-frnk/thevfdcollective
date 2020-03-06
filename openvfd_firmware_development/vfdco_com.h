@@ -18,12 +18,18 @@
 #include <stdint.h>
 #include "vfdco_config.h"
 
+typedef enum {
+  RX_BUFFER_DATA_IDLE,
+  RX_BUFFER_DATA_USB_BUSY,
+  RX_BUFFER_DATA_BT_BUSY
+} COM_Data_RX_State_t;
+
 struct COM_Data {
-  uint8_t rx_buffer_data_present;
+  COM_Data_RX_State_t rx_buffer_data_present;
   uint8_t rx_buffer_length;
   uint8_t tx_buffer_length;
   uint8_t rx_buffer[CONFIG_COM_RX_BUF_MAX];
-  uint8_t tx_buffer[CONFIG_COM_TX_BUF_MAX];
+  uint8_t *tx_buffer;
 };
 
 extern struct COM_Data global_com_data;

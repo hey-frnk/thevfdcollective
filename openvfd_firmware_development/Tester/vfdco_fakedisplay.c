@@ -100,19 +100,19 @@ void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_reg
 
 void vfdco_display_render_date(vfdco_date_t *date, const uint8_t decimal_dot_register, date_format_t date_mode) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
-  _rreg[0] = vfdco_display_char_convert(date->y % 10) | (decimal_dot_register & 0x01);
-  _rreg[1] = vfdco_display_char_convert((date->y % 100) / 10) | ((decimal_dot_register >> 1) & 0x01);
+  _rreg[0] = vfdco_display_char_convert(date->y % 10);
+  _rreg[1] = vfdco_display_char_convert((date->y / 10) & 0x01);
 
   if(date_mode == DATE_FORMAT_DDMMYY) {
-    _rreg[2] = vfdco_display_char_convert(date->m % 10) | ((decimal_dot_register >> 2) & 0x01);
-    _rreg[3] = vfdco_display_char_convert(date->m / 10) | ((decimal_dot_register >> 3) & 0x01);
-    _rreg[4] = vfdco_display_char_convert(date->d % 10) | ((decimal_dot_register >> 4) & 0x01);
-    _rreg[5] = vfdco_display_char_convert(date->d / 10) | ((decimal_dot_register >> 5) & 0x01);
+    _rreg[2] = vfdco_display_char_convert(date->m % 10);
+    _rreg[3] = vfdco_display_char_convert((date->m / 10) & 0x01);
+    _rreg[4] = vfdco_display_char_convert(date->d % 10);
+    _rreg[5] = vfdco_display_char_convert(date->d / 10);
   } else {
-    _rreg[4] = vfdco_display_char_convert(date->m % 10) | ((decimal_dot_register >> 4) & 0x01);
-    _rreg[5] = vfdco_display_char_convert(date->m / 10) | ((decimal_dot_register >> 5) & 0x01);
-    _rreg[2] = vfdco_display_char_convert(date->d % 10) | ((decimal_dot_register >> 2) & 0x01);
-    _rreg[3] = vfdco_display_char_convert(date->d / 10) | ((decimal_dot_register >> 3) & 0x01);
+    _rreg[2] = vfdco_display_char_convert(date->d % 10);
+    _rreg[3] = vfdco_display_char_convert((date->d / 10) & 0x01);
+    _rreg[4] = vfdco_display_char_convert(date->m % 10);
+    _rreg[5] = vfdco_display_char_convert(date->m / 10);
   }
   _vfdco_display_render_direct(_rreg);
 }

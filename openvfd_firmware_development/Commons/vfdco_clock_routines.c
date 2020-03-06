@@ -120,7 +120,7 @@ void vfdco_clock_initializer() {
 void vfdco_clock_serialization_initializer() {
   // Load all clock parameters
   SERIALIZATION_HEADER_STATUS_t read_status = vfdco_serialization_read(serialized_settings, serialized_settings_sizes, NUM_SERIALIZABLE);
-  if(read_status) {
+  if(read_status != SERIALIZATION_HEADER_STATUS_OK) {
     // Something went wrong. Load default settings!
     vfdco_clock_settings_default();
   }
@@ -146,7 +146,8 @@ void vfdco_clock_com_initializer() {
   global_com_data.rx_buffer_length = CONFIG_COM_RX_BUF_MAX;
   global_com_data.tx_buffer_length = CONFIG_COM_TX_BUF_MAX;
   memset(global_com_data.rx_buffer, 0x00, global_com_data.rx_buffer_length);
-  memset(global_com_data.tx_buffer, 0x00, global_com_data.tx_buffer_length);
+  global_com_data.tx_buffer = NULL;
+  // memset(global_com_data.tx_buffer, 0x00, global_com_data.tx_buffer_length);
 }
 
 /** Begin of:
@@ -344,10 +345,14 @@ void vfdco_clock_lights_routine() {
 // Communication (Serial/USB, Serial/Bluetooth) routine
 void vfdco_clock_com_routine() {
   // If data is present
-  if(global_com_data.rx_buffer_data_present) {
-    // Perform decoding
+  if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_USB_BUSY) {
+    // Perform decoding, transfer back using USB transfer
     legacy_com_decoder(global_com_data.rx_buffer, COM_Handler_USB_Transfer);
-    global_com_data.rx_buffer_data_present = 0;
+    global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_IDLE;
+  } else if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_BT_BUSY) {
+    // Perform decoding, transfer back using BT transfer
+    // legacy_com_decoder(global_com_data.rx_buffer, COM_Handler_BT_Transfer);
+    global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_IDLE;
   }
 }
 
@@ -384,6 +389,9 @@ void vfdco_clock_settings_default() {
 void vfdco_clock_settings_save(uint8_t silent) {
   // Global (routine) settings
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter] = global_light_instance_counter;
+  // Save current instance settings
+  if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
+  if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
 
   vfdco_serialization_write(serialized_settings, serialized_settings_sizes, NUM_SERIALIZABLE);
   if(!silent) {
@@ -443,14 +451,14 @@ void set_next_gui_instance(gui_instance_t next_instance) {
     case GUI_TIME: {
       GUI_Format_Time_Init(
         (struct GUI_Format_Time*)&global_gui_instance,
-        serialized_settings[_map_gui_instance_to_serialized_settings_size_index(next_instance)]
+        serialized_settings[_map_gui_instance_to_serialized_settings_index(next_instance)]
       );
       break;
     }
     case GUI_DATE: {
       GUI_Format_Date_Init(
         (struct GUI_Format_Date*)&global_gui_instance,
-        serialized_settings[_map_gui_instance_to_serialized_settings_size_index(next_instance)]
+        serialized_settings[_map_gui_instance_to_serialized_settings_index(next_instance)]
       );
       break;
     }
@@ -461,11 +469,11 @@ void set_next_gui_instance(gui_instance_t next_instance) {
     case GUI_BRIGHTNESS_SET: {
       GUI_Format_Brightness_Setter_Init(
         (struct GUI_Format_Brightness_Setter *)&global_gui_instance,
-        SERIALIZABLE_CLOCK_ROUTINE_arr + (CLOCK_ROUTINE_SETTING_dim_factor_display - 1)
+        SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_dim_factor_display
       );
       break;
     }
-    default: exit(-42); // Oops
+    default: exit(-1); // Oops
   }
   GLOBAL_SET_NEXT_GUI_INSTANCE(next_instance);
 }
@@ -473,7 +481,7 @@ void set_next_gui_instance(gui_instance_t next_instance) {
 void set_next_lights_instance(light_pattern_instance_t next_instance) {
   uint8_t *instance_settings = NULL;
   if(next_instance != LIGHT_PATTERN_TIME_CODE && next_instance != LIGHT_PATTERN_COP)
-    instance_settings = serialized_settings[_map_lights_instance_to_serialized_settings_size_index(next_instance)];
+    instance_settings = serialized_settings[_map_lights_instance_to_serialized_settings_index(next_instance)];
   switch(next_instance) {
     case LIGHT_PATTERN_STATIC: {
       Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, instance_settings);
@@ -536,25 +544,9 @@ void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct
   // If aligned protocol is detected
   if((input_buffer[0] == 0x23) && (input_buffer[23] == 0x24)) {
     const uint8_t command_byte = input_buffer[1];
-
-    // If LED set is detected
-    if(command_byte == 0x01) {
-      // Serial0 set. Ordinary save, no hello message
-      if(global_light_instance_counter != LIGHT_PATTERN_SERIAL0) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-      _legacy_grb_to_rgbw_target(SERIALIZABLE_LIGHTS_SERIAL0_arr + LIGHT_PATTERN_SETTING_SERIAL0_colors, input_buffer + 2);
-      set_next_lights_instance(LIGHT_PATTERN_SERIAL0);
-    }
-
-    // If LED smooth set is detected
-    else if(command_byte == 0x02) {
-      // Serial1 set. Ordinary save, no hello message
-      if(global_light_instance_counter != LIGHT_PATTERN_SERIAL1) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-      _legacy_grb_to_rgbw_target(SERIALIZABLE_LIGHTS_SERIAL1_arr + LIGHT_PATTERN_SETTING_SERIAL1_colors, input_buffer + 2);
-      set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
-    }
-
+    
     // If time set command is detected
-    else if(command_byte == 0x10) {
+    if(command_byte == 0x10) {
       // Transfer to RTC
       global_time.s = input_buffer[2];
       global_time.m = input_buffer[3];
@@ -575,8 +567,9 @@ void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct
 
       // Answer with a beginning of a message. If it's all good, the PC controller will complete the message :p
       const uint8_t transfer_buffer[10] = {0x23, 0x10, 'T', 'i', 'm', 'e', ' ', 'S', 'y', 0x24};
-      memcpy(global_com_data.tx_buffer, transfer_buffer, 10);
+      global_com_data.tx_buffer = transfer_buffer;
       legacy_com_encoder(&global_com_data);
+      global_com_data.tx_buffer = NULL;
     }
 
     // If night shift is set (silent mode)
@@ -610,109 +603,66 @@ void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct
 
     // If clock configuration set is detected
     else if(command_byte == 0x12) {
-      // If 12h/24h set
       if(input_buffer[2] == 1) {
-        if(global_gui_instance_counter == GUI_DATE) { // Manipulate members
-          struct GUI_Format_Date *self = (struct GUI_Format_Date *)&global_gui_instance;
-          if(input_buffer[3] == DATE_FORMAT_DDMMYY) self->date_mode = DATE_FORMAT_DDMMYY;
-          else self->date_mode = DATE_FORMAT_MMDDYY;
-        } else {
-          SERIALIZABLE_GUI_DATE_arr[GUI_FORMAT_SETTING_DATE_date_mode] = input_buffer[3];
-        }
+        serialized_settings[_map_gui_instance_to_serialized_settings_index(GUI_DATE)][0] = input_buffer[3];
+        if(global_gui_instance_counter == GUI_DATE) set_next_gui_instance(GUI_DATE); // Reload
       }
       else if(input_buffer[2] == 0 || input_buffer[2] == 3) {
-        if(global_gui_instance_counter == GUI_TIME) { // Manipulate members
-          struct GUI_Format_Time *self = (struct GUI_Format_Time *)&global_gui_instance;
-          // Underdetermined mapping (4 states -> 3 states)
-          if(input_buffer[2] == 0) {
-            if(input_buffer[3] == 0) self->time_mode = TIME_FORMAT_24H;
-            else self->time_mode = TIME_FORMAT_12H;
-          } else {
-            if(input_buffer[3] == 0) self->time_mode = TIME_FORMAT_24H;
-            else self->time_mode = TIME_FORMAT_12H_NO_LZ;
-          }
+        uint8_t new_time_mode = 0;
+        if(input_buffer[2] == 0) {
+          if(input_buffer[3] == 0)  new_time_mode = TIME_FORMAT_24H;
+          else                      new_time_mode = TIME_FORMAT_12H;
         } else {
-          if(input_buffer[2] == 0) {
-            if(input_buffer[3] == 0) SERIALIZABLE_GUI_TIME_arr[GUI_FORMAT_SETTING_TIME_time_mode] = TIME_FORMAT_24H;
-            else SERIALIZABLE_GUI_TIME_arr[GUI_FORMAT_SETTING_TIME_time_mode] = TIME_FORMAT_12H;
-          } else {
-            if(input_buffer[3] == 0) SERIALIZABLE_GUI_TIME_arr[GUI_FORMAT_SETTING_TIME_time_mode] = TIME_FORMAT_24H;
-            else SERIALIZABLE_GUI_TIME_arr[GUI_FORMAT_SETTING_TIME_time_mode] = TIME_FORMAT_12H_NO_LZ;
-          }
-          SERIALIZABLE_GUI_TIME_arr[GUI_FORMAT_SETTING_TIME_time_mode] = input_buffer[3];
+          if(input_buffer[3] == 0)  new_time_mode = TIME_FORMAT_24H;
+          else                      new_time_mode = TIME_FORMAT_12H_NO_LZ;
         }
+        serialized_settings[_map_gui_instance_to_serialized_settings_index(GUI_TIME)][0] = new_time_mode;
+        if(global_gui_instance_counter == GUI_TIME) set_next_gui_instance(GUI_TIME); // Reload
       }
     }
 
-    // If message display is detected
-    else if(command_byte == 0x1F) {
-      // Get message delay time. It's the incoming value in seconds
-      uint16_t msg_delay = 1000;
-      if(input_buffer[20] < 10) msg_delay *= (uint16_t)input_buffer[20];
-      char msg[CONFIG_NUM_DIGITS] = {' ', ' ', ' ', ' ', ' ', ' '};
-
-      // Write first message
-      uint8_t offset = 2;
-      for(uint8_t i = offset; i < (offset + 6); i++) msg[i - offset] = (char)input_buffer[i];
-      vfdco_display_render_message(msg, 0x00, msg_delay);
-
-      // If more is available, do more!
-      // Input buffer idx 21 is the long flag 0 (12 characters), idx 22 is the long flag 1 (18 characters)
-      if(input_buffer[21] == 1) {
-        offset += CONFIG_NUM_DIGITS;
-        for(uint8_t i = offset; i < (offset + CONFIG_NUM_DIGITS); i++) msg[i - offset] = (char)input_buffer[i];
-        vfdco_display_render_message(msg, 0x00, msg_delay);
-
-        // If even more is available, do more!
-        if(input_buffer[22] == 1) {
-          offset += 6;
-          for(uint8_t i = offset; i < (offset + CONFIG_NUM_DIGITS); i++) msg[i - offset] = (char)input_buffer[i];
-          vfdco_display_render_message(msg, 0x00, msg_delay);
-        }
-      }
+    if(command_byte == 0x01) { // If LED set is detected
+      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
+      _legacy_grb_to_rgbw_target(
+        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
+        input_buffer + 2
+      );
+      set_next_lights_instance(LIGHT_PATTERN_SERIAL0);
+    }
+    else if(command_byte == 0x02) { // If LED smooth set is detected
+      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
+      _legacy_grb_to_rgbw_target(
+        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
+        input_buffer + 2
+      );
+      set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
     }
 
     // If LED preset mode is detected
     else if(command_byte == 0x20) {
       uint8_t command_mode = input_buffer[2];
-      if(command_mode == 0x01) {
-        // Single color
-        SERIALIZABLE_LIGHTS_STATIC_arr[LIGHT_PATTERN_SETTING_STATIC_position] = input_buffer[3];
-        if(global_light_instance_counter != LIGHT_PATTERN_STATIC) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-        set_next_lights_instance(LIGHT_PATTERN_STATIC);
-      }
-      else if(command_mode == 0x02) {
-        // Spectrum
-        if(global_light_instance_counter != LIGHT_PATTERN_SPECTRUM) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-        set_next_lights_instance(LIGHT_PATTERN_SPECTRUM);
-      }
-      else if(command_mode == 0x03) {
-        // Rainbow
-        SERIALIZABLE_LIGHTS_RAINBOW_arr[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] = input_buffer[3];
-        if(global_light_instance_counter != LIGHT_PATTERN_RAINBOW) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-        set_next_lights_instance(LIGHT_PATTERN_RAINBOW);
-      }
-      else if(command_mode == 0x04) { 
-        // Chase
-        SERIALIZABLE_LIGHTS_CHASE_arr[LIGHT_PATTERN_SETTING_CHASE_chase_mode] = (input_buffer[3] <=2) ? input_buffer[3] : 2; // Reduction
-        if(global_light_instance_counter != LIGHT_PATTERN_CHASE) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-        set_next_lights_instance(LIGHT_PATTERN_CHASE);
-      }
-      else if(command_mode == 0x05) {
-        // Time code
-        if(global_light_instance_counter != LIGHT_PATTERN_TIME_CODE) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-        set_next_lights_instance(LIGHT_PATTERN_TIME_CODE);
-      }
-      else if(command_mode == 0x07) {
-        // Police Lights
-        if(global_light_instance_counter != LIGHT_PATTERN_TIME_CODE) if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-        set_next_lights_instance(LIGHT_PATTERN_TIME_CODE);
-      }
-      else {
-        const char _msg1[CONFIG_NUM_DIGITS] = {'N', 'O', 'T', ' ', ' ', ' '};
-        const char _msg2[CONFIG_NUM_DIGITS] = {'A', 'V', 'A', 'I', 'L', ' '};
-        vfdco_display_render_message(_msg1, 0x00, CONFIG_MESSAGE_LONG);
-        vfdco_display_render_message(_msg2, 0x00, CONFIG_MESSAGE_LONG);
+      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
+      
+      switch(command_mode) {
+        case 0x01: { 
+          serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_STATIC)][0] = input_buffer[3];
+          set_next_lights_instance(LIGHT_PATTERN_STATIC);
+          break;
+        }
+        case 0x03: {
+          serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_RAINBOW)][0] = input_buffer[3];
+          set_next_lights_instance(LIGHT_PATTERN_RAINBOW);
+          break;
+        }
+        case 0x04: {
+          serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_CHASE)][0] = input_buffer[3];
+          set_next_lights_instance(LIGHT_PATTERN_CHASE);
+          break;
+        }
+        case 0x02: set_next_lights_instance(LIGHT_PATTERN_SPECTRUM); break;
+        case 0x05: set_next_lights_instance(LIGHT_PATTERN_TIME_CODE); break;
+        case 0x07: set_next_lights_instance(LIGHT_PATTERN_TIME_CODE); break;
+        default: break;
       }
     }
 
@@ -724,36 +674,44 @@ void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct
       vfdco_clock_settings_save(1);
       vfdco_display_render_message((const char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, 0x00, CONFIG_MESSAGE_LONG);
     }
+    // If message display is detected
+    else if(command_byte == 0x1F) {
+      // Get message delay time. It's the incoming value in seconds
+      uint16_t msg_delay = CONFIG_MESSAGE_LONG;
+      msg_delay *= (uint16_t)input_buffer[20];
+      uint8_t offset = 2;
+      for(uint8_t i = 0; i < (1 + input_buffer[21] + input_buffer[22]); ++i) {
+        vfdco_display_render_message(input_buffer + offset, 0x00, msg_delay);
+        offset += CONFIG_NUM_DIGITS;
+      }
+    }
 
     // If FW version request
     else if(command_byte == 0x22) {
-      uint8_t transfer_buffer[10];
-      const uint8_t sw_version[] = CONFIG_SW_STRING;
-      for(uint8_t i = 0; i < 10; i++) transfer_buffer[i] = 0;
+      uint8_t transfer_buffer[10] = CONFIG_SW_STRING;
+      for(uint8_t i = 0; i < CONFIG_SW_STRING_LENGTH; ++i) 
+        transfer_buffer[2 + (CONFIG_SW_STRING_LENGTH - i - 1)] = transfer_buffer[(CONFIG_SW_STRING_LENGTH - i - 1)];
+
       transfer_buffer[0] = 0x23;     // Start byte
       transfer_buffer[1] = 0x22;     // FW output byte
-      for(uint8_t i = 2; i < 8; i++) transfer_buffer[i] = (uint8_t)sw_version[i - 2];
       transfer_buffer[9] = 0x24;     // Stop byte
-      memcpy(global_com_data.tx_buffer, transfer_buffer, 10);
+    
+      global_com_data.tx_buffer = transfer_buffer;
       legacy_com_encoder(&global_com_data);
+      global_com_data.tx_buffer = NULL;
     }
 
     // Configuration save request
     else if(command_byte == 0x33) {
-      // Call save config procedure
       vfdco_clock_settings_save(0);
     }
-
     // Configuration reset request
     else if(command_byte == 0x34) {
-      // Call save config procedure
       vfdco_clock_settings_default();
     }
 
     // Bad command or bit error :( Some random return otherwise. You should never ever get to this point.
-    else{
-      vfdco_display_render_message((const char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, 0x00, CONFIG_MESSAGE_LONG);
-    }
+    else {}
   }
 }
 
@@ -779,18 +737,18 @@ const uint8_t serialized_settings_sizes[NUM_SERIALIZABLE] = {
   CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_GLOBAL_SIZES)
 };
 
-uint8_t _map_gui_instance_to_serialized_settings_size_index(gui_instance_t instance) {
+uint8_t _map_gui_instance_to_serialized_settings_index(gui_instance_t instance) {
   switch(instance) {
     #define CREATE_SERIALIZED_GUI_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
     CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_GUI_SWITCHES)
-    default: exit(-80);
+    default: exit(-1);
   }
 }
-uint8_t _map_lights_instance_to_serialized_settings_size_index(light_pattern_instance_t instance) {
+uint8_t _map_lights_instance_to_serialized_settings_index(light_pattern_instance_t instance) {
   switch(instance) {
     #define CREATE_SERIALIZED_LIGHTS_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
     CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_LIGHTS_SWITCHES)
-    default: exit(-81);
+    default: exit(-1);
   }
 }
 // ######## END OF DO NOT TOUCH SECTION ########

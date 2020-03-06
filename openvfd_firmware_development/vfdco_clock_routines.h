@@ -96,8 +96,8 @@ CREATE_SERIALIZED_GLOBAL(CREATE_SERIALIZED_INDEX)
 CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_INDEX)
 CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_INDEX)
 
-uint8_t _map_gui_instance_to_serialized_settings_size_index(gui_instance_t instance);
-uint8_t _map_lights_instance_to_serialized_settings_size_index(light_pattern_instance_t instance);
+uint8_t _map_gui_instance_to_serialized_settings_index(gui_instance_t instance);
+uint8_t _map_lights_instance_to_serialized_settings_index(light_pattern_instance_t instance);
 
 // All settings are tracked in serialized_settings
 uint8_t *const serialized_settings[NUM_SERIALIZABLE];
