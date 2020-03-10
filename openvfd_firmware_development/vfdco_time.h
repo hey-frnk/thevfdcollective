@@ -15,6 +15,10 @@
   ******************************************************************************
  **/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _VFDCO_TIME
 #define _VFDCO_TIME
 
@@ -41,9 +45,9 @@ typedef enum {
  * @brief Platform dependent clock related functions made independent
 **/
 // Returns milliseconds (GetTick/millis)
-uint32_t (*vfdco_time_get_milliseconds)(void);
+extern uint32_t (*vfdco_time_get_milliseconds)(void);
 // Delay in milliseconds
-void (*vfdco_time_delay_milliseconds)(uint32_t);
+extern void (*vfdco_time_delay_milliseconds)(uint32_t);
 
 
 /** Begin of:
@@ -78,4 +82,8 @@ void Time_Event_Reset(time_event_t *input);
 // Check if p1 has elapsed. If yes, return 1, else return 0
 unsigned char Time_Event_Update(time_event_t *input);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

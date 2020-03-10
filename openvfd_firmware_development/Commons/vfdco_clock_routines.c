@@ -18,20 +18,39 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-// Configuration header
-#include "../vfdco_config.h"
-// Low Level/Primitive libraries
-#include "../vfdco_serialization.h"		// Physical serialization driver
-#include "../vfdco_led.h"             // Physical LED driver
-#include "../vfdco_display.h"         // Physical display driver
-#include "../vfdco_time.h"            // Physical timing & RTC driver
-#include "../vfdco_hid.h"             // Physical HID driver
-#include "../vfdco_com.h"             // Physical Communication driver
-// Application specific libraries
-#include "../vfdco_lights.h"          // Library of light patterns
-#include "../vfdco_gui.h"             // Library of different user interfaces
-// Clock routine scheduler
-#include "../vfdco_clock_routines.h"  // Clock routine
+
+#ifndef __AVR__
+  // Configuration header
+  #include "../vfdco_config.h"
+  // Low Level/Primitive libraries
+  #include "../vfdco_serialization.h"		// Physical serialization driver
+  #include "../vfdco_led.h"             // Physical LED driver
+  #include "../vfdco_display.h"         // Physical display driver
+  #include "../vfdco_time.h"            // Physical timing & RTC driver
+  #include "../vfdco_hid.h"             // Physical HID driver
+  #include "../vfdco_com.h"             // Physical Communication driver
+  // Application specific libraries
+  #include "../vfdco_lights.h"          // Library of light patterns
+  #include "../vfdco_gui.h"             // Library of different user interfaces
+  // Clock routine scheduler
+  #include "../vfdco_clock_routines.h"  // Clock routine
+
+#else 
+  // Configuration header
+  #include "vfdco_config.h"
+  // Low Level/Primitive libraries
+  #include "vfdco_serialization.h"		// Physical serialization driver
+  #include "vfdco_led.h"             // Physical LED driver
+  #include "vfdco_display.h"         // Physical display driver
+  #include "vfdco_time.h"            // Physical timing & RTC driver
+  #include "vfdco_hid.h"             // Physical HID driver
+  #include "vfdco_com.h"             // Physical Communication driver
+  // Application specific libraries
+  #include "vfdco_lights.h"          // Library of light patterns
+  #include "vfdco_gui.h"             // Library of different user interfaces
+  // Clock routine scheduler
+  #include "vfdco_clock_routines.h"  // Clock routine
+#endif
 
 // Globally accessible parameters
 vfdco_time_t global_time;

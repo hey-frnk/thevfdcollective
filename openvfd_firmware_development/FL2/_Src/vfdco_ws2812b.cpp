@@ -60,7 +60,7 @@ static inline uint8_t _vfdco_clr_scale8(uint8_t x, uint8_t scale) {
 }
 #endif
 
-inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
+void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
   #ifdef CONFIG_ENABLE_GAMMACORRECTION
   rgb_arr[3 * index] = gamma8[g];
   rgb_arr[3 * index + 1] = gamma8[r];
@@ -78,18 +78,18 @@ inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
     #endif
   #endif
 }
-inline void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   vfdco_clr_set_RGB(index, r, g, b);
 }
-inline void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
+void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
   for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
-inline void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
 
-inline void vfdco_clr_render() {
-  for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) rgb_arr[i] >> _led_dim_factor;
+void vfdco_clr_render() {
+  for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) rgb_arr[i] >>= _led_dim_factor;
   render();
 }
 

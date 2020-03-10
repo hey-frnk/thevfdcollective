@@ -25,10 +25,19 @@
   ******************************************************************************
  **/
 
-#include "../vfdco_config.h"
-#include "../vfdco_led.h"
-#include "../vfdco_lights.h"
-#include "../vfdco_display.h"
+#ifndef __AVR__
+  #include "../vfdco_config.h"
+  #include "../vfdco_lights.h"
+  #include "../vfdco_led.h"
+  #include "../vfdco_display.h"
+
+#else
+  #include "vfdco_config.h"
+  #include "vfdco_lights.h"
+  #include "vfdco_led.h"
+  #include "vfdco_display.h"
+#endif
+
 // #include <stdlib.h>
 #include <string.h>
 

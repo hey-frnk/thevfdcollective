@@ -91,7 +91,7 @@ void    vfdco_clock_com_routine();
 // ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE in config.h, DO NOT CHANGE MANUALLY ########
 #define CREATE_SERIALIZED_INDEX(_globalindex, _size, _enum_map, _serializable_identifier) \
   enum { _serializable_identifier ## _INDEX = _globalindex }; \
-  uint8_t _serializable_identifier ## _arr[_size];
+  extern uint8_t _serializable_identifier ## _arr[_size];
 CREATE_SERIALIZED_GLOBAL(CREATE_SERIALIZED_INDEX)
 CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_INDEX)
 CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_INDEX)

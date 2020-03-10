@@ -1,3 +1,8 @@
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _VFDCO_HID_H
 #define _VFDCO_HID_H
 
@@ -31,4 +36,8 @@ void      vfdco_hid_button_retrieve_all(uint8_t *b0, uint8_t *b1, uint8_t *b2, u
 
 void      _vfdco_hid_button_set(uint16_t count, uint8_t button);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

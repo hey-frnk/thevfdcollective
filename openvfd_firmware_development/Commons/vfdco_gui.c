@@ -20,10 +20,19 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "../vfdco_config.h"
-#include "../vfdco_gui.h"
-#include "../vfdco_hid.h"
-#include "../vfdco_display.h"
+
+#ifndef __AVR__
+  #include "../vfdco_config.h"
+  #include "../vfdco_gui.h"
+  #include "../vfdco_hid.h"
+  #include "../vfdco_display.h"
+
+#else 
+  #include "vfdco_config.h"
+  #include "vfdco_gui.h"
+  #include "vfdco_hid.h"
+  #include "vfdco_display.h"
+#endif
 
 // vfdco_clock_routines.c dependence. Baad thing, but...
 extern vfdco_time_t global_time;

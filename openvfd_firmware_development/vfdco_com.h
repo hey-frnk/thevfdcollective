@@ -12,6 +12,10 @@
   ******************************************************************************
  **/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _VFDCO_COM_H
 #define _VFDCO_COM_H
 
@@ -36,4 +40,8 @@ extern struct COM_Data global_com_data;
 
 void COM_Handler_USB_Transfer(struct COM_Data *self);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

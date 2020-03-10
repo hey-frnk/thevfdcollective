@@ -22,10 +22,15 @@
   ******************************************************************************
  **/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _VFDCO_LIGHTS_H
 #define _VFDCO_LIGHTS_H
 
 #include "vfdco_time.h"
+#include "vfdco_led.h"
 #include "vfdco_hid.h"
 #include "vfdco_config.h"
 #include <stdint.h>
@@ -292,6 +297,10 @@ typedef union Light_Pattern {
 **/
 void Container_Light_Pattern_Clear(Light_Pattern *self);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 

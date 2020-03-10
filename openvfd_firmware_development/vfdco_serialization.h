@@ -11,6 +11,10 @@
   ******************************************************************************
  **/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _VFDCO_SERIALIZATION_H
 #define _VFDCO_SERIALIZATION_H
 
@@ -48,4 +52,8 @@ static inline uint16_t _vfdco_calculate_length(const uint8_t *length_arr, const 
 void vfdco_serialization_write(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length);
 SERIALIZATION_HEADER_STATUS_t vfdco_serialization_read(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
