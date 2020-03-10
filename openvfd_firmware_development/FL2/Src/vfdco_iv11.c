@@ -6,30 +6,58 @@
  *
  */
 
-
-#include <stdio.h>
+#include "stm32f0xx_hal.h"
 #include <string.h>
-#include "../vfdco_config.h"
-#include "../vfdco_display.h"
-#include "../vfdco_time.h"
+#include "../../vfdco_config.h"
+#include "../../vfdco_display.h"
+#include "../../vfdco_time.h"
 
 #ifdef _DISPLAY_IMPLEMENTATION
 #error "An implementation of the display driver already exists!"
 #endif
 #define _DISPLAY_IMPLEMENTATION
 
-#define NORENDER
-#undef NORENDER
+extern SPI_HandleTypeDef hspi1;
+extern TIM_HandleTypeDef htim16;
 
-void _vfdco_display_render_direct(uint8_t *data);
+uint8_t display_buf[CONFIG_NUM_DIGITS] = {0};
+const uint8_t _display_zeros[CONFIG_NUM_DIGITS] = {0}; // Somehow DMA doesn't like stack memory
+
+struct Display_Dimmer {
+  uint8_t dim_factor;
+  uint8_t dim_counter;
+};
+struct Display_Dimmer display_dimmer;
 
 void vfdco_display_set_dim_factor(uint8_t dim_factor) {
-  printf("Setting Display Dim Factor: %hhu", dim_factor);
+  display_dimmer.dim_factor = dim_factor;
+  display_dimmer.dim_counter = 0;
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+  if(htim->Instance == TIM16) {
+    if(display_dimmer.dim_counter < 1) {
+      // If the pulse is ON, write data to SPI
+      HAL_SPI_Transmit_DMA(&hspi1, display_buf, CONFIG_NUM_DIGITS);
+    } else {
+      // If the pulse is ON, else write zeros to SPI
+      HAL_SPI_Transmit_DMA(&hspi1, _display_zeros, CONFIG_NUM_DIGITS);
+    }
+  }
+}
+
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
+  // Count dimmer
+  ++display_dimmer.dim_counter;
+  if(display_dimmer.dim_counter == (1 << display_dimmer.dim_factor)) display_dimmer.dim_counter = 0;
+  // Toggle set/reset upon SPI transfer completion
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
 uint8_t vfdco_display_char_convert(char input) {
   // Takes char value (0 to 255) and converts to VFD clock display pattern
-  switch(input) {
+  switch(input){
     // seven little NUMBERS make a fire out of this flameeee
     case 0: return 0b11111100;
     case 1: return 0b01100000;
@@ -93,9 +121,9 @@ void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_reg
 
   // Remove leading zero
   if(time_mode == TIME_FORMAT_12H_NO_LZ) {
-    if(time->h > 12 && time->h < 22) _rreg[5] = ' ';
+    if(time->h > 12 && time->h < 22) _rreg[5] &= 0x01;
   }
-  _vfdco_display_render_direct(_rreg);
+  memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
 }
 
 void vfdco_display_render_date(vfdco_date_t *date, /*const uint8_t decimal_dot_register, */date_format_t date_mode) {
@@ -114,7 +142,7 @@ void vfdco_display_render_date(vfdco_date_t *date, /*const uint8_t decimal_dot_r
     _rreg[4] = vfdco_display_char_convert(date->m % 10);
     _rreg[5] = vfdco_display_char_convert(date->m / 10);
   }
-  _vfdco_display_render_direct(_rreg);
+  memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
 }
 
 void vfdco_display_render_message(const char *message, const uint8_t decimal_dot_register, uint16_t delay) {
@@ -122,78 +150,21 @@ void vfdco_display_render_message(const char *message, const uint8_t decimal_dot
   for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
     _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
-  _vfdco_display_render_direct(_rreg);
-  printf("Delay of %hu milliseconds by message\n", delay);
-}
-
-void _reverse(char *str) { // copypasta https://codingpuzzles.com/reverse-a-null-terminated-string-in-c-or-c-59acaca9b1f9
-   char* end = str;
-   char tmp;
-   if (str) {
-      while (*end) { /* find end of the string */
-         ++end;
-      }
-      --end; /* set one char back, since
-             last char is null */
-      /* swap characters from start of string
-       *  with the end of the
-       *  string, until the pointers
-       *  meet in middle.
-       */
-       while (str < end) {
-          tmp = *str;
-          *str++ = *end;
-          *end-- = tmp;
-       }
-    }
- }
-
-void _vfdco_display_render_direct(uint8_t *data) {
-  #ifndef NORENDER
-  // Five lines
-  char seg_h_on[]  = "---";
-  char seg_h_off[] = "   ";
-  char seg_v_on[]  = "|";
-  char seg_v_off[] = " ";
-
-  //  ---    ---    ---    ---    ---    ---
-  // |   |  |   |  |   |  |   |  |   |  |   |
-  //  ---    ---    ---    ---    ---    ---
-  // |   |  |   |  |   |  |   |  |   |  |   |
-  //  ---    ---    ---    ---    ---    ---
-
-  // Segment a
-  printf("\n ");
-  for(int_fast8_t i = CONFIG_NUM_DIGITS - 1; i >= 0; --i)
-    printf("%s    ", ((data[i] >> 7) & 0x01) ? seg_h_on : seg_h_off);
-  printf("\n");
-
-  // Segment b, f
-  for(int_fast8_t i = CONFIG_NUM_DIGITS - 1; i >= 0; --i)
-    printf("%s   %s  ", ((data[i] >> 2) & 0x01) ? seg_v_on : seg_v_off, ((data[i] >> 6) & 0x01) ? seg_v_on : seg_v_off);
-  printf("\n");
-
-  // Segment g
-  printf(" ");
-  for(int_fast8_t i = CONFIG_NUM_DIGITS - 1; i >= 0; --i)
-    printf("%s    ", ((data[i] >> 1) & 0x01) ? seg_h_on : seg_h_off);
-  printf("\n");
-
-  // Segment c, e
-  for(int_fast8_t i = CONFIG_NUM_DIGITS - 1; i >= 0; --i)
-    printf("%s   %s  ", ((data[i] >> 3) & 0x01) ? seg_v_on : seg_v_off, ((data[i] >> 5) & 0x01) ? seg_v_on : seg_v_off);
-  printf("\n");
-
-  // Segment d
-  printf(" ");
-  for(int_fast8_t i = CONFIG_NUM_DIGITS - 1; i >= 0; --i)
-    printf("%s    ", ((data[i] >> 4) & 0x01) ? seg_h_on : seg_h_off);
-  printf("\n");
-  #endif
+  if(delay) {
+    // Temporarily disable interrupts, write message
+    NVIC_DisableIRQ(TIM16_IRQn);
+    HAL_SPI_Transmit(&hspi1, _rreg, CONFIG_NUM_DIGITS, 40);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+    vfdco_time_delay_milliseconds(delay);
+    NVIC_EnableIRQ(TIM16_IRQn);
+  } else {
+    memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
+  }
 }
 
 // Function mapping
 void vfdco_display_init(uint8_t initial_dim_factor) {
-  printf("IV-11 fake debug display init with %d digits, successful\n", CONFIG_NUM_DIGITS);
-  printf("Setting Display Dim Factor: %hhu", initial_dim_factor);
+  vfdco_display_set_dim_factor(initial_dim_factor);
+  HAL_TIM_Base_Start_IT(&htim16);
 }

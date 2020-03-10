@@ -566,7 +566,7 @@ void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct
       }
 
       // Answer with a beginning of a message. If it's all good, the PC controller will complete the message :p
-      const uint8_t transfer_buffer[10] = {0x23, 0x10, 'T', 'i', 'm', 'e', ' ', 'S', 'y', 0x24};
+      uint8_t transfer_buffer[10] = {0x23, 0x10, 'T', 'i', 'm', 'e', ' ', 'S', 'y', 0x24};
       global_com_data.tx_buffer = transfer_buffer;
       legacy_com_encoder(&global_com_data);
       global_com_data.tx_buffer = NULL;
@@ -681,7 +681,7 @@ void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct
       msg_delay *= (uint16_t)input_buffer[20];
       uint8_t offset = 2;
       for(uint8_t i = 0; i < (1 + input_buffer[21] + input_buffer[22]); ++i) {
-        vfdco_display_render_message(input_buffer + offset, 0x00, msg_delay);
+        vfdco_display_render_message((char *)input_buffer + offset, 0x00, msg_delay);
         offset += CONFIG_NUM_DIGITS;
       }
     }

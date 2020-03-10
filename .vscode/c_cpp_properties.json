@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/Applications/Arduino.app/Contents/Java/hardware/**",
+                "/Users/HARDWARECOP/Documents/Arduino/libraries/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [],
+            "compilerPath": "/usr/local/bin/gcc-8",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

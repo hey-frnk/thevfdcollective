@@ -513,8 +513,6 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self) {
   GUI_Format_Save = NULL;
 }
 
-void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self);
-
 
 
 /**
