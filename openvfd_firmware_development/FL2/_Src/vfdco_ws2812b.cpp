@@ -12,6 +12,8 @@
 #include <Arduino.h>
 #include "vfdco_led.h"
 
+#define    LED_PIN    13    // ATMEGA: 19   LED Pin, LEDPIN
+
 #define    PORT        (PORTB)          // Digital pin's port
 #define    PORT_PIN    (PORTB5)         // Digital pin's bit position
 #define    NUM_BITS    (8)              // Const 8
@@ -43,6 +45,7 @@ static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafru
 #endif
 
 void vfdco_clr_init(uint8_t initial_dim_factor) {
+  pinMode(LED_PIN, OUTPUT);
   _led_dim_factor = initial_dim_factor;
 }
 
@@ -88,6 +91,37 @@ void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
 
+void vfdco_clr_target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
+  tp[0] = g;
+  tp[1] = r;
+  tp[2] = b;
+}
+void vfdco_clr_target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+  tp[0] = g;
+  tp[1] = r;
+  tp[2] = b;
+}
+void vfdco_clr_target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 3) vfdco_clr_target_RGB(tp + i, r, g, b);
+}
+void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 3) vfdco_clr_target_RGB(tp + i, r, g, b);
+}
+
+/**
+ * @brief Smooth fading between intermediate target array and LED buffer
+ * @param target_arr base address of intermediate target array
+ */
+void vfdco_clr_minimize_difference(uint8_t *target_arr) {
+  uint8_t dt = 0;
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
+    if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
+    else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
+    else ++dt;
+  }
+  // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
+}
+
 void vfdco_clr_render() {
   for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) rgb_arr[i] >>= _led_dim_factor;
   render();
@@ -104,7 +138,7 @@ void vfdco_clr_render() {
 
 uint32_t t_f = 0;
 
-void render(void) {
+inline void render(void) {
   while((micros() - t_f) < 50L);  // wait for 50us (data latch)
   cli(); // Disable interrupts so that timing is as precise as possible
   volatile uint8_t

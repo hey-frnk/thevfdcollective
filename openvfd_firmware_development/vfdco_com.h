@@ -38,6 +38,7 @@ struct COM_Data {
 
 extern struct COM_Data global_com_data;
 
+void COM_Handler_USB_Init();
 void COM_Handler_USB_Transfer(struct COM_Data *self);
 
 #endif

@@ -178,5 +178,9 @@ void vfdco_display_render_direct(uint8_t *data) {
 
 // Function mapping
 void vfdco_display_init(uint8_t initial_dim_factor) {
+  pinMode(CLOCK_PIN, OUTPUT);
+  pinMode(LATCH_PIN, OUTPUT);
+  pinMode(DATA_PIN, OUTPUT);
+
   vfdco_display_set_dim_factor(initial_dim_factor);
 }

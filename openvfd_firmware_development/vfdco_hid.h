@@ -36,6 +36,8 @@ void      vfdco_hid_button_retrieve_all(uint8_t *b0, uint8_t *b1, uint8_t *b2, u
 
 void      _vfdco_hid_button_set(uint16_t count, uint8_t button);
 
+void      vfdco_hid_init();
+
 #endif
 
 #ifdef __cplusplus

@@ -51,6 +51,39 @@ void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 	for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
 }
 
+void vfdco_clr_target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
+  tp[0] = g;
+  tp[1] = r;
+  tp[2] = b;
+  tp[3] = 0;
+}
+void vfdco_clr_target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+  tp[0] = g;
+  tp[1] = r;
+  tp[2] = b;
+  tp[3] = w;
+}
+void vfdco_clr_target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) vfdco_clr_target_RGB(tp + i, r, g, b);
+}
+void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) vfdco_clr_target_RGBW(tp + i, r, g, b, w);
+}
+
+/**
+ * @brief Smooth fading between intermediate target array and LED buffer
+ * @param target_arr base address of intermediate target array
+ */
+void vfdco_clr_minimize_difference(uint8_t *target_arr) {
+  uint8_t dt = 0;
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
+    if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
+    else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
+    else ++dt;
+  }
+  // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
+}
+
 void vfdco_clr_render() {
   // printf("SK6812 tester: Render function started with %hhu pixels, %hhu bpp, %hhu bytes.\n", n um_rgb, n um_bpp, n um_bytes);
   printf("                                   rgbw_arr: ");

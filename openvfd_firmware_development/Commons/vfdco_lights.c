@@ -50,12 +50,6 @@ static uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
 // Generate random number
 static uint8_t led_color_simple_randomizer(uint8_t bits);
 
-static void _target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b);
-static void _target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w);
-static void _target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b);
-static void _target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w);
-static void _minimize_difference(uint8_t *target_arr);
-
 /** Begin of:
   * @tableofcontents SECTION_HSL
  **/
@@ -325,7 +319,7 @@ static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
 static void _Light_Pattern_Static_Update(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
   if(Time_Event_Update(&self->t)) {
-    _minimize_difference(self->target_arr);
+    vfdco_clr_minimize_difference(self->target_arr);
     vfdco_clr_render();
   }
 }
@@ -336,20 +330,26 @@ static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) 
   if(self->position < NUM_STATIC_T1) {
     // Single Color Special
     switch(self->position) {
-      case 0: _target_all_RGB   (self->target_arr,   0,   0,   0     ); break;
-      case 1: _target_all_RGBW  (self->target_arr,   0,   0,  96, 255); break;
-      case 2: _target_all_RGBW  (self->target_arr,   0,   0,   0, 255); break;
+      #ifndef __AVR__
+      case 0: vfdco_clr_target_all_RGB   (self->target_arr,   0,   0,   0     ); break;
+      case 1: vfdco_clr_target_all_RGBW  (self->target_arr,   0,   0,  96, 255); break;
+      case 2: vfdco_clr_target_all_RGBW  (self->target_arr,   0,   0,   0, 255); break;
+      #else
+      case 0: vfdco_clr_target_all_RGB   (self->target_arr,   0,   0,   0     ); break;
+      case 1: vfdco_clr_target_all_RGBW  (self->target_arr, 255, 255, 255,   0); break;
+      case 2: vfdco_clr_target_all_RGBW  (self->target_arr, 255, 200,  32,   0); break;
+      #endif
     }
   } else if(self->position < NUM_STATIC_T2) {
     // Single Color
     uint32_t target_color = _led_color_hsl2rgb(Static_Color_Hues[self->position - NUM_STATIC_T1], 255, 127);
-    _target_all_RGB(self->target_arr, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+    vfdco_clr_target_all_RGB(self->target_arr, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
 
   } else { // < T4
     // Multicolor, just use legacy colors, they are hand crafted and look better
     uint8_t t_pos = self->position - NUM_STATIC_T2;
     for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-      _target_RGB(self->target_arr + 4 * i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
+      vfdco_clr_target_RGB(self->target_arr + CONFIG_NUM_BPP * i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
     }
   }
 }
@@ -441,7 +441,7 @@ void Light_Pattern_Serial0_Init(struct Light_Pattern_Serial0 *self, uint8_t *set
 static void _Light_Pattern_Serial1_Update(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Serial1 *self = (struct Light_Pattern_Serial1 *)unsafe_self;
   if(Time_Event_Update(&self->t)) {
-    _minimize_difference(self->target_arr);
+    vfdco_clr_minimize_difference(self->target_arr);
     vfdco_clr_render();
   }
 }
@@ -450,7 +450,7 @@ static inline void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
 }
 void Light_Pattern_Serial1_Init(struct Light_Pattern_Serial1 *self, uint8_t *settings) {
   for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i)
-    _target_RGBW(self->target_arr + 4 * i, settings[4 * i], settings[4 * i + 1], settings[4 * i + 2], settings[4 * i + 3]);
+    vfdco_clr_target_RGBW(self->target_arr + CONFIG_NUM_BPP * i, settings[4 * i], settings[4 * i + 1], settings[4 * i + 2], settings[4 * i + 3]);
   
   self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
   self->settings = settings;
@@ -811,8 +811,8 @@ static void _Light_Pattern_Time_Code_Update(Light_Pattern *unsafe_self) {
     };
 
     for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; i++)
-      _target_RGB(target_arr + 4 * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
-    _minimize_difference(target_arr);
+      vfdco_clr_target_RGB(target_arr + CONFIG_NUM_BPP * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
+    vfdco_clr_minimize_difference(target_arr);
     vfdco_clr_render();
   }
 }
@@ -1072,40 +1072,6 @@ static uint8_t led_color_simple_randomizer(uint8_t bits) {
   _rra = _rrz ^ _rrt ^ (_rrz >> 3) ^ (_rrt << 1);
   return _rra & ((1 << bits) - 1);
 }
-
-static void _target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
-  tp[0] = g;
-  tp[1] = r;
-  tp[2] = b;
-  tp[3] = 0;
-}
-static void _target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-  tp[0] = g;
-  tp[1] = r;
-  tp[2] = b;
-  tp[3] = w;
-}
-static void _target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGB(tp + i, r, g, b);
-}
-static void _target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) _target_RGBW(tp + i, r, g, b, w);
-}
-
-/**
- * @brief Smooth fading between intermediate target array and LED buffer
- * @param target_arr base address of intermediate target array
- */
-static void _minimize_difference(uint8_t *target_arr) {
-  uint8_t dt = 0;
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
-    if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
-    else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
-    else ++dt;
-  }
-  // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
-}
-
 
 /*
 Waiting for your call and for the mood

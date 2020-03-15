@@ -4,6 +4,10 @@
 #include "../vfdco_com.h"
 #include <stdio.h>
 
+void COM_Handler_USB_Init() {
+  return;
+}
+
 void COM_Handler_USB_Transfer(struct COM_Data *self) {
   if(!self->tx_buffer) {
     printf("Error, transfer buffer NULL\n");

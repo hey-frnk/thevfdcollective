@@ -32,9 +32,9 @@ extern "C" {
 
 // ROUTINE SETTINGS
 // How often should we ask the RTC what time it is? (Milliseconds)
-#define CONFIG_RTC_UPDATE_INTERVAL 222
+#define CONFIG_RTC_UPDATE_INTERVAL 850
 // How quickly do we want to update the display?
-#define CONFIG_DISPLAY_UPDATE_INTERVAL 12
+#define CONFIG_DISPLAY_UPDATE_INTERVAL 11
 
 // DISPLAY & LIGHT PATTERN DIM FACTORS
 #define CONFIG_BRIGHTNESS_MAX   0 // 1/1 brightness(no dimming)

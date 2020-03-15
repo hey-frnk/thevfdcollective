@@ -57,6 +57,10 @@ void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {
   HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, _i2cWrite, 7, 1000);
 }
 
+void vfdco_rtc_init() {
+  return;
+}
+
 time_event_t Time_Event_Init(uint16_t interval) {
   time_event_t iE;
   iE.interval = interval;

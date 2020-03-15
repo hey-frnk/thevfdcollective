@@ -113,18 +113,11 @@ void vfdco_clock_initializer() {
 
   // Read in all saved settings from (de)serializer
   vfdco_clock_serialization_initializer();
-
-  // Initialize power management (night shift/energy saving)
+  vfdco_clock_hid_initializer();
+  vfdco_clock_time_initializer();
   vfdco_clock_power_initializer();
-
-  // Initialize display driver first, then GUI
-  vfdco_display_init(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
   vfdco_clock_gui_initializer();
-
-  // Initialize LED driver first, then Light Patterns
-  vfdco_clr_init(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
   vfdco_clock_lights_initializer();
-
   vfdco_clock_com_initializer();
   
   // All good? All good! Fluorescence, say hello!
@@ -136,7 +129,7 @@ void vfdco_clock_initializer() {
 /** Begin of:
   * @tableofcontents SECTION_PERIPHERAL_INITIALIZERS
  **/
-void vfdco_clock_serialization_initializer() {
+inline void vfdco_clock_serialization_initializer() {
   // Load all clock parameters
   SERIALIZATION_HEADER_STATUS_t read_status = vfdco_serialization_read(serialized_settings, serialized_settings_sizes, NUM_SERIALIZABLE);
   if(read_status != SERIALIZATION_HEADER_STATUS_OK) {
@@ -145,28 +138,44 @@ void vfdco_clock_serialization_initializer() {
   }
 }
 
-void vfdco_clock_power_initializer() {
+inline void vfdco_clock_hid_initializer() {
+  // Init HID configuration
+  vfdco_hid_init();
+}
+
+inline void vfdco_clock_time_initializer() {
+  // Real time clock or time initializer 
+  vfdco_rtc_init();
+}
+
+inline void vfdco_clock_power_initializer() {
   // Start by night shift off
   global_night_shift_state = NIGHT_SHIFT_OFF;
 }
 
-void vfdco_clock_gui_initializer() {
+inline void vfdco_clock_gui_initializer() {
+  // Initialize display driver first, then GUI
+  vfdco_display_init(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
   // Start by creating a time instance
   set_next_gui_instance(GUI_TIME);
 }
 
-void vfdco_clock_lights_initializer() {
+inline void vfdco_clock_lights_initializer() {
+  // Initialize LED driver first, then Light Patterns
+  vfdco_clr_init(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
   // Start by loading the saved lights instance
   set_next_lights_instance((light_pattern_instance_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter]);
 }
 
-void vfdco_clock_com_initializer() {
+inline void vfdco_clock_com_initializer() {
+  // USB virtual com port init
+  COM_Handler_USB_Init();
+
   global_com_data.rx_buffer_data_present = 0;
   global_com_data.rx_buffer_length = CONFIG_COM_RX_BUF_MAX;
   global_com_data.tx_buffer_length = CONFIG_COM_TX_BUF_MAX;
   memset(global_com_data.rx_buffer, 0x00, global_com_data.rx_buffer_length);
   global_com_data.tx_buffer = NULL;
-  // memset(global_com_data.tx_buffer, 0x00, global_com_data.tx_buffer_length);
 }
 
 /** Begin of:

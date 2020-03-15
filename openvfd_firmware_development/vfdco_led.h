@@ -40,6 +40,13 @@ void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w);
 // Colors all written? Shuttle the data bit by bit into the LEDs
 void vfdco_clr_render();
 
+// 
+void vfdco_clr_target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b);
+void vfdco_clr_target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w);
+void vfdco_clr_target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b);
+void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w);
+void vfdco_clr_minimize_difference(uint8_t *target_arr);
+
 #endif
 
 #ifdef __cplusplus

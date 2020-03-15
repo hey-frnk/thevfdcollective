@@ -25,6 +25,10 @@ uint8_t vfdco_hid_button_retrieve(uint8_t button) {
   return (buttonRegister >> (button << 1)) & 0b00000011;
 }
 
+void vfdco_hid_init() {
+  return;
+}
+
 void vfdco_hid_button_retrieve_all(uint8_t *b0, uint8_t *b1, uint8_t *b2, uint8_t *b3) {
   *b0 = vfdco_hid_button_retrieve(BUTTON_F1);
   vfdco_hid_button_reset(BUTTON_F1);

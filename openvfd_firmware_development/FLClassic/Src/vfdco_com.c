@@ -3,6 +3,10 @@
 #include "../../vfdco_config.h"
 #include "../../vfdco_com.h"
 
+void COM_Handler_USB_Init() {
+  return;
+}
+
 void COM_Handler_USB_Transfer(struct COM_Data *self) {
   if(self->tx_buffer) CDC_Transmit_FS(self->tx_buffer, self->tx_buffer_length);
 }
