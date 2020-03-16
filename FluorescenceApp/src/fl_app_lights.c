@@ -4,8 +4,7 @@
   * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
   * @version  V1.0
   * @date     23-December-2019
-  * @brief    This file contains definitions for light patterns
-  *           Designed to be used with the Fluorescence App
+  * @brief    A stripped down version of lights.c to work with FL App
   ******************************************************************************
   * @tableofcontents Table of contents, enter to navigate:
   * SECTION_SUPPORTING_FUNCTIONS
@@ -223,12 +222,12 @@ static const uint8_t Static_Color_Rainbows[][6 * 3] =
 };
 
 // Spectrum, Rainbow & Chase Constants
-enum {LIGHTNESS_H  = 127,   LIGHTNESS_M  = 127,   LIGHTNESS_L  = 127   };
-enum {SATURATION_H = 255,   SATURATION_M = 255,   SATURATION_L = 255   };
+enum {LIGHTNESS_H  = 140,   LIGHTNESS_M  = 140,   LIGHTNESS_L  = 140   };
+enum {SATURATION_H = 100,   SATURATION_M = 100,   SATURATION_L = 100   };
 
 // Time Code Constants
 // ---- LED Resistor preset GRB     0: Off     1: Brown        2: Red       3: Orange     4: Yellow      5: Green     6: Blue      7: Purple      8: Gray       9: White
-static const uint8_t Time_Code_Colors[][3] =  {{0, 0, 0}, {128, 255, 64}, {0, 255, 0}, {30, 255, 0}, {125, 255, 0}, {255, 0, 0}, {0, 0, 255}, {0, 200, 255}, {40, 40, 60}, {255, 255, 255}};
+static const uint8_t Time_Code_Colors[][3] =  {{0, 0, 0}, {128, 255, 64}, {0, 255, 0}, {255, 220, 0}, {255, 255, 0}, {255, 0, 0}, {0, 0, 255}, {0, 200, 255}, {40, 40, 60}, {255, 255, 255}};
 
 // Moments Of Bliss Constants
 #define LIGHTS_BLISS_MAXMOMENTS 6

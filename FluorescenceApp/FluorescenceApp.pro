@@ -44,7 +44,7 @@ SOURCES += \
     clickablelabel.cpp \
     main.cpp \
     fluorescenceapp.cpp \
-    src/fl_app_colors.c \
+    src/fl_app_colors.cpp \
     src/fl_app_lights.c \
     src/fl_app_time.c
 

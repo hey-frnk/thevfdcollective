@@ -11,6 +11,9 @@
  **/
 #include <stdio.h>
 #include "fl_app_colors.h"
+#include "fluorescenceapp.h"
+#include "ui_fluorescenceapp.h"
+#include "QtColorWidgets/colorwidgets_global.hpp"
 
 #ifdef _LED_IMPLEMENTATION
 #error "An implementation of the LED driver already exists!"
@@ -18,6 +21,7 @@
 #define _LED_IMPLEMENTATION
 
 uint8_t rgb_arr[CONFIG_NUM_BYTES] = {0};
+extern QWidget *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
 
 void vfdco_clr_init(uint8_t initial_dim_factor) {
 	// Allocate color array and DMA buffer
@@ -74,33 +78,21 @@ void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uin
  * @param target_arr base address of intermediate target array
  */
 void vfdco_clr_minimize_difference(uint8_t *target_arr) {
-  uint8_t dt = 0;
+  /*uint8_t dt = 0;
   for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
     if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
     else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
     else ++dt;
-  }
-  // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
+  }*/
+  memcpy(rgb_arr, target_arr, CONFIG_NUM_BYTES);
 }
 
 void vfdco_clr_render() {
-  // printf("SK6812 tester: Render function started with %hhu pixels, %hhu bpp, %hhu bytes.\n", n um_rgb, n um_bpp, n um_bytes);
-  printf("                                   rgbw_arr: ");
-  for (uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-		// Skip Zeros
-		if(rgb_arr[4*i]) printf("(%03hhu  ", rgb_arr[4*i]);
-		else printf("(     ");
-
-		if(rgb_arr[4*i + 1]) printf("%03hhu  ", rgb_arr[4*i + 1]);
-		else printf("     ");
-
-		if(rgb_arr[4*i + 2]) printf("%03hhu  ", rgb_arr[4*i + 2]);
-		else printf("     ");
-
-		if(rgb_arr[4*i + 3]) printf("%03hhu)", rgb_arr[4*i + 3]);
-		else printf("   )");
-  }
-  printf("\n");
+    for(uint_fast8_t i = 0; i < NUM_PRESET_DYNAMIC_COLORS; ++i) {
+        dynamic_cast<color_widgets::ColorPreview *>(preset_dynamic_colors[CONFIG_NUM_PIXELS - i - 1])->setColor(
+            QColor::fromRgb(rgb_arr[4 * i + 1], rgb_arr[4 * i], rgb_arr[4 * i + 2])
+        );
+    }
 }
 
 

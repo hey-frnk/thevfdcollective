@@ -21,6 +21,9 @@
   <property name="windowTitle">
    <string>FluorescenceApp</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
   </property>
@@ -52,6 +55,9 @@
     <property name="title">
      <string>Connect to Fluorescence</string>
     </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
     <widget class="QPushButton" name="com_connect">
      <property name="geometry">
       <rect>
@@ -75,7 +81,7 @@ color: rgb(255, 255, 255);</string>
        <x>5</x>
        <y>50</y>
        <width>151</width>
-       <height>32</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -84,6 +90,9 @@ color: rgb(255, 255, 255);</string>
        <weight>50</weight>
        <bold>false</bold>
       </font>
+     </property>
+     <property name="frame">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="com_text">
@@ -136,108 +145,6 @@ color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="panel_main_control" native="true">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>30</y>
-      <width>501</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <widget class="QPushButton" name="main_settings">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>0</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Settings</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_timesync">
-     <property name="geometry">
-      <rect>
-       <x>300</x>
-       <y>0</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Time
-Sync</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_custom">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>0</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Custom
-Colors</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_message">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>0</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Send
-Message</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_preset">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>0</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Color
-Presets</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QWidget" name="panel_welcome" native="true">
     <property name="enabled">
      <bool>true</bool>
@@ -257,9 +164,9 @@ Presets</string>
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>110</y>
+       <y>100</y>
        <width>401</width>
-       <height>81</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="font">
@@ -274,7 +181,7 @@ Presets</string>
       <string notr="true">color: rgb(128, 0, 128);</string>
      </property>
      <property name="text">
-      <string>CLICK</string>
+      <string>READY</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -283,10 +190,10 @@ Presets</string>
     <widget class="QLabel" name="welcome_text">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>210</y>
-       <width>381</width>
-       <height>16</height>
+       <x>110</x>
+       <y>190</y>
+       <width>491</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="font">
@@ -300,7 +207,7 @@ Presets</string>
       <string notr="true">color: rgb(16, 128, 128)</string>
      </property>
      <property name="text">
-      <string>on the controls above to connect fluorescence &amp; get started</string>
+      <string>to connect. use the controls above to connect fluorescence &amp; get started</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -336,6 +243,9 @@ Presets</string>
        <family>Arial</family>
       </font>
      </property>
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -346,8 +256,8 @@ Presets</string>
       <widget class="QLabel" name="static_intro">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>10</y>
+         <x>20</x>
+         <y>30</y>
          <width>411</width>
          <height>16</height>
         </rect>
@@ -360,14 +270,14 @@ Presets</string>
         </font>
        </property>
        <property name="text">
-        <string>Some color presets that look fantastic on fluorescence.</string>
+        <string>Some hand crafted presets that look fantastic on Fluorescence.</string>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_rainbow">
        <property name="geometry">
         <rect>
-         <x>220</x>
-         <y>130</y>
+         <x>190</x>
+         <y>120</y>
          <width>281</width>
          <height>81</height>
         </rect>
@@ -379,14 +289,14 @@ Presets</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>:/Resources/rainbow_alt.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/rainbow_alt.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_pastelrainbow">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>90</y>
+         <x>50</x>
+         <y>80</y>
          <width>201</width>
          <height>31</height>
         </rect>
@@ -398,14 +308,14 @@ Presets</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>:/Resources/pastelrainbow.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/pastelrainbow.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_red2green">
        <property name="geometry">
         <rect>
-         <x>300</x>
-         <y>70</y>
+         <x>310</x>
+         <y>80</y>
          <width>161</width>
          <height>31</height>
         </rect>
@@ -417,13 +327,13 @@ Presets</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>:/Resources/red2green_alt.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/red2green_alt.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_green2blue">
        <property name="geometry">
         <rect>
-         <x>470</x>
+         <x>490</x>
          <y>280</y>
          <width>171</width>
          <height>31</height>
@@ -436,14 +346,14 @@ Presets</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>:/Resources/green2blue.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/green2blue.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_red2blue">
        <property name="geometry">
         <rect>
-         <x>530</x>
-         <y>170</y>
+         <x>560</x>
+         <y>150</y>
          <width>141</width>
          <height>31</height>
         </rect>
@@ -455,13 +365,1688 @@ Presets</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>:/Resources/red2blue1.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_2">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>30</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>#magenta</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_3">
+       <property name="geometry">
+        <rect>
+         <x>650</x>
+         <y>30</y>
+         <width>61</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>#off</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_4">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>90</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 255);</string>
+       </property>
+       <property name="text">
+        <string>#violet</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_5">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>150</y>
+         <width>61</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(252, 1, 7);</string>
+       </property>
+       <property name="text">
+        <string>#red</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_6">
+       <property name="geometry">
+        <rect>
+         <x>640</x>
+         <y>230</y>
+         <width>71</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(15, 128, 255);</string>
+       </property>
+       <property name="text">
+        <string>#blue</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_7">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>210</y>
+         <width>81</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>#cyan</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_8">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>220</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 1);</string>
+       </property>
+       <property name="text">
+        <string>#green</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_9">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>280</y>
+         <width>161</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(254, 204, 102);</string>
+       </property>
+       <property name="text">
+        <string>#warmwhite</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_10">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>280</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(204, 204, 204);</string>
+       </property>
+       <property name="text">
+        <string>#white</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_11">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>220</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(253, 128, 8);</string>
+       </property>
+       <property name="text">
+        <string>#orange</string>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="static_red2green_12">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>210</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(185, 161, 29);</string>
+       </property>
+       <property name="text">
+        <string>#yellow</string>
        </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_presets_dynamic">
       <attribute name="title">
        <string>Dynamic Presets</string>
+      </attribute>
+      <widget class="QPushButton" name="dynamic_spectrum">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Spectrum Fade</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="dynamic_rainbow">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>10</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Rainbow Fade</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="dynamic_bliss_dnc">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>10</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Moments of Bliss</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="dynamic_timecode">
+       <property name="geometry">
+        <rect>
+         <x>490</x>
+         <y>10</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Time Code</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="dynamic_police">
+       <property name="geometry">
+        <rect>
+         <x>610</x>
+         <y>10</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Police Lights</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="dynamic_chase">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>10</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Chase Fade</string>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="dynamic_c1">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>90</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="dynamic_c2">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>90</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="dynamic_c3">
+       <property name="geometry">
+        <rect>
+         <x>290</x>
+         <y>90</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="dynamic_c4">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>90</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="dynamic_c5">
+       <property name="geometry">
+        <rect>
+         <x>510</x>
+         <y>90</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="dynamic_c6">
+       <property name="geometry">
+        <rect>
+         <x>620</x>
+         <y>90</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="com_text_2">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>60</y>
+         <width>481</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>Animated visualization. We know it's prettier on Fluorescence.</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="com_text_3">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>190</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>Time:</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="dynamic_t" native="true">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>190</y>
+         <width>631</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_1">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_2">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_3">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_4">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_5">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_6">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_7">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_8">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_9">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_10">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_11">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_12">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_13">
+        <property name="geometry">
+         <rect>
+          <x>360</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_14">
+        <property name="geometry">
+         <rect>
+          <x>390</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_15">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_16">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_17">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_18">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_19">
+        <property name="geometry">
+         <rect>
+          <x>540</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_20">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="color_widgets::ColorPreview" name="dynamic_t_21">
+        <property name="geometry">
+         <rect>
+          <x>600</x>
+          <y>0</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="panel_dyn_spectrum" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>741</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <widget class="QPushButton" name="panel_dyn_spectrum_set">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>20</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_spectrum_ptext1">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>10</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>saturation:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_spectrum_param_1">
+        <property name="geometry">
+         <rect>
+          <x>340</x>
+          <y>10</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>high</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>medium</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>low</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_spectrum_ptext2">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>50</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>lightness:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_spectrum_param_2">
+        <property name="geometry">
+         <rect>
+          <x>340</x>
+          <y>50</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>medium</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>high</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>low</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_spectrum_intro">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>151</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Guides you through
+all the amazing colors.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="panel_dyn_bliss" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>741</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <widget class="QPushButton" name="panel_dyn_bliss_set">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>10</y>
+          <width>221</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_bliss_ptext">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>mood:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_bliss_param">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>10</y>
+          <width>271</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>nordlicht</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>pastellfrühling</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>hummelhonig</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>meeresgeflüster</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>herbstlagerfeuer</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>abendhimmel</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_bliss_description">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>52</y>
+          <width>701</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Means wumbo in German. i wumbo, you wumbo
+he she me wumbo. That's first grade Spongebob!</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="panel_dyn_rnb" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>741</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <widget class="QPushButton" name="panel_dyn_rnb_set">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>20</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_rnb_ptext_1">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>distance:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_rnb_p1_1">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>chill</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QSlider" name="panel_dyn_rnb_param1">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>20</y>
+          <width>160</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>10</number>
+        </property>
+        <property name="maximum">
+         <number>42</number>
+        </property>
+        <property name="value">
+         <number>18</number>
+        </property>
+        <property name="tracking">
+         <bool>true</bool>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::TicksBelow</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_rnb_p1_2">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>tight</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_rnb_ptext_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>saturation:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_rnb_param2">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>50</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>high</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>medium</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>low</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="panel_dyn_chase" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>741</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <widget class="QPushButton" name="panel_dyn_chase_set">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>20</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_chase_ptext_1">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>distance:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_chase_p1">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>chill</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QSlider" name="panel_dyn_chase_param1">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>20</y>
+          <width>160</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>6</number>
+        </property>
+        <property name="value">
+         <number>0</number>
+        </property>
+        <property name="tracking">
+         <bool>true</bool>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::TicksBelow</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_chase_p2">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>tight</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_chase_ptext_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>mode:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_chase_param2">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>50</y>
+          <width>271</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>from right to left</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>from left to right</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>flip direction every second</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>flip sound sensitive</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="panel_dyn_tcode" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>741</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <widget class="QPushButton" name="panel_dyn_tcode_set">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>20</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_tcode_intro">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>321</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>For every digit value, there is a different color!</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_tcode_ptext">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>color palette:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_tcode_param1">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>50</y>
+          <width>251</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>resistor value code</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>rainbow</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="panel_dyn_cop" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>741</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <widget class="QPushButton" name="panel_dyn_cop_set">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>20</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_cop_intro">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>411</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Should Fluorescence be on patrol or a high speed, hot pursuit?</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_cop_ptext">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>pattern:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_cop_param1">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>50</y>
+          <width>251</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>patrol</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>high speed pursuit</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>german police</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+      <zorder>dynamic_spectrum</zorder>
+      <zorder>dynamic_rainbow</zorder>
+      <zorder>dynamic_bliss_dnc</zorder>
+      <zorder>dynamic_timecode</zorder>
+      <zorder>dynamic_police</zorder>
+      <zorder>dynamic_chase</zorder>
+      <zorder>dynamic_c1</zorder>
+      <zorder>dynamic_c2</zorder>
+      <zorder>dynamic_c3</zorder>
+      <zorder>dynamic_c4</zorder>
+      <zorder>dynamic_c5</zorder>
+      <zorder>dynamic_c6</zorder>
+      <zorder>com_text_2</zorder>
+      <zorder>com_text_3</zorder>
+      <zorder>dynamic_t</zorder>
+      <zorder>panel_dyn_spectrum</zorder>
+      <zorder>panel_dyn_rnb</zorder>
+      <zorder>panel_dyn_chase</zorder>
+      <zorder>panel_dyn_tcode</zorder>
+      <zorder>panel_dyn_cop</zorder>
+      <zorder>panel_dyn_bliss</zorder>
+     </widget>
+     <widget class="QWidget" name="tab_moodsync">
+      <attribute name="title">
+       <string>Ambient Light</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tab_shuffle">
+      <attribute name="title">
+       <string>Shuffle</string>
       </attribute>
      </widget>
     </widget>
@@ -1388,7 +2973,7 @@ color: rgb(255, 255, 255);</string>
       <string>- It's a bit like SNAPCHAT. But you decide for how long each message part is on display:</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="message_set_custom_welcome">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -1485,16 +3070,878 @@ color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </widget>
-   <zorder>panel_custom_colors</zorder>
+   <widget class="QWidget" name="panel_settings" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>741</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <widget class="QGroupBox" name="com_group_2">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>10</y>
+       <width>301</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="title">
+      <string>Set time and date format</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QComboBox" name="com_select_2">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>40</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <item>
+       <property name="text">
+        <string>24h</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12h</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>12h w/o leading 0</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="com_text_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Hour format:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Date format:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="com_select_3">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>70</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <item>
+       <property name="text">
+        <string>DD.MM.YY</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MM.DD.YY</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QPushButton" name="main_preset_2">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>100</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Set</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="com_group_3">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>140</y>
+       <width>301</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Brightness</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QComboBox" name="com_select_8">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>40</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <item>
+       <property name="text">
+        <string>Bright</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Half Bright</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Dim</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="com_text_10">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Display brightness:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_11">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>LED brightness:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="com_select_9">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>70</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+      <item>
+       <property name="text">
+        <string>Bright</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Half Bright</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Dim</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QPushButton" name="main_preset_3">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>100</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Set</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="com_group_4">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>10</y>
+       <width>321</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Night shift</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enable night shift</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_12">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>70</y>
+        <width>141</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Every evening from</string>
+      </property>
+     </widget>
+     <widget class="QTimeEdit" name="timeEdit">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>70</y>
+        <width>91</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="time">
+       <time>
+        <hour>22</hour>
+        <minute>0</minute>
+        <second>0</second>
+       </time>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_13">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>100</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>until</string>
+      </property>
+     </widget>
+     <widget class="QTimeEdit" name="timeEdit_2">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>100</y>
+        <width>91</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="time">
+       <time>
+        <hour>8</hour>
+        <minute>0</minute>
+        <second>0</second>
+       </time>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_14">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>100</y>
+        <width>111</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>the next morning</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="main_preset_4">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>140</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Set</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="com_group_5">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>270</y>
+       <width>301</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Settings</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QPushButton" name="main_preset_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>131</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Load Default</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="main_preset_6">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>30</y>
+        <width>131</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Save All</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="com_group_6">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>180</y>
+       <width>321</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Hardware &amp;&amp; Firmware</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QLabel" name="com_text_16">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Hardware version:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="main_preset_7">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>110</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Firmware Update</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_17">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>40</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>hw_str</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_18">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Firmware version:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_19">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>60</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>sw_str</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_20">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>80</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Fluorescence app version:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="com_text_21">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>80</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>3.0</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="main_preset_8">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>141</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Download 
+Latest Firmware</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="panel_main_control">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>265</x>
+      <y>5</y>
+      <width>481</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox::title {
+	color: rgb(128, 0, 128);
+}</string>
+    </property>
+    <property name="title">
+     <string>Main Menu</string>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+    <widget class="QPushButton" name="main_preset">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>81</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Color
+Presets</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="main_custom">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>30</y>
+       <width>81</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Custom
+Colors</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="main_message">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>30</y>
+       <width>81</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Send
+Message</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="main_timesync">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>30</y>
+       <width>81</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Time
+Sync</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="main_settings">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>30</y>
+       <width>81</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Settings &amp;&amp;
+Info</string>
+     </property>
+    </widget>
+   </widget>
    <zorder>com_group</zorder>
-   <zorder>panel_welcome</zorder>
-   <zorder>panel_presets</zorder>
    <zorder>panel_timesync</zorder>
-   <zorder>panel_main_control</zorder>
+   <zorder>panel_custom_colors</zorder>
+   <zorder>panel_welcome</zorder>
    <zorder>panel_message</zorder>
+   <zorder>panel_settings</zorder>
+   <zorder>panel_main_control</zorder>
+   <zorder>panel_presets</zorder>
   </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>color_widgets::ColorPreview</class>
+   <extends>QWidget</extends>
+   <header>QtColorWidgets/color_preview.hpp</header>
+  </customwidget>
   <customwidget>
    <class>color_widgets::ColorWheel</class>
    <extends>QWidget</extends>
@@ -1529,6 +3976,8 @@ color: rgb(255, 255, 255);</string>
    </slots>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="build/qmake_qmake_immediate.qrc"/>
+ </resources>
  <connections/>
 </ui>

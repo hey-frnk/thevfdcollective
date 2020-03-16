@@ -123,10 +123,6 @@ struct Light_Pattern_Static {
   * @brief  Constructor of Light_Pattern_Static class
  **/
 void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *settings);
-/**
-  * @brief  Static Method Default for Light_Pattern_Static
- **/
-void Light_Pattern_Static_Default(uint8_t *settings);
 
 struct Light_Pattern_Serial0 {
   uint8_t               *settings;
@@ -157,10 +153,6 @@ struct Light_Pattern_Spectrum {
   * @brief  Constructor of Light_Pattern_Spectrum class
  **/
 void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self, uint8_t *settings);
-/**
-  * @brief  Static Method Default for Light_Pattern_Spectrum
- **/
-void Light_Pattern_Spectrum_Default(uint8_t *settings);
 
 
 /** Begin of:
@@ -178,10 +170,6 @@ struct Light_Pattern_Rainbow {
   * @brief  Constructor of Light_Pattern_Rainbow class
  **/
 void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self, uint8_t *settings);
-/**
-  * @brief  Static Method Default for Light_Pattern_Rainbow
- **/
-void Light_Pattern_Rainbow_Default(uint8_t *settings);
 
 
 /** Begin of:
@@ -205,10 +193,6 @@ struct Light_Pattern_Chase {
   * @brief  Constructor of Light_Pattern_Chase class
  **/
 void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *time, uint8_t *settings);
-/**
-  * @brief  Static Method Default for Light_Pattern_Chase
- **/
-void Light_Pattern_Chase_Default(uint8_t *settings);
 
 
 /** Begin of:
@@ -267,10 +251,6 @@ struct Light_Pattern_MomentsOfBliss {
   * @brief  Constructor of Light_Pattern_MomentsOfBliss class
 **/
 void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint8_t *settings);
-/**
-  * @brief  Static Method Default for Light_Pattern_MomentsOfBliss
- **/
-void Light_Pattern_MomentsOfBliss_Default(uint8_t *settings);
 
 /** Begin of:
   * @tableofcontents SECTION_CONTAINER_LIGHT_PATTERN
