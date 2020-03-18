@@ -2,6 +2,7 @@
 #define FLUORESCENCEAPP_H
 
 #include <QMainWindow>
+#include "fl_app_com.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FluorescenceApp; }
@@ -83,11 +84,91 @@ private slots:
 
     void on_main_settings_clicked();
 
+    void on_settings_td_set_clicked();
+
+    void on_settings_bri_set_clicked();
+
+    void on_settings_nsh_enable_stateChanged(int arg1);
+
+    void on_settings_nsh_set_clicked();
+
+    void on_settings_settings_default_clicked();
+
+    void on_settings_settings_save_clicked();
+
+    void on_settings_info_download_clicked();
+
+    void on_lsettings_td_12hr_enable_stateChanged(int arg1);
+
+    void on_lsettings_td_l0_enable_stateChanged(int arg1);
+
+    void on_lsettings_td_intldate_enable_stateChanged(int arg1);
+
+    void on_lsettings_nsh_enable_stateChanged(int arg1);
+
+    void on_lsettings_nsh_scheduled_enable_stateChanged(int arg1);
+
+    void on_lsettings_settings_default_clicked();
+
+    void on_lsettings_settings_save_clicked();
+
+    void on_lsettings_info_download_clicked();
+
+    void on_timesync_button_clicked();
+
+    void on_static_off_clicked();
+
+    void on_static_white_clicked();
+
+    void on_static_red_clicked();
+
+    void on_static_warmwhite_clicked();
+
+    void on_static_green_clicked();
+
+    void on_static_blue_clicked();
+
+    void on_static_yellow_clicked();
+
+    void on_static_orange_clicked();
+
+    void on_static_cyan_clicked();
+
+    void on_static_magenta_clicked();
+
+    void on_static_violet_clicked();
+
+    void on_static_green2blue_clicked();
+
+    void on_static_red2blue_clicked();
+
+    void on_static_red2green_clicked();
+
+    void on_panel_dyn_spectrum_set_clicked();
+
+    void on_panel_dyn_bliss_set_clicked();
+
+    void on_panel_dyn_rnb_set_clicked();
+
+    void on_panel_dyn_chase_set_clicked();
+
+    void on_panel_dyn_tcode_set_clicked();
+
+    void on_panel_dyn_cop_set_clicked();
+
+    void on_panel_dyn_music_set_clicked();
+
+    void on_message_send_clicked();
+
 private:
     Ui::FluorescenceApp *ui;
 
+    fl_app_com *global_com_instance = nullptr;
+
     QColor custom_global_color;
+    QColor custom_led_colors[6];
     uint8_t custom_global_color_white;
+    uint8_t custom_led_white[6];
 
     void hide_all_panels();
     void hide_all_dynamic_control_panels();

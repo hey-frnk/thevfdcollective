@@ -154,6 +154,8 @@ void LED_Color_Fader_Init(
   f->state = FADER_STATE_ACTIVE;
 }
 
+LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
+
 
 #define CONFIG_SINGLE_COLOR_FADE_SPEED     1
 #define CONFIG_SPECTRUM_FADE_SPEED         1
@@ -245,6 +247,7 @@ static const uint8_t MomentsOfBliss_Colors[LIGHTS_BLISS_MAXMOMENTS][7] = { // (C
   {235, 255, 127,  10, 255, 127, 0x42}, // Some sunset name.   Ink: strong red. every warm red tone, some orange, some magenta
 };
 
+void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
 
 /** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN

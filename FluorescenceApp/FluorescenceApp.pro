@@ -42,6 +42,7 @@ SOURCES += \
     QtColorWidgets/hue_slider.cpp \
     QtColorWidgets/swatch.cpp \
     clickablelabel.cpp \
+    fl_app_com.cpp \
     main.cpp \
     fluorescenceapp.cpp \
     src/fl_app_colors.cpp \
@@ -84,6 +85,7 @@ HEADERS += \
     QtColorWidgets/ui_color_dialog.h \
     QtColorWidgets/ui_color_palette_widget.h \
     clickablelabel.h \
+    fl_app_com.h \
     fluorescenceapp.h \
     src/fl_app_colors.h \
     src/fl_app_lights.h \

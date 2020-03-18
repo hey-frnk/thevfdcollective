@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_FluorescenceApp_t {
-    QByteArrayData data[37];
-    char stringdata0[963];
+    QByteArrayData data[75];
+    char stringdata0[2122];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -68,7 +68,45 @@ QT_MOC_LITERAL(32, 833, 27), // "on_dynamic_timecode_clicked"
 QT_MOC_LITERAL(33, 861, 25), // "on_dynamic_police_clicked"
 QT_MOC_LITERAL(34, 887, 44), // "on_panel_dyn_bliss_param_curr..."
 QT_MOC_LITERAL(35, 932, 5), // "index"
-QT_MOC_LITERAL(36, 938, 24) // "on_main_settings_clicked"
+QT_MOC_LITERAL(36, 938, 24), // "on_main_settings_clicked"
+QT_MOC_LITERAL(37, 963, 26), // "on_settings_td_set_clicked"
+QT_MOC_LITERAL(38, 990, 27), // "on_settings_bri_set_clicked"
+QT_MOC_LITERAL(39, 1018, 35), // "on_settings_nsh_enable_stateC..."
+QT_MOC_LITERAL(40, 1054, 27), // "on_settings_nsh_set_clicked"
+QT_MOC_LITERAL(41, 1082, 36), // "on_settings_settings_default_..."
+QT_MOC_LITERAL(42, 1119, 33), // "on_settings_settings_save_cli..."
+QT_MOC_LITERAL(43, 1153, 33), // "on_settings_info_download_cli..."
+QT_MOC_LITERAL(44, 1187, 40), // "on_lsettings_td_12hr_enable_s..."
+QT_MOC_LITERAL(45, 1228, 38), // "on_lsettings_td_l0_enable_sta..."
+QT_MOC_LITERAL(46, 1267, 44), // "on_lsettings_td_intldate_enab..."
+QT_MOC_LITERAL(47, 1312, 36), // "on_lsettings_nsh_enable_state..."
+QT_MOC_LITERAL(48, 1349, 46), // "on_lsettings_nsh_scheduled_en..."
+QT_MOC_LITERAL(49, 1396, 37), // "on_lsettings_settings_default..."
+QT_MOC_LITERAL(50, 1434, 34), // "on_lsettings_settings_save_cl..."
+QT_MOC_LITERAL(51, 1469, 34), // "on_lsettings_info_download_cl..."
+QT_MOC_LITERAL(52, 1504, 26), // "on_timesync_button_clicked"
+QT_MOC_LITERAL(53, 1531, 21), // "on_static_off_clicked"
+QT_MOC_LITERAL(54, 1553, 23), // "on_static_white_clicked"
+QT_MOC_LITERAL(55, 1577, 21), // "on_static_red_clicked"
+QT_MOC_LITERAL(56, 1599, 27), // "on_static_warmwhite_clicked"
+QT_MOC_LITERAL(57, 1627, 23), // "on_static_green_clicked"
+QT_MOC_LITERAL(58, 1651, 22), // "on_static_blue_clicked"
+QT_MOC_LITERAL(59, 1674, 24), // "on_static_yellow_clicked"
+QT_MOC_LITERAL(60, 1699, 24), // "on_static_orange_clicked"
+QT_MOC_LITERAL(61, 1724, 22), // "on_static_cyan_clicked"
+QT_MOC_LITERAL(62, 1747, 25), // "on_static_magenta_clicked"
+QT_MOC_LITERAL(63, 1773, 24), // "on_static_violet_clicked"
+QT_MOC_LITERAL(64, 1798, 28), // "on_static_green2blue_clicked"
+QT_MOC_LITERAL(65, 1827, 26), // "on_static_red2blue_clicked"
+QT_MOC_LITERAL(66, 1854, 27), // "on_static_red2green_clicked"
+QT_MOC_LITERAL(67, 1882, 33), // "on_panel_dyn_spectrum_set_cli..."
+QT_MOC_LITERAL(68, 1916, 30), // "on_panel_dyn_bliss_set_clicked"
+QT_MOC_LITERAL(69, 1947, 28), // "on_panel_dyn_rnb_set_clicked"
+QT_MOC_LITERAL(70, 1976, 30), // "on_panel_dyn_chase_set_clicked"
+QT_MOC_LITERAL(71, 2007, 30), // "on_panel_dyn_tcode_set_clicked"
+QT_MOC_LITERAL(72, 2038, 28), // "on_panel_dyn_cop_set_clicked"
+QT_MOC_LITERAL(73, 2067, 30), // "on_panel_dyn_music_set_clicked"
+QT_MOC_LITERAL(74, 2098, 23) // "on_message_send_clicked"
 
     },
     "FluorescenceApp\0on_com_connect_clicked\0"
@@ -100,7 +138,41 @@ QT_MOC_LITERAL(36, 938, 24) // "on_main_settings_clicked"
     "on_dynamic_timecode_clicked\0"
     "on_dynamic_police_clicked\0"
     "on_panel_dyn_bliss_param_currentIndexChanged\0"
-    "index\0on_main_settings_clicked"
+    "index\0on_main_settings_clicked\0"
+    "on_settings_td_set_clicked\0"
+    "on_settings_bri_set_clicked\0"
+    "on_settings_nsh_enable_stateChanged\0"
+    "on_settings_nsh_set_clicked\0"
+    "on_settings_settings_default_clicked\0"
+    "on_settings_settings_save_clicked\0"
+    "on_settings_info_download_clicked\0"
+    "on_lsettings_td_12hr_enable_stateChanged\0"
+    "on_lsettings_td_l0_enable_stateChanged\0"
+    "on_lsettings_td_intldate_enable_stateChanged\0"
+    "on_lsettings_nsh_enable_stateChanged\0"
+    "on_lsettings_nsh_scheduled_enable_stateChanged\0"
+    "on_lsettings_settings_default_clicked\0"
+    "on_lsettings_settings_save_clicked\0"
+    "on_lsettings_info_download_clicked\0"
+    "on_timesync_button_clicked\0"
+    "on_static_off_clicked\0on_static_white_clicked\0"
+    "on_static_red_clicked\0on_static_warmwhite_clicked\0"
+    "on_static_green_clicked\0on_static_blue_clicked\0"
+    "on_static_yellow_clicked\0"
+    "on_static_orange_clicked\0"
+    "on_static_cyan_clicked\0on_static_magenta_clicked\0"
+    "on_static_violet_clicked\0"
+    "on_static_green2blue_clicked\0"
+    "on_static_red2blue_clicked\0"
+    "on_static_red2green_clicked\0"
+    "on_panel_dyn_spectrum_set_clicked\0"
+    "on_panel_dyn_bliss_set_clicked\0"
+    "on_panel_dyn_rnb_set_clicked\0"
+    "on_panel_dyn_chase_set_clicked\0"
+    "on_panel_dyn_tcode_set_clicked\0"
+    "on_panel_dyn_cop_set_clicked\0"
+    "on_panel_dyn_music_set_clicked\0"
+    "on_message_send_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -110,7 +182,7 @@ static const uint qt_meta_data_FluorescenceApp[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      31,   14, // methods
+      69,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -118,37 +190,75 @@ static const uint qt_meta_data_FluorescenceApp[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  169,    2, 0x08 /* Private */,
-       3,    0,  170,    2, 0x08 /* Private */,
-       4,    0,  171,    2, 0x08 /* Private */,
-       5,    0,  172,    2, 0x08 /* Private */,
-       6,    0,  173,    2, 0x08 /* Private */,
-       7,    1,  174,    2, 0x08 /* Private */,
-       9,    1,  177,    2, 0x08 /* Private */,
-      10,    1,  180,    2, 0x08 /* Private */,
-      11,    1,  183,    2, 0x08 /* Private */,
-      13,    1,  186,    2, 0x08 /* Private */,
-      14,    1,  189,    2, 0x08 /* Private */,
-      15,    1,  192,    2, 0x08 /* Private */,
-      16,    1,  195,    2, 0x08 /* Private */,
-      17,    1,  198,    2, 0x08 /* Private */,
-      18,    1,  201,    2, 0x08 /* Private */,
-      19,    1,  204,    2, 0x08 /* Private */,
-      20,    1,  207,    2, 0x08 /* Private */,
-      21,    1,  210,    2, 0x08 /* Private */,
-      22,    1,  213,    2, 0x08 /* Private */,
-      23,    1,  216,    2, 0x08 /* Private */,
-      25,    0,  219,    2, 0x08 /* Private */,
-      26,    0,  220,    2, 0x08 /* Private */,
-      27,    1,  221,    2, 0x08 /* Private */,
-      28,    0,  224,    2, 0x08 /* Private */,
-      29,    0,  225,    2, 0x08 /* Private */,
-      30,    0,  226,    2, 0x08 /* Private */,
-      31,    0,  227,    2, 0x08 /* Private */,
-      32,    0,  228,    2, 0x08 /* Private */,
-      33,    0,  229,    2, 0x08 /* Private */,
-      34,    1,  230,    2, 0x08 /* Private */,
-      36,    0,  233,    2, 0x08 /* Private */,
+       1,    0,  359,    2, 0x08 /* Private */,
+       3,    0,  360,    2, 0x08 /* Private */,
+       4,    0,  361,    2, 0x08 /* Private */,
+       5,    0,  362,    2, 0x08 /* Private */,
+       6,    0,  363,    2, 0x08 /* Private */,
+       7,    1,  364,    2, 0x08 /* Private */,
+       9,    1,  367,    2, 0x08 /* Private */,
+      10,    1,  370,    2, 0x08 /* Private */,
+      11,    1,  373,    2, 0x08 /* Private */,
+      13,    1,  376,    2, 0x08 /* Private */,
+      14,    1,  379,    2, 0x08 /* Private */,
+      15,    1,  382,    2, 0x08 /* Private */,
+      16,    1,  385,    2, 0x08 /* Private */,
+      17,    1,  388,    2, 0x08 /* Private */,
+      18,    1,  391,    2, 0x08 /* Private */,
+      19,    1,  394,    2, 0x08 /* Private */,
+      20,    1,  397,    2, 0x08 /* Private */,
+      21,    1,  400,    2, 0x08 /* Private */,
+      22,    1,  403,    2, 0x08 /* Private */,
+      23,    1,  406,    2, 0x08 /* Private */,
+      25,    0,  409,    2, 0x08 /* Private */,
+      26,    0,  410,    2, 0x08 /* Private */,
+      27,    1,  411,    2, 0x08 /* Private */,
+      28,    0,  414,    2, 0x08 /* Private */,
+      29,    0,  415,    2, 0x08 /* Private */,
+      30,    0,  416,    2, 0x08 /* Private */,
+      31,    0,  417,    2, 0x08 /* Private */,
+      32,    0,  418,    2, 0x08 /* Private */,
+      33,    0,  419,    2, 0x08 /* Private */,
+      34,    1,  420,    2, 0x08 /* Private */,
+      36,    0,  423,    2, 0x08 /* Private */,
+      37,    0,  424,    2, 0x08 /* Private */,
+      38,    0,  425,    2, 0x08 /* Private */,
+      39,    1,  426,    2, 0x08 /* Private */,
+      40,    0,  429,    2, 0x08 /* Private */,
+      41,    0,  430,    2, 0x08 /* Private */,
+      42,    0,  431,    2, 0x08 /* Private */,
+      43,    0,  432,    2, 0x08 /* Private */,
+      44,    1,  433,    2, 0x08 /* Private */,
+      45,    1,  436,    2, 0x08 /* Private */,
+      46,    1,  439,    2, 0x08 /* Private */,
+      47,    1,  442,    2, 0x08 /* Private */,
+      48,    1,  445,    2, 0x08 /* Private */,
+      49,    0,  448,    2, 0x08 /* Private */,
+      50,    0,  449,    2, 0x08 /* Private */,
+      51,    0,  450,    2, 0x08 /* Private */,
+      52,    0,  451,    2, 0x08 /* Private */,
+      53,    0,  452,    2, 0x08 /* Private */,
+      54,    0,  453,    2, 0x08 /* Private */,
+      55,    0,  454,    2, 0x08 /* Private */,
+      56,    0,  455,    2, 0x08 /* Private */,
+      57,    0,  456,    2, 0x08 /* Private */,
+      58,    0,  457,    2, 0x08 /* Private */,
+      59,    0,  458,    2, 0x08 /* Private */,
+      60,    0,  459,    2, 0x08 /* Private */,
+      61,    0,  460,    2, 0x08 /* Private */,
+      62,    0,  461,    2, 0x08 /* Private */,
+      63,    0,  462,    2, 0x08 /* Private */,
+      64,    0,  463,    2, 0x08 /* Private */,
+      65,    0,  464,    2, 0x08 /* Private */,
+      66,    0,  465,    2, 0x08 /* Private */,
+      67,    0,  466,    2, 0x08 /* Private */,
+      68,    0,  467,    2, 0x08 /* Private */,
+      69,    0,  468,    2, 0x08 /* Private */,
+      70,    0,  469,    2, 0x08 /* Private */,
+      71,    0,  470,    2, 0x08 /* Private */,
+      72,    0,  471,    2, 0x08 /* Private */,
+      73,    0,  472,    2, 0x08 /* Private */,
+      74,    0,  473,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -181,6 +291,44 @@ static const uint qt_meta_data_FluorescenceApp[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   35,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -223,6 +371,44 @@ void FluorescenceApp::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         case 28: _t->on_dynamic_police_clicked(); break;
         case 29: _t->on_panel_dyn_bliss_param_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 30: _t->on_main_settings_clicked(); break;
+        case 31: _t->on_settings_td_set_clicked(); break;
+        case 32: _t->on_settings_bri_set_clicked(); break;
+        case 33: _t->on_settings_nsh_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 34: _t->on_settings_nsh_set_clicked(); break;
+        case 35: _t->on_settings_settings_default_clicked(); break;
+        case 36: _t->on_settings_settings_save_clicked(); break;
+        case 37: _t->on_settings_info_download_clicked(); break;
+        case 38: _t->on_lsettings_td_12hr_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 39: _t->on_lsettings_td_l0_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 40: _t->on_lsettings_td_intldate_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 41: _t->on_lsettings_nsh_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 42: _t->on_lsettings_nsh_scheduled_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 43: _t->on_lsettings_settings_default_clicked(); break;
+        case 44: _t->on_lsettings_settings_save_clicked(); break;
+        case 45: _t->on_lsettings_info_download_clicked(); break;
+        case 46: _t->on_timesync_button_clicked(); break;
+        case 47: _t->on_static_off_clicked(); break;
+        case 48: _t->on_static_white_clicked(); break;
+        case 49: _t->on_static_red_clicked(); break;
+        case 50: _t->on_static_warmwhite_clicked(); break;
+        case 51: _t->on_static_green_clicked(); break;
+        case 52: _t->on_static_blue_clicked(); break;
+        case 53: _t->on_static_yellow_clicked(); break;
+        case 54: _t->on_static_orange_clicked(); break;
+        case 55: _t->on_static_cyan_clicked(); break;
+        case 56: _t->on_static_magenta_clicked(); break;
+        case 57: _t->on_static_violet_clicked(); break;
+        case 58: _t->on_static_green2blue_clicked(); break;
+        case 59: _t->on_static_red2blue_clicked(); break;
+        case 60: _t->on_static_red2green_clicked(); break;
+        case 61: _t->on_panel_dyn_spectrum_set_clicked(); break;
+        case 62: _t->on_panel_dyn_bliss_set_clicked(); break;
+        case 63: _t->on_panel_dyn_rnb_set_clicked(); break;
+        case 64: _t->on_panel_dyn_chase_set_clicked(); break;
+        case 65: _t->on_panel_dyn_tcode_set_clicked(); break;
+        case 66: _t->on_panel_dyn_cop_set_clicked(); break;
+        case 67: _t->on_panel_dyn_music_set_clicked(); break;
+        case 68: _t->on_message_send_clicked(); break;
         default: ;
         }
     }
@@ -257,13 +443,13 @@ int FluorescenceApp::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 31)
+        if (_id < 69)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 31;
+        _id -= 69;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 31)
+        if (_id < 69)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 31;
+        _id -= 69;
     }
     return _id;
 }

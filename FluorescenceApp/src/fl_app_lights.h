@@ -91,7 +91,7 @@ void LED_Color_Fader_Init(
   hsl_t                     color_2,        // Color 2. Set all components to 0 for single color fade
   int8_t                    chain_hue_diff  // Hue difference between chained pixels
 );
-LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
+extern LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
 
 /** Begin of:
  * @tableofcontents SECTION_LIGHT_PATTERN
@@ -104,7 +104,7 @@ LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
  * - Save: This method is called before destruction and saves variables onto the same memory block used in the initializer
 **/
 typedef union Light_Pattern Light_Pattern;
-void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
+extern void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
 
 /** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN_STATIC

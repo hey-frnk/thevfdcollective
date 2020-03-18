@@ -67,6 +67,11 @@
        <height>61</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);</string>
@@ -157,6 +162,11 @@ color: rgb(255, 255, 255);</string>
       <height>371</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255)</string>
     </property>
@@ -171,7 +181,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial Black</family>
+       <family>.AppleSystemUIFont</family>
        <pointsize>96</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -226,6 +236,11 @@ color: rgb(255, 255, 255);</string>
       <height>371</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255)</string>
     </property>
@@ -240,14 +255,14 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -368,7 +383,7 @@ color: rgb(255, 255, 255);</string>
         <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_2">
+      <widget class="ClickableLabel" name="static_magenta">
        <property name="geometry">
         <rect>
          <x>460</x>
@@ -395,7 +410,7 @@ color: rgb(255, 255, 255);</string>
         <string>#magenta</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_3">
+      <widget class="ClickableLabel" name="static_off">
        <property name="geometry">
         <rect>
          <x>650</x>
@@ -419,7 +434,7 @@ color: rgb(255, 255, 255);</string>
         <string>#off</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_4">
+      <widget class="ClickableLabel" name="static_violet">
        <property name="geometry">
         <rect>
          <x>540</x>
@@ -446,7 +461,7 @@ color: rgb(255, 255, 255);</string>
         <string>#violet</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_5">
+      <widget class="ClickableLabel" name="static_red">
        <property name="geometry">
         <rect>
          <x>40</x>
@@ -473,7 +488,7 @@ color: rgb(255, 255, 255);</string>
         <string>#red</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_6">
+      <widget class="ClickableLabel" name="static_blue">
        <property name="geometry">
         <rect>
          <x>640</x>
@@ -500,7 +515,7 @@ color: rgb(255, 255, 255);</string>
         <string>#blue</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_7">
+      <widget class="ClickableLabel" name="static_cyan">
        <property name="geometry">
         <rect>
          <x>520</x>
@@ -527,7 +542,7 @@ color: rgb(255, 255, 255);</string>
         <string>#cyan</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_8">
+      <widget class="ClickableLabel" name="static_green">
        <property name="geometry">
         <rect>
          <x>370</x>
@@ -554,7 +569,7 @@ color: rgb(255, 255, 255);</string>
         <string>#green</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_9">
+      <widget class="ClickableLabel" name="static_warmwhite">
        <property name="geometry">
         <rect>
          <x>260</x>
@@ -581,7 +596,7 @@ color: rgb(255, 255, 255);</string>
         <string>#warmwhite</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_10">
+      <widget class="ClickableLabel" name="static_white">
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -608,7 +623,7 @@ color: rgb(255, 255, 255);</string>
         <string>#white</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_11">
+      <widget class="ClickableLabel" name="static_orange">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -635,7 +650,7 @@ color: rgb(255, 255, 255);</string>
         <string>#orange</string>
        </property>
       </widget>
-      <widget class="ClickableLabel" name="static_red2green_12">
+      <widget class="ClickableLabel" name="static_yellow">
        <property name="geometry">
         <rect>
          <x>220</x>
@@ -676,6 +691,11 @@ color: rgb(255, 255, 255);</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);</string>
@@ -692,6 +712,11 @@ color: rgb(255, 255, 255);</string>
          <width>111</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
@@ -710,6 +735,11 @@ color: rgb(255, 255, 255);</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);</string>
@@ -726,6 +756,11 @@ color: rgb(255, 255, 255);</string>
          <width>111</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
@@ -744,6 +779,11 @@ color: rgb(255, 255, 255);</string>
          <height>31</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);</string>
@@ -760,6 +800,11 @@ color: rgb(255, 255, 255);</string>
          <width>111</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
@@ -778,6 +823,11 @@ color: rgb(255, 255, 255);</string>
          <height>81</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
       </widget>
       <widget class="color_widgets::ColorPreview" name="dynamic_c2">
        <property name="geometry">
@@ -787,6 +837,11 @@ color: rgb(255, 255, 255);</string>
          <width>81</width>
          <height>81</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
        </property>
       </widget>
       <widget class="color_widgets::ColorPreview" name="dynamic_c3">
@@ -798,6 +853,11 @@ color: rgb(255, 255, 255);</string>
          <height>81</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
       </widget>
       <widget class="color_widgets::ColorPreview" name="dynamic_c4">
        <property name="geometry">
@@ -807,6 +867,11 @@ color: rgb(255, 255, 255);</string>
          <width>81</width>
          <height>81</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
        </property>
       </widget>
       <widget class="color_widgets::ColorPreview" name="dynamic_c5">
@@ -818,6 +883,11 @@ color: rgb(255, 255, 255);</string>
          <height>81</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
       </widget>
       <widget class="color_widgets::ColorPreview" name="dynamic_c6">
        <property name="geometry">
@@ -827,6 +897,11 @@ color: rgb(255, 255, 255);</string>
          <width>81</width>
          <height>81</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
        </property>
       </widget>
       <widget class="QLabel" name="com_text_2">
@@ -884,6 +959,11 @@ color: rgb(255, 255, 255);</string>
          <height>21</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_1">
         <property name="geometry">
          <rect>
@@ -892,6 +972,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_2">
@@ -903,6 +988,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_3">
         <property name="geometry">
@@ -912,6 +1002,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_4">
@@ -923,6 +1018,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_5">
         <property name="geometry">
@@ -932,6 +1032,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_6">
@@ -943,6 +1048,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_7">
         <property name="geometry">
@@ -952,6 +1062,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_8">
@@ -963,6 +1078,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_9">
         <property name="geometry">
@@ -972,6 +1092,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_10">
@@ -983,6 +1108,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_11">
         <property name="geometry">
@@ -992,6 +1122,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_12">
@@ -1003,6 +1138,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_13">
         <property name="geometry">
@@ -1012,6 +1152,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_14">
@@ -1023,6 +1168,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_15">
         <property name="geometry">
@@ -1032,6 +1182,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_16">
@@ -1043,6 +1198,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_17">
         <property name="geometry">
@@ -1052,6 +1212,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_18">
@@ -1063,6 +1228,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_19">
         <property name="geometry">
@@ -1072,6 +1242,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_20">
@@ -1083,6 +1258,11 @@ color: rgb(255, 255, 255);</string>
           <height>21</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
        </widget>
        <widget class="color_widgets::ColorPreview" name="dynamic_t_21">
         <property name="geometry">
@@ -1092,6 +1272,11 @@ color: rgb(255, 255, 255);</string>
           <width>21</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
        </widget>
       </widget>
@@ -1104,6 +1289,11 @@ color: rgb(255, 255, 255);</string>
          <height>101</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <widget class="QPushButton" name="panel_dyn_spectrum_set">
         <property name="geometry">
          <rect>
@@ -1115,6 +1305,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>26</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1163,6 +1354,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>18</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1222,6 +1414,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>18</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1280,6 +1473,11 @@ all the amazing colors.</string>
          <height>101</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <widget class="QPushButton" name="panel_dyn_bliss_set">
         <property name="geometry">
          <rect>
@@ -1291,6 +1489,7 @@ all the amazing colors.</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>26</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1339,6 +1538,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>18</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1412,6 +1612,11 @@ he she me wumbo. That's first grade Spongebob!</string>
          <height>101</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <widget class="QPushButton" name="panel_dyn_rnb_set">
         <property name="geometry">
          <rect>
@@ -1423,6 +1628,7 @@ he she me wumbo. That's first grade Spongebob!</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>26</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1491,6 +1697,11 @@ color: rgb(255, 255, 255);</string>
           <width>160</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
         <property name="minimum">
          <number>10</number>
@@ -1569,6 +1780,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>18</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1603,6 +1815,11 @@ color: rgb(255, 255, 255);</string>
          <height>101</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <widget class="QPushButton" name="panel_dyn_chase_set">
         <property name="geometry">
          <rect>
@@ -1614,6 +1831,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>26</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1682,6 +1900,11 @@ color: rgb(255, 255, 255);</string>
           <width>160</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
         </property>
         <property name="minimum">
          <number>0</number>
@@ -1760,6 +1983,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>18</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1799,6 +2023,11 @@ color: rgb(255, 255, 255);</string>
          <height>101</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <widget class="QPushButton" name="panel_dyn_tcode_set">
         <property name="geometry">
          <rect>
@@ -1810,6 +2039,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>26</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1881,6 +2111,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>18</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1910,6 +2141,11 @@ color: rgb(255, 255, 255);</string>
          <height>101</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
        <widget class="QPushButton" name="panel_dyn_cop_set">
         <property name="geometry">
          <rect>
@@ -1921,6 +2157,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>26</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -1992,6 +2229,7 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
+          <family>.AppleSystemUIFont</family>
           <pointsize>18</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -2017,8 +2255,210 @@ color: rgb(255, 255, 255);</string>
         </item>
        </widget>
       </widget>
+      <widget class="QWidget" name="panel_dyn_music" native="true">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>240</y>
+         <width>741</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+       <widget class="QPushButton" name="panel_dyn_music_set">
+        <property name="geometry">
+         <rect>
+          <x>500</x>
+          <y>20</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_music_ptext_1">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>distance:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_music_p1">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>chill</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QSlider" name="panel_dyn_music_param1">
+        <property name="geometry">
+         <rect>
+          <x>240</x>
+          <y>20</y>
+          <width>160</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+         </font>
+        </property>
+        <property name="minimum">
+         <number>10</number>
+        </property>
+        <property name="maximum">
+         <number>42</number>
+        </property>
+        <property name="value">
+         <number>18</number>
+        </property>
+        <property name="tracking">
+         <bool>true</bool>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::TicksBelow</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_music_p2">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>20</y>
+          <width>41</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>tight</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="panel_dyn_music_ptext_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>26</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(128, 0, 128);</string>
+        </property>
+        <property name="text">
+         <string>saturation:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="panel_dyn_music_param2">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>50</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>.AppleSystemUIFont</family>
+          <pointsize>18</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>high</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>medium</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>low</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
       <zorder>dynamic_spectrum</zorder>
-      <zorder>dynamic_rainbow</zorder>
       <zorder>dynamic_bliss_dnc</zorder>
       <zorder>dynamic_timecode</zorder>
       <zorder>dynamic_police</zorder>
@@ -2033,11 +2473,13 @@ color: rgb(255, 255, 255);</string>
       <zorder>com_text_3</zorder>
       <zorder>dynamic_t</zorder>
       <zorder>panel_dyn_spectrum</zorder>
+      <zorder>panel_dyn_bliss</zorder>
+      <zorder>dynamic_rainbow</zorder>
       <zorder>panel_dyn_rnb</zorder>
       <zorder>panel_dyn_chase</zorder>
       <zorder>panel_dyn_tcode</zorder>
       <zorder>panel_dyn_cop</zorder>
-      <zorder>panel_dyn_bliss</zorder>
+      <zorder>panel_dyn_music</zorder>
      </widget>
      <widget class="QWidget" name="tab_moodsync">
       <attribute name="title">
@@ -2063,6 +2505,11 @@ color: rgb(255, 255, 255);</string>
       <height>371</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
@@ -2081,6 +2528,11 @@ color: rgb(255, 255, 255);</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="wheelWidth">
       <UInt>20</UInt>
      </property>
@@ -2093,6 +2545,11 @@ color: rgb(255, 255, 255);</string>
        <width>191</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
      </property>
      <property name="maximum">
       <number>359</number>
@@ -2107,6 +2564,11 @@ color: rgb(255, 255, 255);</string>
        <height>21</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="maximum">
       <number>255</number>
      </property>
@@ -2119,6 +2581,11 @@ color: rgb(255, 255, 255);</string>
        <width>191</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
      </property>
      <property name="maximum">
       <number>255</number>
@@ -2133,6 +2600,11 @@ color: rgb(255, 255, 255);</string>
        <height>21</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="maximum">
       <number>255</number>
      </property>
@@ -2146,6 +2618,11 @@ color: rgb(255, 255, 255);</string>
        <height>21</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="maximum">
       <number>255</number>
      </property>
@@ -2158,6 +2635,11 @@ color: rgb(255, 255, 255);</string>
        <width>191</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
      </property>
      <property name="maximum">
       <number>255</number>
@@ -2177,7 +2659,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2195,7 +2677,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2213,7 +2695,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2231,7 +2713,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2249,7 +2731,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2267,7 +2749,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2285,7 +2767,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="layoutDirection">
@@ -2309,7 +2791,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="layoutDirection">
@@ -2333,7 +2815,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="layoutDirection">
@@ -2357,7 +2839,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="layoutDirection">
@@ -2381,7 +2863,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="layoutDirection">
@@ -2405,7 +2887,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="layoutDirection">
@@ -2429,7 +2911,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2449,7 +2931,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
     </widget>
@@ -2464,7 +2946,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2479,6 +2961,11 @@ color: rgb(255, 255, 255);</string>
        <width>191</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
      </property>
      <property name="maximum">
       <number>255</number>
@@ -2495,7 +2982,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="layoutDirection">
@@ -2519,7 +3006,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2540,7 +3027,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2561,7 +3048,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2582,7 +3069,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2603,7 +3090,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2624,7 +3111,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2645,7 +3132,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2668,7 +3155,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2688,7 +3175,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2707,6 +3194,11 @@ color: rgb(255, 255, 255);</string>
       <height>371</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
@@ -2721,7 +3213,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <pointsize>96</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -2745,7 +3237,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <pointsize>24</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -2766,7 +3258,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2787,6 +3279,7 @@ to the time of your computer</string>
      </property>
      <property name="font">
       <font>
+       <family>.AppleSystemUIFont</family>
        <pointsize>36</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -2814,7 +3307,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2833,6 +3326,11 @@ color: rgb(255, 255, 255);</string>
       <height>371</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
@@ -2847,7 +3345,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <pointsize>48</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -2874,7 +3372,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2892,7 +3390,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -2912,7 +3410,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2930,7 +3428,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2948,7 +3446,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2966,7 +3464,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
@@ -2984,14 +3482,14 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
       </font>
      </property>
      <property name="text">
       <string>Use this message as the new welcome message Fluorescence uses to greet you on startup</string>
      </property>
     </widget>
-    <widget class="QPlainTextEdit" name="message_text_2">
+    <widget class="QPlainTextEdit" name="message_length">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -3002,7 +3500,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <pointsize>48</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -3029,7 +3527,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <pointsize>48</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -3042,7 +3540,7 @@ color: rgb(255, 255, 255);</string>
       <string>second(s)</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="timesync_button_2">
+    <widget class="QPushButton" name="message_send">
      <property name="geometry">
       <rect>
        <x>340</x>
@@ -3053,6 +3551,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
+       <family>.AppleSystemUIFont</family>
        <pointsize>36</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -3079,21 +3578,26 @@ color: rgb(255, 255, 255);</string>
       <height>371</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
-    <widget class="QGroupBox" name="com_group_2">
+    <widget class="QGroupBox" name="settings_td">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>10</x>
        <y>10</y>
-       <width>301</width>
+       <width>331</width>
        <height>131</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -3107,18 +3611,18 @@ color: rgb(255, 255, 255);</string>
      <property name="flat">
       <bool>true</bool>
      </property>
-     <widget class="QComboBox" name="com_select_2">
+     <widget class="QComboBox" name="settings_td_timemode">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>40</y>
-        <width>151</width>
+        <x>160</x>
+        <y>30</y>
+        <width>171</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>.AppleSystemUIFont</family>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -3142,11 +3646,11 @@ color: rgb(255, 255, 255);</string>
        </property>
       </item>
      </widget>
-     <widget class="QLabel" name="com_text_4">
+     <widget class="QLabel" name="settings_td_timemode_t">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
+        <y>30</y>
         <width>91</width>
         <height>16</height>
        </rect>
@@ -3162,17 +3666,17 @@ color: rgb(255, 255, 255);</string>
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>Hour format:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_5">
+     <widget class="QLabel" name="settings_td_datemode_t">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>60</y>
         <width>91</width>
         <height>16</height>
        </rect>
@@ -3185,24 +3689,24 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>Date format:</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="com_select_3">
+     <widget class="QComboBox" name="settings_td_datemode">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>70</y>
-        <width>151</width>
+        <x>160</x>
+        <y>60</y>
+        <width>171</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>.AppleSystemUIFont</family>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -3221,14 +3725,19 @@ color: rgb(255, 255, 255);</string>
        </property>
       </item>
      </widget>
-     <widget class="QPushButton" name="main_preset_2">
+     <widget class="QPushButton" name="settings_td_set">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>100</y>
+        <x>220</x>
+        <y>90</y>
         <width>111</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
@@ -3239,18 +3748,18 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="com_group_3">
+    <widget class="QGroupBox" name="settings_bri">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>10</x>
        <y>140</y>
-       <width>301</width>
+       <width>331</width>
        <height>131</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -3261,18 +3770,18 @@ color: rgb(255, 255, 255);</string>
      <property name="flat">
       <bool>true</bool>
      </property>
-     <widget class="QComboBox" name="com_select_8">
+     <widget class="QComboBox" name="settings_bri_disp">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>40</y>
-        <width>151</width>
+        <x>160</x>
+        <y>30</y>
+        <width>171</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>.AppleSystemUIFont</family>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -3296,11 +3805,11 @@ color: rgb(255, 255, 255);</string>
        </property>
       </item>
      </widget>
-     <widget class="QLabel" name="com_text_10">
+     <widget class="QLabel" name="settings_bri_t_disp">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
+        <y>30</y>
         <width>131</width>
         <height>16</height>
        </rect>
@@ -3313,17 +3822,17 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>Display brightness:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_11">
+     <widget class="QLabel" name="settings_bri_t_led">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>60</y>
         <width>111</width>
         <height>16</height>
        </rect>
@@ -3336,24 +3845,24 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>LED brightness:</string>
       </property>
      </widget>
-     <widget class="QComboBox" name="com_select_9">
+     <widget class="QComboBox" name="settings_bri_led">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>70</y>
-        <width>151</width>
+        <x>160</x>
+        <y>60</y>
+        <width>171</width>
         <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>.AppleSystemUIFont</family>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -3377,14 +3886,19 @@ color: rgb(255, 255, 255);</string>
        </property>
       </item>
      </widget>
-     <widget class="QPushButton" name="main_preset_3">
+     <widget class="QPushButton" name="settings_bri_set">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>100</y>
+        <x>220</x>
+        <y>90</y>
         <width>111</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
@@ -3395,18 +3909,18 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="com_group_4">
+    <widget class="QGroupBox" name="settings_nsh">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>360</x>
        <y>10</y>
-       <width>321</width>
+       <width>371</width>
        <height>171</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -3417,130 +3931,42 @@ color: rgb(255, 255, 255);</string>
      <property name="flat">
       <bool>true</bool>
      </property>
-     <widget class="QCheckBox" name="checkBox">
+     <widget class="QCheckBox" name="settings_nsh_enable">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
+        <y>30</y>
         <width>141</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>Enable night shift</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_12">
+     <widget class="QPushButton" name="settings_nsh_set">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>70</y>
-        <width>141</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
-      </property>
-      <property name="text">
-       <string>Every evening from</string>
-      </property>
-     </widget>
-     <widget class="QTimeEdit" name="timeEdit">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>70</y>
-        <width>91</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="time">
-       <time>
-        <hour>22</hour>
-        <minute>0</minute>
-        <second>0</second>
-       </time>
-      </property>
-     </widget>
-     <widget class="QLabel" name="com_text_13">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>100</y>
-        <width>41</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
-      </property>
-      <property name="text">
-       <string>until</string>
-      </property>
-     </widget>
-     <widget class="QTimeEdit" name="timeEdit_2">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>100</y>
-        <width>91</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="time">
-       <time>
-        <hour>8</hour>
-        <minute>0</minute>
-        <second>0</second>
-       </time>
-      </property>
-     </widget>
-     <widget class="QLabel" name="com_text_14">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>100</y>
-        <width>111</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
-      </property>
-      <property name="text">
-       <string>the next morning</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="main_preset_4">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
+        <x>260</x>
         <y>140</y>
         <width>111</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
@@ -3550,19 +3976,150 @@ color: rgb(255, 255, 255);</string>
        <string>Set</string>
       </property>
      </widget>
+     <widget class="QWidget" name="settings_nsh_panel" native="true">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>361</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <widget class="QTimeEdit" name="settings_nsh_start">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>10</y>
+         <width>91</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+       <property name="time">
+        <time>
+         <hour>22</hour>
+         <minute>0</minute>
+         <second>0</second>
+        </time>
+       </property>
+      </widget>
+      <widget class="QLabel" name="settings_nsh_intro1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>141</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Every evening from</string>
+       </property>
+      </widget>
+      <widget class="QTimeEdit" name="settings_nsh_stop">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>40</y>
+         <width>91</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+       <property name="time">
+        <time>
+         <hour>8</hour>
+         <minute>0</minute>
+         <second>0</second>
+        </time>
+       </property>
+      </widget>
+      <widget class="QLabel" name="settings_nsh_intro3">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>40</y>
+         <width>111</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>the next morning</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="settings_nsh_intro2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>until</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
-    <widget class="QGroupBox" name="com_group_5">
+    <widget class="QGroupBox" name="settings_settings">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>10</x>
        <y>270</y>
-       <width>301</width>
+       <width>331</width>
        <height>81</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -3573,14 +4130,19 @@ color: rgb(255, 255, 255);</string>
      <property name="flat">
       <bool>true</bool>
      </property>
-     <widget class="QPushButton" name="main_preset_5">
+     <widget class="QPushButton" name="settings_settings_default">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>131</width>
+        <width>151</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
@@ -3590,14 +4152,19 @@ color: rgb(255, 255, 255);</string>
        <string>Load Default</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="main_preset_6">
+     <widget class="QPushButton" name="settings_settings_save">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>170</x>
         <y>30</y>
-        <width>131</width>
+        <width>151</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
@@ -3608,18 +4175,18 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="com_group_6">
+    <widget class="QGroupBox" name="settings_info">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>360</x>
        <y>180</y>
-       <width>321</width>
+       <width>371</width>
        <height>171</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Arial</family>
+       <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -3630,11 +4197,11 @@ color: rgb(255, 255, 255);</string>
      <property name="flat">
       <bool>true</bool>
      </property>
-     <widget class="QLabel" name="com_text_16">
+     <widget class="QLabel" name="settings_info_hw_t">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
+        <y>30</y>
         <width>131</width>
         <height>16</height>
        </rect>
@@ -3647,20 +4214,25 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>Hardware version:</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="main_preset_7">
+     <widget class="QPushButton" name="settings_info_update">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>190</x>
         <y>110</y>
-        <width>141</width>
+        <width>171</width>
         <height>51</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
@@ -3670,11 +4242,11 @@ color: rgb(255, 255, 255);</string>
        <string>Firmware Update</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_17">
+     <widget class="QLabel" name="settings_info_hw">
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>40</y>
+        <y>30</y>
         <width>91</width>
         <height>20</height>
        </rect>
@@ -3687,17 +4259,17 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>hw_str</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_18">
+     <widget class="QLabel" name="settings_info_fw_t">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
+        <y>50</y>
         <width>131</width>
         <height>16</height>
        </rect>
@@ -3710,17 +4282,17 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>Firmware version:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_19">
+     <widget class="QLabel" name="settings_info_fw">
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>60</y>
+        <y>50</y>
         <width>91</width>
         <height>20</height>
        </rect>
@@ -3733,17 +4305,17 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>sw_str</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_20">
+     <widget class="QLabel" name="settings_info_app_t">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>70</y>
         <width>171</width>
         <height>16</height>
        </rect>
@@ -3756,17 +4328,17 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>Fluorescence app version:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="com_text_21">
+     <widget class="QLabel" name="settings_info_app">
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>80</y>
+        <y>70</y>
         <width>91</width>
         <height>20</height>
        </rect>
@@ -3779,20 +4351,25 @@ color: rgb(255, 255, 255);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
        <string>3.0</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="main_preset_8">
+     <widget class="QPushButton" name="settings_info_download">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>110</y>
-        <width>141</width>
+        <width>171</width>
         <height>51</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
@@ -3844,6 +4421,11 @@ Latest Firmware</string>
        <height>61</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);</string>
@@ -3861,6 +4443,11 @@ Presets</string>
        <width>81</width>
        <height>61</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
@@ -3880,6 +4467,11 @@ Colors</string>
        <height>61</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);</string>
@@ -3897,6 +4489,11 @@ Message</string>
        <width>81</width>
        <height>61</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
@@ -3916,6 +4513,11 @@ Sync</string>
        <height>61</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);</string>
@@ -3926,13 +4528,606 @@ Info</string>
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="panel_lsettings" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>120</y>
+      <width>741</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>.AppleSystemUIFont</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <widget class="QGroupBox" name="lsettings_td">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>341</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="title">
+      <string>Set time and date format</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QCheckBox" name="lsettings_td_12hr_enable">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>30</y>
+        <width>221</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>12h hour format</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="lsettings_td_l0_enable">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>60</y>
+        <width>221</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Enable leading zero '0'</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="lsettings_td_intldate_enable">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>90</y>
+        <width>221</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>MM.DD.YY format</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="lsettings_nsh">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>170</y>
+       <width>341</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Brightness &amp;&amp; Night Shift</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QCheckBox" name="lsettings_nsh_enable">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>30</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Enable silent mode</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="lsettings_nsh_scheduled_enable">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>60</y>
+        <width>161</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Scheduled night shift</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="lsettings_nsh_panel" native="true">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>90</y>
+        <width>301</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <widget class="QTimeEdit" name="lsettings_nsh_start">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>10</y>
+         <width>91</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+       <property name="time">
+        <time>
+         <hour>22</hour>
+         <minute>0</minute>
+         <second>0</second>
+        </time>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lsettings_nsh_intro1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>141</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>Every evening from</string>
+       </property>
+      </widget>
+      <widget class="QTimeEdit" name="lsettings_nsh_stop">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>40</y>
+         <width>91</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+       <property name="time">
+        <time>
+         <hour>8</hour>
+         <minute>0</minute>
+         <second>0</second>
+        </time>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lsettings_nsh_intro3">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>40</y>
+         <width>111</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>the next morning</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lsettings_nsh_intro2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>until</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="lsettings_info">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>170</y>
+       <width>371</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Hardware &amp;&amp; Firmware</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QLabel" name="lsettings_info_hw_t">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Hardware version:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="lsettings_info_update">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>110</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Firmware Update</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lsettings_info_hw">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>30</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>2.0 or 2.1</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lsettings_info_fw_t">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Firmware version:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lsettings_info_fw">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>50</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>sw_str</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lsettings_info_app_t">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>Fluorescence app version:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lsettings_info_app">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>70</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>3.0</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="lsettings_info_download">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Download 
+Latest Firmware</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="lsettings_settings">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>20</y>
+       <width>361</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Settings</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QPushButton" name="lsettings_settings_default">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>40</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Load Default</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="lsettings_settings_save">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>40</y>
+        <width>171</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Save All</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
    <zorder>com_group</zorder>
-   <zorder>panel_timesync</zorder>
-   <zorder>panel_custom_colors</zorder>
-   <zorder>panel_welcome</zorder>
-   <zorder>panel_message</zorder>
-   <zorder>panel_settings</zorder>
    <zorder>panel_main_control</zorder>
+   <zorder>panel_welcome</zorder>
+   <zorder>panel_settings</zorder>
+   <zorder>panel_lsettings</zorder>
+   <zorder>panel_timesync</zorder>
+   <zorder>panel_message</zorder>
+   <zorder>panel_custom_colors</zorder>
    <zorder>panel_presets</zorder>
   </widget>
  </widget>
