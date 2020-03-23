@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "fl_app_com.h"
+#include "src/fl_app_lights.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FluorescenceApp; }
@@ -10,6 +11,7 @@ QT_END_NAMESPACE
 
 #define NUM_PRESET_DYNAMIC_COLORS 6
 #define NUM_PRESET_DYNAMIC_TIME 21
+#define NUM_PRESET_LIGHT_SYNC 6
 
 class FluorescenceApp : public QMainWindow
 {
@@ -160,6 +162,8 @@ private slots:
 
     void on_message_send_clicked();
 
+    void on_lisync_sample_clicked();
+
 private:
     Ui::FluorescenceApp *ui;
 
@@ -170,9 +174,26 @@ private:
     uint8_t custom_global_color_white;
     uint8_t custom_led_white[6];
 
+    uint_fast8_t preset_dynamic_timer = 0;
+
+    uint_fast8_t preset_dynamic_light_sync_timer = 0;
+    uint_fast8_t preset_dynamic_light_sync_counter = 0;
+    bool preset_dynamic_light_sync_enable = false;
+
+    Light_Pattern global_lights_instance;
+
+    // Global time updater, ll support
+    QTimer *global_timer = nullptr;
+    vfdco_time_t global_time;
+
+    // Todo replace bool by fancy function
+    bool global_is_fw2 = false;
+
     void hide_all_panels();
     void hide_all_dynamic_control_panels();
     void clear_lights_instance();
     void custom_color_update_all_sliders(bool);
+
+    void preset_ambient_light_update(uint_fast8_t counter);
 };
 #endif // FLUORESCENCEAPP_H

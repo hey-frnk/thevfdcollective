@@ -11,26 +11,24 @@
 #include <QGraphicsRectItem>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QScreen>
 
 #include "QtColorWidgets/colorwidgets_global.hpp"
+
+#include <opencv2/opencv.hpp>
+#include "asmOpenCV.h"
 
 using namespace color_widgets;
 
 // Global dynamic colors
 QWidget *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
 QWidget *preset_dynamic_time[NUM_PRESET_DYNAMIC_TIME];
-uint_fast8_t preset_dynamic_timer = 0;
+QWidget *preset_dynamic_lisync[NUM_PRESET_LIGHT_SYNC];
 
-Light_Pattern global_lights_instance;
+#define GLOBAL_UPDATE_TIMER_INTERVAL 50
+#define NUM_AMBIENT_LIGHT_SAMPLES 3
 
-// Global time updater, ll support
-QTimer *global_timer = nullptr;
-vfdco_time_t global_time;
-
-// Todo replace bool by fancy function
-bool global_is_fw2 = false;
-
-QString bliss_descriptions[6] = {
+const QString bliss_descriptions[6] = {
     "Nordlicht means northern light in German. Temperament: mysterious, majestic, spirited, impressive\n\
 Ink: fluorescent green to teal, touches of purple, Song: Higher Ground by ODESZA",
 
@@ -49,6 +47,19 @@ by Andrea von Kampen. Taste: pumpkin, blood orange, maple, cinnamon",
 
     "Abendhimmel means evening sky in German. Temperament: passionate, untamed, infinite, intense\n\
 Ink: strong red. every warm red tone, some orange, some magenta. Song: Lost In The Night - THBD"
+};
+
+const QString ambient_light_sample_paths[NUM_AMBIENT_LIGHT_SAMPLES] = {
+    ":/Resources/res0.jpg",
+    ":/Resources/res1.jpg",
+    ":/Resources/res2.jpg"
+    // ":/Resources/res3.jpg"
+};
+
+const QColor ambient_light_colors[NUM_AMBIENT_LIGHT_SAMPLES][6] = {
+    {QColor("#DFA78A"), QColor("#958579"), QColor("#596365"), QColor("#933233"), QColor("#2D444D"), QColor("#1F2A33")},
+    {QColor("#A166A3"), QColor("#CE5C70"), QColor("#7B46A3"), QColor("#4E3196"), QColor("#7E395C"), QColor("#301E39")},
+    {QColor("#DFE0E3"), QColor("#BEC6CB"), QColor("#A2AFB7"), QColor("#80909B"), QColor("#9F897B"), QColor("#685F5C")}
 };
 
 FluorescenceApp::FluorescenceApp(QWidget *parent)
@@ -71,7 +82,7 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
     // Init timer
     global_timer = new QTimer(this);
     connect(global_timer, &QTimer::timeout, this, QOverload<>::of(&FluorescenceApp::update));
-    global_timer->start(50);
+    global_timer->start(GLOBAL_UPDATE_TIMER_INTERVAL);
 
     // Init custom color wheel & white
     ui->custom_color_wheel->setDisplayFlag(ColorWheel::COLOR_FLAGS, ColorWheel::COLOR_HSL);
@@ -91,8 +102,12 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
         ui->dynamic_t_8, ui->dynamic_t_9, ui->dynamic_t_10, ui->dynamic_t_11, ui->dynamic_t_12, ui->dynamic_t_13, ui->dynamic_t_14,
         ui->dynamic_t_15, ui->dynamic_t_16, ui->dynamic_t_17, ui->dynamic_t_18, ui->dynamic_t_19, ui->dynamic_t_20, ui->dynamic_t_21
     };
+    QWidget *tmp_dynamic_lisync[NUM_PRESET_LIGHT_SYNC] = {
+        ui->lisync_c1, ui->lisync_c2, ui->lisync_c3, ui->lisync_c4, ui->lisync_c5, ui->lisync_c6
+    };
     memcpy(preset_dynamic_colors, tmp_dynamic_colors, NUM_PRESET_DYNAMIC_COLORS * sizeof(QWidget *));
     memcpy(preset_dynamic_time, tmp_dynamic_time, NUM_PRESET_DYNAMIC_TIME * sizeof(QWidget *));
+    memcpy(preset_dynamic_lisync, tmp_dynamic_lisync, NUM_PRESET_LIGHT_SYNC * sizeof(QWidget *));
     hide_all_dynamic_control_panels();
     clear_lights_instance();
     Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_lights_instance, NULL);
@@ -105,6 +120,60 @@ FluorescenceApp::~FluorescenceApp()
 {
     delete global_timer;
     delete ui;
+}
+
+void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
+    QImage src_q;
+    if(preset_dynamic_light_sync_enable) {
+        QScreen *screen = QGuiApplication::primaryScreen();
+        if (const QWindow *window = windowHandle()) screen = this->screen();
+        if (!screen) return;
+        src_q = screen->grabWindow(0).toImage().convertToFormat(QImage::Format_RGB888);
+
+        // ui->lisync_sample->setPixmap(QPixmap::fromImage(src_q));
+        src_q.scaled(50, 50, Qt::KeepAspectRatio, Qt::TransformationMode::FastTransformation);
+
+        // Article: https://www.thevfdcollective.com/blog/aesthetic-color-palettes-with-qt-and-opencv-in-c
+        // Parse Image
+        // Parse: https://asmaloney.com/2013/11/code/converting-between-cvmat-and-qimage-or-qpixmap/
+        cv::Mat source_img = ASM::QImageToCvMat(src_q);
+
+        // Serialize, float
+        int serialized_size = source_img.total();
+        cv::Mat serialized_data = source_img.reshape(1, serialized_size);
+        serialized_data.convertTo(serialized_data, CV_32F);
+
+        std::vector<int> labels;
+        cv::Mat3f centers;
+        cv::kmeans(serialized_data, 6, labels, cv::TermCriteria(), 1, cv::KMEANS_RANDOM_CENTERS, centers);
+
+        // Make it pretty by sorting it by energy
+        std::sort(centers.begin(), centers.end(), [](const cv::Vec3f &a, const cv::Vec3f &b) -> bool {
+            return a[0] + a[1] + a[2] > b[0] + b[1] + b[2];
+        });
+
+        /* for(int i = 0; i < 6; ++i) {
+            dynamic_cast<ColorPreview *>(preset_dynamic_lisync[i])->setColor(QColor::fromRgb(
+                centers.at<float>(i + 0, 2),
+                centers.at<float>(i + 0, 1),
+                centers.at<float>(i + 0, 0))
+            );
+        } */
+        // Set to clock
+        uint8_t color_arr[CONFIG_NUM_BYTES];
+        for(uint_fast8_t i = 0; i < CONFIG_NUM_BYTES; ++i) {
+            color_arr[4 * i] = (uint8_t)centers.at<float>(i + 0, 2);
+            color_arr[4 * i + 1] = (uint8_t)centers.at<float>(i + 0, 1);
+            color_arr[4 * i + 2] = (uint8_t)centers.at<float>(i + 0, 0);
+            color_arr[4 * i + 3] = 0;
+        }
+        global_com_instance->transfer_serial1(color_arr);
+    } else {
+        ui->lisync_sample->setPixmap(QPixmap::fromImage(QImage(ambient_light_sample_paths[counter])));
+        for(int i = 0; i < 6; ++i) {
+            dynamic_cast<ColorPreview *>(preset_dynamic_lisync[i])->setColor(ambient_light_colors[counter][i]);
+        }
+    }
 }
 
 void FluorescenceApp::update(){
@@ -124,10 +193,15 @@ void FluorescenceApp::update(){
         if(i < hpdt) dynamic_cast<ColorPreview *>(preset_dynamic_time[i])->setColor(QColor::fromRgb(16, 128, 128));
         else dynamic_cast<ColorPreview *>(preset_dynamic_time[i])->setColor(QColor::fromRgb(196, 196, 196));
     }
-    if(preset_dynamic_timer == (NUM_PRESET_DYNAMIC_TIME * 8)) {
-        preset_dynamic_timer = 0;
-    }
+    if(preset_dynamic_timer == (NUM_PRESET_DYNAMIC_TIME * 8)) preset_dynamic_timer = 0;
 
+    // Update ambient light every 2 seconds
+    ++preset_dynamic_light_sync_timer;
+    if(preset_dynamic_light_sync_timer == 40) {
+        preset_dynamic_light_sync_timer = 0;
+        preset_ambient_light_update(preset_dynamic_light_sync_counter++);
+        if(preset_dynamic_light_sync_counter == NUM_AMBIENT_LIGHT_SAMPLES) preset_dynamic_light_sync_counter = 0;
+    }
 }
 
 void FluorescenceApp::hide_all_panels() {
@@ -143,7 +217,32 @@ void FluorescenceApp::hide_all_panels() {
 void FluorescenceApp::on_com_connect_clicked()
 {
     if(ui->com_label_connect->text() == "Connect") {
-        global_com_instance = new fl_app_com(ui->com_label_connect->text(), global_is_fw2);
+        global_com_instance = new fl_app_com(ui->com_label_connect->text());
+        if(global_com_instance->getStatus() == FL_APP_COM_STATUS_CONNECTION_FAILED) {
+            QMessageBox err_zero;
+            err_zero.setText("Oh deer 🦌, seems like we couldn't connect to Fluorescence. Please make sure you have connected Fluorescence correctly and try again!");
+            err_zero.setIcon(QMessageBox::Critical);
+            err_zero.exec();
+            // return;
+        }
+        try {
+            // Request FW version
+            QString fw_version = global_com_instance->transfer_clock_control(FL_APP_COM_CONTROL_FW_VERSION_REQ);
+            if(global_com_instance->legacy_protocol()) {
+                global_is_fw2 = true;
+                ui->lsettings_info_fw->setText(fw_version);
+            } else {
+                global_is_fw2 = false;
+                ui->settings_info_fw->setText(fw_version);
+                QString hw_version = global_com_instance->transfer_clock_control(FL_APP_COM_CONTROL_HW_VERSION_REQ);
+                ui->settings_info_hw->setText(hw_version);
+            }
+        } catch (std::exception &e) {
+            QMessageBox err_zero;
+            err_zero.setText("Oops: " + QString::fromStdString(e.what()));
+            err_zero.exec();
+            return;
+        }
 
         ui->panel_main_control->setEnabled(true);
         ui->com_label_connect->setText("Disconnect");
@@ -669,5 +768,16 @@ void FluorescenceApp::on_message_send_clicked()
         for(uint_fast8_t i = 0; i < 4; ++i) {
             if(m[i]) free(m[i]);
         }
+    }
+}
+
+void FluorescenceApp::on_lisync_sample_clicked()
+{
+    // Toggle dynamic light sync
+    preset_dynamic_light_sync_enable = !preset_dynamic_light_sync_enable;
+    if(preset_dynamic_light_sync_enable) {
+        ui->lisync_status->setText("Click on the computer to stop.");
+    } else {
+        ui->lisync_status->setText("Click on the computer to begin.");
     }
 }

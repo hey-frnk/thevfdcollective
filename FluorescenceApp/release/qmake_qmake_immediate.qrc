@@ -1,9 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/">
-<file alias="Resources/green2blue.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/green2blue.png</file>
-<file alias="Resources/pastelrainbow.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/pastelrainbow.png</file>
-<file alias="Resources/rainbow_alt.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/rainbow_alt.png</file>
-<file alias="Resources/red2blue1.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/red2blue1.png</file>
-<file alias="Resources/red2green_alt.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/red2green_alt.png</file>
-</qresource>
-</RCC>

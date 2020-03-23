@@ -171,3 +171,7 @@ void Container_GUI_Clear(GUI_Format *self);
 
 
 #endif
+
+#ifdef __cplusplus
+}
+#endif

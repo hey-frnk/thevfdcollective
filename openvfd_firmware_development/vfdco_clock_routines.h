@@ -100,9 +100,9 @@ uint8_t _map_gui_instance_to_serialized_settings_index(gui_instance_t instance);
 uint8_t _map_lights_instance_to_serialized_settings_index(light_pattern_instance_t instance);
 
 // All settings are tracked in serialized_settings
-uint8_t *const serialized_settings[NUM_SERIALIZABLE];
+extern uint8_t *const serialized_settings[NUM_SERIALIZABLE];
 // The size of each serialized setting is tracked in here
-const uint8_t serialized_settings_sizes[NUM_SERIALIZABLE];
+extern const uint8_t serialized_settings_sizes[NUM_SERIALIZABLE];
 // ######## END OF DO NOT TOUCH SECTION ########
 
 #endif

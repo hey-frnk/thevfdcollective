@@ -24,7 +24,7 @@ void render();
 // Dimming
 uint8_t _led_dim_factor = 0;
 
-#ifdef CONFIG_ENABLE_GAMMACORRECTION
+#if CONFIG_ENABLE_GAMMACORRECTION == 1
 static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafruit.com/led-tricks-gamma-correction/the-quick-fix
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
@@ -57,19 +57,19 @@ void vfdco_clr_set_dim_factor(uint8_t dim_factor) {
   _led_dim_factor = dim_factor;
 }
 
-#ifdef CONFIG_ENABLE_COLORCORRECTION
+#if CONFIG_ENABLE_COLORCORRECTION == 1
 static inline uint8_t _vfdco_clr_scale8(uint8_t x, uint8_t scale) {
   return ((uint16_t)x * scale) >> 8;
 }
 #endif
 
 void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
-  #ifdef CONFIG_ENABLE_GAMMACORRECTION
+  #if CONFIG_ENABLE_GAMMACORRECTION == 1
   rgb_arr[3 * index] = gamma8[g];
   rgb_arr[3 * index + 1] = gamma8[r];
   rgb_arr[3 * index + 2] = gamma8[b];
   #else
-    #ifdef CONFIG_ENABLE_COLORCORRECTION
+    #if CONFIG_ENABLE_COLORCORRECTION == 1
     // TypicalLEDStrip = 0xFFB0F0: 255(R), 176(G), 240(B)
     rgb_arr[3 * index] = _vfdco_clr_scale8(g, 0xB0);
     rgb_arr[3 * index + 1] = r; // no scale

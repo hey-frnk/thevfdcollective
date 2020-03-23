@@ -1,10 +1,24 @@
-/*
- * Being part of something special makes you special
- *
- * Created winter 2020
- * Author: Copyright (C) The VFD Collective, Frank Zheng
- *
- */
+/**
+  ******************************************************************************
+  * @file     vfdco_config_hw2.h
+  * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
+  * @version  V1.0
+  * @date     21-March-2020
+  * @brief    This file contains the global configuration parameters optimized for 
+  *           Fluorescence running on Arduino (HW 2.0/2.1)
+  ******************************************************************************
+  * @tableofcontents Table of contents, enter to navigate:
+  * CONFIG_VERSION
+  * SECTION_CONFIG_DISPLAY
+  * SECTION_CONFIG_LEDS
+  * SECTION_CONFIG_POWER
+  * SECTION_CONFIG_GUI
+  * SECTION_CONFIG_LIGHTS
+  * SECTION_CONFIG_COM
+  * SECTION_CONFIG_CLOCK_ROUTINE
+  * CONFIG_SAVED_SETTINGS_TABLE
+  ******************************************************************************
+ **/
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,41 +27,59 @@ extern "C" {
 #ifndef _VFDCO_CONFIG_HW2_H
 #define _VFDCO_CONFIG_HW2_H
 
+/**
+ * @tableofcontents CONFIG_VERSION
+ * @brief Version information
+ */
+// Edit software version here
 #define CONFIG_SW_STRING_LENGTH 6
 #define CONFIG_SW_STRING {'3', '.', '0', 'f', 'l', ' '}
+// Edit hardware version here
 #define CONFIG_HW_STRING_LENGTH 4
 #define CONFIG_HW_STRING {'2', '.', '1', ' '}
 
-// GENERAL SETTINGS
-// Number of digits. How many displays?
+/**
+ * @tableofcontents SECTION_CONFIG_DISPLAY
+ * @brief Configuration parameters of the display driver
+ */
+// Number of digits. How many displays? Default: 6
 #define CONFIG_NUM_DIGITS ((uint8_t) 6)
-// Number of LEDs.
+
+/**
+ * @tableofcontents SECTION_CONFIG_LEDS
+ * @brief Configuration parameters of the LED driver
+ */
+// Number of LEDs. Default: 6
 #define CONFIG_NUM_PIXELS ((uint8_t) 6)
-#define CONFIG_NUM_BPP ((uint8_t) 3)
-// Do not touch this.
-#define CONFIG_NUM_BYTES ((uint8_t)(CONFIG_NUM_PIXELS * CONFIG_NUM_BPP))
+// Select the LED driver. If set to 1, a separate white LED can be used, when the LEDs are of type SK6812
+#define CONFIG_USE_RGBW 0
+// Enable gamma correction for more even brightness mapping
+#define CONFIG_ENABLE_GAMMACORRECTION 0
+// Enable color correction, so that R, G and B are perceived equally bright when set to the same intensity value
+#define CONFIG_ENABLE_COLORCORRECTION 1
 
-// #define CONFIG_ENABLE_GAMMACORRECTION
-#define CONFIG_ENABLE_COLORCORRECTION
-
-// ROUTINE SETTINGS
-// How often should we ask the RTC what time it is? (Milliseconds)
-#define CONFIG_RTC_UPDATE_INTERVAL 850
-// How quickly do we want to update the display?
-#define CONFIG_DISPLAY_UPDATE_INTERVAL 11
-
-// DISPLAY & LIGHT PATTERN DIM FACTORS
+/**
+ * @tableofcontents SECTION_CONFIG_POWER
+ * @brief Configuration parameters for power
+ */
+// Dim factors for both display and light dimming. Corresponds directly to a shift factor
 #define CONFIG_BRIGHTNESS_MAX   0 // 1/1 brightness(no dimming)
 #define CONFIG_BRIGHTNESS_HALF  2 // 1/4 brightness
 #define CONFIG_BRIGHTNESS_MIN   4 // 1/8 brightness
 
-// DISPLAY SETTINGS
+/**
+ * @tableofcontents SECTION_CONFIG_GUI
+ * @brief Configuration parameters for the GUI
+ */
 // How many milliseconds should a short notice last?
 #define CONFIG_MESSAGE_SHORT      500
 // How many milliseconds should a regular message last?
 #define CONFIG_MESSAGE_LONG       1000
 
-// LIGHT PATTERN SETTINGS
+/**
+ * @tableofcontents SECTION_CONFIG_LIGHTS
+ * @brief Configuration parameters for the high level Light_Pattern class
+ */
 // If legacy patterns are enabled, the color modes are just like in v2.x
 #define CONFIG_LEGACY_LIGHT_PATTERNS       1
 // Definition for different lightess & saturation settings
@@ -57,16 +89,29 @@ extern "C" {
 #define CONFIG_SATURATION_HIGH    255
 #define CONFIG_SATURATION_MEDIUM  196
 #define CONFIG_SATURATION_LOW     127
-// Legacy fade speeds
+// Fade speeds
 #define CONFIG_SINGLE_COLOR_FADE_SPEED     2
 #define CONFIG_SPECTRUM_FADE_SPEED         60
 #define CONFIG_CHASE_FADE_SPEED            60
 #define CONFIG_COP_FADE_SPEED              25
 #define CONFIG_MOMENTSOFBLISS_FADE_SPEED   10
 
-// COM SETTINGS
+/**
+ * @tableofcontents SECTION_CONFIG_COM
+ * @brief Configuration parameters for COM
+ */
+// Receive and Transmit buffer size, according to protocol
 #define CONFIG_COM_RX_BUF_MAX 24
 #define CONFIG_COM_TX_BUF_MAX 10
+
+/**
+ * @tableofcontents SECTION_CONFIG_CLOCK_ROUTINE
+ * @brief Configuration parameters for the high level clock routine
+ */
+// How often should we ask the RTC what time it is? (Milliseconds)
+#define CONFIG_RTC_UPDATE_INTERVAL 850
+// How quickly do we want to update the display?
+#define CONFIG_DISPLAY_UPDATE_INTERVAL 11
 
 
 

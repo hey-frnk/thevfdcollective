@@ -258,11 +258,8 @@ color: rgb(255, 255, 255);</string>
        <family>.AppleSystemUIFont</family>
       </font>
      </property>
-     <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
-     </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -2485,6 +2482,182 @@ color: rgb(255, 255, 255);</string>
       <attribute name="title">
        <string>Ambient Light</string>
       </attribute>
+      <widget class="QLabel" name="lisync_computer">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>20</y>
+         <width>281</width>
+         <height>251</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/computer.png</pixmap>
+       </property>
+      </widget>
+      <widget class="ClickableLabel" name="lisync_sample">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>40</y>
+         <width>251</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(55, 55, 55)</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/res0.jpg</pixmap>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lisync_intro">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>201</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>Generate ambient light colors
+to the mood of your computer
+screen.</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lisync_status">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>120</y>
+         <width>201</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>Click on the computer to begin.</string>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="lisync_c5">
+       <property name="geometry">
+        <rect>
+         <x>415</x>
+         <y>290</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="lisync_c6">
+       <property name="geometry">
+        <rect>
+         <x>465</x>
+         <y>290</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="lisync_c3">
+       <property name="geometry">
+        <rect>
+         <x>315</x>
+         <y>290</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="lisync_c2">
+       <property name="geometry">
+        <rect>
+         <x>265</x>
+         <y>290</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="lisync_c1">
+       <property name="geometry">
+        <rect>
+         <x>215</x>
+         <y>290</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+      </widget>
+      <widget class="color_widgets::ColorPreview" name="lisync_c4">
+       <property name="geometry">
+        <rect>
+         <x>365</x>
+         <y>290</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_shuffle">
       <attribute name="title">
@@ -3205,9 +3378,9 @@ color: rgb(255, 255, 255);</string>
     <widget class="QLabel" name="timesync_time_label">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>50</x>
        <y>120</y>
-       <width>391</width>
+       <width>441</width>
        <height>91</height>
       </rect>
      </property>
@@ -3229,7 +3402,7 @@ color: rgb(255, 255, 255);</string>
     <widget class="QLabel" name="timesync_date_label">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>50</x>
        <y>220</y>
        <width>391</width>
        <height>31</height>
@@ -5122,13 +5295,13 @@ color: rgb(255, 255, 255);</string>
    </widget>
    <zorder>com_group</zorder>
    <zorder>panel_main_control</zorder>
-   <zorder>panel_welcome</zorder>
    <zorder>panel_settings</zorder>
-   <zorder>panel_lsettings</zorder>
-   <zorder>panel_timesync</zorder>
    <zorder>panel_message</zorder>
    <zorder>panel_custom_colors</zorder>
    <zorder>panel_presets</zorder>
+   <zorder>panel_welcome</zorder>
+   <zorder>panel_lsettings</zorder>
+   <zorder>panel_timesync</zorder>
   </widget>
  </widget>
  <customwidgets>

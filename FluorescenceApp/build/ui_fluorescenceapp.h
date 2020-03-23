@@ -148,6 +148,16 @@ public:
     QLabel *panel_dyn_music_ptext_2;
     QComboBox *panel_dyn_music_param2;
     QWidget *tab_moodsync;
+    QLabel *lisync_computer;
+    ClickableLabel *lisync_sample;
+    QLabel *lisync_intro;
+    QLabel *lisync_status;
+    color_widgets::ColorPreview *lisync_c5;
+    color_widgets::ColorPreview *lisync_c6;
+    color_widgets::ColorPreview *lisync_c3;
+    color_widgets::ColorPreview *lisync_c2;
+    color_widgets::ColorPreview *lisync_c1;
+    color_widgets::ColorPreview *lisync_c4;
     QWidget *tab_shuffle;
     QWidget *panel_custom_colors;
     color_widgets::ColorWheel *custom_color_wheel;
@@ -355,7 +365,6 @@ public:
         tab_presets_container->setObjectName(QString::fromUtf8("tab_presets_container"));
         tab_presets_container->setGeometry(QRect(0, 0, 741, 371));
         tab_presets_container->setFont(font2);
-        tab_presets_container->setTabShape(QTabWidget::Rounded);
         tab_presets_static = new QWidget();
         tab_presets_static->setObjectName(QString::fromUtf8("tab_presets_static"));
         static_intro = new QLabel(tab_presets_static);
@@ -929,6 +938,50 @@ public:
         panel_dyn_music->raise();
         tab_moodsync = new QWidget();
         tab_moodsync->setObjectName(QString::fromUtf8("tab_moodsync"));
+        lisync_computer = new QLabel(tab_moodsync);
+        lisync_computer->setObjectName(QString::fromUtf8("lisync_computer"));
+        lisync_computer->setGeometry(QRect(220, 20, 281, 251));
+        lisync_computer->setPixmap(QPixmap(QString::fromUtf8(":/Resources/computer.png")));
+        lisync_sample = new ClickableLabel(tab_moodsync);
+        lisync_sample->setObjectName(QString::fromUtf8("lisync_sample"));
+        lisync_sample->setGeometry(QRect(230, 40, 251, 141));
+        lisync_sample->setCursor(QCursor(Qt::OpenHandCursor));
+        lisync_sample->setStyleSheet(QString::fromUtf8("background-color: rgb(55, 55, 55)"));
+        lisync_sample->setPixmap(QPixmap(QString::fromUtf8(":/Resources/res0.jpg")));
+        lisync_intro = new QLabel(tab_moodsync);
+        lisync_intro->setObjectName(QString::fromUtf8("lisync_intro"));
+        lisync_intro->setGeometry(QRect(10, 120, 201, 51));
+        lisync_intro->setFont(font1);
+        lisync_intro->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lisync_status = new QLabel(tab_moodsync);
+        lisync_status->setObjectName(QString::fromUtf8("lisync_status"));
+        lisync_status->setGeometry(QRect(520, 120, 201, 51));
+        lisync_status->setFont(font1);
+        lisync_status->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lisync_c5 = new color_widgets::ColorPreview(tab_moodsync);
+        lisync_c5->setObjectName(QString::fromUtf8("lisync_c5"));
+        lisync_c5->setGeometry(QRect(415, 290, 31, 31));
+        lisync_c5->setFont(font2);
+        lisync_c6 = new color_widgets::ColorPreview(tab_moodsync);
+        lisync_c6->setObjectName(QString::fromUtf8("lisync_c6"));
+        lisync_c6->setGeometry(QRect(465, 290, 31, 31));
+        lisync_c6->setFont(font2);
+        lisync_c3 = new color_widgets::ColorPreview(tab_moodsync);
+        lisync_c3->setObjectName(QString::fromUtf8("lisync_c3"));
+        lisync_c3->setGeometry(QRect(315, 290, 31, 31));
+        lisync_c3->setFont(font2);
+        lisync_c2 = new color_widgets::ColorPreview(tab_moodsync);
+        lisync_c2->setObjectName(QString::fromUtf8("lisync_c2"));
+        lisync_c2->setGeometry(QRect(265, 290, 31, 31));
+        lisync_c2->setFont(font2);
+        lisync_c1 = new color_widgets::ColorPreview(tab_moodsync);
+        lisync_c1->setObjectName(QString::fromUtf8("lisync_c1"));
+        lisync_c1->setGeometry(QRect(215, 290, 31, 31));
+        lisync_c1->setFont(font2);
+        lisync_c4 = new color_widgets::ColorPreview(tab_moodsync);
+        lisync_c4->setObjectName(QString::fromUtf8("lisync_c4"));
+        lisync_c4->setGeometry(QRect(365, 290, 31, 31));
+        lisync_c4->setFont(font2);
         tab_presets_container->addTab(tab_moodsync, QString());
         tab_shuffle = new QWidget();
         tab_shuffle->setObjectName(QString::fromUtf8("tab_shuffle"));
@@ -1120,7 +1173,7 @@ public:
         panel_timesync->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         timesync_time_label = new QLabel(panel_timesync);
         timesync_time_label->setObjectName(QString::fromUtf8("timesync_time_label"));
-        timesync_time_label->setGeometry(QRect(60, 120, 391, 91));
+        timesync_time_label->setGeometry(QRect(60, 120, 441, 91));
         timesync_time_label->setFont(font4);
         timesync_time_label->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         timesync_date_label = new QLabel(panel_timesync);
@@ -1583,17 +1636,17 @@ public:
         FluorescenceApp->setCentralWidget(centralwidget);
         com_group->raise();
         panel_main_control->raise();
-        panel_welcome->raise();
         panel_settings->raise();
-        panel_lsettings->raise();
-        panel_timesync->raise();
-        panel_presets->raise();
         panel_message->raise();
         panel_custom_colors->raise();
+        panel_presets->raise();
+        panel_welcome->raise();
+        panel_lsettings->raise();
+        panel_timesync->raise();
 
         retranslateUi(FluorescenceApp);
 
-        tab_presets_container->setCurrentIndex(1);
+        tab_presets_container->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(FluorescenceApp);
@@ -1700,6 +1753,12 @@ public:
         panel_dyn_music_param2->setItemText(2, QCoreApplication::translate("FluorescenceApp", "low", nullptr));
 
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_presets_dynamic), QCoreApplication::translate("FluorescenceApp", "Dynamic Presets", nullptr));
+        lisync_computer->setText(QString());
+        lisync_sample->setText(QString());
+        lisync_intro->setText(QCoreApplication::translate("FluorescenceApp", "Generate ambient light colors\n"
+"to the mood of your computer\n"
+"screen.", nullptr));
+        lisync_status->setText(QCoreApplication::translate("FluorescenceApp", "Click on the computer to begin.", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_moodsync), QCoreApplication::translate("FluorescenceApp", "Ambient Light", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_shuffle), QCoreApplication::translate("FluorescenceApp", "Shuffle", nullptr));
         custom_label_r->setText(QCoreApplication::translate("FluorescenceApp", "R:", nullptr));

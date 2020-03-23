@@ -1,18 +1,11 @@
 #include "fl_app_com.h"
 #include "src/fl_app_lights.h"
+#include <QMessageBox>
 
 #define CONFIG_NUM_DIGITS 6
 
-fl_app_com::fl_app_com(const QString portname, bool is_legacy_protocol) :
-    is_legacy_protocol(is_legacy_protocol)
+fl_app_com::fl_app_com(const QString portname)
 {
-    if(!is_legacy_protocol) {
-        buf_tx = new uint8_t[BUF_TX_SIZE];
-        _transfer = &fl_app_com::regular_transfer;
-    } else {
-        buf_tx = new uint8_t[BUF_TX_SIZE_LEGACY];
-        _transfer = &fl_app_com::legacy_transfer;
-    }
     buf_rx = new uint8_t[BUF_RX_SIZE];
 
     QIODevice::OpenMode open_mode;
@@ -24,12 +17,34 @@ fl_app_com::fl_app_com(const QString portname, bool is_legacy_protocol) :
     serial_port.setStopBits(QSerialPort::StopBits::OneStop);
 
     serial_port.open(open_mode);
+
+    // Try if port is legacy
+    buf_tx = new uint8_t[BUF_TX_SIZE_LEGACY];
+    _transfer = &fl_app_com::legacy_transfer;
+    QString fw_str = transfer_clock_control(FL_APP_COM_CONTROL_FW_VERSION_REQ);
+    if(fw_str.at(0) == "v" && fw_str.at(1) == "2") {
+        // Legacy protocol!
+        is_legacy_protocol = true;
+        status = FL_APP_COM_STATUS_OK;
+    } else {
+        // Not legacy. try if protocol is 3.0
+        delete[] buf_tx;
+        buf_tx = new uint8_t[BUF_TX_SIZE];
+        _transfer = &fl_app_com::regular_transfer;
+        QString fw_str = transfer_clock_control(FL_APP_COM_CONTROL_FW_VERSION_REQ);
+        if(fw_str.at(0) == "3" && fw_str.at(1) == ".") {
+            is_legacy_protocol = false;
+            status = FL_APP_COM_STATUS_OK;
+        } else {
+            status = FL_APP_COM_STATUS_CONNECTION_FAILED;
+        }
+    }
 }
 
 fl_app_com::~fl_app_com() {
     serial_port.close();
-    delete buf_rx;
-    delete buf_tx;
+    delete[] buf_rx;
+    delete[] buf_tx;
 }
 
 void fl_app_com::transfer_serial0(uint8_t *clr_arr)
@@ -76,7 +91,7 @@ void fl_app_com::legacy_transfer_clock_flags(uint8_t clock_flag, uint8_t clock_f
     transfer();
 }
 
-void fl_app_com::transfer_time_date(vfdco_time_t t, vfdco_date_t d)
+QString fl_app_com::transfer_time_date(vfdco_time_t t, vfdco_date_t d)
 {
     clear_buffer();
     set_control_byte(is_legacy_protocol ? 0x10 : 0x20);
@@ -88,6 +103,10 @@ void fl_app_com::transfer_time_date(vfdco_time_t t, vfdco_date_t d)
     buf_tx[FL_APP_COM_DATA_OFFSET + 5] = d.y;
     buf_tx[FL_APP_COM_DATA_OFFSET + 6] = 0x23;
     transfer();
+
+    // Wait to receive
+    QThread::msleep(100);
+    return receive(200);
 }
 
 void fl_app_com::transfer_brightness(uint8_t disp_or_led, uint8_t dim_factor)
@@ -151,7 +170,7 @@ void fl_app_com::transfer_message(uint8_t *m1, uint8_t *m2, uint8_t *m3, uint8_t
     transfer();
 }
 
-void fl_app_com::transfer_clock_control(fl_app_com_control_t control)
+QString fl_app_com::transfer_clock_control(fl_app_com_control_t control)
 {
     clear_buffer();
     if(!is_legacy_protocol) {
@@ -162,11 +181,26 @@ void fl_app_com::transfer_clock_control(fl_app_com_control_t control)
             case FL_APP_COM_CONTROL_FW_VERSION_REQ: set_control_byte(0x22); break;
             case FL_APP_COM_CONTROL_SETTINGS_SAVE_REQ: set_control_byte(0x33); break;
             case FL_APP_COM_CONTROL_DEFAULT_REQ: set_control_byte(0x34); break;
-            default: return;
+            default: QString("");
         }
     }
     transfer();
     // Wait to receive
+    QThread::msleep(100);
+    // Response
+    if(control == FL_APP_COM_CONTROL_FW_VERSION_REQ || FL_APP_COM_CONTROL_HW_VERSION_REQ) {
+        return receive(200);
+    } else return QString("");
+}
+
+bool fl_app_com::legacy_protocol()
+{
+    return is_legacy_protocol;
+}
+
+fl_app_status_t fl_app_com::getStatus()
+{
+    return status;
 }
 
 void fl_app_com::clear_buffer()
@@ -224,5 +258,34 @@ void fl_app_com::legacy_transfer()
     qDebug("Legacy Transfer");
     for(uint8_t i = 0; i < BUF_TX_SIZE_LEGACY; ++i) {
         qDebug("%hhu: 0x%hhx, %hhu", i, buf_tx[i], buf_tx[i]);
+    }
+}
+
+QString fl_app_com::receive(int wait_timeout)
+{
+    QByteArray byte_arr = receive_raw(wait_timeout);
+    // Msg format length
+    if(byte_arr.length() != 10) return "len_err";
+    // Msg format check
+    if(byte_arr.at(0) == 0x23 && byte_arr.at(9) == 0x24) {
+        if(!is_legacy_protocol) return "protocol_err";
+    } else if(byte_arr.at(0) == 0x24 && byte_arr.at(9) == 0x25) {
+        if(is_legacy_protocol) return "protocol_err";
+    } else {
+        return "fmt_err";
+    }
+    // Cut byte arr & return QString
+    return QString::fromStdString(byte_arr.mid(1, 8).toStdString());
+}
+
+QByteArray fl_app_com::receive_raw(int wait_timeout)
+{
+    if (serial_port.waitForReadyRead(wait_timeout)) {
+        // read request
+        QByteArray request_data = serial_port.readAll();
+        while (serial_port.waitForReadyRead(10)) request_data += serial_port.readAll();
+        return request_data;
+    } else {
+        return QByteArray("");
     }
 }

@@ -9,6 +9,9 @@ CONFIG += c++11
             # plugin
 
 # TEMPLATE = lib
+PKG_CONFIG = /usr/local/bin/pkg-config
+CONFIG += link_pkgconfig
+PKGCONFIG += opencv
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -84,6 +87,7 @@ HEADERS += \
     QtColorWidgets/swatch.hpp \
     QtColorWidgets/ui_color_dialog.h \
     QtColorWidgets/ui_color_palette_widget.h \
+    asmOpenCV.h \
     clickablelabel.h \
     fl_app_com.h \
     fluorescenceapp.h \
@@ -113,7 +117,14 @@ RESOURCES += \
     Resources/pastelrainbow.png \
     Resources/rainbow_alt.png \
     Resources/red2blue1.png \
-    Resources/red2green_alt.png
+    Resources/red2green_alt.png \
+    Resources/computer.png \
+    Resources/res0.jpg \
+    Resources/res1.jpg \
+    Resources/res2.jpg \
+    Resources/res3.jpg
+
+
 
 #DISTFILES += \
 #    QtColorWidgets/CMakeLists.txt \

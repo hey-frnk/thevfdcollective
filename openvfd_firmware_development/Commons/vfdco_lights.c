@@ -330,7 +330,7 @@ static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) 
   if(self->position < NUM_STATIC_T1) {
     // Single Color Special
     switch(self->position) {
-      #ifndef __AVR__
+      #if CONFIG_USE_RGBW == 1
       case 0: vfdco_clr_target_all_RGB   (self->target_arr,   0,   0,   0     ); break;
       case 1: vfdco_clr_target_all_RGBW  (self->target_arr,   0,   0,  96, 255); break;
       case 2: vfdco_clr_target_all_RGBW  (self->target_arr,   0,   0,   0, 255); break;
