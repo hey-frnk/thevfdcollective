@@ -3,6 +3,9 @@
 
 #include <QDateTime>
 #include <QStandardItemModel>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QDebug>
 
 #include "../vfdco_config.h"
 #include "../vfdco_clock_routines.h"
@@ -24,6 +27,11 @@ QLabel *led_hsl[CONFIG_NUM_PIXELS] = {nullptr, nullptr, nullptr, nullptr, nullpt
 // Color palette
 QColor active_color("#339999");
 QColor inactive_color("#DDDDDD");
+
+#define PROTOCOL_DATA_OFFSET_ROWS 1
+#define PROTOCOL_DATA_OFFSET_COLS 2
+#define PROTOCOL_DATA_LENGTH 27
+#define PROTOCOL_DATA_COMMAND_OFFSET 1
 
 extern uint8_t *const serialized_settings[NUM_SERIALIZABLE];
 
@@ -136,7 +144,7 @@ void FluorescenceSimulator::update()
                 // Get description & identifier of property
                 setting_property *p = settings_arr_names[parent_item_index].settings.at(current_item_index);
                 uint8_t _target_size = p->setting_size;
-                ui->settings_type_val->setText("[" + QString::number(_target_size) + "] uint8_t. Data.");
+                ui->settings_type_val->setText(QString::number(_target_size) + "x uint8_t. Setting.");
                 ui->settings_selected_val->setText(p->description);
                 char _tmp_data[_target_size];
                 memcpy(_tmp_data, serialized_settings[parent_item_index] + p->setting_offset, _target_size * sizeof(uint8_t));
@@ -150,7 +158,7 @@ void FluorescenceSimulator::update()
             } else {
                 // Set text to data of whole setting
                 uint8_t _target_size = settings_arr_names[current_item_index].size;
-                ui->settings_type_val->setText("[" + QString::number(_target_size) + "] uint8_t. Array of settings.");
+                ui->settings_type_val->setText(QString::number(_target_size) + "x uint8_t. Setting array.");
                 ui->settings_selected_val->setText(settings_arr_names[current_item_index].settings_identifier);
                 char _tmp_data[_target_size];
                 memcpy(_tmp_data, serialized_settings[current_item_index], _target_size * sizeof(uint8_t));
@@ -222,6 +230,95 @@ void FluorescenceSimulator::fill_settings_tree()
     ui->settings_tree->expandAll();
 }
 
+const QString table_default_data[5][6] = {
+    {"0x24", "0", "0", "0", "0", "0"},
+    {"0", "0", "0", "0", "0", "0"},
+    {"0", "0", "0", "0", "0", "0"},
+    {"0", "0", "0", "0", "0", "0"},
+    {"0", "0", "0x25", "", "", ""},
+};
+
+void FluorescenceSimulator::fill_com_table()
+{
+    bool blocked = signalsBlocked();
+    blockSignals(true);
+    Q_FOREACH(QWidget* w, findChildren<QWidget*>()) w->blockSignals(true);
+
+    read_in_protocol(":/protocol.csv"); // From resources
+
+    QTableWidget *com_data = ui->com_data;
+    com_data->setRowCount(5);
+    com_data->setColumnCount(6);
+
+    auto max_table_height = com_data->height() - com_data->horizontalHeader()->height() - 1;
+    auto max_table_width = com_data->width() - com_data->verticalHeader()->width() - 2;
+
+    for(auto i = 0; i < com_data->rowCount(); ++i) {
+        com_data->setRowHeight(i, max_table_height / com_data->rowCount());
+        // Fill table with default content
+        for(auto j = 0; j < com_data->columnCount(); ++j) com_data->setItem(i, j, new QTableWidgetItem(""));
+    }
+    for(auto i = 0; i < com_data->columnCount(); ++i) com_data->setColumnWidth(i, max_table_width / com_data->columnCount());
+    auto protocol_row = protocol_file.at(PROTOCOL_DATA_OFFSET_ROWS);
+    fill_com_table_items(PROTOCOL_DATA_OFFSET_ROWS);
+    ui->com_command_val->setText("[" + protocol_row[1] + "]: " + protocol_row[0] + ", " + (protocol_row.length() == 30 ? protocol_row[29] : "no parameter description"));
+
+    // Disable start & stop bit editable as well as the excess cells
+    com_data->item(0, 0)->setFlags(Qt::ItemFlag::ItemIsEditable);
+    for(auto i = 0; i < 4; ++i) com_data->item(4, 2 + i)->setFlags(Qt::ItemIsEditable);
+
+    blockSignals(blocked);
+    Q_FOREACH(QWidget* w, findChildren<QWidget*>()) w->blockSignals(false);
+}
+
+void FluorescenceSimulator::fill_com_table_items(int row_of_access)
+{
+    bool blocked = signalsBlocked();
+    blockSignals(true);
+    Q_FOREACH(QWidget* w, findChildren<QWidget*>()) w->blockSignals(true);
+
+    QTableWidget *com_data = ui->com_data;
+    for(auto i = 0; i < com_data->rowCount(); ++i) {
+        for(auto j = 0; j < com_data->columnCount(); ++j) {
+            auto access_point = i * com_data->columnCount() + j;
+            QTableWidgetItem *_item = com_data->item(i, j);
+            QString _data = (access_point < PROTOCOL_DATA_LENGTH) ? protocol_file.at(row_of_access)[PROTOCOL_DATA_OFFSET_COLS + access_point] : "";
+            _item->setText(_data);
+            if(_data.compare("reserved 0") == 0) _item->setFlags(_item->flags() & ~Qt::ItemIsEditable);
+            else _item->setFlags(_item->flags() | Qt::ItemIsEditable);
+        }
+    }
+
+
+    blockSignals(blocked);
+    Q_FOREACH(QWidget* w, findChildren<QWidget*>()) w->blockSignals(false);
+}
+
+void FluorescenceSimulator::error_message(QString message)
+{
+    QMessageBox err_zero;
+    err_zero.setText(message);
+    err_zero.setIcon(QMessageBox::Critical);
+    err_zero.exec();
+}
+
+void FluorescenceSimulator::read_in_protocol(QString file_name)
+{
+    QFile csv_file(file_name);
+    if(!csv_file.open(QIODevice::ReadOnly)) exit(-1);
+    QTextStream csv_read_in = QTextStream(&csv_file);
+
+    while(!csv_read_in.atEnd()) {
+        // Read in every line into vector
+        QStringList str_list;
+        str_list << csv_read_in.readLine().split(",", QString::SkipEmptyParts);
+        // qDebug() << "reading:" << str_list;
+        // qDebug() << str_list.length();
+        protocol_file.push_back(str_list);
+    }
+    // Erase header
+}
+
 
 void FluorescenceSimulator::on_sim_start_clicked()
 {
@@ -232,6 +329,7 @@ void FluorescenceSimulator::on_sim_start_clicked()
             clk_div = ui->sim_clk_div->value();
             vfdco_clock_initializer();
             fill_settings_tree();
+            fill_com_table();
             init_once_flag = true;
         }
 
@@ -264,4 +362,80 @@ void FluorescenceSimulator::on_sim_reset_clicked()
 {
     init_once_flag = false;
     ui->settings_tree->clear();
+    ui->com_data->clear();
+}
+
+void FluorescenceSimulator::on_com_data_cellChanged(int row, int column)
+{
+    if (!signalsBlocked()) {
+        QString item_text = ui->com_data->item(row, column)->text();
+
+        // Check validity
+        bool valid;
+        item_text.toUShort(&valid, 0);
+        if(!valid) {
+            error_message("The entered value is likely not a valid number. Please try again.");
+            return;
+        }
+
+        if(row == 0 && column == 1) {
+            auto element = std::find_if(protocol_file.begin(), protocol_file.end(), [&item_text] (const QStringList& list) {
+                return QString::compare((list.length() > PROTOCOL_DATA_LENGTH) ? list[PROTOCOL_DATA_OFFSET_COLS + PROTOCOL_DATA_COMMAND_OFFSET] : QString(""), item_text) == 0;
+            });
+            if (element != protocol_file.end()) {
+                // qDebug() << "found!" + QString::number(element - protocol_file.begin());
+                int vec_idx = element - protocol_file.begin();
+                fill_com_table_items(vec_idx);
+                auto protocol_row = protocol_file.at(vec_idx);
+                ui->com_command_val->setText("[" + protocol_row[1] + "]: " + protocol_row[0] + ", " + (protocol_row.length() == 30 ? protocol_row[29] : "no parameter description"));
+                current_protocol_row = vec_idx;
+            } else {
+                error_message("Oh deer 🦌, this is not a valid command. Please try again.");
+            }
+        }
+    }
+}
+
+void FluorescenceSimulator::on_com_data_cellPressed(int row, int column)
+{
+    if(!signalsBlocked()) {
+        QString item_text = ui->com_data->item(row, column)->text();
+        ui->com_param_val->setText(item_text);
+        if(item_text.compare("reserved 0") == 0) ui->com_param_val->setStyleSheet("color:#FF0000;");
+        else ui->com_param_val->setStyleSheet("");
+    }
+}
+
+void FluorescenceSimulator::on_com_send_clicked()
+{
+    QTableWidget *com_data = ui->com_data;
+    std::vector<uint8_t> com_parsed_data;
+    for(auto i = 0; i < com_data->rowCount(); ++i) {
+        for(auto j = 0; j < com_data->columnCount(); ++j) {
+            if(!(i * com_data->columnCount() + j < PROTOCOL_DATA_LENGTH)) goto label_complete; // https://xkcd.com/292/
+            // Parse table data
+            QString item_text = com_data->item(i, j)->text();
+            if(item_text.compare("reserved 0") == 0) {
+                com_parsed_data.push_back(0);
+            } else {
+                bool valid;
+                uint8_t _hex_val = item_text.toUShort(&valid, 0);
+                if(!valid) {
+                    error_message("There was an error in the protocol. Please check the format and try again!");
+                    return;
+                }
+                else com_parsed_data.push_back(_hex_val);
+            }
+        }
+    }
+
+    label_complete:
+    if(com_parsed_data.size() != PROTOCOL_DATA_LENGTH) { // Check length
+        error_message("There was an error in the protocol. Please check the format length and try again!");
+    } else {
+        uint8_t protocol_raw[PROTOCOL_DATA_LENGTH] = {0};
+        for(uint_fast8_t i = 0; i < PROTOCOL_DATA_LENGTH; ++i) protocol_raw[i] = com_parsed_data[i];
+    }
+    // for(auto i : com_parsed_data) qDebug() << QString("%1").arg(i, 3, 16, QChar('0'));
+    return;
 }

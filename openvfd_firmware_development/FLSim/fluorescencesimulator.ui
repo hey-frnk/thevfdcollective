@@ -20,9 +20,9 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>600</x>
       <y>420</y>
-      <width>221</width>
+      <width>191</width>
       <height>141</height>
      </rect>
     </property>
@@ -57,7 +57,7 @@
     <widget class="QPushButton" name="button_f4Var">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>130</x>
        <y>80</y>
        <width>51</width>
        <height>51</height>
@@ -95,7 +95,7 @@
     <widget class="QPushButton" name="button_f2">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>50</x>
        <y>30</y>
        <width>51</width>
        <height>51</height>
@@ -114,7 +114,7 @@
     <widget class="QPushButton" name="button_f4">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>130</x>
        <y>30</y>
        <width>51</width>
        <height>51</height>
@@ -133,7 +133,7 @@
     <widget class="QPushButton" name="button_f2Var">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>50</x>
        <y>80</y>
        <width>51</width>
        <height>51</height>
@@ -152,7 +152,7 @@
     <widget class="QPushButton" name="button_f3">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>90</x>
        <y>30</y>
        <width>51</width>
        <height>51</height>
@@ -171,7 +171,7 @@
     <widget class="QPushButton" name="button_f3Var">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>90</x>
        <y>80</y>
        <width>51</width>
        <height>51</height>
@@ -193,7 +193,7 @@
      <rect>
       <x>10</x>
       <y>420</y>
-      <width>611</width>
+      <width>581</width>
       <height>251</height>
      </rect>
     </property>
@@ -222,15 +222,15 @@
       </font>
      </property>
      <property name="text">
-      <string>Info:</string>
+      <string>Docu:</string>
      </property>
     </widget>
     <widget class="QLabel" name="settings_selected_val">
      <property name="geometry">
       <rect>
-       <x>390</x>
+       <x>380</x>
        <y>32</y>
-       <width>211</width>
+       <width>191</width>
        <height>31</height>
       </rect>
      </property>
@@ -267,15 +267,15 @@
       </font>
      </property>
      <property name="text">
-      <string>Type:</string>
+      <string>Size:</string>
      </property>
     </widget>
     <widget class="QLabel" name="settings_type_val">
      <property name="geometry">
       <rect>
-       <x>390</x>
+       <x>380</x>
        <y>72</y>
-       <width>211</width>
+       <width>191</width>
        <height>16</height>
       </rect>
      </property>
@@ -287,7 +287,7 @@
       </font>
      </property>
      <property name="text">
-      <string>(size, type)</string>
+      <string>(#x 8 bit)</string>
      </property>
     </widget>
     <widget class="QPlainTextEdit" name="settings_val_val">
@@ -295,7 +295,7 @@
       <rect>
        <x>340</x>
        <y>110</y>
-       <width>261</width>
+       <width>231</width>
        <height>131</height>
       </rect>
      </property>
@@ -333,7 +333,7 @@
     <widget class="QRadioButton" name="settings_val_dec">
      <property name="geometry">
       <rect>
-       <x>400</x>
+       <x>390</x>
        <y>90</y>
        <width>51</width>
        <height>20</height>
@@ -346,7 +346,7 @@
     <widget class="QRadioButton" name="settings_val_ascii">
      <property name="geometry">
       <rect>
-       <x>460</x>
+       <x>440</x>
        <y>90</y>
        <width>61</width>
        <height>20</height>
@@ -359,7 +359,7 @@
     <widget class="QRadioButton" name="settings_val_bin">
      <property name="geometry">
       <rect>
-       <x>530</x>
+       <x>500</x>
        <y>90</y>
        <width>51</width>
        <height>20</height>
@@ -1974,9 +1974,9 @@
    <widget class="QGroupBox" name="widget_com">
     <property name="geometry">
      <rect>
-      <x>860</x>
+      <x>800</x>
       <y>420</y>
-      <width>301</width>
+      <width>361</width>
       <height>251</height>
      </rect>
     </property>
@@ -1989,23 +1989,13 @@
     <property name="title">
      <string>COM</string>
     </property>
-    <widget class="QTableView" name="com_data">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>281</width>
-       <height>141</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="com_send">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>180</y>
-       <width>81</width>
-       <height>61</height>
+       <x>300</x>
+       <y>210</y>
+       <width>61</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -2015,31 +2005,40 @@
     <widget class="QPlainTextEdit" name="com_resp_val">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>200</y>
-       <width>191</width>
-       <height>41</height>
+       <x>310</x>
+       <y>50</y>
+       <width>41</width>
+       <height>156</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Consolas</family>
-       <pointsize>13</pointsize>
+       <pointsize>12</pointsize>
        <weight>50</weight>
        <bold>false</bold>
       </font>
      </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
      <property name="plainText">
-      <string>0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12</string>
+      <string>0x62 0x62 0x62 0x62 0x62 0x62 0x62 0x62 0x62 0x62</string>
      </property>
     </widget>
     <widget class="QLabel" name="com_resp_intro">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>180</y>
-       <width>111</width>
-       <height>16</height>
+       <x>310</x>
+       <y>30</y>
+       <width>41</width>
+       <height>21</height>
       </rect>
      </property>
      <property name="font">
@@ -2049,16 +2048,78 @@
       </font>
      </property>
      <property name="text">
-      <string>Response:</string>
+      <string>Resp:</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="com_data">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>291</width>
+       <height>131</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="com_command_val">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>170</y>
+       <width>291</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>(description)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="com_param_val">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>225</y>
+       <width>291</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>(parameter information)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="widget_sim">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>600</x>
       <y>560</y>
-      <width>221</width>
+      <width>191</width>
       <height>111</height>
      </rect>
     </property>
@@ -2076,7 +2137,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>81</width>
+       <width>91</width>
        <height>71</height>
       </rect>
      </property>
@@ -2094,9 +2155,9 @@
     <widget class="QPushButton" name="sim_reset">
      <property name="geometry">
       <rect>
-       <x>90</x>
+       <x>100</x>
        <y>70</y>
-       <width>121</width>
+       <width>71</width>
        <height>31</height>
       </rect>
      </property>
@@ -2107,8 +2168,8 @@
     <widget class="QSpinBox" name="sim_clk_div">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>40</y>
+       <x>110</x>
+       <y>45</y>
        <width>42</width>
        <height>22</height>
       </rect>
@@ -2123,9 +2184,9 @@
     <widget class="QLabel" name="sim_clk_div_intro">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>45</y>
-       <width>71</width>
+       <x>110</x>
+       <y>30</y>
+       <width>61</width>
        <height>16</height>
       </rect>
      </property>
@@ -2136,7 +2197,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Clock Div:</string>
+      <string>CLK Div:</string>
      </property>
     </widget>
    </widget>

@@ -1,0 +1,20 @@
+Functionality,Type (C/R),p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],p[12],p[13],p[14],p[15],p[16],p[17],p[18],p[19],p[20],p[21],p[22],p[23],p[24],p[25],p[26],Comments
+Set custom color information,C,0x24,0x00,led[0].r,led[0].g,led[0].b,led[0].w,led[1].r,led[1].g,led[1].b,led[1].w,led[2].r,led[2].g,led[2].b,led[2].w,led[3].r,led[3].g,led[3].b,led[3].w,led[4].r,led[4].g,led[4].b,led[4].w,led[5].r,led[5].g,led[5].b,led[5].w,0x25,
+Set custom color information (smoothly),C,0x24,0x01,led[0].r,led[0].g,led[0].b,led[0].w,led[1].r,led[1].g,led[1].b,led[1].w,led[2].r,led[2].g,led[2].b,led[2].w,led[3].r,led[3].g,led[3].b,led[3].w,led[4].r,led[4].g,led[4].b,led[4].w,led[5].r,led[5].g,led[5].b,led[5].w,0x25,
+Light pattern set (preset),C,0x24,0x04,instance,setting[0],setting[1],reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,instance according to light_pattern_instance_t
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+GUI set,C,0x24,0x10,instance,setting[0],reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,instance according to gui_instance_t
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Time date set,C,0x24,0x20,second,minute,hour,day,month,year%100,0x23,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,
+Brightness set,C,0x24,0x21,disp/led,dim-factor,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,disp/led display or led
+Night shift set,C,0x24,0x22,hr_start,min_start,hr_stop,min_stop,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,
+Welcome text custom set,C,0x24,0x25,m[0],m[1],m[2],m[3],m[4],m[5],reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,
+Message display,C,0x24,0x26,m[0][0],m[0][1],m[0][2],m[0][3],m[0][4],m[0][5],m[1][0],m[1][1],m[1][2],m[1][3],m[1][4],m[1][5],m[2][0],m[2][1],m[2][2],m[2][3],m[2][4],m[2][5],m[3][0],m[3][1],m[3][2],m[3][3],m[3][4],m[3][5],0x25,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Clock control,C,0x24,0x30,control,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,control 0: HW Version Req. 1: SW Version Req. 2: Save Req. 3: Default Req.
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Time date set response,R,0x24,0x30,0x54,0x69,0x6D,0x65,0x20,0x53,0x79,0x25,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,
+Firmware version response,R,0x24,0x31,fw_str[0],fw_str[1],fw_str[2],fw_str[3],fw_str[4],fw_str[5],0,0x25,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,
+Hardware version response,R,0x24,0x32,hw_str[0],hw_str[1],hw_str[2],hw_str[3],0,0,0,0x25,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+What the colors mean,Command/Response,Static control,Dynamic data,Dynamic control,Reserved Value,n/a,,,,,,,,,,,,,,,,,,,,,,,

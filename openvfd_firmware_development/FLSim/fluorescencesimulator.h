@@ -6,6 +6,8 @@
 #include <QAbstractItemModel>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class FluorescenceSimulator; }
@@ -41,14 +43,26 @@ private slots:
 
     void on_sim_reset_clicked();
 
+    void on_com_data_cellChanged(int row, int column);
+
+    void on_com_data_cellPressed(int row, int column);
+
+    void on_com_send_clicked();
+
 private:
     QTimer *global_timer = nullptr;
     bool init_once_flag = false;
 
     QAbstractItemModel *model;
+    std::vector<QStringList> protocol_file;
+    int current_protocol_row = -1;
 
     Ui::FluorescenceSimulator *ui;
     void link_ui_instances();
     void fill_settings_tree();
+    void fill_com_table();
+    void fill_com_table_items(int row_of_access);
+    void error_message(QString message);
+    void read_in_protocol(QString file_name);
 };
 #endif // FLUORESCENCESIMULATOR_H
