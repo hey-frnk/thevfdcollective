@@ -26,24 +26,24 @@ extern "C" {
 
 // GUIs tell what kind of data will shuttle through the shift registers and the display render function(s) will render accordingly.
 typedef enum {
-  GUI_TIME,             // Display the current time (default of default)
-  GUI_DATE,             // Display the current date
-  GUI_STOPWATCH,        // Display stopwatch
-  GUI_TIME_DATE_SET,    // Active when time set or date set is enabled
-  GUI_BRIGHTNESS_SET    // Active when brightness (night shift) set is enabled
+  GUI_TIME = 0,             // Display the current time (default of default)
+  GUI_DATE = 1,             // Display the current date
+  GUI_STOPWATCH = 10,       // Display stopwatch
+  GUI_TIME_DATE_SET = 20,   // Active when time set or date set is enabled
+  GUI_BRIGHTNESS_SET = 21   // Active when brightness (night shift) set is enabled
 } gui_instance_t;
 
 typedef enum {
-  LIGHT_PATTERN_STATIC,
-  LIGHT_PATTERN_SPECTRUM,
-  LIGHT_PATTERN_MOMENTSOFBLISS,
-  LIGHT_PATTERN_RAINBOW,
-  LIGHT_PATTERN_CHASE,
-  LIGHT_PATTERN_TIME_CODE,
-  LIGHT_PATTERN_COP,
+  LIGHT_PATTERN_STATIC = 0,
+  LIGHT_PATTERN_SPECTRUM = 1,
+  LIGHT_PATTERN_MOMENTSOFBLISS = 2,
+  LIGHT_PATTERN_RAINBOW = 3,
+  LIGHT_PATTERN_CHASE = 4,
+  LIGHT_PATTERN_TIME_CODE = 10,
+  LIGHT_PATTERN_COP = 11,
 
-  LIGHT_PATTERN_SERIAL0,
-  LIGHT_PATTERN_SERIAL1
+  LIGHT_PATTERN_SERIAL0 = 20,
+  LIGHT_PATTERN_SERIAL1 = 21
 } light_pattern_instance_t;
 
 enum {
@@ -85,6 +85,22 @@ void    vfdco_clock_settings_save(uint8_t silent);
 void    vfdco_clock_com_initializer();
 void    vfdco_clock_com_routine();
 
+// Protocol parameters 
+#define COM_PROTOCOL_SER0_OFFSET 2
+#define COM_PROTOCOL_SER1_OFFSET 2
+#define COM_PROTOCOL_LIGHT_SET_OFFSET_INSTANCE 2
+#define COM_PROTOCOL_LIGHT_SET_OFFSET_SETTING0 3
+#define COM_PROTOCOL_LIGHT_SET_OFFSET_SETTING1 4
+#define COM_PROTOCOL_GUI_SET_OFFSET_INSTANCE 2
+#define COM_PROTOCOL_GUI_SET_OFFSET_SETTING0 3
+#define COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA 2
+#define COM_PROTOCOL_TIMEDATE_SET_OFFSET_FLAG 8
+#define COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DISPLED 2
+#define COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR 3
+#define COM_PROTOCOL_NSH_SET_OFFSET 2
+#define COM_PROTOCOL_WELCOME_SET_OFFSET 2
+#define COM_PROTOCOL_MESSAGE_DISPLAY_OFFSET 2
+#define COM_PROTOCOL_CLOCK_CONTROL_OFFSET 2
 
 #include "vfdco_serialization.h"
 

@@ -101,7 +101,7 @@ extern "C" {
  * @brief Configuration parameters for COM
  */
 // Receive and Transmit buffer size, according to protocol
-#define CONFIG_COM_RX_BUF_MAX 24
+#define CONFIG_COM_RX_BUF_MAX 27
 #define CONFIG_COM_TX_BUF_MAX 10
 
 /**

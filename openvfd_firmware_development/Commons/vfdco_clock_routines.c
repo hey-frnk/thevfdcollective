@@ -101,7 +101,7 @@ void set_next_gui_instance_timeset(uint8_t set_mode); // Fancy special case
 void set_next_gui_instance(gui_instance_t next_instance);
 void set_next_lights_instance(light_pattern_instance_t next_instance);
 
-void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct COM_Data *));
+void com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct COM_Data *));
 
 
 /** Begin of:
@@ -375,7 +375,7 @@ void vfdco_clock_com_routine() {
   // If data is present
   if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_USB_BUSY) {
     // Perform decoding, transfer back using USB transfer
-    legacy_com_decoder(global_com_data.rx_buffer, COM_Handler_USB_Transfer);
+    com_decoder(global_com_data.rx_buffer, COM_Handler_USB_Transfer);
     global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_IDLE;
   } else if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_BT_BUSY) {
     // Perform decoding, transfer back using BT transfer
@@ -559,188 +559,156 @@ void set_next_lights_instance(light_pattern_instance_t next_instance) {
   }
 }
 
-void _legacy_grb_to_rgbw_target(uint8_t *target, const uint8_t *source) {
-  for(uint8_t i = 0; i < 6; ++i) { // Legacy: Only 6 pixels
-    target[4 * i]     = source[3 * i + 1]; // R
-    target[4 * i + 1] = source[3 * i]; // G
-    target[4 * i + 2] = source[3 * i + 2]; // B
-    target[4 * i + 3] = 0; // W
-  }
-}
-
-void legacy_com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct COM_Data *)) {
-  // If aligned protocol is detected
-  if((input_buffer[0] == 0x23) && (input_buffer[23] == 0x24)) {
+void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) {
+  if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
     const uint8_t command_byte = input_buffer[1];
-    
-    // If time set command is detected
-    if(command_byte == 0x10) {
-      // Transfer to RTC
-      global_time.s = input_buffer[2];
-      global_time.m = input_buffer[3];
-      global_time.h = input_buffer[4];
-      global_date.d = input_buffer[5];
-      global_date.m = input_buffer[6];
-      global_date.y = input_buffer[7];
-      vfdco_set_date_time(&global_date, &global_time);
 
-      // A make sure flag
-      if(input_buffer[8] == 0x23) {
+    // LED set
+    if(command_byte == 0x00) {
+      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
+      memcpy(
+        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
+        input_buffer + COM_PROTOCOL_SER0_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
+      );
+      set_next_lights_instance(LIGHT_PATTERN_SERIAL0);
+    }
+    // LED smooth set 
+    else if(command_byte == 0x01) {
+      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
+      memcpy(
+        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
+        input_buffer + COM_PROTOCOL_SER1_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
+      );
+      set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
+    }
+
+    // LED presets 
+    else if(command_byte == 0x04) {
+      light_pattern_instance_t instance = input_buffer[COM_PROTOCOL_LIGHT_SET_OFFSET_INSTANCE];
+      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
+      // If it has saved settings
+      uint8_t mapped_settings_index = _map_lights_instance_to_serialized_settings_index(instance);
+      if(mapped_settings_index != 255) {
+        if(serialized_settings_sizes[mapped_settings_index] >= 1) { // One setting parameter
+          serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_LIGHT_SET_OFFSET_SETTING0];
+          if(serialized_settings_sizes[mapped_settings_index] == 2) { // Two setting parameters
+            serialized_settings[mapped_settings_index][1] = input_buffer[COM_PROTOCOL_LIGHT_SET_OFFSET_SETTING1];
+          }
+        }
+      }
+      // Switch to instance
+      light_pattern_instance_t prev_instance_counter = global_light_instance_counter;
+      set_next_lights_instance(instance);
+      if(global_light_instance_counter != prev_instance_counter) if(Light_Pattern_Hello) Light_Pattern_Hello();
+    }
+
+    // GUI setting set
+    else if(command_byte == 0x10) {
+      gui_instance_t instance = input_buffer[COM_PROTOCOL_GUI_SET_OFFSET_INSTANCE];
+      uint8_t mapped_settings_index = _map_gui_instance_to_serialized_settings_index(instance);
+      if(mapped_settings_index != 255) {
+        serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_GUI_SET_OFFSET_SETTING0];
+      }
+    }
+
+    // If time set command is detected
+    else if(command_byte == 0x20) {
+      if(input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_FLAG] == 0x23 /* Make sure flag */) {
+        // Send to RTC
+        global_time.s = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 2];
+        global_time.m = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 1];
+        global_time.h = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 2];
+        global_date.d = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 3];
+        global_date.m = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 4];
+        global_date.y = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 5];
+        vfdco_set_date_time(&global_date, &global_time);
         // Say that time and date is synced now.
         const char _msg_tsync1[CONFIG_NUM_DIGITS] = {'T', '-', 'D', ' ', ' ', ' '};
         const char _msg_tsync2[CONFIG_NUM_DIGITS] = {'S', 'Y', 'N', 'C', 'E', 'D'};
         vfdco_display_render_message(_msg_tsync1, 0x00, CONFIG_MESSAGE_LONG);
         vfdco_display_render_message(_msg_tsync2, 0x00, CONFIG_MESSAGE_LONG);
       }
-
       // Answer with a beginning of a message. If it's all good, the PC controller will complete the message :p
-      uint8_t transfer_buffer[10] = {0x23, 0x10, 'T', 'i', 'm', 'e', ' ', 'S', 'y', 0x24};
+      uint8_t transfer_buffer[10] = {0x24, 0x30, 'T', 'i', 'm', 'e', ' ', 'S', 'y', 0x25};
       global_com_data.tx_buffer = transfer_buffer;
-      legacy_com_encoder(&global_com_data);
+      com_encoder(&global_com_data);
       global_com_data.tx_buffer = NULL;
     }
 
-    // If night shift is set (silent mode)
-    else if(command_byte == 0x11) {
-      if((input_buffer[2] == 0x23) && (input_buffer[9] == 0x23)) { // Further format verify
-        if(input_buffer[7] == 1) { // Set enable minute, hour; disable minute, hour
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = input_buffer[3];
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = input_buffer[4];
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = input_buffer[5];
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = input_buffer[6];
-        }
-        else if(input_buffer[7] == 0) { // Reset enable minute, hour; disable minute, hour
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = 0;
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = 0;
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = 0;
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = 0;
-        }
-        if(input_buffer[8]) {
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = CONFIG_BRIGHTNESS_MIN;
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = CONFIG_BRIGHTNESS_MIN;
-          vfdco_display_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
-          vfdco_clr_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
-        } else {
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = CONFIG_BRIGHTNESS_MAX;
-          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = CONFIG_BRIGHTNESS_MAX;
-          vfdco_display_set_dim_factor(CONFIG_BRIGHTNESS_MAX);
-          vfdco_clr_set_dim_factor(CONFIG_BRIGHTNESS_MAX);
-        }
-      }
-    }
-
-    // If clock configuration set is detected
-    else if(command_byte == 0x12) {
-      if(input_buffer[2] == 1) {
-        serialized_settings[_map_gui_instance_to_serialized_settings_index(GUI_DATE)][0] = input_buffer[3];
-        if(global_gui_instance_counter == GUI_DATE) set_next_gui_instance(GUI_DATE); // Reload
-      }
-      else if(input_buffer[2] == 0 || input_buffer[2] == 3) {
-        uint8_t new_time_mode = 0;
-        if(input_buffer[2] == 0) {
-          if(input_buffer[3] == 0)  new_time_mode = TIME_FORMAT_24H;
-          else                      new_time_mode = TIME_FORMAT_12H;
-        } else {
-          if(input_buffer[3] == 0)  new_time_mode = TIME_FORMAT_24H;
-          else                      new_time_mode = TIME_FORMAT_12H_NO_LZ;
-        }
-        serialized_settings[_map_gui_instance_to_serialized_settings_index(GUI_TIME)][0] = new_time_mode;
-        if(global_gui_instance_counter == GUI_TIME) set_next_gui_instance(GUI_TIME); // Reload
-      }
-    }
-
-    if(command_byte == 0x01) { // If LED set is detected
-      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-      _legacy_grb_to_rgbw_target(
-        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
-        input_buffer + 2
-      );
-      set_next_lights_instance(LIGHT_PATTERN_SERIAL0);
-    }
-    else if(command_byte == 0x02) { // If LED smooth set is detected
-      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-      _legacy_grb_to_rgbw_target(
-        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
-        input_buffer + 2
-      );
-      set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
-    }
-
-    // If LED preset mode is detected
-    else if(command_byte == 0x20) {
-      uint8_t command_mode = input_buffer[2];
-      if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-      
-      switch(command_mode) {
-        case 0x01: { 
-          serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_STATIC)][0] = input_buffer[3];
-          set_next_lights_instance(LIGHT_PATTERN_STATIC);
-          break;
-        }
-        case 0x03: {
-          serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_RAINBOW)][0] = input_buffer[3];
-          set_next_lights_instance(LIGHT_PATTERN_RAINBOW);
-          break;
-        }
-        case 0x04: {
-          serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_CHASE)][0] = input_buffer[3];
-          set_next_lights_instance(LIGHT_PATTERN_CHASE);
-          break;
-        }
-        case 0x02: set_next_lights_instance(LIGHT_PATTERN_SPECTRUM); break;
-        case 0x05: set_next_lights_instance(LIGHT_PATTERN_TIME_CODE); break;
-        case 0x07: set_next_lights_instance(LIGHT_PATTERN_TIME_CODE); break;
-        default: break;
-      }
-    }
-
-    // If Welcome Message set is detected
+    // If brightness set command is detected
     else if(command_byte == 0x21) {
-      const uint8_t offset = 2;
-      for(uint8_t i = offset; i < (offset + CONFIG_NUM_DIGITS); i++) 
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i - offset] = (char)input_buffer[i];
+      if(!input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DISPLED]) { // 0: Set display brightness 
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR];
+        vfdco_display_set_dim_factor(input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR]);
+      } else { // 1: Set LED brightness
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR];
+        vfdco_clr_set_dim_factor(input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR]);
+      }
+    }
+
+    // If night shift set is detected
+    else if(command_byte == 0x22) {
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET + 1];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET + 2];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET + 3];
+    }
+
+    // If welcome message set is detected
+    else if(command_byte == 0x25) {
+      for(uint8_t i = COM_PROTOCOL_WELCOME_SET_OFFSET; i < (COM_PROTOCOL_WELCOME_SET_OFFSET + CONFIG_NUM_DIGITS); ++i) 
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i - COM_PROTOCOL_WELCOME_SET_OFFSET] = (char)input_buffer[i];
       vfdco_clock_settings_save(1);
       vfdco_display_render_message((const char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, 0x00, CONFIG_MESSAGE_LONG);
     }
-    // If message display is detected
-    else if(command_byte == 0x1F) {
+
+    // If message display set is detected
+    else if(command_byte == 0x26) {
       // Get message delay time. It's the incoming value in seconds
-      uint16_t msg_delay = CONFIG_MESSAGE_LONG;
-      msg_delay *= (uint16_t)input_buffer[20];
-      uint8_t offset = 2;
-      for(uint8_t i = 0; i < (1 + input_buffer[21] + input_buffer[22]); ++i) {
-        vfdco_display_render_message((char *)input_buffer + offset, 0x00, msg_delay);
+      uint8_t offset = COM_PROTOCOL_MESSAGE_DISPLAY_OFFSET;
+      for(uint8_t i = 0; i < 4; ++i) {
+        if(input_buffer[offset] == 0) break;
+        vfdco_display_render_message((char *)input_buffer + offset, 0x00, CONFIG_MESSAGE_LONG);
         offset += CONFIG_NUM_DIGITS;
       }
     }
 
-    // If FW version request
-    else if(command_byte == 0x22) {
-      uint8_t transfer_buffer[10] = CONFIG_SW_STRING;
-      for(uint8_t i = 0; i < CONFIG_SW_STRING_LENGTH; ++i) 
-        transfer_buffer[2 + (CONFIG_SW_STRING_LENGTH - i - 1)] = transfer_buffer[(CONFIG_SW_STRING_LENGTH - i - 1)];
-
-      transfer_buffer[0] = 0x23;     // Start byte
-      transfer_buffer[1] = 0x22;     // FW output byte
-      transfer_buffer[9] = 0x24;     // Stop byte
-    
-      global_com_data.tx_buffer = transfer_buffer;
-      legacy_com_encoder(&global_com_data);
-      global_com_data.tx_buffer = NULL;
+    // If clock control is detected
+    else if(command_byte == 0x30) {
+      const uint8_t control_byte = input_buffer[COM_PROTOCOL_CLOCK_CONTROL_OFFSET];
+      switch(control_byte) {
+        // HW Version Request
+        case 0x00: {
+          uint8_t transfer_buffer[10] = CONFIG_HW_STRING;
+          for(uint8_t i = 0; i < CONFIG_HW_STRING_LENGTH; ++i) 
+            transfer_buffer[2 + (CONFIG_HW_STRING_LENGTH - i - 1)] = transfer_buffer[(CONFIG_HW_STRING_LENGTH - i - 1)];
+          transfer_buffer[0] = 0x24; transfer_buffer[1] = 0x32; transfer_buffer[9] = 0x25; // [start][command] .. [stop]
+          global_com_data.tx_buffer = transfer_buffer;
+          com_encoder(&global_com_data);
+          global_com_data.tx_buffer = NULL;
+          break;
+        }
+        // SW Version Request
+        case 0x01: {
+          uint8_t transfer_buffer[10] = CONFIG_SW_STRING;
+          for(uint8_t i = 0; i < CONFIG_SW_STRING_LENGTH; ++i) 
+            transfer_buffer[2 + (CONFIG_SW_STRING_LENGTH - i - 1)] = transfer_buffer[(CONFIG_SW_STRING_LENGTH - i - 1)];
+          transfer_buffer[0] = 0x24; transfer_buffer[1] = 0x31; transfer_buffer[9] = 0x25; // [start][command] .. [stop]
+          global_com_data.tx_buffer = transfer_buffer;
+          com_encoder(&global_com_data);
+          global_com_data.tx_buffer = NULL;
+          break;
+        }
+        // Save request
+        case 0x02: vfdco_clock_settings_save(0); break;
+        // Default load request 
+        case 0x03: vfdco_clock_settings_default(); break;
+        default: break;
+      }
     }
-
-    // Configuration save request
-    else if(command_byte == 0x33) {
-      vfdco_clock_settings_save(0);
-    }
-    // Configuration reset request
-    else if(command_byte == 0x34) {
-      vfdco_clock_settings_default();
-    }
-
-    // Bad command or bit error :( Some random return otherwise. You should never ever get to this point.
-    else {}
   }
+  // Bad command or bit error :( Some random return otherwise. You should never ever get to this point.
+  else {}
 }
 
 // ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE, only change in designated section in vfdco_clock_routines.h! ########
@@ -769,14 +737,14 @@ uint8_t _map_gui_instance_to_serialized_settings_index(gui_instance_t instance) 
   switch(instance) {
     #define CREATE_SERIALIZED_GUI_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
     CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_GUI_SWITCHES)
-    default: exit(-1);
+    default: return 255;
   }
 }
 uint8_t _map_lights_instance_to_serialized_settings_index(light_pattern_instance_t instance) {
   switch(instance) {
     #define CREATE_SERIALIZED_LIGHTS_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
     CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_LIGHTS_SWITCHES)
-    default: exit(-1);
+    default: return 255;
   }
 }
 // ######## END OF DO NOT TOUCH SECTION ########

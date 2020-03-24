@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include "../vfdco_config.h"
+#include "../vfdco_com.h"
 #include "../vfdco_clock_routines.h"
 #include "../vfdco_hid.h"
 #include "../vfdco_time.h"
@@ -26,30 +27,38 @@ QLabel *led_hsl[CONFIG_NUM_PIXELS] = {nullptr, nullptr, nullptr, nullptr, nullpt
 
 // Color palette
 QColor active_color("#339999");
+QColor dimming_step1_color("#18406E");
+QColor dimming_step2_color("#000000");
 QColor inactive_color("#DDDDDD");
+
+// Dimming
+bool visualize_dimming = false;
 
 #define PROTOCOL_DATA_OFFSET_ROWS 1
 #define PROTOCOL_DATA_OFFSET_COLS 2
 #define PROTOCOL_DATA_LENGTH 27
 #define PROTOCOL_DATA_COMMAND_OFFSET 1
 
+// Timers
+int clk_div = 1;
+time_event_t global_time_event;
+
+// From vfdco_clock_routines: import instances, instance counter, serialized settings, com buffer
+extern Light_Pattern global_light_instance;
+extern light_pattern_instance_t global_light_instance_counter;
+extern GUI_Format global_gui_instance;
+extern gui_instance_t global_gui_instance_counter;
 extern uint8_t *const serialized_settings[NUM_SERIALIZABLE];
+extern struct COM_Data global_com_data;
+// From vfdco_sim_display, vfdco_sim_led: import dim factors
+extern uint8_t _led_dim_factor;
+extern uint8_t display_dimmer;
+// From vfdco_sim_com: import virtual com receiver
+extern uint8_t virtual_transfer_buffer[CONFIG_COM_TX_BUF_MAX];
 
-typedef struct setting_property {
-    QString identifier;
-    QString description;
-    uint8_t setting_offset;
-    uint8_t setting_size;
-} setting_property;
-
-typedef struct settings_arr_property {
-    QString settings_identifier;
-    uint8_t index;
-    uint8_t size;
-    std::vector<setting_property *> settings;
-} settings_arr_property;
-
-// Fill settings tree
+// Auto generation
+typedef struct setting_property { QString identifier; QString description; uint8_t setting_offset; uint8_t setting_size; } setting_property;
+typedef struct settings_arr_property { QString settings_identifier; uint8_t index; uint8_t size; std::vector<setting_property *> settings; } settings_arr_property;
 settings_arr_property settings_arr_names[NUM_SERIALIZABLE] = {
     // Generate setting arrays vfdco_config.h
     #define CREATE_SERIALIZED_GLOBAL_TREESTR(_globalindex, _size, _enum_map, _serializable_identifier) {.settings_identifier = #_serializable_identifier, .index = _globalindex, .size = _size },
@@ -78,16 +87,6 @@ setting_property serialized_setting_names[] = {
     CREATE_SERIALIZED_LIGHTS_POSITIONS(CREATE_SETTING_LIGHT_PATTERN_TREESTR)
     #undef CREATE_SETTING_LIGHT_PATTERN_TREESTR
 };
-
-// Timers
-int clk_div = 1;
-time_event_t global_time_event;
-
-// from vfdco_clock_routines: get instances & instance counter
-extern Light_Pattern global_light_instance;
-extern light_pattern_instance_t global_light_instance_counter;
-extern GUI_Format global_gui_instance;
-extern gui_instance_t global_gui_instance_counter;
 
 FluorescenceSimulator::FluorescenceSimulator(QWidget *parent)
     : QMainWindow(parent)
@@ -135,6 +134,7 @@ void FluorescenceSimulator::update()
         ui->raw_val_gui->setPlainText(_gui_str);
         ui->raw_val_lights->setPlainText(_lights_str);
 
+        // Update settings tree
         if(ui->settings_tree->currentItem()) {
             QModelIndex _current_item_index = ui->settings_tree->currentIndex();
             uint8_t current_item_index = _current_item_index.row();
@@ -171,6 +171,15 @@ void FluorescenceSimulator::update()
                 ui->settings_val_val->setPlainText(_settings_arr_tostring);
             }
         }
+
+        // Update dim factors
+        ui->power_led_val->setText(QString::number(_led_dim_factor));
+        ui->power_disp_val->setText(QString::number(display_dimmer));
+
+        // Update receive buffer content
+        QString _rx_arr_to_string;
+        for(uint8_t i : virtual_transfer_buffer) _rx_arr_to_string += QString("%1 ").arg((uint8_t)i, 2, 16, QChar('0')).toUpper();
+        ui->com_resp_val->setPlainText(_rx_arr_to_string);
     }
 }
 
@@ -259,6 +268,7 @@ void FluorescenceSimulator::fill_com_table()
         for(auto j = 0; j < com_data->columnCount(); ++j) com_data->setItem(i, j, new QTableWidgetItem(""));
     }
     for(auto i = 0; i < com_data->columnCount(); ++i) com_data->setColumnWidth(i, max_table_width / com_data->columnCount());
+    current_protocol_row = PROTOCOL_DATA_OFFSET_ROWS;
     auto protocol_row = protocol_file.at(PROTOCOL_DATA_OFFSET_ROWS);
     fill_com_table_items(PROTOCOL_DATA_OFFSET_ROWS);
     ui->com_command_val->setText("[" + protocol_row[1] + "]: " + protocol_row[0] + ", " + (protocol_row.length() == 30 ? protocol_row[29] : "no parameter description"));
@@ -283,12 +293,18 @@ void FluorescenceSimulator::fill_com_table_items(int row_of_access)
             auto access_point = i * com_data->columnCount() + j;
             QTableWidgetItem *_item = com_data->item(i, j);
             QString _data = (access_point < PROTOCOL_DATA_LENGTH) ? protocol_file.at(row_of_access)[PROTOCOL_DATA_OFFSET_COLS + access_point] : "";
-            _item->setText(_data);
-            if(_data.compare("reserved 0") == 0) _item->setFlags(_item->flags() & ~Qt::ItemIsEditable);
-            else _item->setFlags(_item->flags() | Qt::ItemIsEditable);
+            if(_data.compare("reserved 0") == 0) {
+                _item->setText(_data);
+                _item->setFlags(_item->flags() & ~Qt::ItemIsEditable);
+            } else {
+                bool valid;
+                _data.toUShort(&valid, 0);
+                if(!valid) _item->setText("0");
+                else _item->setText(_data);
+                _item->setFlags(_item->flags() | Qt::ItemIsEditable);
+            }
         }
     }
-
 
     blockSignals(blocked);
     Q_FOREACH(QWidget* w, findChildren<QWidget*>()) w->blockSignals(false);
@@ -369,12 +385,14 @@ void FluorescenceSimulator::on_com_data_cellChanged(int row, int column)
 {
     if (!signalsBlocked()) {
         QString item_text = ui->com_data->item(row, column)->text();
-
         // Check validity
         bool valid;
-        item_text.toUShort(&valid, 0);
+        ushort num = item_text.toUShort(&valid, 0);
         if(!valid) {
             error_message("The entered value is likely not a valid number. Please try again.");
+            return;
+        } else if(num > 255) {
+            error_message("Please enter a value between 0 and 255.");
             return;
         }
 
@@ -383,7 +401,6 @@ void FluorescenceSimulator::on_com_data_cellChanged(int row, int column)
                 return QString::compare((list.length() > PROTOCOL_DATA_LENGTH) ? list[PROTOCOL_DATA_OFFSET_COLS + PROTOCOL_DATA_COMMAND_OFFSET] : QString(""), item_text) == 0;
             });
             if (element != protocol_file.end()) {
-                // qDebug() << "found!" + QString::number(element - protocol_file.begin());
                 int vec_idx = element - protocol_file.begin();
                 fill_com_table_items(vec_idx);
                 auto protocol_row = protocol_file.at(vec_idx);
@@ -399,7 +416,13 @@ void FluorescenceSimulator::on_com_data_cellChanged(int row, int column)
 void FluorescenceSimulator::on_com_data_cellPressed(int row, int column)
 {
     if(!signalsBlocked()) {
-        QString item_text = ui->com_data->item(row, column)->text();
+        QString item_text;
+        if(current_protocol_row != -1) {
+            auto access_point = row * ui->com_data->columnCount() + column;
+            item_text = protocol_file.at(current_protocol_row)[PROTOCOL_DATA_OFFSET_COLS + access_point];
+        } else {
+            item_text = ui->com_data->item(row, column)->text();
+        }
         ui->com_param_val->setText(item_text);
         if(item_text.compare("reserved 0") == 0) ui->com_param_val->setStyleSheet("color:#FF0000;");
         else ui->com_param_val->setStyleSheet("");
@@ -433,9 +456,23 @@ void FluorescenceSimulator::on_com_send_clicked()
     if(com_parsed_data.size() != PROTOCOL_DATA_LENGTH) { // Check length
         error_message("There was an error in the protocol. Please check the format length and try again!");
     } else {
+        // Sender side
         uint8_t protocol_raw[PROTOCOL_DATA_LENGTH] = {0};
         for(uint_fast8_t i = 0; i < PROTOCOL_DATA_LENGTH; ++i) protocol_raw[i] = com_parsed_data[i];
+
+        // Receiver side
+        if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_IDLE) {
+            // Set buffer & data present flag
+            memcpy(global_com_data.rx_buffer, protocol_raw, CONFIG_COM_RX_BUF_MAX);
+            global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_USB_BUSY;
+        }
     }
     // for(auto i : com_parsed_data) qDebug() << QString("%1").arg(i, 3, 16, QChar('0'));
     return;
+}
+
+void FluorescenceSimulator::on_power_dim_visible_stateChanged(int arg1)
+{
+    if(ui->power_dim_visible->isChecked()) visualize_dimming = true;
+    else visualize_dimming = false;
 }

@@ -390,7 +390,7 @@
      <rect>
       <x>10</x>
       <y>240</y>
-      <width>1151</width>
+      <width>891</width>
       <height>181</height>
      </rect>
     </property>
@@ -401,7 +401,7 @@
      </font>
     </property>
     <property name="title">
-     <string>Lights Monitor. Active Instance: Light_Pattern_Static</string>
+     <string>Lights Monitor. Active Instance: (null)</string>
     </property>
     <widget class="QLabel" name="led1">
      <property name="geometry">
@@ -533,7 +533,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120 020</string>
+      <string>000 000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hex_intro">
@@ -570,7 +570,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120 020</string>
+      <string>000 000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_rgbw_3">
@@ -589,7 +589,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120 020</string>
+      <string>000 000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_rgbw_4">
@@ -608,7 +608,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120 020</string>
+      <string>000 000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_rgbw_5">
@@ -627,7 +627,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120 020</string>
+      <string>000 000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_rgbw_6">
@@ -646,7 +646,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120 020</string>
+      <string>000 000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hex_1">
@@ -665,7 +665,7 @@
       </font>
      </property>
      <property name="text">
-      <string>#00FF00, 0x70</string>
+      <string>#000000, 0x00</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hex_2">
@@ -684,7 +684,7 @@
       </font>
      </property>
      <property name="text">
-      <string>#00FF00, 0x70</string>
+      <string>#000000, 0x00</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hex_3">
@@ -703,7 +703,7 @@
       </font>
      </property>
      <property name="text">
-      <string>#00FF00, 0x70</string>
+      <string>#000000, 0x00</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hex_4">
@@ -722,7 +722,7 @@
       </font>
      </property>
      <property name="text">
-      <string>#00FF00, 0x70</string>
+      <string>#000000, 0x00</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hex_5">
@@ -741,7 +741,7 @@
       </font>
      </property>
      <property name="text">
-      <string>#00FF00, 0x70</string>
+      <string>#000000, 0x00</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hex_6">
@@ -760,7 +760,7 @@
       </font>
      </property>
      <property name="text">
-      <string>#00FF00, 0x70</string>
+      <string>#000000, 0x00</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hsl_intro">
@@ -797,7 +797,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120</string>
+      <string>000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hsl_2">
@@ -816,7 +816,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120</string>
+      <string>000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hsl_3">
@@ -835,7 +835,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120</string>
+      <string>000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hsl_4">
@@ -854,7 +854,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120</string>
+      <string>000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hsl_5">
@@ -873,7 +873,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120</string>
+      <string>000 000 000</string>
      </property>
     </widget>
     <widget class="QLabel" name="led_hsl_6">
@@ -892,31 +892,7 @@
       </font>
      </property>
      <property name="text">
-      <string>255 200 120</string>
-     </property>
-    </widget>
-    <widget class="QPlainTextEdit" name="raw_val_lights">
-     <property name="geometry">
-      <rect>
-       <x>880</x>
-       <y>30</y>
-       <width>261</width>
-       <height>141</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Consolas</family>
-       <pointsize>13</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-     <property name="plainText">
-      <string>0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF</string>
+      <string>000 000 000</string>
      </property>
     </widget>
    </widget>
@@ -925,7 +901,7 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>1151</width>
+      <width>891</width>
       <height>241</height>
      </rect>
     </property>
@@ -936,7 +912,7 @@
      </font>
     </property>
     <property name="title">
-     <string>GUI &amp; Display Monitor. Active Instance: GUI_Format_Time. RTC Respond: 21.03.2020 10:24:33 PM</string>
+     <string>GUI &amp; Display Monitor. Active Instance: (null). RTC Respond: (null)</string>
     </property>
     <widget class="QWidget" name="sec" native="true">
      <property name="geometry">
@@ -1766,49 +1742,6 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPlainTextEdit" name="raw_val_gui">
-     <property name="geometry">
-      <rect>
-       <x>880</x>
-       <y>50</y>
-       <width>261</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Consolas</family>
-       <pointsize>13</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-     <property name="plainText">
-      <string>0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0x12 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="raw_intro">
-     <property name="geometry">
-      <rect>
-       <x>880</x>
-       <y>30</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>RAW Data:</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="gui_bin_intro">
      <property name="geometry">
       <rect>
@@ -1843,7 +1776,7 @@
       </font>
      </property>
      <property name="text">
-      <string>01100101</string>
+      <string>00000000</string>
      </property>
     </widget>
     <widget class="QLabel" name="gui_bin_2">
@@ -1862,7 +1795,7 @@
       </font>
      </property>
      <property name="text">
-      <string>01100101</string>
+      <string>00000000</string>
      </property>
     </widget>
     <widget class="QLabel" name="gui_bin_3">
@@ -1881,7 +1814,7 @@
       </font>
      </property>
      <property name="text">
-      <string>01100101</string>
+      <string>00000000</string>
      </property>
     </widget>
     <widget class="QLabel" name="gui_bin_4">
@@ -1900,7 +1833,7 @@
       </font>
      </property>
      <property name="text">
-      <string>01100101</string>
+      <string>00000000</string>
      </property>
     </widget>
     <widget class="QLabel" name="gui_bin_5">
@@ -1919,7 +1852,7 @@
       </font>
      </property>
      <property name="text">
-      <string>01100101</string>
+      <string>00000000</string>
      </property>
     </widget>
     <widget class="QLabel" name="gui_bin_6">
@@ -1938,36 +1871,7 @@
       </font>
      </property>
      <property name="text">
-      <string>01100101</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="raw_hex">
-     <property name="geometry">
-      <rect>
-       <x>960</x>
-       <y>30</y>
-       <width>51</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>HEX</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="raw_dec">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>30</y>
-       <width>51</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>DEC</string>
+      <string>00000000</string>
      </property>
     </widget>
    </widget>
@@ -2029,7 +1933,7 @@
       <bool>true</bool>
      </property>
      <property name="plainText">
-      <string>0x62 0x62 0x62 0x62 0x62 0x62 0x62 0x62 0x62 0x62</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="com_resp_intro">
@@ -2198,6 +2102,276 @@
      </property>
      <property name="text">
       <string>CLK Div:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="widget_raw_monitor">
+    <property name="geometry">
+     <rect>
+      <x>910</x>
+      <y>0</y>
+      <width>251</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Raw Monitor</string>
+    </property>
+    <widget class="QPlainTextEdit" name="raw_val_gui">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>231</width>
+       <height>106</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>13</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="plainText">
+      <string>(null)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="raw_intro">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>global_gui_instance raw data:</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="raw_hex">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>30</y>
+       <width>51</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>HEX</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="raw_dec">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>30</y>
+       <width>51</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DEC</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="raw_val_lights">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>200</y>
+       <width>231</width>
+       <height>136</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>13</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="plainText">
+      <string>(null)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="raw_intro_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>61</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Format:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="raw_intro_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>180</y>
+       <width>201</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>global_light_instance raw data:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="widget_power">
+    <property name="geometry">
+     <rect>
+      <x>910</x>
+      <y>350</y>
+      <width>251</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Clock Power Visualization</string>
+    </property>
+    <widget class="QCheckBox" name="power_dim_visible">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>24</y>
+       <width>81</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Visualize
+dimming</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="power_disp_intro">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>30</y>
+       <width>121</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>dim_factor_disp:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="power_led_intro">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>45</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>dim_factor_led:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="power_disp_val">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>30</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="power_led_val">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>45</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>0</string>
      </property>
     </widget>
    </widget>

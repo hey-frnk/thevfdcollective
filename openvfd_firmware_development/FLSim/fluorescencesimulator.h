@@ -49,6 +49,8 @@ private slots:
 
     void on_com_send_clicked();
 
+    void on_power_dim_visible_stateChanged(int arg1);
+
 private:
     QTimer *global_timer = nullptr;
     bool init_once_flag = false;

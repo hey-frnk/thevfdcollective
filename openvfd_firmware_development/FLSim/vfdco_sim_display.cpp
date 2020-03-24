@@ -17,11 +17,14 @@
 #include <QEventLoop>
 #include <QTimer>
 
+// From fluorescencesimulator.cpp import:
 extern QLabel *display[CONFIG_NUM_DIGITS][8];
 extern QLabel *display_bin[CONFIG_NUM_DIGITS];
-
 extern QColor active_color;
 extern QColor inactive_color;
+extern QColor dimming_step1_color;
+extern QColor dimming_step2_color;
+extern bool visualize_dimming;
 
 #ifdef _DISPLAY_IMPLEMENTATION
 #error "An implementation of the display driver already exists!"
@@ -31,10 +34,13 @@ extern QColor inactive_color;
 #define NORENDER
 #undef NORENDER
 
+uint8_t display_dimmer = 0;
+
 void _vfdco_display_render_direct(uint8_t *data);
 
 void vfdco_display_set_dim_factor(uint8_t dim_factor) {
   printf("Setting Display Dim Factor: %hhu", dim_factor);
+  display_dimmer = dim_factor;
 }
 
 uint8_t vfdco_display_char_convert(char input) {
@@ -142,7 +148,16 @@ void vfdco_display_render_message(const char *message, const uint8_t decimal_dot
 void _vfdco_display_render_direct(uint8_t *data) {
   for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
       for(uint_fast8_t j = 0; j < 8; ++j) {
-          display[i][j]->setStyleSheet("background-color:" + (((data[CONFIG_NUM_DIGITS - i - 1] >> (8 - j - 1)) & 0x01) ? active_color.name() : inactive_color.name()));
+          bool _is_active = (data[CONFIG_NUM_DIGITS - i - 1] >> (8 - j - 1)) & 0x01;
+          if(visualize_dimming && display_dimmer) {
+              if(display_dimmer == CONFIG_BRIGHTNESS_HALF) {
+                  display[i][j]->setStyleSheet("background-color:" + (_is_active ? dimming_step1_color.name() : inactive_color.name()));
+              } else {
+                  display[i][j]->setStyleSheet("background-color:" + (_is_active ? dimming_step2_color.name() : inactive_color.name()));
+              }
+          } else {
+              display[i][j]->setStyleSheet("background-color:" + (_is_active ? active_color.name() : inactive_color.name()));
+          }
       }
       display_bin[CONFIG_NUM_DIGITS - i - 1]->setText(QString("%1").arg(data[i], 8, 2, QChar('0')));
   }
@@ -150,6 +165,7 @@ void _vfdco_display_render_direct(uint8_t *data) {
 
 // Function mapping
 void vfdco_display_init(uint8_t initial_dim_factor) {
-  printf("IV-11 fake debug display init with %d digits, successful\n", CONFIG_NUM_DIGITS);
+  printf("IV-11 simulation debug display init with %d digits, successful\n", CONFIG_NUM_DIGITS);
   printf("Setting Display Dim Factor: %hhu", initial_dim_factor);
+  vfdco_display_set_dim_factor(initial_dim_factor);
 }
