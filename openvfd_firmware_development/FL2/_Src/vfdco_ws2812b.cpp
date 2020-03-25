@@ -12,6 +12,10 @@
 #include <Arduino.h>
 #include "vfdco_led.h"
 
+#if (CONFIG_USE_RGBW == 1)
+#error "Wrong driver linked. This driver only works for CONFIG_USE_RGBW == 0 (WS2812B). Fix: Set CONFIG_USE_RGBW to 0 or use SK6812 driver."
+#endif
+
 #define    LED_PIN    13    // ATMEGA: 19   LED Pin, LEDPIN
 
 #define    PORT        (PORTB)          // Digital pin's port
@@ -95,17 +99,19 @@ void vfdco_clr_target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
   tp[0] = g;
   tp[1] = r;
   tp[2] = b;
+  tp[3] = 0;
 }
 void vfdco_clr_target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   tp[0] = g;
   tp[1] = r;
   tp[2] = b;
+  tp[3] = w;
 }
 void vfdco_clr_target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 3) vfdco_clr_target_RGB(tp + i, r, g, b);
+  for(uint8_t i = 0; i < 4 * CONFIG_NUM_PIXELS; i += 4) vfdco_clr_target_RGB(tp + i, r, g, b);
 }
 void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 3) vfdco_clr_target_RGB(tp + i, r, g, b);
+  for(uint8_t i = 0; i < 4 * CONFIG_NUM_PIXELS; i += 4) vfdco_clr_target_RGBW(tp + i, r, g, b, w);
 }
 
 /**
@@ -113,11 +119,12 @@ void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uin
  * @param target_arr base address of intermediate target array
  */
 void vfdco_clr_minimize_difference(uint8_t *target_arr) {
-  uint8_t dt = 0;
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
-    if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
-    else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
-    else ++dt;
+  uint8_t j = 0;
+  for(uint8_t i = 0; i < 4 * CONFIG_NUM_PIXELS; i++) {
+    if((i & 0x03) == 0x03) continue;
+    if(rgb_arr[j] < target_arr[i]) rgb_arr[j]++;
+    else if(rgb_arr[j] > target_arr[i]) rgb_arr[j]--;
+    ++j;
   }
   // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
 }

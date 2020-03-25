@@ -16,6 +16,10 @@
 #include "../../vfdco_config.h"
 #include "../../vfdco_led.h"
 
+#if CONFIG_USE_RGBW == 0
+#error "Wrong driver linked. This driver only works for CONFIG_USE_RGBW == 1 (SK6812). Fix: Set CONFIG_USE_RGBW to 1 or use WS2812B driver."
+#endif
+
 #define SK6812_PWM_DUTY_HI 38
 #define SK6812_PWM_DUTY_LO 19
 #define RESET_SLOT 82 //41

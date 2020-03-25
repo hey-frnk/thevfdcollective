@@ -349,7 +349,7 @@ static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) 
     // Multicolor, just use legacy colors, they are hand crafted and look better
     uint8_t t_pos = self->position - NUM_STATIC_T2;
     for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-      vfdco_clr_target_RGB(self->target_arr + CONFIG_NUM_BPP * i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
+      vfdco_clr_target_RGB(self->target_arr + 4 * i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
     }
   }
 }
@@ -386,7 +386,7 @@ static inline void _Light_Pattern_Static_Save(Light_Pattern *unsafe_self) {
   * @brief  Constructor of Light_Pattern_Static class
  **/
 void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *settings) {
-  memset(self->target_arr, 0, CONFIG_NUM_BYTES);
+  memset(self->target_arr, 0, 4 * CONFIG_NUM_PIXELS);
 
   // Default loading if saved value is rubbish, then load by assignment
   if(settings[LIGHT_PATTERN_SETTING_STATIC_position] >= NUM_STATIC_T4) Light_Pattern_Static_Default(settings);
@@ -450,7 +450,7 @@ static inline void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
 }
 void Light_Pattern_Serial1_Init(struct Light_Pattern_Serial1 *self, uint8_t *settings) {
   for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i)
-    vfdco_clr_target_RGBW(self->target_arr + CONFIG_NUM_BPP * i, settings[4 * i], settings[4 * i + 1], settings[4 * i + 2], settings[4 * i + 3]);
+    vfdco_clr_target_RGBW(self->target_arr + 4 * i, settings[4 * i], settings[4 * i + 1], settings[4 * i + 2], settings[4 * i + 3]);
   
   self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
   self->settings = settings;
@@ -811,7 +811,7 @@ static void _Light_Pattern_Time_Code_Update(Light_Pattern *unsafe_self) {
     };
 
     for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; i++)
-      vfdco_clr_target_RGB(target_arr + CONFIG_NUM_BPP * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
+      vfdco_clr_target_RGB(target_arr + 4 * i, Time_Code_Colors[digit_values[i]][1], Time_Code_Colors[digit_values[i]][0], Time_Code_Colors[digit_values[i]][2]);
     vfdco_clr_minimize_difference(target_arr);
     vfdco_clr_render();
   }
@@ -828,7 +828,7 @@ static inline void _Light_Pattern_Time_Code_Hello(void) {
   * @brief  Constructor of Light_Pattern_Time_Code class
  **/
 void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_time_t *time_instance) {
-  memset(self->target_arr, 0, CONFIG_NUM_BYTES);
+  memset(self->target_arr, 0, 4 * CONFIG_NUM_PIXELS);
   self->clock = Time_Event_Init(1);
   self->time = time_instance;
 

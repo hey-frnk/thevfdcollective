@@ -20,9 +20,9 @@ extern "C" {
 #include <stdint.h>
 #include "vfdco_config.h"
 
-         // Array of color values of size n um_bytes to be written in the next write cycle
-         // to the physical WS2812B/SK6812 LEDs
-extern uint8_t rgb_arr[CONFIG_NUM_BYTES];
+// Array of color values of size CONFIG_NUM_BYTES to be written in the next write cycle
+// Per definition set to CONFIG_NUM_BPP * CONFIG_NUM_PIXELS
+// extern uint8_t rgb_arr[CONFIG_NUM_BYTES]; no hl access
 
 // Initialize SW/HW of num_pixels * SK6812 LEDs
 void vfdco_clr_init(uint8_t initial_dim_factor);
@@ -32,6 +32,7 @@ void vfdco_clr_deInit(void);
 void vfdco_clr_set_dim_factor(uint8_t dim_factor);
 
 // Some simple access functions. Add some more if u feel creative
+// Depends to drivers CONFIG_NUM_BPP
 void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b);
 void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w);
 void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b);
@@ -40,7 +41,8 @@ void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w);
 // Colors all written? Shuttle the data bit by bit into the LEDs
 void vfdco_clr_render();
 
-// 
+// tp is written to rgb_arr by minimize_difference
+// Per definition set to 4 (and always 4!!!) * CONFIG_NUM_PIXELS -> NOT dependent on drivers CONFIG_NUM_BPP
 void vfdco_clr_target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b);
 void vfdco_clr_target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w);
 void vfdco_clr_target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b);

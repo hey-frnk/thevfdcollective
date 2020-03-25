@@ -34,7 +34,7 @@ extern "C" {
 #endif
 
 // Color/gamma correction should not be enabled both
-#if (defined(CONFIG_ENABLE_GAMMACORRECTION) + defined(CONFIG_ENABLE_COLORCORRECTION)) > 1
+#if (CONFIG_ENABLE_GAMMACORRECTION + CONFIG_ENABLE_COLORCORRECTION) > 1
 #warning "It is not advised to enable both color and gamma correction"
 #endif
 

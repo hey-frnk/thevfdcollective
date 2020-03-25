@@ -117,7 +117,7 @@ struct Light_Pattern_Static {
   uint8_t               *settings;
   time_event_t          t;
   uint8_t               position;   // Color lookup array index
-  uint8_t               target_arr[CONFIG_NUM_BYTES];
+  uint8_t               target_arr[4 * CONFIG_NUM_PIXELS]; // Bound to protocol fixed width
 };
 
 /**
@@ -138,7 +138,7 @@ void Light_Pattern_Serial0_Init(struct Light_Pattern_Serial0 *self, uint8_t *set
 struct Light_Pattern_Serial1 {
   uint8_t               *settings;
   time_event_t          t;
-  uint8_t               target_arr[CONFIG_NUM_BYTES];
+  uint8_t               target_arr[4 * CONFIG_NUM_PIXELS]; // Bound to protocol fixed width
 };
 void Light_Pattern_Serial1_Init(struct Light_Pattern_Serial1 *self, uint8_t *settings);
 
@@ -222,7 +222,7 @@ struct Light_Pattern_Time_Code {
   time_event_t          clock;
 
   vfdco_time_t          *time;
-  uint8_t               target_arr[CONFIG_NUM_BYTES];
+  uint8_t               target_arr[4 * CONFIG_NUM_PIXELS]; // Bound to protocol fixed width
 };
 
 /**

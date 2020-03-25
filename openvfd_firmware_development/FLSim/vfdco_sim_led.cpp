@@ -46,6 +46,7 @@ void vfdco_clr_set_dim_factor(uint8_t dim_factor) {
   _led_dim_factor = dim_factor;
 }
 
+#if (CONFIG_USE_RGBW == 1)
 void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
 	rgb_arr[4 * index] = g;
 	rgb_arr[4 * index + 1] = r;
@@ -62,6 +63,23 @@ void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
 void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
 	for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
 }
+#else
+void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
+    rgb_arr[3 * index] = g;
+    rgb_arr[3 * index + 1] = r;
+    rgb_arr[3 * index + 2] = b;
+}
+void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+    vfdco_clr_set_RGB(index, r, g, b);
+    w = 0;
+}
+void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
+    for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
+}
+void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+    for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
+}
+#endif
 
 void vfdco_clr_target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
   tp[0] = g;
@@ -76,10 +94,10 @@ void vfdco_clr_target_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t
   tp[3] = w;
 }
 void vfdco_clr_target_all_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) vfdco_clr_target_RGB(tp + i, r, g, b);
+  for(uint8_t i = 0; i < 4 * CONFIG_NUM_PIXELS; i += 4) vfdco_clr_target_RGB(tp + i, r, g, b);
 }
 void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i += 4) vfdco_clr_target_RGBW(tp + i, r, g, b, w);
+  for(uint8_t i = 0; i < 4 * CONFIG_NUM_PIXELS; i += 4) vfdco_clr_target_RGBW(tp + i, r, g, b, w);
 }
 
 /**
@@ -87,18 +105,25 @@ void vfdco_clr_target_all_RGBW(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b, uin
  * @param target_arr base address of intermediate target array
  */
 void vfdco_clr_minimize_difference(uint8_t *target_arr) {
-  uint8_t dt = 0;
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; i++) {
-    if(rgb_arr[i] < target_arr[i]) rgb_arr[i]++;
-    else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
-    else ++dt;
+  uint8_t j = 0;
+  for(uint8_t i = 0; i < 4 * CONFIG_NUM_PIXELS; i++) {
+    #if (CONFIG_USE_RGBW == 0)
+    if(i % 4 == 3) continue;
+    #endif
+    if(rgb_arr[j] < target_arr[i]) rgb_arr[j]++;
+    else if(rgb_arr[j] > target_arr[i]) rgb_arr[j]--;
+    ++j;
   }
   // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
 }
 
 void vfdco_clr_render() {
     for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
+        #if (CONFIG_USE_RGBW == 1)
         uint8_t r = rgb_arr[4 * i + 1], g = rgb_arr[4 * i], b = rgb_arr[4 * i + 2], w = rgb_arr[4 * i + 3];
+        #else
+        uint8_t r = rgb_arr[3 * i + 1], g = rgb_arr[3 * i], b = rgb_arr[3 * i + 2], w = 0;
+        #endif
         if(visualize_dimming) {
             r >>= _led_dim_factor;
             g >>= _led_dim_factor;

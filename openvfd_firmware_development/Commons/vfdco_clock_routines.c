@@ -66,6 +66,15 @@ time_event_t display_updater;
 
 Light_Pattern global_light_instance;
 light_pattern_instance_t global_light_instance_counter;
+const light_pattern_instance_t light_pattern_iterable[] = {
+  LIGHT_PATTERN_STATIC,
+  LIGHT_PATTERN_MOMENTSOFBLISS,
+  LIGHT_PATTERN_SPECTRUM,
+  LIGHT_PATTERN_RAINBOW,
+  LIGHT_PATTERN_CHASE,
+  LIGHT_PATTERN_TIME_CODE,
+  LIGHT_PATTERN_COP
+};
 
 GUI_Format global_gui_instance;
 gui_instance_t global_gui_instance_counter;

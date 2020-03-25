@@ -64,8 +64,8 @@ extern "C" {
  */
 // Dim factors for both display and light dimming. Corresponds directly to a shift factor
 #define CONFIG_BRIGHTNESS_MAX   0 // 1/1 brightness(no dimming)
-#define CONFIG_BRIGHTNESS_HALF  2 // 1/4 brightness
-#define CONFIG_BRIGHTNESS_MIN   4 // 1/8 brightness
+#define CONFIG_BRIGHTNESS_HALF  1 // 1/4 brightness
+#define CONFIG_BRIGHTNESS_MIN   2 // 1/8 brightness
 
 /**
  * @tableofcontents SECTION_CONFIG_GUI
