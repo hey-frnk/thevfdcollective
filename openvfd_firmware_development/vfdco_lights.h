@@ -213,6 +213,34 @@ void Light_Pattern_Chase_Default(uint8_t *settings);
 
 
 /** Begin of:
+  * @tableofcontents SECTION_LIGHT_PATTERN_MUSIC
+ **/
+/**
+  * @brief  Definition of Light_Pattern_Music class
+ **/
+struct Light_Pattern_Music {
+  uint8_t         *settings;
+  uint8_t         color_pos;
+  uint8_t         color_peak_diff;
+  uint8_t         saturation;
+  uint8_t         state;
+  uint8_t         delay_state;
+  time_event_t    state_timer; // Timer reduction by adding counters
+  uint8_t         color_pos_timer;
+  uint8_t         delay_timer;
+};
+
+/**
+  * @brief  Constructor of Light_Pattern_Music class
+ **/
+void Light_Pattern_Music_Init(struct Light_Pattern_Music *self, uint8_t *settings);
+/**
+  * @brief  Static Method Default for Light_Pattern_Music
+ **/
+void Light_Pattern_Music_Default(uint8_t *settings);
+
+
+/** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN_TIME_CODE
  **/
 /**
@@ -285,6 +313,7 @@ typedef union Light_Pattern {
   struct Light_Pattern_Spectrum         _lp_spectrum;
   struct Light_Pattern_Rainbow          _lp_rainbow;
   struct Light_Pattern_Chase            _lp_chase;
+  struct Light_Pattern_Music            _lp_music;
   struct Light_Pattern_Time_Code        _lp_timecode;
   struct Light_Pattern_Cop              _lp_cop;
   struct Light_Pattern_MomentsOfBliss   _lp_bliss;

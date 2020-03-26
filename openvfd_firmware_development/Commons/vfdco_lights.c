@@ -176,6 +176,7 @@ void LED_Color_Fader_Init(
   ENTRY(Spectrum,   ' ', ' ', 'F', 'A', 'D', 'E') \
   ENTRY(Rainbow,    'R', 'A', 'I', 'N', 'B', 'O') \
   ENTRY(Chase,      ' ', 'C', 'H', 'A', 'S', 'E') \
+  ENTRY(Music,      ' ', 'D', 'A', 'N', 'C', 'E') \
   ENTRY(Time_Code,  'T', 'I', 'C', 'O', 'D', 'E') \
   ENTRY(Cop,        'P', 'O', 'L', 'I', 'C', 'E') \
   ENTRY(Bliss,      ' ', 'B', 'L', 'I', 'S', 'S')
@@ -785,6 +786,153 @@ void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *ti
 void Light_Pattern_Chase_Default(uint8_t *settings) {
   settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode] = 0;
   settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] = 0;
+}
+
+
+/** Begin of:
+* @tableofcontents SECTION_LIGHT_PATTERN_MUSIC
+**/
+/**
+* @brief  Implementation of virtual function Light_Pattern_MUSIC::Update (static void _Light_Pattern_Music_Update)
+**/
+static void _Light_Pattern_Music_Update(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Music *self = (struct Light_Pattern_Music *)unsafe_self;
+  if(Time_Event_Update(&self->state_timer)) {
+    // If interval passed, decrease turned on LEDs by one (regular state update)
+    if(self->state < 7) ++self->state;
+    
+    // Rainbow fade position update
+    ++self->color_pos_timer;
+    if(self->color_pos_timer == 3) {
+        self->color_pos_timer = 0;
+        ++self->color_pos; // Intended overflow
+    }
+
+    uint8_t mic_read_in = 6 - led_color_simple_randomizer(3) % 7;
+
+    if(self->state >= mic_read_in) {
+      self->state = mic_read_in;
+      self->delay_state = 0;
+    } else {
+      // Update delay timer
+      ++self->delay_timer;
+      if(self->delay_timer == 13) {
+          self->delay_timer = 0;
+          self->delay_state = 1;
+      }
+    }
+
+    if(self->state < 7) {
+      for(int8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
+        if(i < CONFIG_NUM_PIXELS - self->state) {
+          uint8_t _h = self->color_pos + i * self->color_peak_diff; // i-th hue difference (delta), intended angle overflow
+          uint32_t target_color = _led_color_hsl2rgb(_h, self->saturation, LIGHTNESS_H);  // Get target RGB
+          vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+        } else {
+          vfdco_clr_set_RGB(i, 0, 0, 0); // Black out
+        }
+      }
+
+      if(self->delay_state) {
+        if(self->state < CONFIG_NUM_PIXELS) {
+          for(uint8_t i = 0; i < (CONFIG_NUM_PIXELS - 1 - self->state); ++i)
+            vfdco_clr_set_RGB(i, 0, 0, 0);
+        }
+      }
+    }
+    
+    vfdco_clr_render();
+  }
+ }
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_Music::F3 (static void _Light_Pattern_Music_F3)
+* @details  Switches between L-R, R-L and second flip mode
+**/
+static void _Light_Pattern_Music_F3(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Music *self = (struct Light_Pattern_Music *)unsafe_self;
+  if(self->color_peak_diff == 10) {
+    self->color_peak_diff = 21;
+    vfdco_display_render_message(Messages_Color_Rainbow[1], 0, CONFIG_MESSAGE_SHORT);
+  }
+  else if(self->color_peak_diff == 21) {
+    self->color_peak_diff = 42;
+    vfdco_display_render_message(Messages_Color_Rainbow[2], 0, CONFIG_MESSAGE_SHORT);
+  }
+  else{
+    self->color_peak_diff = 10;
+    vfdco_display_render_message(Messages_Color_Rainbow[0], 0, CONFIG_MESSAGE_SHORT);
+  }
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_Music::F3Var (static void _Light_Pattern_Music_F3Var)
+**/
+static void _Light_Pattern_Music_F3Var(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Music *self = (struct Light_Pattern_Music *)unsafe_self;
+  char k[CONFIG_NUM_DIGITS] = {'S', 'A', 'T', ' ', ' ', 1};
+  if(self->saturation == SATURATION_H) {
+    self->saturation = SATURATION_L;
+  }
+  else if(self->saturation == SATURATION_L) {
+    self->saturation = SATURATION_M;
+    k[5] = 2;
+  }
+  else{
+    self->saturation = SATURATION_H;
+    k[5] = 3;
+  }
+  vfdco_display_render_message(k, 0b00000100, CONFIG_MESSAGE_SHORT);
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_Music::Hello (static void _Light_Pattern_Music_Hello)
+**/
+static inline void _Light_Pattern_Music_Hello(void) {
+  vfdco_display_render_message(Messages_Hello_Music, 0, CONFIG_MESSAGE_LONG);
+}
+
+/**
+  * @brief  Implementation of virtual function Light_Pattern_Music::Save (static void _Light_Pattern_Music_Save)
+ **/
+static inline void _Light_Pattern_Music_Save(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Music *self = (struct Light_Pattern_Music *)unsafe_self;
+  self->settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] = self->color_peak_diff;
+  self->settings[LIGHT_PATTERN_SETTING_MUSIC_saturation]      = self->saturation;
+}
+
+/**
+* @brief  Constructor of Light_Pattern_Music class
+**/
+void Light_Pattern_Music_Init(struct Light_Pattern_Music *self, uint8_t *settings) {
+  // Default loading if saved value is waste, then load by assignment
+  if((settings[LIGHT_PATTERN_SETTING_MUSIC_saturation] == 0) || settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] == 0)
+    Light_Pattern_Music_Default(settings);
+
+  self->state_timer = Time_Event_Init(20);
+  self->color_pos_timer = 0; // 3x multiplicator (60 ms)
+  self->delay_timer = 0; // 12x multiplicator (240 ms)
+  self->color_pos = 0;
+  self->color_peak_diff = settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff];
+  self->saturation = settings[LIGHT_PATTERN_SETTING_MUSIC_saturation];
+  self->state = 0;
+  self->delay_state = 0;
+
+  self->settings = settings;
+
+  Light_Pattern_F3 = _Light_Pattern_Music_F3;
+  Light_Pattern_F3Var = _Light_Pattern_Music_F3Var;
+  Light_Pattern_Update = _Light_Pattern_Music_Update;
+  Light_Pattern_Hello = _Light_Pattern_Music_Hello;
+  Light_Pattern_Save = _Light_Pattern_Music_Save;
+}
+
+/**
+  * @brief  Implementation of static method Light_Pattern_Music::Default
+ **/
+void Light_Pattern_Music_Default(uint8_t *settings) {
+  settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] = 21;
+  settings[LIGHT_PATTERN_SETTING_MUSIC_saturation] = SATURATION_H;
 }
 
 

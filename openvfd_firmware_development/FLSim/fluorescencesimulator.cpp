@@ -117,8 +117,8 @@ void FluorescenceSimulator::update()
         // Print updating instance
         auto _gui_active = magic_enum::enum_name(global_gui_instance_counter);
         auto _light_active = magic_enum::enum_name(global_light_instance_counter);
-        ui->widget_gui->setTitle("GUI & Display Monitor. Active Instance: " + QString::fromStdString(std::string(_gui_active)) + ". RTC Respond: " + cdt.currentDateTime().toString());
-        ui->widget_lights->setTitle("Lights Monitor. Active Instance: " + QString::fromStdString(std::string(_light_active)));
+        ui->widget_gui->setTitle("GUI & Display Monitor. Active Instance: " + QString::fromStdString(std::string(_gui_active)) + " (" + QString::number(global_gui_instance_counter) + "). RTC Respond: " + cdt.currentDateTime().toString());
+        ui->widget_lights->setTitle("Lights Monitor. Active Instance: " + QString::fromStdString(std::string(_light_active)) + " (" + QString::number(global_light_instance_counter) + ")");
 
         // Get raw data by type punning
         QByteArray _gui_data = QByteArray((char *)&global_gui_instance, sizeof(GUI_Format));

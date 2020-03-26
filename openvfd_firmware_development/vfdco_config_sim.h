@@ -33,10 +33,10 @@ extern "C" {
  */
 // Edit software version here
 #define CONFIG_SW_STRING_LENGTH 6
-#define CONFIG_SW_STRING {'S', 'I', 'M', 'U', 'L', 'A'}
+#define CONFIG_SW_STRING {'3', '.', '0', 's', ' ', ' '}
 // Edit hardware version here
 #define CONFIG_HW_STRING_LENGTH 4
-#define CONFIG_HW_STRING {'T', 'I', 'O', 'N'}
+#define CONFIG_HW_STRING {'3', '.', '0', '0'}
 
 /**
  * @tableofcontents SECTION_CONFIG_DISPLAY
@@ -75,13 +75,17 @@ extern "C" {
 #define CONFIG_MESSAGE_SHORT      500
 // How many milliseconds should a regular message last?
 #define CONFIG_MESSAGE_LONG       1000
+// What should be the default welcome message? (Default: {'H', 'E', 'L', 'L', 'O', ' '})
+#define CONFIG_WELCOME_MESSAGE_DEFAULT {'H', 'E', 'L', 'L', 'O', ' '}
 
 /**
  * @tableofcontents SECTION_CONFIG_LIGHTS
  * @brief Configuration parameters for the high level Light_Pattern class
  */
-// If legacy patterns are enabled, the color modes are just like in v2.x
-#define CONFIG_LEGACY_LIGHT_PATTERNS       1
+// Each iterable light pattern is represented as a number n according to clock_routines. The n-th bit in the 
+// default register below enables or disables a light pattern from being switched to by F2 pressing or in the randomizer
+#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b11111111
+#define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b11011111
 // Definition for different lightess & saturation settings
 #define CONFIG_LIGHTNESS_HIGH     127
 #define CONFIG_LIGHTNESS_MEDIUM   90
@@ -90,7 +94,7 @@ extern "C" {
 #define CONFIG_SATURATION_MEDIUM  196
 #define CONFIG_SATURATION_LOW     127
 // Fade speeds
-#define CONFIG_SINGLE_COLOR_FADE_SPEED     2
+#define CONFIG_SINGLE_COLOR_FADE_SPEED     1
 #define CONFIG_SPECTRUM_FADE_SPEED         60
 #define CONFIG_CHASE_FADE_SPEED            60
 #define CONFIG_COP_FADE_SPEED              25
@@ -109,9 +113,9 @@ extern "C" {
  * @brief Configuration parameters for the high level clock routine
  */
 // How often should we ask the RTC what time it is? (Milliseconds)
-#define CONFIG_RTC_UPDATE_INTERVAL 111
+#define CONFIG_RTC_UPDATE_INTERVAL 222
 // How quickly do we want to update the display?
-#define CONFIG_DISPLAY_UPDATE_INTERVAL 6
+#define CONFIG_DISPLAY_UPDATE_INTERVAL 108
 
 /**
  * @tableofcontents CONFIG_SAVED_SETTINGS_TABLE
@@ -134,20 +138,22 @@ extern "C" {
  */
 #define NUM_SERIALIZABLE_GLOBAL 1
 #define NUM_SERIALIZABLE_GUI 2
-#define NUM_SERIALIZABLE_LIGHTS 7
+#define NUM_SERIALIZABLE_LIGHTS 8
      // ENTRY:  Index|    Size| Corresponding enum mapping     | Instance
 #define CREATE_SERIALIZED_GLOBAL(ENTRY) \
-        ENTRY(      0,      13, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
+        ENTRY(      0,      15, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
                // SUBENTRY: Offset| Size| Setting identifier                                    | Description, just for documentation Has no effect on anything
 #define CREATE_SERIALIZED_GLOBAL_POSITIONS(SUBENTRY) \
           /*-->*/ SUBENTRY(      0,    6, CLOCK_ROUTINE_SETTING_welcome                         , "6 * char, welcome message") \
-          /*-->*/ SUBENTRY(      6,    1, CLOCK_ROUTINE_SETTING_global_light_instance_counter   , "uint8_t, global_light_instance_counter") \
-          /*-->*/ SUBENTRY(      7,    1, CLOCK_ROUTINE_SETTING_dim_factor_display              , "uint8_t, dim_factor_display") \
-          /*-->*/ SUBENTRY(      8,    1, CLOCK_ROUTINE_SETTING_dim_factor_led                  , "uint8_t, dim_factor_led") \
-          /*-->*/ SUBENTRY(      9,    1, CLOCK_ROUTINE_SETTING_night_shift_start_h             , "uint8_t, night_shift_start_h") \
-          /*-->*/ SUBENTRY(     10,    1, CLOCK_ROUTINE_SETTING_night_shift_start_m             , "uint8_t, night_shift_start_m") \
-          /*-->*/ SUBENTRY(     11,    1, CLOCK_ROUTINE_SETTING_night_shift_end_h               , "uint8_t, night_shift_end_h") \
-          /*-->*/ SUBENTRY(     12,    1, CLOCK_ROUTINE_SETTING_night_shift_end_m               , "uint8_t, night_shift_end_m")
+          /*-->*/ SUBENTRY(      6,    1, CLOCK_ROUTINE_SETTING_global_light_instance_counter   , "uint8_t, global_light_instance_counter, saved light instance") \
+          /*-->*/ SUBENTRY(      7,    1, CLOCK_ROUTINE_SETTING_global_light_it_register        , "uint8_t, global_light_it_register, iterable instance enable register") \
+          /*-->*/ SUBENTRY(      8,    1, CLOCK_ROUTINE_SETTING_global_light_rnd_register       , "uint8_t, global_light_rnd_register, random instance enable register") \
+          /*-->*/ SUBENTRY(      9,    1, CLOCK_ROUTINE_SETTING_dim_factor_display              , "uint8_t, dim_factor_display") \
+          /*-->*/ SUBENTRY(     10,    1, CLOCK_ROUTINE_SETTING_dim_factor_led                  , "uint8_t, dim_factor_led") \
+          /*-->*/ SUBENTRY(     11,    1, CLOCK_ROUTINE_SETTING_night_shift_start_h             , "uint8_t, night_shift_start_h") \
+          /*-->*/ SUBENTRY(     12,    1, CLOCK_ROUTINE_SETTING_night_shift_start_m             , "uint8_t, night_shift_start_m") \
+          /*-->*/ SUBENTRY(     13,    1, CLOCK_ROUTINE_SETTING_night_shift_end_h               , "uint8_t, night_shift_end_h") \
+          /*-->*/ SUBENTRY(     14,    1, CLOCK_ROUTINE_SETTING_night_shift_end_m               , "uint8_t, night_shift_end_m") \
 
 #define CREATE_SERIALIZED_GUI(ENTRY) \
         ENTRY(      1,       2, GUI_TIME                       , SERIALIZABLE_GUI_TIME         ) \
@@ -163,8 +169,9 @@ extern "C" {
         ENTRY(      5,       2, LIGHT_PATTERN_SPECTRUM         , SERIALIZABLE_LIGHTS_SPECTRUM  ) \
         ENTRY(      6,       2, LIGHT_PATTERN_RAINBOW          , SERIALIZABLE_LIGHTS_RAINBOW   ) \
         ENTRY(      7,       2, LIGHT_PATTERN_CHASE            , SERIALIZABLE_LIGHTS_CHASE     ) \
-        ENTRY(      8,      24, LIGHT_PATTERN_SERIAL0          , SERIALIZABLE_LIGHTS_SERIAL0   ) \
-        ENTRY(      9,      24, LIGHT_PATTERN_SERIAL1          , SERIALIZABLE_LIGHTS_SERIAL1   )
+        ENTRY(      8,       2, LIGHT_PATTERN_MUSIC            , SERIALIZABLE_LIGHTS_MUSIC     ) \
+        ENTRY(      9,      24, LIGHT_PATTERN_SERIAL0          , SERIALIZABLE_LIGHTS_SERIAL0   ) \
+        ENTRY(     10,      24, LIGHT_PATTERN_SERIAL1          , SERIALIZABLE_LIGHTS_SERIAL1   )
 #define CREATE_SERIALIZED_LIGHTS_POSITIONS(SUBENTRY) \
           /*-->*/ SUBENTRY(      0,    1, LIGHT_PATTERN_SETTING_STATIC_position                 , "uint8_t, position") \
           /*-->*/ SUBENTRY(      0,    1, LIGHT_PATTERN_SETTING_BLISS_moment                    , "uint8_t, moment") \
@@ -174,6 +181,8 @@ extern "C" {
           /*-->*/ SUBENTRY(      1,    1, LIGHT_PATTERN_SETTING_RAINBOW_saturation              , "uint8_t, saturation") \
           /*-->*/ SUBENTRY(      0,    1, LIGHT_PATTERN_SETTING_CHASE_chase_mode                , "uint8_t, chase_mode") \
           /*-->*/ SUBENTRY(      1,    1, LIGHT_PATTERN_SETTING_CHASE_color_peak_diff           , "uint8_t, color_peak_diff") \
+          /*-->*/ SUBENTRY(      0,    1, LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff           , "uint8_t, color_peak_diff") \
+          /*-->*/ SUBENTRY(      1,    1, LIGHT_PATTERN_SETTING_MUSIC_saturation                , "uint8_t, saturation") \
           /*-->*/ SUBENTRY(      0,   24, LIGHT_PATTERN_SETTING_SERIAL0_colors                  , "24 * uint8_t, colors") \
           /*-->*/ SUBENTRY(      0,   24, LIGHT_PATTERN_SETTING_SERIAL1_colors                  , "24 * uint8_t, colors")
 

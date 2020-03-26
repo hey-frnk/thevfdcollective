@@ -24,7 +24,7 @@ extern "C" {
 #include <stdint.h>
 #include "vfdco_config.h"
 
-// GUIs tell what kind of data will shuttle through the shift registers and the display render function(s) will render accordingly.
+// GUIs tell what kind of information will be sent to the dispay
 typedef enum {
   GUI_TIME = 0,             // Display the current time (default of default)
   GUI_DATE = 1,             // Display the current date
@@ -33,17 +33,21 @@ typedef enum {
   GUI_BRIGHTNESS_SET = 21   // Active when brightness (night shift) set is enabled
 } gui_instance_t;
 
+// Light Patterns tell in which way or pattern the LED lights glow
 typedef enum {
-  LIGHT_PATTERN_STATIC = 0,
-  LIGHT_PATTERN_SPECTRUM = 1,
-  LIGHT_PATTERN_MOMENTSOFBLISS = 2,
-  LIGHT_PATTERN_RAINBOW = 3,
-  LIGHT_PATTERN_CHASE = 4,
-  LIGHT_PATTERN_TIME_CODE = 10,
-  LIGHT_PATTERN_COP = 11,
+  // Iterable instances, max. 8 instances. Reachable by navigating with F2 in strictly ascending order
+  LIGHT_PATTERN_STATIC = 0,           // Corresponds to Light_Pattern_Static class. Single color preset
+  LIGHT_PATTERN_MOMENTSOFBLISS = 1,   // Corresponds to Light_Pattern_MomentsOfBliss class
+  LIGHT_PATTERN_SPECTRUM = 2,         // Corresponds to Light_Pattern_Spectrum class. Single color fade through the entire spectrum
+  LIGHT_PATTERN_RAINBOW = 3,          // Corresponds to Light_Pattern_Rainbow class. Multi-color fade through the spectrum
+  LIGHT_PATTERN_CHASE = 4,            // Corresponds to Light_Pattern_Chase class. One color chasing another
+  LIGHT_PATTERN_MUSIC = 5,            // Corresponds to Light_Pattern_Music class. Beat reactive pattern
+  LIGHT_PATTERN_TIME_CODE = 6,        // Corresponds to Light_Pattern_Time_Code class. Pattern according to time digit value
+  LIGHT_PATTERN_COP = 7,              // Corresponds to Light_Pattern_Cop. Police lights
 
-  LIGHT_PATTERN_SERIAL0 = 20,
-  LIGHT_PATTERN_SERIAL1 = 21
+  // Non-iterable instances
+  LIGHT_PATTERN_SERIAL0 = 20,         // Corresponds to Light_Pattern_Serial0. Optimized for fast response time from incoming serial color data
+  LIGHT_PATTERN_SERIAL1 = 21          // Corresponds to Light_Pattern_Serial1. Optimized for smooth color setting from incoming data
 } light_pattern_instance_t;
 
 enum {
@@ -103,6 +107,8 @@ void    vfdco_clock_com_routine();
 #define COM_PROTOCOL_CLOCK_CONTROL_OFFSET 2
 
 #include "vfdco_serialization.h"
+
+#define INSTANCE_NO_SETTINGS 255 // If instance has no settings, the setting to instance mapper will return 255
 
 // ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE in config.h, DO NOT CHANGE MANUALLY ########
 #define CREATE_SERIALIZED_INDEX(_globalindex, _size, _enum_map, _serializable_identifier) \

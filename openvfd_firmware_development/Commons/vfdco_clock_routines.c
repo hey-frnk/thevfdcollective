@@ -53,48 +53,51 @@
 #endif
 
 // Globally accessible parameters
+time_event_t display_updater;
 vfdco_time_t global_time;
 vfdco_date_t global_date;
+time_event_t global_time_updater;
 
+// HID variables
 uint8_t global_button_F1_state = BUTTON_STATE_OFF;
 uint8_t global_button_F2_state = BUTTON_STATE_OFF;
 uint8_t global_button_F3_state = BUTTON_STATE_OFF;
 uint8_t global_button_F4_state = BUTTON_STATE_OFF;
+#define GLOBAL_CLEAR_BUTTON(_button) _button = BUTTON_STATE_OFF
 
-time_event_t global_time_updater;
-time_event_t display_updater;
-
-Light_Pattern global_light_instance;
-light_pattern_instance_t global_light_instance_counter;
-const light_pattern_instance_t light_pattern_iterable[] = {
-  LIGHT_PATTERN_STATIC,
-  LIGHT_PATTERN_MOMENTSOFBLISS,
-  LIGHT_PATTERN_SPECTRUM,
-  LIGHT_PATTERN_RAINBOW,
-  LIGHT_PATTERN_CHASE,
-  LIGHT_PATTERN_TIME_CODE,
-  LIGHT_PATTERN_COP
-};
-
+// GUI variables
 GUI_Format global_gui_instance;
 gui_instance_t global_gui_instance_counter;
+#define GLOBAL_SET_NEXT_GUI_INSTANCE(_counter) {global_gui_instance_counter = (_counter);}
 
+// Light Pattern variables
+Light_Pattern global_light_instance;
+light_pattern_instance_t global_light_instance_counter;
+#define GLOBAL_SET_NEXT_LIGHT_INSTANCE(_counter) {global_light_instance_counter = (_counter);}
+
+uint8_t global_light_it_register;   // For iterable instances, this register includes or excludes an instance during regular light instance F2 switching
+uint8_t global_light_rnd_register;  // For random instances, this register includes or excludes an instance from being randomized
+#define GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(_instance)     ((global_light_it_register) &   (1 << (_instance)))
+#define GLOBAL_ITERABLE_INSTANCE_ENABLE(_instance)         ((global_light_it_register) |=  (1 << (_instance)))
+#define GLOBAL_ITERABLE_INSTANCE_DISABLE(_instance)        ((global_light_it_register) &= ~(1 << (_instance)))
+#define GLOBAL_RANDOM_INSTANCE_IS_ENABLED(_instance)     ((global_light_rnd_register)  &   (1 << (_instance)))
+#define GLOBAL_RANDOM_INSTANCE_ENABLE(_instance)         ((global_light_rnd_register)  |=  (1 << (_instance)))
+#define GLOBAL_RANDOM_INSTANCE_DISABLE(_instance)        ((global_light_rnd_register)  &= ~(1 << (_instance)))
+
+#define global_light_instance_default LIGHT_PATTERN_STATIC // Must be set to enum(0)
+
+// Clock power variables
 uint8_t global_night_shift_state;
 
+// COM variables
 struct COM_Data global_com_data;
-
-#define GLOBAL_SET_NEXT_LIGHT_INSTANCE(_counter) {global_light_instance_counter = _counter;}
-#define GLOBAL_SET_NEXT_GUI_INSTANCE(_counter) {global_gui_instance_counter = _counter;}
-
-#define GLOBAL_CLEAR_BUTTON(_button) _button = BUTTON_STATE_OFF
 
 // Documentation see config.h::CONFIG_SAVED_SETTINGS_TABLE. Anonymous enums for setting offsets
 #define CREATE_SETTINGS_OFFSET_GLOBAL(_offset, _size, _setting_identifier, _description) \
   enum { _setting_identifier = _offset };
 CREATE_SERIALIZED_GLOBAL_POSITIONS(CREATE_SETTINGS_OFFSET_GLOBAL)
 
-const light_pattern_instance_t global_light_instance_default = LIGHT_PATTERN_STATIC;
-const char Messages_Welcome_Default[CONFIG_NUM_DIGITS]  = {'H', 'E', 'L', 'L', 'O', ' '};
+// Messaging constants
 const char Messages_Routine_Settings[CONFIG_NUM_DIGITS] = {'S', 'E', 'T', 'I', 'N', 'G'};
 const char Messages_Routine_Default1[CONFIG_NUM_DIGITS] = {'D', 'E', 'F', 'A', 'U', 'L'};
 const char Messages_Routine_Default2[CONFIG_NUM_DIGITS] = {'R', 'E', 'T', 'O', 'R', 'D'};
@@ -174,6 +177,8 @@ inline void vfdco_clock_lights_initializer() {
   vfdco_clr_init(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
   // Start by loading the saved lights instance
   set_next_lights_instance((light_pattern_instance_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter]);
+  global_light_it_register = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register];
+  global_light_rnd_register = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register];
 }
 
 inline void vfdco_clock_com_initializer() {
@@ -352,18 +357,14 @@ void vfdco_clock_lights_routine() {
   if(global_button_F2_state == BUTTON_STATE_SHORTPRESS) {
     if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
     Container_Light_Pattern_Clear(&global_light_instance);
-    switch(global_light_instance_counter) {
-      case LIGHT_PATTERN_STATIC:          { set_next_lights_instance(LIGHT_PATTERN_MOMENTSOFBLISS); break; }
-      case LIGHT_PATTERN_MOMENTSOFBLISS:  { set_next_lights_instance(LIGHT_PATTERN_SPECTRUM);       break; }
-      case LIGHT_PATTERN_SPECTRUM:        { set_next_lights_instance(LIGHT_PATTERN_RAINBOW);        break; }
-      case LIGHT_PATTERN_RAINBOW:         { set_next_lights_instance(LIGHT_PATTERN_CHASE);          break; }
-      case LIGHT_PATTERN_CHASE:           { set_next_lights_instance(LIGHT_PATTERN_TIME_CODE);      break; }
-      case LIGHT_PATTERN_TIME_CODE:       { set_next_lights_instance(LIGHT_PATTERN_COP);            break; }
-      case LIGHT_PATTERN_COP:             { set_next_lights_instance(LIGHT_PATTERN_STATIC);         break; }
-      case LIGHT_PATTERN_SERIAL0:         { set_next_lights_instance(LIGHT_PATTERN_STATIC);         break; }
-      case LIGHT_PATTERN_SERIAL1:         { set_next_lights_instance(LIGHT_PATTERN_STATIC);         break; }
-      default: break;
-    }
+    if(global_light_instance_counter < 8) { // Iterable instance
+      light_pattern_instance_t next_iterable_instance = global_light_instance_counter;
+      do { // Look for the next enabled iterable instance in the enable register
+        ++next_iterable_instance;
+        if(next_iterable_instance == 8) next_iterable_instance = global_light_instance_default;
+      } while(!GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(next_iterable_instance));
+      set_next_lights_instance(next_iterable_instance);
+    } else set_next_lights_instance(global_light_instance_default);
     if(Light_Pattern_Hello) Light_Pattern_Hello();
     GLOBAL_CLEAR_BUTTON(global_button_F2_state); // Priority clear
   }
@@ -398,8 +399,8 @@ void vfdco_clock_com_routine() {
  **/
 void vfdco_clock_settings_default() {
   // Global (routine) settings
-  for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) 
-    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i] = Messages_Welcome_Default[i];
+  const char Messages_Welcome_Default[CONFIG_NUM_DIGITS] = CONFIG_WELCOME_MESSAGE_DEFAULT;
+  memcpy(SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, Messages_Welcome_Default, CONFIG_NUM_DIGITS);
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter] = global_light_instance_default;
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = 0;
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = 0;
@@ -407,6 +408,8 @@ void vfdco_clock_settings_default() {
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = 0;
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = 0;
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = 0;
+  SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register] = CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT;
+  SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register] = CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT;
 
   // Class settings
   GUI_Format_Time_Default(SERIALIZABLE_GUI_TIME_arr);
@@ -415,6 +418,7 @@ void vfdco_clock_settings_default() {
   Light_Pattern_Spectrum_Default(SERIALIZABLE_LIGHTS_SPECTRUM_arr);
   Light_Pattern_Rainbow_Default(SERIALIZABLE_LIGHTS_RAINBOW_arr);
   Light_Pattern_Chase_Default(SERIALIZABLE_LIGHTS_CHASE_arr);
+  Light_Pattern_Music_Default(SERIALIZABLE_LIGHTS_MUSIC_arr);
   Light_Pattern_MomentsOfBliss_Default(SERIALIZABLE_LIGHTS_BLISS_arr);
 
   // Message about this
@@ -484,25 +488,12 @@ void set_next_gui_instance_timeset(uint8_t set_mode) {
  * @param next_instance any regular GUI without special parameters (TIME/DATE_STOPWATCH)
  */
 void set_next_gui_instance(gui_instance_t next_instance) {
+  uint8_t mapped_instance = _map_gui_instance_to_serialized_settings_index(next_instance), *instance_settings = NULL;
+  if(mapped_instance != INSTANCE_NO_SETTINGS) instance_settings = serialized_settings[mapped_instance];
   switch(next_instance) {
-    case GUI_TIME: {
-      GUI_Format_Time_Init(
-        (struct GUI_Format_Time*)&global_gui_instance,
-        serialized_settings[_map_gui_instance_to_serialized_settings_index(next_instance)]
-      );
-      break;
-    }
-    case GUI_DATE: {
-      GUI_Format_Date_Init(
-        (struct GUI_Format_Date*)&global_gui_instance,
-        serialized_settings[_map_gui_instance_to_serialized_settings_index(next_instance)]
-      );
-      break;
-    }
-    case GUI_STOPWATCH: {
-      GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance);
-      break;
-    }
+    case GUI_TIME:      { GUI_Format_Time_Init(     (struct GUI_Format_Time*)&global_gui_instance, instance_settings); break; }
+    case GUI_DATE:      { GUI_Format_Date_Init(     (struct GUI_Format_Date*)&global_gui_instance, instance_settings); break; }
+    case GUI_STOPWATCH: { GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance);               break; }
     case GUI_BRIGHTNESS_SET: {
       GUI_Format_Brightness_Setter_Init(
         (struct GUI_Format_Brightness_Setter *)&global_gui_instance,
@@ -510,62 +501,57 @@ void set_next_gui_instance(gui_instance_t next_instance) {
       );
       break;
     }
-    default: exit(-1); // Oops
+    default: break;
   }
   GLOBAL_SET_NEXT_GUI_INSTANCE(next_instance);
 }
 
 void set_next_lights_instance(light_pattern_instance_t next_instance) {
-  uint8_t *instance_settings = NULL;
-  if(next_instance != LIGHT_PATTERN_TIME_CODE && next_instance != LIGHT_PATTERN_COP)
-    instance_settings = serialized_settings[_map_lights_instance_to_serialized_settings_index(next_instance)];
+  uint8_t mapped_instance = _map_lights_instance_to_serialized_settings_index(next_instance), *instance_settings = NULL;
+  if(mapped_instance != INSTANCE_NO_SETTINGS) instance_settings = serialized_settings[mapped_instance];
   switch(next_instance) {
     case LIGHT_PATTERN_STATIC: {
       Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, instance_settings);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_STATIC);
-      break;
-    }
-    case LIGHT_PATTERN_SPECTRUM: {
-      Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_light_instance, instance_settings);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SPECTRUM);
-      break;
-    }
-    case LIGHT_PATTERN_RAINBOW: {
-      Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)&global_light_instance, instance_settings);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_RAINBOW);
-      break;
-    }
-    case LIGHT_PATTERN_CHASE: {
-      Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_light_instance, &global_time, instance_settings);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_CHASE);
-      break;
-    }
-    case LIGHT_PATTERN_TIME_CODE: {
-      Light_Pattern_Time_Code_Init((struct Light_Pattern_Time_Code *)&global_light_instance, &global_time);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_TIME_CODE);
-      break;
-    }
-    case LIGHT_PATTERN_COP: {
-      Light_Pattern_Cop_Init((struct Light_Pattern_Cop *)&global_light_instance);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_COP);
       break;
     }
     case LIGHT_PATTERN_MOMENTSOFBLISS: {
       Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)&global_light_instance, instance_settings);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_MOMENTSOFBLISS);
+      break;
+    }
+    case LIGHT_PATTERN_SPECTRUM: {
+      Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_light_instance, instance_settings);
+      break;
+    }
+    case LIGHT_PATTERN_RAINBOW: {
+      Light_Pattern_Rainbow_Init((struct Light_Pattern_Rainbow *)&global_light_instance, instance_settings);
+      break;
+    }
+    case LIGHT_PATTERN_CHASE: {
+      Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_light_instance, &global_time, instance_settings);
+      break;
+    }
+    case LIGHT_PATTERN_MUSIC: {
+      Light_Pattern_Music_Init((struct Light_Pattern_Music *)&global_light_instance, instance_settings);
+      break;
+    }
+    case LIGHT_PATTERN_TIME_CODE: {
+      Light_Pattern_Time_Code_Init((struct Light_Pattern_Time_Code *)&global_light_instance, &global_time);
+      break;
+    }
+    case LIGHT_PATTERN_COP: {
+      Light_Pattern_Cop_Init((struct Light_Pattern_Cop *)&global_light_instance);
       break;
     }
     case LIGHT_PATTERN_SERIAL0: {
       Light_Pattern_Serial0_Init((struct Light_Pattern_Serial0 *)&global_light_instance, instance_settings);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SERIAL0);
       break;
     }
     case LIGHT_PATTERN_SERIAL1: {
       Light_Pattern_Serial1_Init((struct Light_Pattern_Serial1 *)&global_light_instance, instance_settings);
-      GLOBAL_SET_NEXT_LIGHT_INSTANCE(LIGHT_PATTERN_SERIAL1);
       break;
     }
   }
+  GLOBAL_SET_NEXT_LIGHT_INSTANCE(next_instance);
 }
 
 void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) {
@@ -585,7 +571,7 @@ void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) 
     else if(command_byte == 0x01) {
       if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
       memcpy(
-        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
+        serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL1)], 
         input_buffer + COM_PROTOCOL_SER1_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
       );
       set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
@@ -746,14 +732,14 @@ uint8_t _map_gui_instance_to_serialized_settings_index(gui_instance_t instance) 
   switch(instance) {
     #define CREATE_SERIALIZED_GUI_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
     CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_GUI_SWITCHES)
-    default: return 255;
+    default: return INSTANCE_NO_SETTINGS;
   }
 }
 uint8_t _map_lights_instance_to_serialized_settings_index(light_pattern_instance_t instance) {
   switch(instance) {
     #define CREATE_SERIALIZED_LIGHTS_SWITCHES(_globalindex, _size, _enum_map, _serializable_identifier) case _enum_map: return _serializable_identifier ## _INDEX;
     CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_LIGHTS_SWITCHES)
-    default: return 255;
+    default: return INSTANCE_NO_SETTINGS;
   }
 }
 // ######## END OF DO NOT TOUCH SECTION ########
