@@ -17,6 +17,7 @@
   * SECTION_LIGHT_PATTERN_SPECTRUM
   * SECTION_LIGHT_PATTERN_RAINBOW
   * SECTION_LIGHT_PATTERN_CHASE
+  * SECTION_LIGHT_PATTERN_MUSIC
   * SECTION_LIGHT_PATTERN_TIME_CODE
   * SECTION_LIGHT_PATTERN_COP
   * SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
@@ -30,12 +31,13 @@
   #include "../vfdco_lights.h"
   #include "../vfdco_led.h"
   #include "../vfdco_display.h"
-
+  #include "../vfdco_mic.h"
 #else
   #include "vfdco_config.h"
   #include "vfdco_lights.h"
   #include "vfdco_led.h"
   #include "vfdco_display.h"
+  #include "vfdco_mic.h"
 #endif
 
 // #include <stdlib.h>
@@ -47,8 +49,6 @@
  **/
 // HSL to RGB fast calculation
 static uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
-// Generate random number
-static uint8_t led_color_simple_randomizer(uint8_t bits);
 
 /** Begin of:
   * @tableofcontents SECTION_HSL
@@ -426,6 +426,7 @@ static void _Light_Pattern_Serial0_Update(Light_Pattern *unsafe_self) {
   }
 }
 static inline void _Light_Pattern_Serial0_Save(Light_Pattern *unsafe_self) {
+  (void)unsafe_self;
   return; // No save needed. Already done.
 }
 void Light_Pattern_Serial0_Init(struct Light_Pattern_Serial0 *self, uint8_t *settings) {
@@ -447,6 +448,7 @@ static void _Light_Pattern_Serial1_Update(Light_Pattern *unsafe_self) {
   }
 }
 static inline void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
+  (void)unsafe_self;
   return;
 }
 void Light_Pattern_Serial1_Init(struct Light_Pattern_Serial1 *self, uint8_t *settings) {
@@ -492,7 +494,7 @@ static void _Light_Pattern_Spectrum_F3(Light_Pattern *unsafe_self) {
   else if(_color->l == LIGHTNESS_H) {
     _color->l = LIGHTNESS_L;
   }
-  else{
+  else {
     _color->l = LIGHTNESS_M;
     k[5] = 2;
   }
@@ -514,7 +516,7 @@ static void _Light_Pattern_Spectrum_F3Var(Light_Pattern *unsafe_self) {
     _color->s = SATURATION_M;
     k[5] = 2;
   }
-  else{
+  else {
     _color->s = SATURATION_H;
     k[5] = 3;
   }
@@ -598,7 +600,7 @@ static void _Light_Pattern_Rainbow_F3(Light_Pattern *unsafe_self) {
     _f->chain_hue_diff = 42;
     vfdco_display_render_message(Messages_Color_Rainbow[2], 0, CONFIG_MESSAGE_SHORT);
   }
-  else{
+  else {
     _f->chain_hue_diff = 10;
     vfdco_display_render_message(Messages_Color_Rainbow[0], 0, CONFIG_MESSAGE_SHORT);
   }
@@ -618,7 +620,7 @@ static void _Light_Pattern_Rainbow_F3Var(Light_Pattern *unsafe_self) {
     _color->s = SATURATION_M;
     k[5] = 2;
   }
-  else{
+  else {
     _color->s = SATURATION_H;
     k[5] = 3;
   }
@@ -808,7 +810,7 @@ static void _Light_Pattern_Music_Update(Light_Pattern *unsafe_self) {
         ++self->color_pos; // Intended overflow
     }
 
-    uint8_t mic_read_in = 6 - led_color_simple_randomizer(3) % 7;
+    uint8_t mic_read_in = 6 - vfdco_mic_read_level();
 
     if(self->state >= mic_read_in) {
       self->state = mic_read_in;
@@ -859,7 +861,7 @@ static void _Light_Pattern_Music_F3(Light_Pattern *unsafe_self) {
     self->color_peak_diff = 42;
     vfdco_display_render_message(Messages_Color_Rainbow[2], 0, CONFIG_MESSAGE_SHORT);
   }
-  else{
+  else {
     self->color_peak_diff = 10;
     vfdco_display_render_message(Messages_Color_Rainbow[0], 0, CONFIG_MESSAGE_SHORT);
   }
@@ -878,7 +880,7 @@ static void _Light_Pattern_Music_F3Var(Light_Pattern *unsafe_self) {
     self->saturation = SATURATION_M;
     k[5] = 2;
   }
-  else{
+  else {
     self->saturation = SATURATION_H;
     k[5] = 3;
   }
@@ -1054,13 +1056,13 @@ static void _Light_Pattern_MomentsOfBliss_Update(Light_Pattern *unsafe_self) {
     ++self->undrift_counter;
     if(self->undrift_counter < self->undrift_max) {
       // Randomize new hue & hue diff by a pos or neg number biased around 0 by (1<<bits) / 2
-      base->color_1.h = base->color_1.h -((1 << (bits & 0x0F)) >> 1) + led_color_simple_randomizer(bits & 0x0F);
-      // ((struct LED_Color_Fader *)self->base_fader)->chain_hue_diff = led_color_simple_randomizer(bits >> 4) - ((1 << (bits >> 4)) >> 1);
+      base->color_1.h = base->color_1.h -((1 << (bits & 0x0F)) >> 1) + vfdco_util_random(bits & 0x0F);
+      // ((struct LED_Color_Fader *)self->base_fader)->chain_hue_diff = vfdco_util_random(bits >> 4) - ((1 << (bits >> 4)) >> 1);
     } else {
       // Restore hue
       base->color_1.h = MomentsOfBliss_Colors[self->moment][0];
       self->undrift_counter = 0;
-      self->undrift_max = led_color_simple_randomizer(2) + 2;
+      self->undrift_max = vfdco_util_random(2) + 2;
     }
 
     // Huediff variation, operates independently from color diff
@@ -1082,7 +1084,7 @@ static void _Light_Pattern_MomentsOfBliss_Update(Light_Pattern *unsafe_self) {
     }
     if(!base->chain_hue_diff) {
       uint8_t huediff_max = MomentsOfBliss_Colors[self->moment][6] >> 4;
-      self->undrift_huediff_max = led_color_simple_randomizer(huediff_max) - ((1 << huediff_max) >> 1) + 1;
+      self->undrift_huediff_max = vfdco_util_random(huediff_max) - ((1 << huediff_max) >> 1) + 1;
     }
   }
 }
@@ -1096,9 +1098,9 @@ static inline void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_M
     0
   );
 
-  self->undrift_max = led_color_simple_randomizer(2) + 2; // some number between 2 and 5 lol
+  self->undrift_max = vfdco_util_random(2) + 2; // some number between 2 and 5 lol
   uint8_t huediff_max = MomentsOfBliss_Colors[self->moment][6] >> 4;
-  self->undrift_huediff_max = led_color_simple_randomizer(huediff_max) - ((1 << huediff_max) >> 1);
+  self->undrift_huediff_max = vfdco_util_random(huediff_max) - ((1 << huediff_max) >> 1);
 }
 
 /**
@@ -1200,25 +1202,6 @@ static uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
   }
 
   return ((r + m) << 8) | ((g + m) << 16) | (b + m);
-}
-
-volatile uint8_t _rrx = 0;
-volatile uint8_t _rry = 0;
-volatile uint8_t _rrz = 0;
-volatile uint8_t _rra = 1;
-/**
- * @brief <= 7 Bit Xorshift randomizer between [0 .. 2^(bits) - 1]]
- * @param bits Max. 7 bit!
- * @return uint8_t Random number
- */
-static uint8_t led_color_simple_randomizer(uint8_t bits) {
-  if(!bits) return 0;
-  uint8_t _rrt = _rrx ^ (_rrx >> 1);
-  _rrx = _rry;
-  _rry = _rrz;
-  _rrz = _rra;
-  _rra = _rrz ^ _rrt ^ (_rrz >> 3) ^ (_rrt << 1);
-  return _rra & ((1 << bits) - 1);
 }
 
 /*

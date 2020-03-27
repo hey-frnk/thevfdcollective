@@ -89,6 +89,9 @@ void    vfdco_clock_settings_save(uint8_t silent);
 void    vfdco_clock_com_initializer();
 void    vfdco_clock_com_routine();
 
+// Microphone initializer
+void    vfdco_clock_mic_initializer();
+
 // Protocol parameters 
 #define COM_PROTOCOL_SER0_OFFSET 2
 #define COM_PROTOCOL_SER1_OFFSET 2

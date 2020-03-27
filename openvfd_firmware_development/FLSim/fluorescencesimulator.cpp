@@ -473,6 +473,7 @@ void FluorescenceSimulator::on_com_send_clicked()
 
 void FluorescenceSimulator::on_power_dim_visible_stateChanged(int arg1)
 {
+    (void)arg1; // fck this
     if(ui->power_dim_visible->isChecked()) visualize_dimming = true;
     else visualize_dimming = false;
 }

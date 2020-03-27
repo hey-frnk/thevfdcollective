@@ -26,7 +26,8 @@ SOURCES += \
     vfdco_sim_hid.cpp \
     vfdco_sim_led.cpp \
     vfdco_sim_serialization.cpp \
-    vfdco_sim_time.cpp
+    vfdco_sim_time.cpp \
+    vfdco_sim_virtual_mic.cpp
 
 HEADERS += \
     ../vfdco_clock_routines.h \
@@ -38,6 +39,7 @@ HEADERS += \
     ../vfdco_hid.h \
     ../vfdco_led.h \
     ../vfdco_lights.h \
+    ../vfdco_mic.h \
     ../vfdco_serialization.h \
     ../vfdco_time.h \
     fluorescencesimulator.h \

@@ -29,6 +29,7 @@
   #include "../vfdco_time.h"            // Physical timing & RTC driver
   #include "../vfdco_hid.h"             // Physical HID driver
   #include "../vfdco_com.h"             // Physical Communication driver
+  #include "../vfdco_mic.h"             // Physical Microphone driver
   // Application specific libraries
   #include "../vfdco_lights.h"          // Library of light patterns
   #include "../vfdco_gui.h"             // Library of different user interfaces
@@ -39,12 +40,13 @@
   // Configuration header
   #include "vfdco_config.h"
   // Low Level/Primitive libraries
-  #include "vfdco_serialization.h"		// Physical serialization driver
+  #include "vfdco_serialization.h"	 // Physical serialization driver
   #include "vfdco_led.h"             // Physical LED driver
   #include "vfdco_display.h"         // Physical display driver
   #include "vfdco_time.h"            // Physical timing & RTC driver
   #include "vfdco_hid.h"             // Physical HID driver
   #include "vfdco_com.h"             // Physical Communication driver
+  #include "vfdco_mic.h"             // Physical Microphone driver
   // Application specific libraries
   #include "vfdco_lights.h"          // Library of light patterns
   #include "vfdco_gui.h"             // Library of different user interfaces
@@ -131,6 +133,7 @@ void vfdco_clock_initializer() {
   vfdco_clock_gui_initializer();
   vfdco_clock_lights_initializer();
   vfdco_clock_com_initializer();
+  vfdco_clock_mic_initializer();
   
   // All good? All good! Fluorescence, say hello!
   char welcome[CONFIG_NUM_DIGITS] = {0};
@@ -190,6 +193,11 @@ inline void vfdco_clock_com_initializer() {
   global_com_data.tx_buffer_length = CONFIG_COM_TX_BUF_MAX;
   memset(global_com_data.rx_buffer, 0x00, global_com_data.rx_buffer_length);
   global_com_data.tx_buffer = NULL;
+}
+
+void vfdco_clock_mic_initializer() {
+  // Initialize driver
+  vfdco_mic_init();
 }
 
 /** Begin of:

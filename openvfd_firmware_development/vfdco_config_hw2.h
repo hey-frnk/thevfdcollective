@@ -84,8 +84,9 @@ extern "C" {
  */
 // Each iterable light pattern is represented as a number n according to clock_routines. The n-th bit in the 
 // default register below enables or disables a light pattern from being switched to by F2 pressing or in the randomizer
-#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b11011111
-#define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b11011111
+// 0b[COP | TIME_CODE | MUSIC | CHASE | RAINBOW | SPECTRUM | MOMENTSOFBLISS | STATIC]
+#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b11111111 // All enabled
+#define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b01011111 // All except mic & cop
 // Definition for different lightess & saturation settings
 #define CONFIG_LIGHTNESS_HIGH     127
 #define CONFIG_LIGHTNESS_MEDIUM   90

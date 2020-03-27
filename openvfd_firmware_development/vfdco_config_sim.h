@@ -84,8 +84,9 @@ extern "C" {
  */
 // Each iterable light pattern is represented as a number n according to clock_routines. The n-th bit in the 
 // default register below enables or disables a light pattern from being switched to by F2 pressing or in the randomizer
-#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b11111111
-#define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b11011111
+// 0b[COP | TIME_CODE | MUSIC | CHASE | RAINBOW | SPECTRUM | MOMENTSOFBLISS | STATIC]
+#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b01011111 // Mic & cop disabled like in STM
+#define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b01011111 // Mic & cop disabled
 // Definition for different lightess & saturation settings
 #define CONFIG_LIGHTNESS_HIGH     127
 #define CONFIG_LIGHTNESS_MEDIUM   90
@@ -94,11 +95,11 @@ extern "C" {
 #define CONFIG_SATURATION_MEDIUM  196
 #define CONFIG_SATURATION_LOW     127
 // Fade speeds
-#define CONFIG_SINGLE_COLOR_FADE_SPEED     1
+#define CONFIG_SINGLE_COLOR_FADE_SPEED     2
 #define CONFIG_SPECTRUM_FADE_SPEED         60
 #define CONFIG_CHASE_FADE_SPEED            60
 #define CONFIG_COP_FADE_SPEED              25
-#define CONFIG_MOMENTSOFBLISS_FADE_SPEED   10
+#define CONFIG_MOMENTSOFBLISS_FADE_SPEED   15
 
 /**
  * @tableofcontents SECTION_CONFIG_COM
@@ -113,9 +114,11 @@ extern "C" {
  * @brief Configuration parameters for the high level clock routine
  */
 // How often should we ask the RTC what time it is? (Milliseconds)
-#define CONFIG_RTC_UPDATE_INTERVAL 222
+#define CONFIG_RTC_UPDATE_INTERVAL 156
 // How quickly do we want to update the display?
-#define CONFIG_DISPLAY_UPDATE_INTERVAL 108
+#define CONFIG_DISPLAY_UPDATE_INTERVAL 37
+
+
 
 /**
  * @tableofcontents CONFIG_SAVED_SETTINGS_TABLE
