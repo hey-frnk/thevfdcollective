@@ -26,11 +26,11 @@ uint32_t (*vfdco_time_get_milliseconds)(void) = HAL_GetTick;
 void (*vfdco_time_delay_milliseconds)(uint32_t) = HAL_Delay;
 
 
-static inline uint8_t _vfdco_bcd2dec(uint8_t input) {
+static uint8_t _vfdco_bcd2dec(uint8_t input) {
   return (input >> 4) * 10 + (input & 0x0F);
 }
 
-static inline uint8_t _vfdco_dec2bcd(uint8_t input) {
+static uint8_t _vfdco_dec2bcd(uint8_t input) {
   return ((input / 10) << 4) + (input % 10);
 }
 
@@ -57,7 +57,7 @@ void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {
   HAL_I2C_Mem_Write(&hi2c1, DS3231_ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, _i2cWrite, 7, 1000);
 }
 
-void vfdco_rtc_init() {
+inline void vfdco_rtc_init() {
   return;
 }
 

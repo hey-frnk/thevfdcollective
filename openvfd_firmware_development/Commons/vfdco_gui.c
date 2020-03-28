@@ -23,21 +23,14 @@
 
 #ifndef __AVR__
   #include "../vfdco_config.h"
-  #include "../vfdco_gui.h"
   #include "../vfdco_hid.h"
   #include "../vfdco_display.h"
-
 #else 
   #include "vfdco_config.h"
-  #include "vfdco_gui.h"
   #include "vfdco_hid.h"
   #include "vfdco_display.h"
 #endif
-
-// vfdco_clock_routines.c dependence. Baad thing, but...
-extern vfdco_time_t global_time;
-extern vfdco_date_t global_date;
-
+#include "vfdco_gui.h"
 
 /** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT_CONSTANTS
@@ -89,21 +82,21 @@ static const char Messages_Brightness_Set_Continue[MESSAGES_BRIGHTNESS_SET_CONTI
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_TIME
  **/
-void _GUI_Format_Time_Update(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
 
   if(Time_Event_Update(&self->dot_timer)) self->dot_position++;
   if(self->dot_mode == 0) { // Standard
-    if      (self->dot_position == 0) vfdco_display_render_time(&global_time, 0b00010100, self->time_mode);
-    else if (self->dot_position == 1) vfdco_display_render_time(&global_time, 0b00000000, self->time_mode);
+    if      (self->dot_position == 0) vfdco_display_render_time(self->time_instance, 0b00010100, self->time_mode);
+    else if (self->dot_position == 1) vfdco_display_render_time(self->time_instance, 0b00000000, self->time_mode);
     else    self->dot_position = 0; // Reset
   }
   else if(self->dot_mode == 1) { // Converge
     switch (self->dot_position) {
-      case 0: vfdco_display_render_time(&global_time, 0b00100001, self->time_mode); break;
-      case 1: vfdco_display_render_time(&global_time, 0b00010010, self->time_mode); break;
-      case 2: vfdco_display_render_time(&global_time, 0b00001100, self->time_mode); break;
-      case 3: vfdco_display_render_time(&global_time, 0b00010010, self->time_mode); break;
+      case 0: vfdco_display_render_time(self->time_instance, 0b00100001, self->time_mode); break;
+      case 1: vfdco_display_render_time(self->time_instance, 0b00010010, self->time_mode); break;
+      case 2: vfdco_display_render_time(self->time_instance, 0b00001100, self->time_mode); break;
+      case 3: vfdco_display_render_time(self->time_instance, 0b00010010, self->time_mode); break;
       default: self->dot_position = 0;
     }
   }
@@ -111,25 +104,25 @@ void _GUI_Format_Time_Update(GUI_Format *unsafe_self) {
     // This function is damn lit. Once it detects a change in second,
     // the decimal dot will slide over the displays.
     // Get the current time and compare it with the previous timestamp
-    if(self->dot_direction != global_time.s) {
+    if(self->dot_direction != self->time_instance->s) {
       self->dot_position = 0;
-      self->dot_direction = global_time.s;
+      self->dot_direction = self->time_instance->s;
     }
 
     if(self->dot_direction & 0x01) { // odd: r->l
-      if(self->dot_position < 5) vfdco_display_render_time(&global_time, 1 << self->dot_position, self->time_mode);
-      else                       vfdco_display_render_time(&global_time, 0b00100000, self->time_mode); // Leftmost static
+      if(self->dot_position < 5) vfdco_display_render_time(self->time_instance, 1 << self->dot_position, self->time_mode);
+      else                       vfdco_display_render_time(self->time_instance, 0b00100000, self->time_mode); // Leftmost static
     } else {
-      if(self->dot_position < 5) vfdco_display_render_time(&global_time, 0b00100000 >> self->dot_position, self->time_mode);
-      else                       vfdco_display_render_time(&global_time, 0b00000001, self->time_mode); // Rightmost static
+      if(self->dot_position < 5) vfdco_display_render_time(self->time_instance, 0b00100000 >> self->dot_position, self->time_mode);
+      else                       vfdco_display_render_time(self->time_instance, 0b00000001, self->time_mode); // Rightmost static
     }
   }
   else if(self->dot_mode == 3) {
-    vfdco_display_render_time(&global_time, 0, self->time_mode);
+    vfdco_display_render_time(self->time_instance, 0, self->time_mode);
   }
 }
 
-void _GUI_Format_Time_F4(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_F4(GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
 
   // Change dot mode
@@ -141,7 +134,7 @@ void _GUI_Format_Time_F4(GUI_Format *unsafe_self) {
   self->dot_timer = Time_Event_Init(GUI_Format_Time_Dot_Intervals[self->dot_mode]);
 }
 
-void _GUI_Format_Time_F4Var(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_F4Var(GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
 
   if(self->time_mode == TIME_FORMAT_24H) {
@@ -161,18 +154,20 @@ void _GUI_Format_Time_F4Var(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Time_Save(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_Save(GUI_Format *unsafe_self) {
   struct GUI_Format_Time *self = (struct GUI_Format_Time *)unsafe_self;
   self->settings[GUI_FORMAT_SETTING_TIME_time_mode] = self->time_mode;
   self->settings[GUI_FORMAT_SETTING_TIME_dot_mode] = self->dot_mode;
 }
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint8_t *settings) {
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_instance, uint8_t *settings) {
 
   // Default loading if saved value is litter, then load by assignment
   time_format_t _chk_time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
   if(((_chk_time_mode != TIME_FORMAT_12H) && (_chk_time_mode != TIME_FORMAT_24H) && (_chk_time_mode != TIME_FORMAT_12H_NO_LZ))
       || (settings[GUI_FORMAT_SETTING_TIME_dot_mode] > 3)) GUI_Format_Time_Default(settings);
+  
+  self->time_instance = time_instance;
   self->time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
   self->dot_mode = settings[GUI_FORMAT_SETTING_TIME_dot_mode];
 
@@ -199,12 +194,12 @@ void GUI_Format_Time_Default(uint8_t *settings) {
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_DATE
  **/
-void _GUI_Format_Date_Update(GUI_Format *unsafe_self) {
+static void _GUI_Format_Date_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
-  vfdco_display_render_date(&global_date, self->date_mode);
+  vfdco_display_render_date(self->date_instance, self->date_mode);
 }
 
-void _GUI_Format_Date_F4Var(GUI_Format *unsafe_self) {
+static void _GUI_Format_Date_F4Var(GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
   if(self->date_mode == DATE_FORMAT_DDMMYY) {
     self->date_mode = DATE_FORMAT_MMDDYY;
@@ -218,17 +213,18 @@ void _GUI_Format_Date_F4Var(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Date_Save(GUI_Format *unsafe_self) {
+static void _GUI_Format_Date_Save(GUI_Format *unsafe_self) {
   struct GUI_Format_Date *self = (struct GUI_Format_Date *)unsafe_self;
   self->settings[GUI_FORMAT_SETTING_DATE_date_mode] = self->date_mode;
 }
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint8_t *settings) {
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, vfdco_date_t *date_instance, uint8_t *settings) {
   // Default loading if saved value is crap, then load by assignment
   date_format_t _chk_date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
   if((_chk_date_mode != DATE_FORMAT_DDMMYY) && (_chk_date_mode != DATE_FORMAT_MMDDYY)) 
     GUI_Format_Date_Default(settings);
   
+  self->date_instance = date_instance;
   self->date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
   self->settings = settings;
 
@@ -250,7 +246,7 @@ void GUI_Format_Date_Default(uint8_t *settings) {
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_TIME_DATE_SET
  **/
-void _GUI_Format_Time_Date_Setter_Update(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_Date_Setter_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
 
   if(Time_Event_Update(&self->blank_timer)) self->blank_active = !self->blank_active;
@@ -287,14 +283,14 @@ void _GUI_Format_Time_Date_Setter_Update(GUI_Format *unsafe_self) {
   vfdco_display_render_message(self->blank_alt_message, 0, 0);
 }
 
-void _GUI_Format_Time_Date_Setter_F2(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_Date_Setter_F2(GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
   // Short press on F2 changes the active parameter (h/m/s)
   ++self->active_digit;
   if(self->active_digit == 3) self->active_digit = 0;
 }
 
-void _GUI_Format_Time_Date_Setter_F3(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_Date_Setter_F3(GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
   // Short press on F3 decreases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
@@ -331,7 +327,7 @@ void _GUI_Format_Time_Date_Setter_F3(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Time_Date_Setter_F4(GUI_Format *unsafe_self) {
+static void _GUI_Format_Time_Date_Setter_F4(GUI_Format *unsafe_self) {
   struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
   // Short press on F4 increases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
@@ -368,14 +364,14 @@ void _GUI_Format_Time_Date_Setter_F4(GUI_Format *unsafe_self) {
   }
 }
 
-void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, uint_fast8_t set_mode) {
+void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, vfdco_time_t *time_instance, vfdco_date_t *date_instance, uint_fast8_t set_mode) {
   self->set_mode = set_mode;
   self->active_digit = 0;
   self->blank_active = 0;
   self->blank_timer = Time_Event_Init(500);
 
-  self->new_time = global_time;
-  self->new_date = global_date;
+  self->new_time = *time_instance;
+  self->new_date = *date_instance;
 
   GUI_Format_F2 = _GUI_Format_Time_Date_Setter_F2; // sw active
   GUI_Format_F3 = _GUI_Format_Time_Date_Setter_F3; // --
@@ -392,7 +388,7 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_STOPWATCH
  **/
-void _GUI_Format_Stopwatch_Update(GUI_Format *unsafe_self) {
+static void _GUI_Format_Stopwatch_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
     char zeros[CONFIG_NUM_DIGITS] = {0};
@@ -401,8 +397,8 @@ void _GUI_Format_Stopwatch_Update(GUI_Format *unsafe_self) {
   else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_RUNNING) {
     // running time: elapsed base + current time - start timestamp
     uint32_t running_time = self->elapsed_time +
-      (        global_time.h * 3600 +         global_time.m * 60 +         global_time.s) -
-      ( self->initial_time.h * 3600 +  self->initial_time.m * 60 +  self->initial_time.s);
+      ( self->time_instance->h * 3600 + self->time_instance->m * 60 + self->time_instance->s) -
+      ( self->initial_time.h * 3600   + self->initial_time.m * 60   + self->initial_time.s);
 
     if(running_time > 3599) {
       vfdco_time_t new_time = {
@@ -451,14 +447,14 @@ void _GUI_Format_Stopwatch_Update(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Stopwatch_F2(GUI_Format *unsafe_self) {
+static void _GUI_Format_Stopwatch_F2(GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
   // Initialize
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
     if(!self->not_initial) {
-      self->initial_time.h = global_time.h;
-      self->initial_time.m = global_time.m;
-      self->initial_time.s = global_time.s;
+      self->initial_time.h = self->time_instance->h;
+      self->initial_time.m = self->time_instance->m;
+      self->initial_time.s = self->time_instance->s;
       self->not_initial = 1;
     }
     #ifndef DEBUG // TODO: platform independency
@@ -478,13 +474,13 @@ void _GUI_Format_Stopwatch_F2(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Stopwatch_F3(GUI_Format *unsafe_self) {
+static void _GUI_Format_Stopwatch_F3(GUI_Format *unsafe_self) {
   struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
   // Pause
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_RUNNING) {
     // Save seconds
     self->elapsed_time +=
-      (        global_time.h * 3600 +         global_time.m * 60 +         global_time.s) -
+      (        self->time_instance->h * 3600 +         self->time_instance->m * 60 +         self->time_instance->s) -
       ( self->initial_time.h * 3600 +  self->initial_time.m * 60 +  self->initial_time.s);
 
     // Save milliseconds
@@ -494,9 +490,9 @@ void _GUI_Format_Stopwatch_F3(GUI_Format *unsafe_self) {
   }
   // Resume
   else if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_PAUSED) {
-    self->initial_time.h = global_time.h;
-    self->initial_time.m = global_time.m;
-    self->initial_time.s = global_time.s;
+    self->initial_time.h = self->time_instance->h;
+    self->initial_time.m = self->time_instance->m;
+    self->initial_time.s = self->time_instance->s;
     #ifndef DEBUG
     self->initial_milliseconds = vfdco_time_get_milliseconds();
     #endif
@@ -504,9 +500,9 @@ void _GUI_Format_Stopwatch_F3(GUI_Format *unsafe_self) {
   }
 }
 
-void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self) {
+void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, vfdco_time_t *time_instance) {
   self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_INITIALIZED;
-  // self->initial_time = NULL;
+  self->time_instance = time_instance;
   self->not_initial = 0;
   self->elapsed_time = 0;
   self->initial_milliseconds = 0;
@@ -540,11 +536,11 @@ enum {
   GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_END = 2
 }; 
 
-void _GUI_Format_Brightness_Setter_Update(GUI_Format *unsafe_self) {
+static void _GUI_Format_Brightness_Setter_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
-  if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
-    // Idle. Waiting for F2/F3/F4/F4Var
-    if(Time_Event_Update(&self->blank_timer)) {
+  if(Time_Event_Update(&self->blank_timer)) {
+    if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
+      // Idle. Waiting for F2/F3/F4/F4Var
       // Just cycle through all the messages
       uint8_t message_counter = self->message_counter;
       if(message_counter < (MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT)) {
@@ -555,52 +551,51 @@ void _GUI_Format_Brightness_Setter_Update(GUI_Format *unsafe_self) {
         );
       } else {
         vfdco_display_render_message(
-          Messages_Brightness_Set_Idle[message_counter - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT], 
-          Messages_Brightness_Set_Idle_Dots[message_counter - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT], 
+          Messages_Brightness_Set_Idle[MESSAGES_BRIGHTNESS_SET_CONTINUE + message_counter - (MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT)], 
+          Messages_Brightness_Set_Idle_Dots[MESSAGES_BRIGHTNESS_SET_CONTINUE + message_counter - (MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT)], 
           0
         );
       }
       ++self->message_counter;
-      if(message_counter == MESSAGES_BRIGHTNESS_SET_IDLE_MAX) self->message_counter = 0;
-    }
-  } else {
-    // Show NSH start time or NSH stop time with blinking active digit
-    char _render_msg[CONFIG_NUM_DIGITS];
-    if(Time_Event_Update(&self->blank_timer)) {
+      if(self->message_counter == MESSAGES_BRIGHTNESS_SET_IDLE_MAX) self->message_counter = 0;
+    } else {
+      // Show NSH start time or NSH stop time with blinking active digit
+      char _render_msg[CONFIG_NUM_DIGITS];
       self->blank_active = !self->blank_active;
       // T4 TO SA VE
       _render_msg[4] = Messages_Brightness_Set_Continue[self->message_counter][0];
       _render_msg[5] = Messages_Brightness_Set_Continue[self->message_counter][1];
       ++self->message_counter;
       if(self->message_counter == MESSAGES_BRIGHTNESS_SET_CONTINUE) self->message_counter = 0;
-    }
-    uint8_t _h = 0, _m = 0;
-    if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START) {
-      _h = self->night_shift_new_start_h;
-      _m = self->night_shift_new_start_m;
-    } else {
-      _h = self->night_shift_new_end_h;
-      _m = self->night_shift_new_end_m;
-    }
-    _render_msg[0] = _h / 10;
-    _render_msg[1] = _h % 10;
-    _render_msg[2] = _m / 10;
-    _render_msg[3] = _m % 10;
 
-    if(self->blank_active) {
-      if(self->active_digit == 0) {
-        _render_msg[0] = ' ';
-        _render_msg[1] = ' ';
-      } else if(self->active_digit == 1) {
-        _render_msg[2] = ' ';
-        _render_msg[3] = ' ';
+      uint8_t _h = 0, _m = 0;
+      if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START) {
+        _h = self->night_shift_new_start_h;
+        _m = self->night_shift_new_start_m;
+      } else {
+        _h = self->night_shift_new_end_h;
+        _m = self->night_shift_new_end_m;
       }
+      _render_msg[0] = _h / 10;
+      _render_msg[1] = _h % 10;
+      _render_msg[2] = _m / 10;
+      _render_msg[3] = _m % 10;
+
+      if(self->blank_active) {
+        if(self->active_digit == 0) {
+          _render_msg[0] = ' ';
+          _render_msg[1] = ' ';
+        } else if(self->active_digit == 1) {
+          _render_msg[2] = ' ';
+          _render_msg[3] = ' ';
+        }
+      }
+      vfdco_display_render_message(_render_msg, 0, 0);
     }
-    vfdco_display_render_message(_render_msg, 0, 0);
   }
 }
 
-void _GUI_Format_Brightness_Setter_F2(GUI_Format *unsafe_self) {
+static void _GUI_Format_Brightness_Setter_F2(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
   if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
     char _msg[CONFIG_NUM_DIGITS] = {'D', ' ', 'B', 'R', 'I',  3 };
@@ -621,7 +616,7 @@ void _GUI_Format_Brightness_Setter_F2(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Brightness_Setter_F3(GUI_Format *unsafe_self) {
+static void _GUI_Format_Brightness_Setter_F3(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
   if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
     char _msg[CONFIG_NUM_DIGITS] = {'L', ' ', 'B', 'R', 'I', 3};
@@ -659,13 +654,13 @@ void _GUI_Format_Brightness_Setter_F3(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Brightness_Setter_F4(GUI_Format *unsafe_self) {
+static void _GUI_Format_Brightness_Setter_F4(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
   if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
     self->menu_state = GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START;
     // "NIGHT" "SHIFT"
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_SHORT);
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_SHORT);
+    vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_LONG);
+    vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_LONG);
     self->message_counter = 0;
   } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START) {
     // Increase NSH start digit
@@ -690,7 +685,7 @@ void _GUI_Format_Brightness_Setter_F4(GUI_Format *unsafe_self) {
   }
 }
 
-void _GUI_Format_Brightness_Setter_F4Var(GUI_Format *unsafe_self) {
+static void _GUI_Format_Brightness_Setter_F4Var(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
   if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
     // Disable/clear NSH
@@ -710,8 +705,8 @@ void _GUI_Format_Brightness_Setter_F4Var(GUI_Format *unsafe_self) {
     // Go back to menu idle
     self->menu_state = GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED;
     self->message_counter = 0;
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_SHORT);
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_SHORT);
+    vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_LONG);
+    vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_LONG);
     const char _msg[CONFIG_NUM_DIGITS] = {' ', 'S', 'A', 'V', 'E', 'D'};
     vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_SHORT);
   }
@@ -737,7 +732,7 @@ void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self
   GUI_Format_F4 = _GUI_Format_Brightness_Setter_F4;
   GUI_Format_F2Var = NULL;
   GUI_Format_F3Var = NULL;
-  GUI_Format_F4Var = _GUI_Format_Brightness_Setter_F4;
+  GUI_Format_F4Var = _GUI_Format_Brightness_Setter_F4Var;
   GUI_Format_Update = _GUI_Format_Brightness_Setter_Update;
   GUI_Format_Save = NULL;
 }

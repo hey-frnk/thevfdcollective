@@ -14,8 +14,7 @@
 #include "../vfdco_time.h"
 
 #include <QLabel>
-#include <QEventLoop>
-#include <QTimer>
+#include <QStyle>
 
 // From fluorescencesimulator.cpp import:
 extern QLabel *display[CONFIG_NUM_DIGITS][8];
@@ -117,17 +116,17 @@ void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_reg
 void vfdco_display_render_date(vfdco_date_t *date, /*const uint8_t decimal_dot_register, */date_format_t date_mode) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   _rreg[0] = vfdco_display_char_convert(date->y % 10);
-  _rreg[1] = vfdco_display_char_convert((date->y / 10) & 0x01);
+  _rreg[1] = vfdco_display_char_convert(date->y / 10);
 
   if(date_mode == DATE_FORMAT_DDMMYY) {
-    _rreg[2] = vfdco_display_char_convert(date->m % 10);
-    _rreg[3] = vfdco_display_char_convert((date->m / 10) & 0x01);
-    _rreg[4] = vfdco_display_char_convert(date->d % 10);
+    _rreg[2] = vfdco_display_char_convert(date->m % 10) | 0x01;
+    _rreg[3] = vfdco_display_char_convert(date->m / 10);
+    _rreg[4] = vfdco_display_char_convert(date->d % 10) | 0x01;
     _rreg[5] = vfdco_display_char_convert(date->d / 10);
   } else {
-    _rreg[2] = vfdco_display_char_convert(date->d % 10);
-    _rreg[3] = vfdco_display_char_convert((date->d / 10) & 0x01);
-    _rreg[4] = vfdco_display_char_convert(date->m % 10);
+    _rreg[2] = vfdco_display_char_convert(date->d % 10) | 0x01;
+    _rreg[3] = vfdco_display_char_convert(date->d / 10);
+    _rreg[4] = vfdco_display_char_convert(date->m % 10) | 0x01;
     _rreg[5] = vfdco_display_char_convert(date->m / 10);
   }
   _vfdco_display_render_direct(_rreg);
@@ -139,16 +138,14 @@ void vfdco_display_render_message(const char *message, const uint8_t decimal_dot
     _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
   _vfdco_display_render_direct(_rreg);
-
-  QEventLoop loop;
-  QTimer::singleShot(delay, &loop, SLOT(quit()));
-  loop.exec();
+  vfdco_time_delay_milliseconds(delay);
 }
 
 void _vfdco_display_render_direct(uint8_t *data) {
   for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
       for(uint_fast8_t j = 0; j < 8; ++j) {
           bool _is_active = (data[CONFIG_NUM_DIGITS - i - 1] >> (8 - j - 1)) & 0x01;
+          display[i][j]->clear();
           if(visualize_dimming && display_dimmer) {
               if(display_dimmer == CONFIG_BRIGHTNESS_HALF) {
                   display[i][j]->setStyleSheet("background-color:" + (_is_active ? dimming_step1_color.name() : inactive_color.name()));
@@ -159,6 +156,7 @@ void _vfdco_display_render_direct(uint8_t *data) {
               display[i][j]->setStyleSheet("background-color:" + (_is_active ? active_color.name() : inactive_color.name()));
           }
       }
+      display_bin[CONFIG_NUM_DIGITS - i - 1]->clear();
       display_bin[CONFIG_NUM_DIGITS - i - 1]->setText(QString("%1").arg(data[i], 8, 2, QChar('0')));
   }
 }

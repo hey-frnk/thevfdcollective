@@ -55,6 +55,8 @@ private:
     QTimer *global_timer = nullptr;
     bool init_once_flag = false;
 
+    QString initial_style_sheet;
+
     QAbstractItemModel *model;
     std::vector<QStringList> protocol_file;
     int current_protocol_row = -1;

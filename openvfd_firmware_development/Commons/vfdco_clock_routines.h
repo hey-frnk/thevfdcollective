@@ -22,7 +22,13 @@ extern "C" {
 #define _VFDCO_CLOCK_ROUTINES_H
 
 #include <stdint.h>
-#include "vfdco_config.h"
+#ifndef __AVR__
+  #include "../vfdco_config.h"
+	#include "../vfdco_serialization.h"
+#else 
+  #include "vfdco_config.h"
+	#include "vfdco_serialization.h"
+#endif
 
 // GUIs tell what kind of information will be sent to the dispay
 typedef enum {
@@ -108,8 +114,6 @@ void    vfdco_clock_mic_initializer();
 #define COM_PROTOCOL_WELCOME_SET_OFFSET 2
 #define COM_PROTOCOL_MESSAGE_DISPLAY_OFFSET 2
 #define COM_PROTOCOL_CLOCK_CONTROL_OFFSET 2
-
-#include "vfdco_serialization.h"
 
 #define INSTANCE_NO_SETTINGS 255 // If instance has no settings, the setting to instance mapper will return 255
 

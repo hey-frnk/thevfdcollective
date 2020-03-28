@@ -26,8 +26,14 @@ extern "C" {
 #define _VFDCO_GUI_H
 
 #include <stdint.h>
-#include "vfdco_time.h"
-#include "vfdco_hid.h"
+#ifndef __AVR__
+  #include "../vfdco_time.h"
+  #include "../vfdco_hid.h"
+#else 
+  #include "vfdco_time.h"
+  #include "vfdco_hid.h"
+#endif
+
 
 /** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT
@@ -62,6 +68,7 @@ CREATE_SERIALIZED_GUI_POSITIONS(CREATE_SETTINGS_OFFSET_GUI)
  **/
 struct GUI_Format_Time {
   uint8_t           *settings;
+  vfdco_time_t      *time_instance;
   time_format_t     time_mode;
   uint_fast8_t      dot_mode;
   uint8_t           dot_position;
@@ -69,7 +76,7 @@ struct GUI_Format_Time {
   time_event_t      dot_timer;
 };
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, uint8_t *settings);
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_instance, uint8_t *settings);
 void GUI_Format_Time_Default(uint8_t *settings);
 
 /** Begin of:
@@ -77,10 +84,11 @@ void GUI_Format_Time_Default(uint8_t *settings);
  **/
 struct GUI_Format_Date {
   uint8_t            *settings;
+  vfdco_date_t       *date_instance;
   date_format_t      date_mode;
 };
 
-void GUI_Format_Date_Init(struct GUI_Format_Date *self, uint8_t *settings);
+void GUI_Format_Date_Init(struct GUI_Format_Date *self, vfdco_date_t *date_instance, uint8_t *settings);
 void GUI_Format_Date_Default(uint8_t *settings);
 
 
@@ -99,7 +107,7 @@ struct GUI_Format_Time_Date_Setter {
   vfdco_date_t      new_date;
 };
 
-void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, uint_fast8_t set_mode);
+void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, vfdco_time_t *time_instance, vfdco_date_t *date_instance, uint_fast8_t set_mode);
 
 
 enum {
@@ -114,6 +122,7 @@ enum {
  **/
 struct GUI_Format_Stopwatch {
   uint_fast8_t      stopwatch_state;
+  vfdco_time_t      *time_instance;
   vfdco_time_t      initial_time;
   uint8_t           not_initial;
   uint32_t          elapsed_time;
@@ -121,7 +130,7 @@ struct GUI_Format_Stopwatch {
   uint32_t          elapsed_milliseconds;
 };
 
-void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self);
+void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, vfdco_time_t *time_instance);
 
 /**
  * @tableofcontents SECTION_GUI_BRIGHTNESS_SETTER

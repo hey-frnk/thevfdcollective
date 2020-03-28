@@ -9,11 +9,11 @@
 
 #include "../vfdco_config.h"
 #include "../vfdco_com.h"
-#include "../vfdco_clock_routines.h"
 #include "../vfdco_hid.h"
 #include "../vfdco_time.h"
-#include "../vfdco_lights.h"
-#include "../vfdco_gui.h"
+#include "../Commons/vfdco_lights.h"
+#include "../Commons/vfdco_gui.h"
+#include "../Commons/vfdco_clock_routines.h"
 #include "magic_enum.hpp"
 
 // Mappings
@@ -24,6 +24,7 @@ QLabel *led[CONFIG_NUM_PIXELS] = {nullptr, nullptr, nullptr, nullptr, nullptr, n
 QLabel *led_rgbw[CONFIG_NUM_PIXELS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 QLabel *led_hexw[CONFIG_NUM_PIXELS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 QLabel *led_hsl[CONFIG_NUM_PIXELS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+QLabel *led_pwr[CONFIG_NUM_PIXELS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
 // Color palette
 QColor active_color("#339999");
@@ -46,6 +47,7 @@ time_event_t global_time_event;
 // From vfdco_clock_routines: import instances, instance counter, serialized settings, com buffer
 extern Light_Pattern global_light_instance;
 extern light_pattern_instance_t global_light_instance_counter;
+extern light_pattern_instance_t global_light_instance_random;
 extern GUI_Format global_gui_instance;
 extern gui_instance_t global_gui_instance_counter;
 extern uint8_t *const serialized_settings[NUM_SERIALIZABLE];
@@ -100,6 +102,8 @@ FluorescenceSimulator::FluorescenceSimulator(QWidget *parent)
     connect(global_timer, &QTimer::timeout, this, QOverload<>::of(&FluorescenceSimulator::update));
 
     link_ui_instances();
+
+    initial_style_sheet = this->styleSheet();
 }
 
 FluorescenceSimulator::~FluorescenceSimulator()
@@ -111,14 +115,24 @@ FluorescenceSimulator::~FluorescenceSimulator()
 void FluorescenceSimulator::update()
 {
     vfdco_clock_routine();
+
     if(Time_Event_Update(&global_time_event)) {
         QDateTime cdt = QDateTime::currentDateTime();
 
         // Print updating instance
         auto _gui_active = magic_enum::enum_name(global_gui_instance_counter);
         auto _light_active = magic_enum::enum_name(global_light_instance_counter);
-        ui->widget_gui->setTitle("GUI & Display Monitor. Active Instance: " + QString::fromStdString(std::string(_gui_active)) + " (" + QString::number(global_gui_instance_counter) + "). RTC Respond: " + cdt.currentDateTime().toString());
-        ui->widget_lights->setTitle("Lights Monitor. Active Instance: " + QString::fromStdString(std::string(_light_active)) + " (" + QString::number(global_light_instance_counter) + ")");
+        auto _light_ractive = magic_enum::enum_name(global_light_instance_random);
+        ui->widget_gui->setTitle("GUI & Display Monitor. Active Instance: "
+                                 + QString::fromStdString(std::string(_gui_active))
+                                 + " (" + QString::number(global_gui_instance_counter) + "). RTC Respond: " + cdt.currentDateTime().toString()
+                                 );
+        ui->widget_lights->setTitle("Lights Monitor. Regular Instance: "
+                                 + QString::fromStdString(std::string(_light_active)) + " ("
+                                 + QString::number(global_light_instance_counter) + "). Random Instance: "
+                                 + QString::fromStdString(std::string(_light_ractive)) + " ("
+                                 + QString::number(global_light_instance_random) + ")"
+                                    );
 
         // Get raw data by type punning
         QByteArray _gui_data = QByteArray((char *)&global_gui_instance, sizeof(GUI_Format));
@@ -131,8 +145,13 @@ void FluorescenceSimulator::update()
             for(char c : _gui_data) _gui_str += QString("%1 ").arg((uint8_t)c, 3, 10, QChar('0'));
             for(char c : _lights_data) _lights_str += QString("%1 ").arg((uint8_t)c, 3, 10, QChar('0'));
         }
+        ui->raw_val_gui->clear();
         ui->raw_val_gui->setPlainText(_gui_str);
+        ui->raw_val_lights->clear();
         ui->raw_val_lights->setPlainText(_lights_str);
+
+        _gui_data.clear(); _lights_data.clear();
+        _gui_str.clear(); _lights_str.clear();
 
         // Update settings tree
         if(ui->settings_tree->currentItem()) {
@@ -144,7 +163,9 @@ void FluorescenceSimulator::update()
                 // Get description & identifier of property
                 setting_property *p = settings_arr_names[parent_item_index].settings.at(current_item_index);
                 uint8_t _target_size = p->setting_size;
+                ui->settings_type_val->clear();
                 ui->settings_type_val->setText(QString::number(_target_size) + "x uint8_t. Setting.");
+                ui->settings_selected_val->clear();
                 ui->settings_selected_val->setText(p->description);
                 char _tmp_data[_target_size];
                 memcpy(_tmp_data, serialized_settings[parent_item_index] + p->setting_offset, _target_size * sizeof(uint8_t));
@@ -154,11 +175,15 @@ void FluorescenceSimulator::update()
                 else if(ui->settings_val_dec->isChecked())      for(char c : _settings_arr) _settings_arr_tostring += QString("%1 ").arg((uint8_t)c, 3, 10, QChar('0'));
                 else if(ui->settings_val_ascii->isChecked())    _settings_arr_tostring = QString::fromLatin1(_settings_arr.data());
                 else                                            for(char c : _settings_arr) _settings_arr_tostring += QString("%1 ").arg((uint8_t)c, 8, 2, QChar('0'));
+                ui->settings_val_val->clear();
                 ui->settings_val_val->setPlainText(_settings_arr_tostring);
+                _settings_arr.clear(); _settings_arr_tostring.clear();
             } else {
                 // Set text to data of whole setting
                 uint8_t _target_size = settings_arr_names[current_item_index].size;
+                ui->settings_type_val->clear();
                 ui->settings_type_val->setText(QString::number(_target_size) + "x uint8_t. Setting array.");
+                ui->settings_selected_val->clear();
                 ui->settings_selected_val->setText(settings_arr_names[current_item_index].settings_identifier);
                 char _tmp_data[_target_size];
                 memcpy(_tmp_data, serialized_settings[current_item_index], _target_size * sizeof(uint8_t));
@@ -168,17 +193,22 @@ void FluorescenceSimulator::update()
                 else if(ui->settings_val_dec->isChecked())      for(char c : _settings_arr) _settings_arr_tostring += QString("%1 ").arg((uint8_t)c, 3, 10, QChar('0'));
                 else if(ui->settings_val_ascii->isChecked())    _settings_arr_tostring = QString::fromLatin1(_settings_arr.data());
                 else                                            for(char c : _settings_arr) _settings_arr_tostring += QString("%1 ").arg((uint8_t)c, 8, 2, QChar('0'));
+                ui->settings_val_val->clear();
                 ui->settings_val_val->setPlainText(_settings_arr_tostring);
+                _settings_arr.clear(); _settings_arr_tostring.clear();
             }
         }
 
         // Update dim factors
+        ui->power_led_val->clear();
         ui->power_led_val->setText(QString::number(_led_dim_factor));
+        ui->power_disp_val->clear();
         ui->power_disp_val->setText(QString::number(display_dimmer));
 
         // Update receive buffer content
         QString _rx_arr_to_string;
         for(uint8_t i : virtual_transfer_buffer) _rx_arr_to_string += QString("%1 ").arg((uint8_t)i, 2, 16, QChar('0')).toUpper();
+        ui->com_resp_val->clear();
         ui->com_resp_val->setPlainText(_rx_arr_to_string);
     }
 }
@@ -212,6 +242,8 @@ void FluorescenceSimulator::link_ui_instances()
     memcpy(led_hexw, _led_hexw, CONFIG_NUM_PIXELS * sizeof(QLabel *));
     QLabel *_led_hsl[CONFIG_NUM_PIXELS] = {ui->led_hsl_1, ui->led_hsl_2, ui->led_hsl_3, ui->led_hsl_4, ui->led_hsl_5, ui->led_hsl_6};
     memcpy(led_hsl, _led_hsl, CONFIG_NUM_PIXELS * sizeof(QLabel *));
+    QLabel *_led_pwr[CONFIG_NUM_PIXELS] = {ui->led_pow_1, ui->led_pow_2, ui->led_pow_3, ui->led_pow_4, ui->led_pow_5, ui->led_pow_6};
+    memcpy(led_pwr, _led_pwr, CONFIG_NUM_PIXELS * sizeof(QLabel *));
 }
 
 void FluorescenceSimulator::fill_settings_tree()
@@ -341,6 +373,20 @@ void FluorescenceSimulator::on_sim_start_clicked()
     if(ui->sim_start->text() == "Start") {
         ui->sim_start->setText("Stop");
 
+        if(ui->sim_dark_mode->isChecked()) {
+            this->setStyleSheet("background-color: #000000; color: #FFFFFF;");
+            active_color = QColor("#77FFFF");
+            dimming_step1_color = QColor("#33BBBB");
+            dimming_step2_color = QColor("#008888");
+            inactive_color = QColor("#000000");
+        } else {
+            this->setStyleSheet(initial_style_sheet);
+            active_color = QColor("#339999");
+            dimming_step1_color = QColor("#18406E");
+            dimming_step2_color = QColor("#000000");
+            inactive_color = QColor("#DDDDDD");
+        }
+
         if(!init_once_flag) {
             clk_div = ui->sim_clk_div->value();
             vfdco_clock_initializer();
@@ -354,6 +400,7 @@ void FluorescenceSimulator::on_sim_start_clicked()
         ui->widget_controls->setEnabled(true);
         ui->sim_clk_div->setEnabled(false);
         ui->sim_reset->setEnabled(false);
+        ui->sim_dark_mode->setEnabled(false);
     } else {
 
         ui->sim_start->setText("Start");
@@ -362,6 +409,7 @@ void FluorescenceSimulator::on_sim_start_clicked()
         ui->widget_controls->setEnabled(false);
         ui->sim_clk_div->setEnabled(true);
         ui->sim_reset->setEnabled(true);
+        ui->sim_dark_mode->setEnabled(true);
     }
 }
 
@@ -423,6 +471,7 @@ void FluorescenceSimulator::on_com_data_cellPressed(int row, int column)
         } else {
             item_text = ui->com_data->item(row, column)->text();
         }
+        ui->com_param_val->clear();
         ui->com_param_val->setText(item_text);
         if(item_text.compare("reserved 0") == 0) ui->com_param_val->setStyleSheet("color:#FF0000;");
         else ui->com_param_val->setStyleSheet("");

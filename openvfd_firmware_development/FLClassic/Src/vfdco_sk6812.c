@@ -57,13 +57,13 @@ static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafru
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255};
 #endif
 
-void vfdco_clr_init(uint8_t initial_dim_factor) {
+inline void vfdco_clr_init(uint8_t initial_dim_factor) {
   write_buf_pos = 0;
   _led_dim_factor = initial_dim_factor;
   HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
 }
 
-void vfdco_clr_deInit() {
+inline void vfdco_clr_deInit() {
   HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
 }
 
@@ -77,7 +77,7 @@ static inline uint8_t _vfdco_clr_scale8(uint8_t x, uint8_t scale) {
 }
 #endif
 
-inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
+void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
   #if CONFIG_ENABLE_GAMMACORRECTION == 1
   rgb_arr[4 * index] = gamma8[g];
   rgb_arr[4 * index + 1] = gamma8[r];
@@ -97,14 +97,14 @@ inline void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {
 
   rgb_arr[4 * index + 3] = 0;
 }
-inline void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   vfdco_clr_set_RGB(index, r, g, b);
   rgb_arr[4 * index + 3] = w;
 }
-inline void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
+void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
   for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
-inline void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
+void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
   for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGBW(i, r, g, b, w);
 }
 
@@ -141,7 +141,7 @@ void vfdco_clr_minimize_difference(uint8_t *target_arr) {
   // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
 }
 
-inline void vfdco_clr_render() {
+void vfdco_clr_render() {
   // Ooh boi the first data buffer!!
   write_buf_pos = 0;
   for(uint_fast8_t i = 0; i < 8; ++i) {

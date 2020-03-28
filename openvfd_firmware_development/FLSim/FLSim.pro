@@ -30,15 +30,15 @@ SOURCES += \
     vfdco_sim_virtual_mic.cpp
 
 HEADERS += \
-    ../vfdco_clock_routines.h \
+    ../Commons/vfdco_clock_routines.h \
+    ../Commons/vfdco_gui.h \
+    ../Commons/vfdco_lights.h \
     ../vfdco_com.h \
     ../vfdco_config.h \
     ../vfdco_config_sim.h \
     ../vfdco_display.h \
-    ../vfdco_gui.h \
     ../vfdco_hid.h \
     ../vfdco_led.h \
-    ../vfdco_lights.h \
     ../vfdco_mic.h \
     ../vfdco_serialization.h \
     ../vfdco_time.h \

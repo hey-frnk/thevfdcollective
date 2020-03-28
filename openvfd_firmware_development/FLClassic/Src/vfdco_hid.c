@@ -51,7 +51,7 @@ void vfdco_hid_button_retrieve_all(uint8_t *b0, uint8_t *b1, uint8_t *b2, uint8_
 }
 
 
-void vfdco_hid_init() {
+inline void vfdco_hid_init() {
   // All done in main()
   return;
 }

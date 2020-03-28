@@ -12,8 +12,10 @@
 
 #include "../vfdco_time.h"
 #include <stdio.h>
-#include <time.h>
 #include <chrono>
+#include <QTime>
+#include <QTimer>
+#include <QEventLoop>
 
 #ifdef _TIME_IMPLEMENTATION
 #error "An implementation of the time driver already exists!"
@@ -22,8 +24,15 @@
 
 extern int clk_div;
 
-uint32_t _vfdco_time_get_milliseconds() { return 42; }
-void _vfdco_time_delay_milliseconds(uint32_t delay) { printf("Dummy delay of %u milliseconds.\n", delay); }
+uint32_t _vfdco_time_get_milliseconds() {
+    return QTime::currentTime().msecsSinceStartOfDay();
+}
+
+void _vfdco_time_delay_milliseconds(uint32_t delay) {
+    QEventLoop loop;
+    QTimer::singleShot(delay, &loop, SLOT(quit()));
+    loop.exec();
+}
 
 uint32_t (*vfdco_time_get_milliseconds)(void) = _vfdco_time_get_milliseconds;
 void (*vfdco_time_delay_milliseconds)(uint32_t) = _vfdco_time_delay_milliseconds;

@@ -25,6 +25,7 @@ extern QLabel *led[CONFIG_NUM_PIXELS];
 extern QLabel *led_rgbw[CONFIG_NUM_PIXELS];
 extern QLabel *led_hexw[CONFIG_NUM_PIXELS];
 extern QLabel *led_hsl[CONFIG_NUM_PIXELS];
+extern QLabel *led_pwr[CONFIG_NUM_PIXELS];
 extern bool visualize_dimming;
 
 uint8_t rgb_arr[CONFIG_NUM_BYTES] = {0};
@@ -131,10 +132,17 @@ void vfdco_clr_render() {
             w >>= _led_dim_factor;
         }
         QColor _clr(r, g, b);
+        led[CONFIG_NUM_PIXELS - i - 1]->clear();
+        led_hexw[CONFIG_NUM_PIXELS - i - 1]->clear();
+        led_rgbw[CONFIG_NUM_PIXELS - i - 1]->clear();
+        led_hsl[CONFIG_NUM_PIXELS - i - 1]->clear();
+        led_pwr[CONFIG_NUM_PIXELS - i - 1]->clear();
         led[CONFIG_NUM_PIXELS - i - 1]->setStyleSheet("background-color:" + _clr.name());
         led_hexw[CONFIG_NUM_PIXELS - i - 1]->setText(_clr.name().toUpper() + QString(", %1").arg(w, 3, 16, QChar('0')).toUpper());
         led_rgbw[CONFIG_NUM_PIXELS - i - 1]->setText(QString("%1 %2 %3 %4").arg(r, 3, 10, QChar('0')).arg(g, 3, 10, QChar('0')).arg(b, 3, 10, QChar('0')).arg(w, 3, 10, QChar('0')));
         led_hsl[CONFIG_NUM_PIXELS - i - 1]->setText(QString("%1 %2 %3").arg(_clr.hue(), 3, 10, QChar('0')).arg(_clr.hslSaturation(), 3, 10, QChar('0')).arg(_clr.lightness(), 3, 10, QChar('0')));
+        uint8_t _pwr_rgb = (uint8_t)((r + g + b) / (3.0f * 2.55f)), _pwr_w = (uint8_t)(w / (1.0f * 2.55f));
+        led_pwr[CONFIG_NUM_PIXELS - i - 1]->setText("RGB " + QString::number(_pwr_rgb) + "% " + "W " + QString::number(_pwr_w) + "%");
     }
 }
 

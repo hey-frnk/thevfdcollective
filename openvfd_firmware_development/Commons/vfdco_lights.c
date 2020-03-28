@@ -28,17 +28,16 @@
 
 #ifndef __AVR__
   #include "../vfdco_config.h"
-  #include "../vfdco_lights.h"
   #include "../vfdco_led.h"
   #include "../vfdco_display.h"
   #include "../vfdco_mic.h"
 #else
   #include "vfdco_config.h"
-  #include "vfdco_lights.h"
   #include "vfdco_led.h"
   #include "vfdco_display.h"
   #include "vfdco_mic.h"
 #endif
+#include "vfdco_lights.h"
 
 // #include <stdlib.h>
 #include <string.h>
@@ -73,7 +72,7 @@ hsl_t HSL_Init( uint8_t h, uint8_t s, uint8_t l) {
 /**
  * @brief  Implementation of method LED_Color_Fader::Next for single peak
 **/
-static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_Color_Fader *self) {
+static LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_Color_Fader *self) {
   uint8_t render_enable = Time_Event_Update(&self->timer);
   if(render_enable) {
     ++(self->color_1.h);
@@ -91,7 +90,7 @@ static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_C
 /**
  * @brief  Implementation of method LED_Color_Fader::Next for multiple peaks
 **/
-static inline LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_Fader *self) {
+static LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_Fader *self) {
   uint8_t render_enable = Time_Event_Update(&self->timer);
   uint8_t i_h = 0, i_s = 0, i_l = 0;
   if(render_enable) {
@@ -371,14 +370,14 @@ static void _Light_Pattern_Static_F3(Light_Pattern *unsafe_self) {
 /**
   * @brief  Implementation of virtual function Light_Pattern_Static::Hello (static void _Light_Pattern_Static_Hello)
  **/
-static inline void _Light_Pattern_Static_Hello(void) {
+static void _Light_Pattern_Static_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Static, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
   * @brief  Implementation of virtual function Light_Pattern_Static::Save (static void _Light_Pattern_Static_Save)
  **/
-static inline void _Light_Pattern_Static_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_Static_Save(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
   self->settings[LIGHT_PATTERN_SETTING_STATIC_position] = self->position;
 }
@@ -425,7 +424,7 @@ static void _Light_Pattern_Serial0_Update(Light_Pattern *unsafe_self) {
     vfdco_clr_render();
   }
 }
-static inline void _Light_Pattern_Serial0_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_Serial0_Save(Light_Pattern *unsafe_self) {
   (void)unsafe_self;
   return; // No save needed. Already done.
 }
@@ -447,7 +446,7 @@ static void _Light_Pattern_Serial1_Update(Light_Pattern *unsafe_self) {
     vfdco_clr_render();
   }
 }
-static inline void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_Serial1_Save(Light_Pattern *unsafe_self) {
   (void)unsafe_self;
   return;
 }
@@ -526,14 +525,14 @@ static void _Light_Pattern_Spectrum_F3Var(Light_Pattern *unsafe_self) {
 /**
 * @brief  Implementation of virtual function Light_Pattern_Spectrum::Hello (static void _Light_Pattern_Spectrum_Hello)
 **/
-static inline void _Light_Pattern_Spectrum_Hello(void) {
+static void _Light_Pattern_Spectrum_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Spectrum, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
   * @brief  Implementation of virtual function Light_Pattern_Spectrum::Save (static void _Light_Pattern_Spectrum_Save)
  **/
-static inline void _Light_Pattern_Spectrum_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_Spectrum_Save(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Spectrum *self = (struct Light_Pattern_Spectrum *)unsafe_self;
   self->settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation] = self->spectrum_fader.color_1.s;
   self->settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness]  = self->spectrum_fader.color_1.l;
@@ -630,14 +629,14 @@ static void _Light_Pattern_Rainbow_F3Var(Light_Pattern *unsafe_self) {
 /**
 * @brief  Implementation of virtual function Light_Pattern_Rainbow::Hello (static void _Light_Pattern_Rainbow_Hello)
 **/
-static inline void _Light_Pattern_Rainbow_Hello(void) {
+static void _Light_Pattern_Rainbow_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Rainbow, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
   * @brief  Implementation of virtual function Light_Pattern_Rainbow::Save (static void _Light_Pattern_Rainbow_Save)
  **/
-static inline void _Light_Pattern_Rainbow_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_Rainbow_Save(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Rainbow *self = (struct Light_Pattern_Rainbow *)unsafe_self;
   self->settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff]  = (uint8_t)self->rainbow_fader.chain_hue_diff;
   self->settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation]      = self->rainbow_fader.color_1.s;
@@ -746,14 +745,14 @@ static void _Light_Pattern_Chase_F3Var(Light_Pattern *unsafe_self) {
 /**
 * @brief  Implementation of virtual function Light_Pattern_Chase::Hello (static void _Light_Pattern_Chase_Hello)
 **/
-static inline void _Light_Pattern_Chase_Hello(void) {
+static void _Light_Pattern_Chase_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Chase, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
   * @brief  Implementation of virtual function Light_Pattern_Chase::Save (static void _Light_Pattern_Chase_Save)
  **/
-static inline void _Light_Pattern_Chase_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_Chase_Save(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Chase *self = (struct Light_Pattern_Chase *)unsafe_self;
   self->settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode]      = self->chase_mode;
   self->settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] = self->color_peak_diff;
@@ -890,14 +889,14 @@ static void _Light_Pattern_Music_F3Var(Light_Pattern *unsafe_self) {
 /**
 * @brief  Implementation of virtual function Light_Pattern_Music::Hello (static void _Light_Pattern_Music_Hello)
 **/
-static inline void _Light_Pattern_Music_Hello(void) {
+static void _Light_Pattern_Music_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Music, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
   * @brief  Implementation of virtual function Light_Pattern_Music::Save (static void _Light_Pattern_Music_Save)
  **/
-static inline void _Light_Pattern_Music_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_Music_Save(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Music *self = (struct Light_Pattern_Music *)unsafe_self;
   self->settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] = self->color_peak_diff;
   self->settings[LIGHT_PATTERN_SETTING_MUSIC_saturation]      = self->saturation;
@@ -970,7 +969,7 @@ static void _Light_Pattern_Time_Code_Update(Light_Pattern *unsafe_self) {
 /**
   * @brief  Implementation of virtual function Light_Pattern_Time_Code::Hello (static void _Light_Pattern_Time_Code_Hello)
  **/
-static inline void _Light_Pattern_Time_Code_Hello(void) {
+static void _Light_Pattern_Time_Code_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Time_Code, 0, CONFIG_MESSAGE_LONG);
 }
 
@@ -1020,7 +1019,7 @@ static void _Light_Pattern_Cop_Update(Light_Pattern *unsafe_self) {
 /**
 * @brief  Implementation of virtual function Light_Pattern_Cop::Hello (static void _Light_Pattern_Cop_Hello)
 **/
-static inline void _Light_Pattern_Cop_Hello(void) {
+static void _Light_Pattern_Cop_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Cop, 0, CONFIG_MESSAGE_LONG);
 }
 
@@ -1089,7 +1088,7 @@ static void _Light_Pattern_MomentsOfBliss_Update(Light_Pattern *unsafe_self) {
   }
 }
 
-static inline void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_MomentsOfBliss *self) {
+static void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_MomentsOfBliss *self) {
   LED_Color_Fader_Init(
     &self->base_fader,
     CONFIG_MOMENTSOFBLISS_FADE_SPEED,  // Timer interval
@@ -1119,14 +1118,14 @@ static void _Light_Pattern_MomentsOfBliss_F3(Light_Pattern *unsafe_self) {
 /**
 * @brief  Implementation of virtual function Light_Pattern_MomentsOfBliss::Hello (static void _Light_Pattern_MomentsOfBliss_Hello)
 **/
-static inline void _Light_Pattern_MomentsOfBliss_Hello(void) {
+static void _Light_Pattern_MomentsOfBliss_Hello(void) {
   vfdco_display_render_message(Messages_Hello_Bliss, 0, CONFIG_MESSAGE_LONG);
 }
 
 /**
   * @brief  Implementation of virtual function Light_Pattern_MomentsOfBliss::Save (static void _Light_Pattern_MomentsOfBliss_Save)
  **/
-static inline void _Light_Pattern_MomentsOfBliss_Save(Light_Pattern *unsafe_self) {
+static void _Light_Pattern_MomentsOfBliss_Save(Light_Pattern *unsafe_self) {
   struct Light_Pattern_MomentsOfBliss *self = (struct Light_Pattern_MomentsOfBliss *)unsafe_self;
   self->settings[LIGHT_PATTERN_SETTING_BLISS_moment] = self->moment;
 }

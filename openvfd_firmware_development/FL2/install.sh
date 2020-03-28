@@ -3,8 +3,9 @@
 # All headers
 cp -fr ../*.h ${PWD}
 
-# Common source code files
+# Common source code & header files
 cp -fr ../Commons/*.c ${PWD}
+cp -fr ../Commons/*.h ${PWD}
 # Platform specific source code files
 # cp -fr ${PWD}/_Src/*.c ${PWD}
 cp -fr ${PWD}/_Src/*.cpp ${PWD}

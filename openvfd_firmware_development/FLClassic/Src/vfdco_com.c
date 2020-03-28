@@ -3,7 +3,7 @@
 #include "../../vfdco_config.h"
 #include "../../vfdco_com.h"
 
-void COM_Handler_USB_Init() {
+inline void COM_Handler_USB_Init() {
   return;
 }
 

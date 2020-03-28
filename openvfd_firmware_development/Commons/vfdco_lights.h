@@ -30,10 +30,18 @@ extern "C" {
 #ifndef _VFDCO_LIGHTS_H
 #define _VFDCO_LIGHTS_H
 
-#include "vfdco_time.h"
-#include "vfdco_led.h"
-#include "vfdco_hid.h"
-#include "vfdco_config.h"
+#ifndef __AVR__
+  #include "../vfdco_time.h"
+  #include "../vfdco_led.h"
+  #include "../vfdco_hid.h"
+  #include "../vfdco_config.h"
+#else 
+  #include "vfdco_time.h"
+  #include "vfdco_led.h"
+  #include "vfdco_hid.h"
+  #include "vfdco_config.h"
+#endif
+
 #include <stdint.h>
 
 /** Begin of:

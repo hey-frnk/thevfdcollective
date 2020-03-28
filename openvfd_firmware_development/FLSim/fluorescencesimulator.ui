@@ -540,7 +540,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>125</y>
        <width>41</width>
        <height>16</height>
       </rect>
@@ -653,7 +653,7 @@
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>130</y>
+       <y>125</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -672,7 +672,7 @@
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>130</y>
+       <y>125</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -691,7 +691,7 @@
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>130</y>
+       <y>125</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -710,7 +710,7 @@
      <property name="geometry">
       <rect>
        <x>470</x>
-       <y>130</y>
+       <y>125</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -729,7 +729,7 @@
      <property name="geometry">
       <rect>
        <x>630</x>
-       <y>130</y>
+       <y>125</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -748,7 +748,7 @@
      <property name="geometry">
       <rect>
        <x>760</x>
-       <y>130</y>
+       <y>125</y>
        <width>91</width>
        <height>16</height>
       </rect>
@@ -767,7 +767,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>150</y>
+       <y>140</y>
        <width>41</width>
        <height>16</height>
       </rect>
@@ -785,7 +785,7 @@
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>150</y>
+       <y>140</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -804,7 +804,7 @@
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>150</y>
+       <y>140</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -823,7 +823,7 @@
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>150</y>
+       <y>140</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -842,7 +842,7 @@
      <property name="geometry">
       <rect>
        <x>470</x>
-       <y>150</y>
+       <y>140</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -861,7 +861,7 @@
      <property name="geometry">
       <rect>
        <x>630</x>
-       <y>150</y>
+       <y>140</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -880,7 +880,7 @@
      <property name="geometry">
       <rect>
        <x>760</x>
-       <y>150</y>
+       <y>140</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -893,6 +893,138 @@
      </property>
      <property name="text">
       <string>000 000 000</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="led_pow_intro">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>155</y>
+       <width>41</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Pow:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="led_pow_1">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>155</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>RGB 0%, W 0%</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="led_pow_2">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>155</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>RGB 0%, W 0%</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="led_pow_3">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>155</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>RGB 0%, W 0%</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="led_pow_4">
+     <property name="geometry">
+      <rect>
+       <x>470</x>
+       <y>155</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>RGB 0%, W 0%</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="led_pow_5">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>155</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>RGB 0%, W 0%</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="led_pow_6">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>155</y>
+       <width>111</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>RGB 0%, W 0%</string>
      </property>
     </widget>
    </widget>
@@ -2040,9 +2172,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>50</y>
        <width>91</width>
-       <height>71</height>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
@@ -2102,6 +2234,19 @@
      </property>
      <property name="text">
       <string>CLK Div:</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="sim_dark_mode">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Dark Mode</string>
      </property>
     </widget>
    </widget>

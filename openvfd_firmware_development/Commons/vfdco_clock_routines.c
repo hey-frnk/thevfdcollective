@@ -30,11 +30,6 @@
   #include "../vfdco_hid.h"             // Physical HID driver
   #include "../vfdco_com.h"             // Physical Communication driver
   #include "../vfdco_mic.h"             // Physical Microphone driver
-  // Application specific libraries
-  #include "../vfdco_lights.h"          // Library of light patterns
-  #include "../vfdco_gui.h"             // Library of different user interfaces
-  // Clock routine scheduler
-  #include "../vfdco_clock_routines.h"  // Clock routine
 
 #else 
   // Configuration header
@@ -47,24 +42,26 @@
   #include "vfdco_hid.h"             // Physical HID driver
   #include "vfdco_com.h"             // Physical Communication driver
   #include "vfdco_mic.h"             // Physical Microphone driver
-  // Application specific libraries
-  #include "vfdco_lights.h"          // Library of light patterns
-  #include "vfdco_gui.h"             // Library of different user interfaces
-  // Clock routine scheduler
-  #include "vfdco_clock_routines.h"  // Clock routine
 #endif
 
+// Application specific libraries
+#include "vfdco_lights.h"          // Library of light patterns
+#include "vfdco_gui.h"             // Library of different user interfaces
+// Clock routine scheduler
+#include "vfdco_clock_routines.h"  // Clock routine
+
 // Globally accessible parameters
-time_event_t display_updater;
-vfdco_time_t global_time;
-vfdco_date_t global_date;
-time_event_t global_time_updater;
+static time_event_t display_updater;
+
+static vfdco_time_t global_time;
+static vfdco_date_t global_date;
+static time_event_t global_time_updater;
 
 // HID variables
-uint8_t global_button_F1_state = BUTTON_STATE_OFF;
-uint8_t global_button_F2_state = BUTTON_STATE_OFF;
-uint8_t global_button_F3_state = BUTTON_STATE_OFF;
-uint8_t global_button_F4_state = BUTTON_STATE_OFF;
+static uint8_t global_button_F1_state = BUTTON_STATE_OFF;
+static uint8_t global_button_F2_state = BUTTON_STATE_OFF;
+static uint8_t global_button_F3_state = BUTTON_STATE_OFF;
+static uint8_t global_button_F4_state = BUTTON_STATE_OFF;
 #define GLOBAL_CLEAR_BUTTON(_button) _button = BUTTON_STATE_OFF
 
 // GUI variables
@@ -75,21 +72,29 @@ gui_instance_t global_gui_instance_counter;
 // Light Pattern variables
 Light_Pattern global_light_instance;
 light_pattern_instance_t global_light_instance_counter;
+light_pattern_instance_t global_light_instance_random;
 #define GLOBAL_SET_NEXT_LIGHT_INSTANCE(_counter) {global_light_instance_counter = (_counter);}
+#define GLOBAL_SET_NEXT_RANDOM_INSTANCE(_counter) {global_light_instance_random = (_counter);}
 
-uint8_t global_light_it_register;   // For iterable instances, this register includes or excludes an instance during regular light instance F2 switching
-uint8_t global_light_rnd_register;  // For random instances, this register includes or excludes an instance from being randomized
+// Random definitions
+#define GLOBAL_LIGHT_INSTANCE_RANDOM_OFF 255
+#define GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON (global_light_instance_random != GLOBAL_LIGHT_INSTANCE_RANDOM_OFF)
+
+static uint8_t global_light_it_register;   // For iterable instances, this register includes or excludes an instance during regular light instance F2 switching
+static uint8_t global_light_rnd_register;  // For random instances, this register includes or excludes an instance from being randomized
 #define GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(_instance)     ((global_light_it_register) &   (1 << (_instance)))
 #define GLOBAL_ITERABLE_INSTANCE_ENABLE(_instance)         ((global_light_it_register) |=  (1 << (_instance)))
 #define GLOBAL_ITERABLE_INSTANCE_DISABLE(_instance)        ((global_light_it_register) &= ~(1 << (_instance)))
 #define GLOBAL_RANDOM_INSTANCE_IS_ENABLED(_instance)     ((global_light_rnd_register)  &   (1 << (_instance)))
 #define GLOBAL_RANDOM_INSTANCE_ENABLE(_instance)         ((global_light_rnd_register)  |=  (1 << (_instance)))
 #define GLOBAL_RANDOM_INSTANCE_DISABLE(_instance)        ((global_light_rnd_register)  &= ~(1 << (_instance)))
+static uint8_t random_unsaved_settings[2];
 
 #define global_light_instance_default LIGHT_PATTERN_STATIC // Must be set to enum(0)
+#define global_light_random_default GLOBAL_LIGHT_INSTANCE_RANDOM_OFF // Normally off
 
 // Clock power variables
-uint8_t global_night_shift_state;
+static uint8_t global_night_shift_state;
 
 // COM variables
 struct COM_Data global_com_data;
@@ -100,22 +105,25 @@ struct COM_Data global_com_data;
 CREATE_SERIALIZED_GLOBAL_POSITIONS(CREATE_SETTINGS_OFFSET_GLOBAL)
 
 // Messaging constants
-const char Messages_Routine_Settings[CONFIG_NUM_DIGITS] = {'S', 'E', 'T', 'I', 'N', 'G'};
-const char Messages_Routine_Default1[CONFIG_NUM_DIGITS] = {'D', 'E', 'F', 'A', 'U', 'L'};
-const char Messages_Routine_Default2[CONFIG_NUM_DIGITS] = {'R', 'E', 'T', 'O', 'R', 'D'};
-const char Messages_Routine_Saved1[CONFIG_NUM_DIGITS]   = {'A', 'L', 'L', ' ', ' ', ' '};
-const char Messages_Routine_Saved2[CONFIG_NUM_DIGITS]   = {'S', 'A', 'V', 'E', 'D', ' '};
+static const char Messages_Routine_Settings[CONFIG_NUM_DIGITS]   = {'S', 'E', 'T', 'I', 'N', 'G'};
+static const char Messages_Routine_Default1[CONFIG_NUM_DIGITS]   = {'D', 'E', 'F', 'A', 'U', 'L'};
+static const char Messages_Routine_Default2[CONFIG_NUM_DIGITS]   = {'R', 'E', 'T', 'O', 'R', 'D'};
+static const char Messages_Routine_Saved1[CONFIG_NUM_DIGITS]     = {'A', 'L', 'L', ' ', ' ', ' '};
+static const char Messages_Routine_Saved2[CONFIG_NUM_DIGITS]     = {'S', 'A', 'V', 'E', 'D', ' '};
+static const char Messages_Routine_RandomOn[CONFIG_NUM_DIGITS]   = {'R', 'N', 'D', ' ', 'O', 'N'};
+static const char Messages_Routine_RandomOff[CONFIG_NUM_DIGITS]  = {'R', 'N', 'D', 'O', 'F', 'F'};
 
 /** Begin of:
   * @tableofcontents SECTION_SUPPORTING_FUNCTIONS
   * @brief Prototypes. Implementation see very end
  **/
 static void vfdco_welcome(char *message);
-void set_next_gui_instance_timeset(uint8_t set_mode); // Fancy special case
-void set_next_gui_instance(gui_instance_t next_instance);
-void set_next_lights_instance(light_pattern_instance_t next_instance);
+static void set_next_gui_instance_timeset(uint8_t set_mode); // Fancy special case
+static void set_next_gui_instance(gui_instance_t next_instance);
+static void find_next_lights_instance();
+static void set_next_lights_instance(light_pattern_instance_t next_instance);
 
-void com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct COM_Data *));
+static void com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct COM_Data *));
 
 
 /** Begin of:
@@ -136,9 +144,12 @@ void vfdco_clock_initializer() {
   vfdco_clock_mic_initializer();
   
   // All good? All good! Fluorescence, say hello!
-  char welcome[CONFIG_NUM_DIGITS] = {0};
-  for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) welcome[i] = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i];
-  vfdco_welcome(welcome);
+  // char welcome[CONFIG_NUM_DIGITS] = {0};
+  // for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) welcome[i] = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i];
+  vfdco_welcome((char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome);
+
+  // Random seed
+  for(uint8_t i = 0; i < 7; ++i) vfdco_util_random(i);
 }
 
 /** Begin of:
@@ -179,6 +190,7 @@ inline void vfdco_clock_lights_initializer() {
   // Initialize LED driver first, then Light Patterns
   vfdco_clr_init(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
   // Start by loading the saved lights instance
+  GLOBAL_SET_NEXT_RANDOM_INSTANCE(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_random]);
   set_next_lights_instance((light_pattern_instance_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter]);
   global_light_it_register = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register];
   global_light_rnd_register = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register];
@@ -195,7 +207,7 @@ inline void vfdco_clock_com_initializer() {
   global_com_data.tx_buffer = NULL;
 }
 
-void vfdco_clock_mic_initializer() {
+inline void vfdco_clock_mic_initializer() {
   // Initialize driver
   vfdco_mic_init();
 }
@@ -203,7 +215,7 @@ void vfdco_clock_mic_initializer() {
 /** Begin of:
   * @tableofcontents SECTION_GLOBAL_ROUTINE
  **/
-void vfdco_clock_routine() {
+inline void vfdco_clock_routine() {
   vfdco_clock_hid_routine();
   vfdco_clock_time_routine();
   vfdco_clock_power_routine();
@@ -216,7 +228,7 @@ void vfdco_clock_routine() {
   * @tableofcontents SECTION_PERIPHRAL_ROUTINES
  **/
 // Human interface device (Buttons) routine
-void vfdco_clock_hid_routine() {
+inline void vfdco_clock_hid_routine() {
   vfdco_hid_button_retrieve_all(
     &global_button_F1_state,
     &global_button_F2_state,
@@ -226,62 +238,59 @@ void vfdco_clock_hid_routine() {
 }
 
 // RTC time refresh routine
-void vfdco_clock_time_routine() {
+inline void vfdco_clock_time_routine() {
   if(Time_Event_Update(&global_time_updater)) {
     vfdco_get_date_time(&global_date, &global_time);
   }
 }
 
-void vfdco_clock_power_routine() {
+inline void vfdco_clock_power_routine() {
   // If night shift (power saving mode) is scheduled to start at some time
-  if(!( !SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] &&
-        !SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] &&
-        !SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h]   &&
-        !SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m]))
-  {
-    if(Time_Event_Update(&global_time_updater)) {
-      // Check if night shift can be set
-      if(global_night_shift_state == NIGHT_SHIFT_ON) {
-        // Night shift is on
-        // Look for implicit wake trigger
-        if(global_time.h == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h]) { // if statement reduction
-          if(global_time.m == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m]) {
-            if(global_time.s < 3) {                   // Safe switching time span. Bug (which is ok): Waking when s < 3!
-              // Implicit wake: Restore previos brightness values
-              vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
-              vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
-              global_night_shift_state = NIGHT_SHIFT_OFF;
-            }
+  if(!( (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] == 0) &&
+        (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] == 0) &&
+        (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] == 0)   &&
+        (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] == 0)
+  )) {
+    // Check if night shift can be set
+    if(global_night_shift_state == NIGHT_SHIFT_ON) {
+      // Night shift is on
+      // Look for implicit wake trigger
+      if(global_time.h == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h]) { // if statement reduction
+        if(global_time.m == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m]) {
+          if(global_time.s < 3) {                   // Safe switching time span. Bug (which is ok): Waking when s < 3!
+            // Implicit wake: Restore previos brightness values
+            vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
+            vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
+            global_night_shift_state = NIGHT_SHIFT_OFF;
           }
         }
-        // F1 long press: Explicit wake trigger
-        if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
-          vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
-          vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
-          global_night_shift_state = NIGHT_SHIFT_OFF;
-          GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
-        }
-      } else {
-        // Night shift is off
-        // Look for enable trigger
-        if(global_time.h == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h]) { // if statement reduction
-          if(global_time.m == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m]) {
-            if(global_time.s < 3) {                   // Safe switching time span. Bug (which is ok): Waking when s < 3!
-              // Implicit wake: Restore previos brightness values
-              vfdco_display_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
-              vfdco_clr_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
-              global_night_shift_state = NIGHT_SHIFT_ON;
-            }
+      }
+      // F1 long press: Explicit wake trigger
+      if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
+        vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
+        vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
+        global_night_shift_state = NIGHT_SHIFT_OFF;
+        GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
+      }
+    } else {
+      // Night shift is off
+      // Look for enable trigger
+      if(global_time.h == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h]) { // if statement reduction
+        if(global_time.m == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m]) {
+          if(global_time.s < 3) {                   // Safe switching time span. Bug (which is ok): Waking when s < 3!
+            // Implicit wake: Restore previos brightness values
+            vfdco_display_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
+            vfdco_clr_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
+            global_night_shift_state = NIGHT_SHIFT_ON;
           }
         }
       }
     }
   }
-  // Wohooo 6-layer conditional. Somewhat not proud of this.
 } 
 
 // VFD display data render routine
-void vfdco_clock_gui_routine() {
+inline void vfdco_clock_gui_routine() {
   if(Time_Event_Update(&display_updater)) GUI_Format_Update(&global_gui_instance);
   if(global_button_F1_state == BUTTON_STATE_SHORTPRESS) {
     /* F1: Change GUI, done in 4 steps:
@@ -360,23 +369,26 @@ void vfdco_clock_gui_routine() {
 }
 
 // VFD LED light illumination routine
-void vfdco_clock_lights_routine() {
+inline void vfdco_clock_lights_routine() {
   Light_Pattern_Update(&global_light_instance);
   if(global_button_F2_state == BUTTON_STATE_SHORTPRESS) {
-    if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
-    Container_Light_Pattern_Clear(&global_light_instance);
-    if(global_light_instance_counter < 8) { // Iterable instance
-      light_pattern_instance_t next_iterable_instance = global_light_instance_counter;
-      do { // Look for the next enabled iterable instance in the enable register
-        ++next_iterable_instance;
-        if(next_iterable_instance == 8) next_iterable_instance = global_light_instance_default;
-      } while(!GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(next_iterable_instance));
-      set_next_lights_instance(next_iterable_instance);
-    } else set_next_lights_instance(global_light_instance_default);
-    if(Light_Pattern_Hello) Light_Pattern_Hello();
+    if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
+      find_next_lights_instance();
+      if(Light_Pattern_Hello) Light_Pattern_Hello();
+    }
+    GLOBAL_CLEAR_BUTTON(global_button_F2_state); // Priority clear
+  } else if(global_button_F2_state == BUTTON_STATE_LONGPRESS) {
+    if(GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) { // If random state is on, turn off
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF);
+      vfdco_display_render_message(Messages_Routine_RandomOff, 0, CONFIG_MESSAGE_LONG);
+      find_next_lights_instance();
+    } else { // If random stoff is off, turn on!
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(global_light_instance_default);
+      find_next_lights_instance();
+      vfdco_display_render_message(Messages_Routine_RandomOn, 0, CONFIG_MESSAGE_LONG);
+    }
     GLOBAL_CLEAR_BUTTON(global_button_F2_state); // Priority clear
   }
-
   switch(global_button_F3_state) {
     case BUTTON_STATE_SHORTPRESS:
       if(Light_Pattern_F3) { Light_Pattern_F3(&global_light_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state); } 
@@ -386,10 +398,17 @@ void vfdco_clock_lights_routine() {
       break;
     default: break;
   }
+
+  // Randomizer on? Randomize next instance!
+  if(GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
+    static uint8_t prev_s = 0; // Last second
+    if((prev_s == 58) && (global_time.s == 59)) find_next_lights_instance();
+    prev_s = global_time.s;
+  }
 }
 
 // Communication (Serial/USB, Serial/Bluetooth) routine
-void vfdco_clock_com_routine() {
+inline void vfdco_clock_com_routine() {
   // If data is present
   if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_USB_BUSY) {
     // Perform decoding, transfer back using USB transfer
@@ -410,6 +429,7 @@ void vfdco_clock_settings_default() {
   const char Messages_Welcome_Default[CONFIG_NUM_DIGITS] = CONFIG_WELCOME_MESSAGE_DEFAULT;
   memcpy(SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, Messages_Welcome_Default, CONFIG_NUM_DIGITS);
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter] = global_light_instance_default;
+  SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_random] = global_light_random_default;
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = 0;
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = 0;
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = 0;
@@ -438,6 +458,7 @@ void vfdco_clock_settings_default() {
 void vfdco_clock_settings_save(uint8_t silent) {
   // Global (routine) settings
   SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter] = global_light_instance_counter;
+  SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_random] = global_light_instance_random;
   // Save current instance settings
   if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
   if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
@@ -457,7 +478,7 @@ void vfdco_clock_settings_save(uint8_t silent) {
   * @tableofcontents SECTION_SUPPORTING_FUNCTIONS
   * @brief Prototypes. Implementation see very end
  **/
-static void vfdco_welcome(char *message) {
+static inline void vfdco_welcome(char *message) {
   uint8_t spaces = 0; // Empty spaces
   for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; i++) if(message[i] == ' ') spaces++; // Count all spaces
 
@@ -487,21 +508,21 @@ static void vfdco_welcome(char *message) {
   vfdco_display_render_message(message, 0, CONFIG_MESSAGE_LONG );
 }
 
-void set_next_gui_instance_timeset(uint8_t set_mode) {
-  GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, set_mode);
+static void set_next_gui_instance_timeset(uint8_t set_mode) {
+  GUI_Format_Time_Date_Setter_Init((struct GUI_Format_Time_Date_Setter*)&global_gui_instance, &global_time, &global_date, set_mode);
   GLOBAL_SET_NEXT_GUI_INSTANCE(GUI_TIME_DATE_SET);
 }
 /**
  * @brief Set the next GUI instance
  * @param next_instance any regular GUI without special parameters (TIME/DATE_STOPWATCH)
  */
-void set_next_gui_instance(gui_instance_t next_instance) {
+static void set_next_gui_instance(gui_instance_t next_instance) {
   uint8_t mapped_instance = _map_gui_instance_to_serialized_settings_index(next_instance), *instance_settings = NULL;
   if(mapped_instance != INSTANCE_NO_SETTINGS) instance_settings = serialized_settings[mapped_instance];
   switch(next_instance) {
-    case GUI_TIME:      { GUI_Format_Time_Init(     (struct GUI_Format_Time*)&global_gui_instance, instance_settings); break; }
-    case GUI_DATE:      { GUI_Format_Date_Init(     (struct GUI_Format_Date*)&global_gui_instance, instance_settings); break; }
-    case GUI_STOPWATCH: { GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance);               break; }
+    case GUI_TIME:      { GUI_Format_Time_Init(     (struct GUI_Format_Time*)&global_gui_instance, &global_time, instance_settings); break; }
+    case GUI_DATE:      { GUI_Format_Date_Init(     (struct GUI_Format_Date*)&global_gui_instance, &global_date, instance_settings); break; }
+    case GUI_STOPWATCH: { GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance, &global_time);               break; }
     case GUI_BRIGHTNESS_SET: {
       GUI_Format_Brightness_Setter_Init(
         (struct GUI_Format_Brightness_Setter *)&global_gui_instance,
@@ -514,9 +535,69 @@ void set_next_gui_instance(gui_instance_t next_instance) {
   GLOBAL_SET_NEXT_GUI_INSTANCE(next_instance);
 }
 
-void set_next_lights_instance(light_pattern_instance_t next_instance) {
+static void find_next_lights_instance() {
+  if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
+  Container_Light_Pattern_Clear(&global_light_instance);
+  if(global_light_instance_counter < 8) { // Iterable instance
+    light_pattern_instance_t next_iterable_instance;
+    if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
+      next_iterable_instance = global_light_instance_counter;
+      do { // Look for the next enabled iterable instance in the enable register
+        ++next_iterable_instance;
+        if(next_iterable_instance == 8) next_iterable_instance = global_light_instance_default;
+      } while(!GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(next_iterable_instance));
+    } else {
+      next_iterable_instance = vfdco_util_random(3);
+      do { // Look for the next enabled iterable instance in the enable register
+        ++next_iterable_instance;
+        if(next_iterable_instance == 8) next_iterable_instance = global_light_instance_default;
+      } while(!GLOBAL_RANDOM_INSTANCE_IS_ENABLED(next_iterable_instance));
+    }
+    set_next_lights_instance(next_iterable_instance);
+  } else set_next_lights_instance(global_light_instance_default);
+}
+
+static uint8_t _reduce(uint8_t x, uint8_t N) { return ((uint16_t)x * (uint16_t)N) >> 8; }
+static void set_next_lights_instance(light_pattern_instance_t next_instance) {
   uint8_t mapped_instance = _map_lights_instance_to_serialized_settings_index(next_instance), *instance_settings = NULL;
-  if(mapped_instance != INSTANCE_NO_SETTINGS) instance_settings = serialized_settings[mapped_instance];
+  if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
+    if(mapped_instance != INSTANCE_NO_SETTINGS) instance_settings = serialized_settings[mapped_instance]; // Saved settings
+  } else {
+    instance_settings = random_unsaved_settings;  // Or any random settings. Shuffle it for real
+    instance_settings[0] = (vfdco_util_random(7) << 1) | (global_time.s & 0x01);
+    instance_settings[1] = (vfdco_util_random(7) << 1) | (global_time.s & 0x01);
+    switch(next_instance) {
+      case LIGHT_PATTERN_STATIC: {
+        instance_settings[0] &= 0x0F; // 16 presets
+        break;
+      }
+      case LIGHT_PATTERN_MOMENTSOFBLISS: {
+        instance_settings[0] = _reduce(instance_settings[0], 7); // Mode: Max 6 modes
+        break;
+      }
+      case LIGHT_PATTERN_SPECTRUM: {
+        instance_settings[0] |= 0x80; // Sat: at least 128
+        instance_settings[1] |= CONFIG_LIGHTNESS_LOW + _reduce(instance_settings[0], 96); // Li: max 128
+        break;
+      }
+      case LIGHT_PATTERN_RAINBOW: {
+        instance_settings[0] = 10 + _reduce(instance_settings[0], 33); // Diff: at least 10, max 42
+        instance_settings[1] |= CONFIG_LIGHTNESS_LOW + _reduce(instance_settings[0], 96);
+        break;
+      }
+      case LIGHT_PATTERN_CHASE: {
+        instance_settings[0] = _reduce(instance_settings[0], 3); // Mode: Max 2
+        instance_settings[1] = _reduce(instance_settings[0], 7); // Diff: Max 6
+        break;
+      }
+      case LIGHT_PATTERN_MUSIC: {
+        instance_settings[0] = 10 + _reduce(instance_settings[0], 33); // Diff: at least 10, max 42
+        instance_settings[1] &= 0x7F; // Li: max 128
+        break;
+      }
+      default: break;
+    }
+  }
   switch(next_instance) {
     case LIGHT_PATTERN_STATIC: {
       Light_Pattern_Static_Init((struct Light_Pattern_Static *)&global_light_instance, instance_settings);
@@ -559,10 +640,14 @@ void set_next_lights_instance(light_pattern_instance_t next_instance) {
       break;
     }
   }
-  GLOBAL_SET_NEXT_LIGHT_INSTANCE(next_instance);
+  if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
+    GLOBAL_SET_NEXT_LIGHT_INSTANCE(next_instance);
+  } else {
+    GLOBAL_SET_NEXT_RANDOM_INSTANCE(next_instance);
+  }
 }
 
-void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) {
+static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) {
   if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
     const uint8_t command_byte = input_buffer[1];
 
@@ -573,6 +658,7 @@ void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) 
         serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
         input_buffer + COM_PROTOCOL_SER0_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
       );
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(LIGHT_PATTERN_SERIAL0);
     }
     // LED smooth set 
@@ -582,6 +668,7 @@ void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) 
         serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL1)], 
         input_buffer + COM_PROTOCOL_SER1_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
       );
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
     }
 

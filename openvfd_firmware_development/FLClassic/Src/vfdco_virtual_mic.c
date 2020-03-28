@@ -1,4 +1,4 @@
-#include "../vfdco_mic.h"
+#include "../../vfdco_mic.h"
 
 #ifdef _MIC_IMPLEMENTATION
 #error "An implementation of the microphone driver already exists!"
@@ -6,7 +6,7 @@
 #define _MIC_IMPLEMENTATION
 
 // Initializer
-void vfdco_mic_init() {
+inline void vfdco_mic_init() {
     return;
 }
 

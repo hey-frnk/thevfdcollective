@@ -38,7 +38,7 @@ void _write_eeprom_internal(uint16_t address, uint8_t *data, uint8_t data_length
   }
 }
 
-void vfdco_serialization_write(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length) {
+inline void vfdco_serialization_write(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length) {
   struct Serialization_Header _h = {
     .vfdco_1 = 'v',
     .vfdco_2 = 'f',
@@ -63,7 +63,7 @@ void vfdco_serialization_write(uint8_t *const data[], const uint8_t *length_arr,
   __enable_irq();
 }
 
-SERIALIZATION_HEADER_STATUS_t vfdco_serialization_read(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length) {
+inline SERIALIZATION_HEADER_STATUS_t vfdco_serialization_read(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length) {
   // Get header
   struct Serialization_Header _h;
   HAL_I2C_Mem_Read(&hi2c1, EEPROM_24CXX_ADDRESS, 0, I2C_MEMADD_SIZE_8BIT, (uint8_t *)&_h, sizeof(struct Serialization_Header), EEPROM_TIMEOUT_MAX);

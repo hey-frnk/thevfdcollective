@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "../../vfdco_clock_routines.h"
+#include "../../Commons/vfdco_clock_routines.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

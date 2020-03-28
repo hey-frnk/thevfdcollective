@@ -129,17 +129,17 @@ void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_reg
 void vfdco_display_render_date(vfdco_date_t *date, /*const uint8_t decimal_dot_register, */date_format_t date_mode) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   _rreg[0] = vfdco_display_char_convert(date->y % 10);
-  _rreg[1] = vfdco_display_char_convert((date->y / 10) & 0x01);
+  _rreg[1] = vfdco_display_char_convert(date->y / 10);
 
   if(date_mode == DATE_FORMAT_DDMMYY) {
-    _rreg[2] = vfdco_display_char_convert(date->m % 10);
-    _rreg[3] = vfdco_display_char_convert((date->m / 10) & 0x01);
-    _rreg[4] = vfdco_display_char_convert(date->d % 10);
+    _rreg[2] = vfdco_display_char_convert(date->m % 10) | 0x01;
+    _rreg[3] = vfdco_display_char_convert(date->m / 10);
+    _rreg[4] = vfdco_display_char_convert(date->d % 10) | 0x01;
     _rreg[5] = vfdco_display_char_convert(date->d / 10);
   } else {
-    _rreg[2] = vfdco_display_char_convert(date->d % 10);
-    _rreg[3] = vfdco_display_char_convert((date->d / 10) & 0x01);
-    _rreg[4] = vfdco_display_char_convert(date->m % 10);
+    _rreg[2] = vfdco_display_char_convert(date->d % 10) | 0x01;
+    _rreg[3] = vfdco_display_char_convert(date->d / 10);
+    _rreg[4] = vfdco_display_char_convert(date->m % 10) | 0x01;
     _rreg[5] = vfdco_display_char_convert(date->m / 10);
   }
   memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
@@ -164,7 +164,7 @@ void vfdco_display_render_message(const char *message, const uint8_t decimal_dot
 }
 
 // Function mapping
-void vfdco_display_init(uint8_t initial_dim_factor) {
+inline void vfdco_display_init(uint8_t initial_dim_factor) {
   vfdco_display_set_dim_factor(initial_dim_factor);
   HAL_TIM_Base_Start_IT(&htim16);
 }
