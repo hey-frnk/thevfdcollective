@@ -2,6 +2,9 @@ Functionality,Type (C/R),p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10]
 Set custom color information,C,0x24,0x00,led[0].r,led[0].g,led[0].b,led[0].w,led[1].r,led[1].g,led[1].b,led[1].w,led[2].r,led[2].g,led[2].b,led[2].w,led[3].r,led[3].g,led[3].b,led[3].w,led[4].r,led[4].g,led[4].b,led[4].w,led[5].r,led[5].g,led[5].b,led[5].w,0x25,
 Set custom color information (smoothly),C,0x24,0x01,led[0].r,led[0].g,led[0].b,led[0].w,led[1].r,led[1].g,led[1].b,led[1].w,led[2].r,led[2].g,led[2].b,led[2].w,led[3].r,led[3].g,led[3].b,led[3].w,led[4].r,led[4].g,led[4].b,led[4].w,led[5].r,led[5].g,led[5].b,led[5].w,0x25,
 Light pattern set (preset),C,0x24,0x04,instance,setting[0],setting[1],reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,instance according to light_pattern_instance_t
+Enable/disable light pattern presets,C,0x24,0x05,enabled instances,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,enabled instance 0b[COP|TCODE|MUSIC|CHASE|RAINBOW|SPECTRUM|BLISS|STATIC]
+Enable/disable random light pattern presets,C,0x24,0x06,enabled instances,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,enabled instance 0b[COP|TCODE|MUSIC|CHASE|RAINBOW|SPECTRUM|BLISS|STATIC]
+Random changing speed set,C,0x24,0x07,speed,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,speed 0: minutely 1: Every other min 2: Every ten min 3: Every 1/2 hr 4: Every hr
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 GUI set,C,0x24,0x10,instance,setting[0],reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,reserved 0,0x25,instance according to gui_instance_t
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16,5 +19,6 @@ Clock control,C,0x24,0x30,control,reserved 0,reserved 0,reserved 0,reserved 0,re
 Time date set response,R,0x24,0x30,0x54,0x69,0x6D,0x65,0x20,0x53,0x79,0x25,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,
 Firmware version response,R,0x24,0x31,fw_str[0],fw_str[1],fw_str[2],fw_str[3],fw_str[4],fw_str[5],0,0x25,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,
 Hardware version response,R,0x24,0x32,hw_str[0],hw_str[1],hw_str[2],hw_str[3],0,0,0,0x25,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,
+Enabled light pattern instance request,R,0x24,0x33,enabled instances,enabled rnd inst.,0,0,0,0,0,0x25,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,-,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 What the colors mean,Command/Response,Static control,Dynamic data,Dynamic control,Reserved Value,n/a,,,,,,,,,,,,,,,,,,,,,,,
