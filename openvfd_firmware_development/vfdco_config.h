@@ -17,9 +17,9 @@ extern "C" {
 #define _VFDCO_CONFIG_H
 
 // Development platform. Leave one active
-// #include "vfdco_config_hw2.h" // Arduino/AVR (HW Version < 3.0)
+#include "vfdco_config_hw2.h" // Arduino/AVR (HW Version < 3.0)
 // #include "vfdco_config_stm.h" // STM32F0 (HW Version >= 3.0)
-#include "vfdco_config_sim.h" // Simulation platform
+// #include "vfdco_config_sim.h" // Simulation platform
 
 
 

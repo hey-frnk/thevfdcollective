@@ -33,10 +33,10 @@ extern "C" {
  */
 // Edit software version here
 #define CONFIG_SW_STRING_LENGTH 6
-#define CONFIG_SW_STRING {'3', '.', '0', 'f', 'l', ' '}
+#define CONFIG_SW_STRING {'3', '.', '0', 'a', ' ', ' '}
 // Edit hardware version here
 #define CONFIG_HW_STRING_LENGTH 4
-#define CONFIG_HW_STRING {'2', '.', '1', ' '}
+#define CONFIG_HW_STRING {'2', '.', 'x', ' '}
 
 /**
  * @tableofcontents SECTION_CONFIG_DISPLAY
