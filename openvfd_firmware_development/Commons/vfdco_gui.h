@@ -58,7 +58,7 @@ void         (*GUI_Format_Update)(GUI_Format *unsafe_self);
 void         (*GUI_Format_Save)(GUI_Format *unsafe_self);
 
 // Documentation see config.h::CONFIG_SAVED_SETTINGS_TABLE. Anonymous enums for setting offsets
-#define CREATE_SETTINGS_OFFSET_GUI(_offset, _size, _setting_identifier, _description) \
+#define CREATE_SETTINGS_OFFSET_GUI(_entry, _offset, _size, _setting_identifier, _defaultval, _description) \
   enum { _setting_identifier = _offset };
 CREATE_SERIALIZED_GUI_POSITIONS(CREATE_SETTINGS_OFFSET_GUI)
 
@@ -77,7 +77,6 @@ struct GUI_Format_Time {
 };
 
 void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_instance, uint8_t *settings);
-void GUI_Format_Time_Default(uint8_t *settings);
 
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_DATE
@@ -89,7 +88,6 @@ struct GUI_Format_Date {
 };
 
 void GUI_Format_Date_Init(struct GUI_Format_Date *self, vfdco_date_t *date_instance, uint8_t *settings);
-void GUI_Format_Date_Default(uint8_t *settings);
 
 
 /** Begin of:

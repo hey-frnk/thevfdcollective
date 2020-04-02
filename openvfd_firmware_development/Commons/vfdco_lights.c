@@ -389,7 +389,7 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *setti
   memset(self->target_arr, 0, 4 * CONFIG_NUM_PIXELS);
 
   // Default loading if saved value is rubbish, then load by assignment
-  if(settings[LIGHT_PATTERN_SETTING_STATIC_position] >= NUM_STATIC_T4) Light_Pattern_Static_Default(settings);
+  /* if(settings[LIGHT_PATTERN_SETTING_STATIC_position] >= NUM_STATIC_T4) Light_Pattern_Static_Default(settings); */
   self->position = settings[LIGHT_PATTERN_SETTING_STATIC_position];
   // Fill target array
   _Light_Pattern_Static_Next_Color(self);
@@ -402,13 +402,6 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *setti
   Light_Pattern_Update = _Light_Pattern_Static_Update;
   Light_Pattern_Hello = _Light_Pattern_Static_Hello;
   Light_Pattern_Save = _Light_Pattern_Static_Save;
-}
-
-/**
-  * @brief  Implementation of static method Light_Pattern_Static::Default
- **/
-void Light_Pattern_Static_Default(uint8_t *settings) {
-  settings[LIGHT_PATTERN_SETTING_STATIC_position] = 0;
 }
 
 
@@ -543,8 +536,8 @@ static void _Light_Pattern_Spectrum_Save(Light_Pattern *unsafe_self) {
 **/
 void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self, uint8_t *settings) {
   // Default loading if saved value is trash, then load by assignment
-  if(settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation] == 0 || settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness] == 0)
-   Light_Pattern_Spectrum_Default(settings);
+  /* if(settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation] == 0 || settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness] == 0)
+   Light_Pattern_Spectrum_Default(settings); */
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
   LED_Color_Fader_Init(
     &self->spectrum_fader,
@@ -562,14 +555,6 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self, uint8_t *s
   Light_Pattern_Update = _Light_Pattern_Spectrum_Update;
   Light_Pattern_Hello = _Light_Pattern_Spectrum_Hello;
   Light_Pattern_Save = _Light_Pattern_Spectrum_Save;
-}
-
-/**
-  * @brief  Implementation of static method Light_Pattern_Spectrum::Default
- **/
-void Light_Pattern_Spectrum_Default(uint8_t *settings) {
-  settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation] = SATURATION_H;
-  settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness] = LIGHTNESS_M;
 }
 
 
@@ -647,8 +632,8 @@ static void _Light_Pattern_Rainbow_Save(Light_Pattern *unsafe_self) {
 **/
 void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self, uint8_t *settings) {
   // Default loading if saved value is garbage, then load by assignment
-  if((settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation] == 0) || settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] == 0)
-    Light_Pattern_Rainbow_Default(settings);
+  /* if((settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation] == 0) || settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] == 0)
+    Light_Pattern_Rainbow_Default(settings); */
   // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
   LED_Color_Fader_Init(
     &self->rainbow_fader,
@@ -666,14 +651,6 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self, uint8_t *set
   Light_Pattern_Update = _Light_Pattern_Rainbow_Update;
   Light_Pattern_Hello = _Light_Pattern_Rainbow_Hello;
   Light_Pattern_Save = _Light_Pattern_Rainbow_Save;
-}
-
-/**
-  * @brief  Implementation of static method Light_Pattern_Rainbow::Default
- **/
-void Light_Pattern_Rainbow_Default(uint8_t *settings) {
-  settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] = 10;
-  settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation] = SATURATION_H;
 }
 
 
@@ -763,8 +740,8 @@ static void _Light_Pattern_Chase_Save(Light_Pattern *unsafe_self) {
 **/
 void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *time, uint8_t *settings) {
   // Default loading if saved value is waste, then load by assignment
-  if((settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode] >= 3) || (settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] > 6)) 
-    Light_Pattern_Chase_Default(settings);
+  /* if((settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode] >= 3) || (settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] > 6)) 
+    Light_Pattern_Chase_Default(settings); */
 
   self->update_timer = Time_Event_Init(CONFIG_CHASE_FADE_SPEED);
   self->flip_timer = time;
@@ -779,14 +756,6 @@ void Light_Pattern_Chase_Init(struct Light_Pattern_Chase *self, vfdco_time_t *ti
   Light_Pattern_Update = _Light_Pattern_Chase_Update;
   Light_Pattern_Hello = _Light_Pattern_Chase_Hello;
   Light_Pattern_Save = _Light_Pattern_Chase_Save;
-}
-
-/**
-  * @brief  Implementation of static method Light_Pattern_Chase::Default
- **/
-void Light_Pattern_Chase_Default(uint8_t *settings) {
-  settings[LIGHT_PATTERN_SETTING_CHASE_chase_mode] = 0;
-  settings[LIGHT_PATTERN_SETTING_CHASE_color_peak_diff] = 0;
 }
 
 
@@ -907,8 +876,8 @@ static void _Light_Pattern_Music_Save(Light_Pattern *unsafe_self) {
 **/
 void Light_Pattern_Music_Init(struct Light_Pattern_Music *self, uint8_t *settings) {
   // Default loading if saved value is waste, then load by assignment
-  if((settings[LIGHT_PATTERN_SETTING_MUSIC_saturation] == 0) || settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] == 0)
-    Light_Pattern_Music_Default(settings);
+  /* if((settings[LIGHT_PATTERN_SETTING_MUSIC_saturation] == 0) || settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] == 0)
+    Light_Pattern_Music_Default(settings); */
 
   self->state_timer = Time_Event_Init(20);
   self->color_pos_timer = 0; // 3x multiplicator (60 ms)
@@ -926,14 +895,6 @@ void Light_Pattern_Music_Init(struct Light_Pattern_Music *self, uint8_t *setting
   Light_Pattern_Update = _Light_Pattern_Music_Update;
   Light_Pattern_Hello = _Light_Pattern_Music_Hello;
   Light_Pattern_Save = _Light_Pattern_Music_Save;
-}
-
-/**
-  * @brief  Implementation of static method Light_Pattern_Music::Default
- **/
-void Light_Pattern_Music_Default(uint8_t *settings) {
-  settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] = 21;
-  settings[LIGHT_PATTERN_SETTING_MUSIC_saturation] = SATURATION_H;
 }
 
 
@@ -1135,7 +1096,7 @@ static void _Light_Pattern_MomentsOfBliss_Save(Light_Pattern *unsafe_self) {
 **/
 void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint8_t *settings) {
   // Default loading if saved value is junk, then load by assignment
-  if(settings[LIGHT_PATTERN_SETTING_BLISS_moment] >= LIGHTS_BLISS_MAXMOMENTS) Light_Pattern_MomentsOfBliss_Default(settings);
+  // if(settings[LIGHT_PATTERN_SETTING_BLISS_moment] >= LIGHTS_BLISS_MAXMOMENTS) Light_Pattern_MomentsOfBliss_Default(settings);
 
   self->moment = settings[LIGHT_PATTERN_SETTING_BLISS_moment];
   _Light_Pattern_MomentsOfBliss_Remoment(self);
@@ -1146,13 +1107,6 @@ void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self
   Light_Pattern_Update  = _Light_Pattern_MomentsOfBliss_Update;
   Light_Pattern_Hello   = _Light_Pattern_MomentsOfBliss_Hello;
   Light_Pattern_Save    = _Light_Pattern_MomentsOfBliss_Save;
-}
-
-/**
-  * @brief  Implementation of static method Light_Pattern_MomentsOfBliss::Default
- **/
-void Light_Pattern_MomentsOfBliss_Default(uint8_t *settings) {
-  settings[LIGHT_PATTERN_SETTING_BLISS_moment] = 0;
 }
 
 

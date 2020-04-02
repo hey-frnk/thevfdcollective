@@ -124,6 +124,13 @@ void    vfdco_clock_mic_initializer();
 CREATE_SERIALIZED_GLOBAL(CREATE_SERIALIZED_INDEX)
 CREATE_SERIALIZED_GUI(CREATE_SERIALIZED_INDEX)
 CREATE_SERIALIZED_LIGHTS(CREATE_SERIALIZED_INDEX)
+#undef CREATE_SERIALIZED_INDEX
+
+// Anonymous enums for global settings
+#define CREATE_SETTINGS_OFFSET_GLOBAL(_entry, _offset, _size, _setting_identifier, _defaultval, _description) \
+  enum { _setting_identifier = _offset };
+CREATE_SERIALIZED_GLOBAL_POSITIONS(CREATE_SETTINGS_OFFSET_GLOBAL)
+#undef CREATE_SETTINGS_OFFSET_GLOBAL
 
 uint8_t _map_gui_instance_to_serialized_settings_index(gui_instance_t instance);
 uint8_t _map_lights_instance_to_serialized_settings_index(light_pattern_instance_t instance);

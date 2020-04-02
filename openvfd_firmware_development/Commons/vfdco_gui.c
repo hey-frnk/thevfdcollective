@@ -163,9 +163,9 @@ static void _GUI_Format_Time_Save(GUI_Format *unsafe_self) {
 void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_instance, uint8_t *settings) {
 
   // Default loading if saved value is litter, then load by assignment
-  time_format_t _chk_time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
+  /* time_format_t _chk_time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
   if(((_chk_time_mode != TIME_FORMAT_12H) && (_chk_time_mode != TIME_FORMAT_24H) && (_chk_time_mode != TIME_FORMAT_12H_NO_LZ))
-      || (settings[GUI_FORMAT_SETTING_TIME_dot_mode] > 3)) GUI_Format_Time_Default(settings);
+      || (settings[GUI_FORMAT_SETTING_TIME_dot_mode] > 3)) GUI_Format_Time_Default(settings); */
   
   self->time_instance = time_instance;
   self->time_mode = settings[GUI_FORMAT_SETTING_TIME_time_mode];
@@ -184,10 +184,6 @@ void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_insta
   GUI_Format_F4Var = _GUI_Format_Time_F4Var;
   GUI_Format_Update = _GUI_Format_Time_Update;
   GUI_Format_Save = _GUI_Format_Time_Save;
-}
-void GUI_Format_Time_Default(uint8_t *settings) {
-  settings[GUI_FORMAT_SETTING_TIME_time_mode] = TIME_FORMAT_24H;
-  settings[GUI_FORMAT_SETTING_TIME_dot_mode] = 0;
 }
 
 
@@ -220,9 +216,9 @@ static void _GUI_Format_Date_Save(GUI_Format *unsafe_self) {
 
 void GUI_Format_Date_Init(struct GUI_Format_Date *self, vfdco_date_t *date_instance, uint8_t *settings) {
   // Default loading if saved value is crap, then load by assignment
-  date_format_t _chk_date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
-  if((_chk_date_mode != DATE_FORMAT_DDMMYY) && (_chk_date_mode != DATE_FORMAT_MMDDYY)) 
-    GUI_Format_Date_Default(settings);
+  /* date_format_t _chk_date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
+  if((_chk_date_mode != DATE_FORMAT_DDMMYY) && (_chk_date_mode != DATE_FORMAT_MMDDYY))
+    GUI_Format_Date_Default(settings); */
   
   self->date_instance = date_instance;
   self->date_mode = settings[GUI_FORMAT_SETTING_DATE_date_mode];
@@ -236,10 +232,6 @@ void GUI_Format_Date_Init(struct GUI_Format_Date *self, vfdco_date_t *date_insta
   GUI_Format_F4Var = _GUI_Format_Date_F4Var;
   GUI_Format_Update = _GUI_Format_Date_Update;
   GUI_Format_Save = _GUI_Format_Date_Save;
-}
-
-void GUI_Format_Date_Default(uint8_t *settings) {
-  settings[GUI_FORMAT_SETTING_DATE_date_mode] = DATE_FORMAT_DDMMYY;
 }
 
 
@@ -644,8 +636,8 @@ static void _GUI_Format_Brightness_Setter_F3(GUI_Format *unsafe_self) {
   } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_END) {
     // Decrease NSH end digit
     if      (self->active_digit == 0) { // Set hour
-      if       (self->night_shift_new_end_m  > 0)    self->night_shift_new_end_m--;
-      else if  (self->night_shift_new_end_m == 0)    self->night_shift_new_end_m = 23;
+      if       (self->night_shift_new_end_h  > 0)    self->night_shift_new_end_h--;
+      else if  (self->night_shift_new_end_h == 0)    self->night_shift_new_end_h = 23;
     }
     else if (self->active_digit == 1) { // Set minute
       if       (self->night_shift_new_end_m  > 0)    self->night_shift_new_end_m--;

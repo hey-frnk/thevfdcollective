@@ -77,15 +77,15 @@ settings_arr_property settings_arr_names[NUM_SERIALIZABLE] = {
 };
 setting_property serialized_setting_names[] = {
     // Generate individual settings from vfdco_config.h
-    #define CREATE_SETTING_GLOBAL_TREESTR(_offset, _size, _setting_identifier, _description) {.identifier = #_setting_identifier, .description = _description, .setting_offset = _offset, .setting_size = _size},
+    #define CREATE_SETTING_GLOBAL_TREESTR(_entry, _offset, _size, _setting_identifier, _defaultval, _description) {.identifier = #_setting_identifier, .description = _description, .setting_offset = _offset, .setting_size = _size},
     CREATE_SERIALIZED_GLOBAL_POSITIONS(CREATE_SETTING_GLOBAL_TREESTR)
     #undef CREATE_SETTING_GLOBAL_TREESTR
 
-    #define CREATE_SETTING_GUI_TREESTR(_offset, _size, _setting_identifier, _description) {.identifier = #_setting_identifier, .description = _description, .setting_offset = _offset, .setting_size = _size},
+    #define CREATE_SETTING_GUI_TREESTR(_entry, _offset, _size, _setting_identifier, _defaultval, _description) {.identifier = #_setting_identifier, .description = _description, .setting_offset = _offset, .setting_size = _size},
     CREATE_SERIALIZED_GUI_POSITIONS(CREATE_SETTING_GUI_TREESTR)
     #undef CREATE_SETTING_GUI_TREESTR
 
-    #define CREATE_SETTING_LIGHT_PATTERN_TREESTR(_offset, _size, _setting_identifier, _description) {.identifier = #_setting_identifier, .description = _description, .setting_offset = _offset, .setting_size = _size},
+    #define CREATE_SETTING_LIGHT_PATTERN_TREESTR(_entry, _offset, _size, _setting_identifier, _defaultval, _description) {.identifier = #_setting_identifier, .description = _description, .setting_offset = _offset, .setting_size = _size},
     CREATE_SERIALIZED_LIGHTS_POSITIONS(CREATE_SETTING_LIGHT_PATTERN_TREESTR)
     #undef CREATE_SETTING_LIGHT_PATTERN_TREESTR
 };
