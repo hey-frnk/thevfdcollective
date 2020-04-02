@@ -288,13 +288,13 @@ static const uint8_t MomentsOfBliss_Colors[LIGHTS_BLISS_MAXMOMENTS][7] = { // (C
   // D+: Hue difference between LEDs. Random number between 0..2^(D+), 4x MSB
   // T: Peak differene tolerance. Random bumber between 0..2^(T), 4x LSB
 // C1H, C1S, C1L, C2H, C2S, C2L,  D+|T
-  {105, 245, 100, 190, 245, 110, 0x42}, // Nordlicht.          Ink: fluorescent green to teal, touches of purple
+  {105, 255, 100, 190, 255, 110, 0x42}, // Nordlicht.          Ink: fluorescent green to teal, touches of purple
   // {140, 150, 127, 150, 180, 127, 0x42}, // Schneesturm.        Ink: acrylic. dark midnight blue, shades of gray and cold white
-  {120, 255, 220, 230, 255, 200, 0x53}, // Frühlingspastell.   Ink: pastel. cherry, pink, some light green and rarely drip of light blue
-  { 55, 255, 127, 145, 255, 127, 0x42}, // Hummelhonig.        Ink: highly saturated green and blue gradients
-  {140, 255, 127, 150, 255, 240, 0x52}, // Meeresgeflüster.    Ink: watercolor. light sky blue to turquoise, with white sparks and rarely some yellow
+  {160, 255, 132, 230, 255, 132, 0x53}, // Frühlingspastell.   Ink: pastel. cherry, pink, some light green and rarely drip of light blue
+  { 50, 255, 127, 155, 255, 100, 0x52}, // Hummelhonig.        Ink: highly saturated green and blue gradients
+  {160, 255, 100, 170, 255, 200, 0x52}, // Meeresgeflüster.    Ink: watercolor. light sky blue to turquoise, with white sparks and rarely some yellow
   {  0, 255, 120,  35, 255, 120, 0x32}, // Herbstlagerfeuer.   Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red
-  {235, 255, 127,  10, 255, 127, 0x42}, // Some sunset name.   Ink: strong red. every warm red tone, some orange, some magenta
+  {235, 255, 127,   5, 255, 127, 0x42}, // Abendhimmel.        Ink: strong red. every warm red tone, some orange, some magenta
 };
 static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
   {'A', 'U', 'R', 'O', 'R', 'A'},
@@ -1154,7 +1154,7 @@ static uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
     default: r = c; g = 0; b = x; break; // M to R
   }
 
-  return ((r + m) << 8) | ((g + m) << 16) | (b + m);
+  return (((uint32_t)r + m) << 8) | (((uint32_t)g + m) << 16) | ((uint32_t)b + m);
 }
 
 /*

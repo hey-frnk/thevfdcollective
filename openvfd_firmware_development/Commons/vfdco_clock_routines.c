@@ -549,12 +549,12 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
       }
       case LIGHT_PATTERN_SPECTRUM: {
         instance_settings[0] |= 0x80; // Sat: at least 128
-        instance_settings[1] |= CONFIG_LIGHTNESS_LOW + _reduce(instance_settings[0], 96); // Li: max 128
+        instance_settings[1] = CONFIG_LIGHTNESS_MEDIUM + _reduce(instance_settings[0], 96); // Li: max 128
         break;
       }
       case LIGHT_PATTERN_RAINBOW: {
         instance_settings[0] = 10 + _reduce(instance_settings[0], 33); // Diff: at least 10, max 42
-        instance_settings[1] |= CONFIG_LIGHTNESS_LOW + _reduce(instance_settings[0], 96);
+        instance_settings[1] |= 0x80; // Sat: at least 128
         break;
       }
       case LIGHT_PATTERN_CHASE: {

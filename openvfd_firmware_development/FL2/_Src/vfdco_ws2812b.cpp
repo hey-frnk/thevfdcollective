@@ -89,10 +89,10 @@ void vfdco_clr_set_RGBW(uint8_t index, uint8_t r, uint8_t g, uint8_t b, uint8_t 
   vfdco_clr_set_RGB(index, r, g, b);
 }
 void vfdco_clr_set_all_RGB(uint8_t r, uint8_t g, uint8_t b) {
-  for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
+  for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
 void vfdco_clr_set_all_RGBW(uint8_t r, uint8_t g, uint8_t b, uint8_t w) {
-  for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
+  for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) vfdco_clr_set_RGB(i, r, g, b);
 }
 
 void vfdco_clr_target_RGB(uint8_t *tp, uint8_t r, uint8_t g, uint8_t b) {
@@ -130,7 +130,7 @@ void vfdco_clr_minimize_difference(uint8_t *target_arr) {
 }
 
 void vfdco_clr_render() {
-  for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) rgb_arr[i] >>= _led_dim_factor;
+  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; ++i) rgb_arr[i] >>= _led_dim_factor;
   render();
 }
 

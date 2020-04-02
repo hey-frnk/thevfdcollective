@@ -75,7 +75,7 @@ extern "C" {
 // How many milliseconds should a regular message last?
 #define CONFIG_MESSAGE_LONG       1000
 // What should be the default welcome message? (Default: {'H', 'E', 'L', 'L', 'O', ' '})
-#define CONFIG_WELCOME_MESSAGE_DEFAULT {'H', 'E', 'L', 'L', 'O', ' '}
+#define CONFIG_WELCOME_MESSAGE_DEFAULT 'H', 'E', 'L', 'L', 'O', ' '
 
 /**
  * @tableofcontents SECTION_CONFIG_LIGHTS
@@ -84,7 +84,7 @@ extern "C" {
 // Each iterable light pattern is represented as a number n according to clock_routines. The n-th bit in the 
 // default register below enables or disables a light pattern from being switched to by F2 pressing or in the randomizer
 // 0b[COP | TIME_CODE | MUSIC | CHASE | RAINBOW | SPECTRUM | MOMENTSOFBLISS | STATIC]
-#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b11111111 // Mic & cop disabled
+#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b01011111 // Mic & cop disabled
 #define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b01011111 // Mic & cop disabled
 // Definition for different lightess & saturation settings
 #define CONFIG_LIGHTNESS_HIGH     127
