@@ -49,6 +49,7 @@ extern "C" {
  *    -> Offset: Must be STRICTLY ASCENDING for each instance. No consistency is checked here, be careful
  *    -> Size: Size of setting in bytes. Must be kept consistent to the size of the settings type of the instance
  *    -> Setting identifier: Give it a name, but it is advisory to keep a consistent naming
+ *    -> Default value: Array values: WITHOUT braces. Values with ! require #include of module where value is declared. Throws compile error if not declared
  *    -> Description: Only for documentation/reference. Should be meaningful
  */
 #define NUM_SERIALIZABLE_GLOBAL 1
@@ -60,8 +61,8 @@ extern "C" {
                // SUBENTRY: Entry|Offset| Size| Setting identifier                                    | Default value                            | Description, just for documentation Has no effect on anything
 #define CREATE_SERIALIZED_GLOBAL_POSITIONS(SUBENTRY) \
           /*-->*/ SUBENTRY(      0,    0,    6, CLOCK_ROUTINE_SETTING_welcome                         , CONFIG_WELCOME_MESSAGE_DEFAULT           , "6 * char, welcome message") \
-          /*-->*/ SUBENTRY(      0,    6,    1, CLOCK_ROUTINE_SETTING_global_light_instance_counter   , 0 /* Static */                           , "uint8_t, global_light_instance_counter, saved light instance") \
-          /*-->*/ SUBENTRY(      0,    7,    1, CLOCK_ROUTINE_SETTING_global_light_instance_random    , 255 /* Off */                            , "uint8_t, global_light_instance_random, random instance") \
+          /*-->*/ SUBENTRY(      0,    6,    1, CLOCK_ROUTINE_SETTING_global_light_instance_counter   , LIGHT_PATTERN_STATIC /*!*/               , "uint8_t, global_light_instance_counter, saved light instance") \
+          /*-->*/ SUBENTRY(      0,    7,    1, CLOCK_ROUTINE_SETTING_global_light_instance_random    , GLOBAL_LIGHT_INSTANCE_RANDOM_OFF /*!*/   , "uint8_t, global_light_instance_random, random instance") \
           /*-->*/ SUBENTRY(      0,    8,    1, CLOCK_ROUTINE_SETTING_global_light_it_register        , CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT, "uint8_t, global_light_it_register, iterable instance enable register") \
           /*-->*/ SUBENTRY(      0,    9,    1, CLOCK_ROUTINE_SETTING_global_light_rnd_register       , CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT  , "uint8_t, global_light_rnd_register, random instance enable register") \
           /*-->*/ SUBENTRY(      0,   10,    1, CLOCK_ROUTINE_SETTING_dim_factor_display              , CONFIG_BRIGHTNESS_MAX                    , "uint8_t, dim_factor_display") \
@@ -75,9 +76,9 @@ extern "C" {
         ENTRY(      1,       2, GUI_TIME                       , SERIALIZABLE_GUI_TIME         ) \
         ENTRY(      2,       1, GUI_DATE                       , SERIALIZABLE_GUI_DATE         )
 #define CREATE_SERIALIZED_GUI_POSITIONS(SUBENTRY) \
-          /*-->*/ SUBENTRY(      1,    0,    1, GUI_FORMAT_SETTING_TIME_time_mode                     , 0 /* 24H */                              , "uint8_t, time_mode (12/24H/12HLZ)") \
+          /*-->*/ SUBENTRY(      1,    0,    1, GUI_FORMAT_SETTING_TIME_time_mode                     , TIME_FORMAT_24H /* ! */                  , "uint8_t, time_mode (12/24H/12HLZ)") \
           /*-->*/ SUBENTRY(      1,    1,    1, GUI_FORMAT_SETTING_TIME_dot_mode                      , 0 /* Standard */                         , "uint8_t, dot_mode (blink/flip/off") \
-          /*-->*/ SUBENTRY(      2,    0,    1, GUI_FORMAT_SETTING_DATE_date_mode                     , 0 /* DDMMYY */                           , "uint8_t, date_mode (DDMMYY/MMDDYY)")
+          /*-->*/ SUBENTRY(      2,    0,    1, GUI_FORMAT_SETTING_DATE_date_mode                     , DATE_FORMAT_DDMMYY /* ! */               , "uint8_t, date_mode (DDMMYY/MMDDYY)")
 
 #define CREATE_SERIALIZED_LIGHTS(ENTRY) \
         ENTRY(      3,       1, LIGHT_PATTERN_STATIC           , SERIALIZABLE_LIGHTS_STATIC    ) \
