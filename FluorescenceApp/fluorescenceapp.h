@@ -167,6 +167,10 @@ private slots:
 
     void on_settings_presets_en_set_clicked();
 
+    void on_shuffle_set_clicked();
+
+    void on_dynamic_music_clicked();
+
 private:
     Ui::FluorescenceApp *ui;
 

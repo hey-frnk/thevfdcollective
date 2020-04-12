@@ -11,7 +11,7 @@ fl_app_com::fl_app_com(const QString portname)
     buf_rx = new uint8_t[BUF_RX_SIZE];
 
     qDebug() << portname;
-    // serial_port.close();
+    serial_port.close();
     serial_port.setPortName(portname);
     serial_port.setBaudRate(QSerialPort::Baud115200);
     serial_port.setDataBits(QSerialPort::Data8);
@@ -23,10 +23,14 @@ fl_app_com::fl_app_com(const QString portname)
         return;
     }
 
+    // If WCH CH340G, clock will reboot. Wait appropriately
+    if(portname.contains("wch")) QThread::msleep(8000);
+
     // Try if port is legacy
     buf_tx = new uint8_t[BUF_TX_SIZE_LEGACY];
     _transfer = &fl_app_com::legacy_transfer;
     QString fw_str = transfer_clock_control(COM_PROTOCOL_FW_VERSION_REQ);
+    // qDebug() << "FW_STR: " << fw_str;
     if(fw_str.at(0) == "v" && fw_str.at(1) == "2") {
         // Legacy protocol!
         is_legacy_protocol = true;
@@ -36,8 +40,11 @@ fl_app_com::fl_app_com(const QString portname)
         delete[] buf_tx;
         buf_tx = new uint8_t[BUF_TX_SIZE];
         _transfer = &fl_app_com::regular_transfer;
-        qDebug() << "Testing regular protocol";
+
+        // qDebug() << "Testing regular protocol";
         QString fw_str = transfer_clock_control(COM_PROTOCOL_FW_VERSION_REQ);
+        // qDebug() << "FW_STR: " << fw_str;
+
         if(fw_str.at(0) == "3" && fw_str.at(1) == ".") {
             is_legacy_protocol = false;
             status = FL_APP_COM_STATUS_OK;
@@ -89,22 +96,13 @@ void fl_app_com::transfer_enable_presets(uint8_t enabled_instances)
     transfer();
 }
 
-void fl_app_com::transfer_random_enabled_presets(uint8_t enabled_instances)
+void fl_app_com::transfer_random_set(uint8_t enabled_instances, random_speed_t speed)
 {
     clear_buffer();
     if(!is_legacy_protocol) {
         set_command_byte(0x06);
         buf_tx[COM_PROTOCOL_DATA_OFFSET] = enabled_instances;
-    }
-    transfer();
-}
-
-void fl_app_com::transfer_random_changing_speed(uint8_t changing_speed_option)
-{
-    clear_buffer();
-    if(!is_legacy_protocol) {
-        set_command_byte(0x07);
-        buf_tx[COM_PROTOCOL_DATA_OFFSET] = changing_speed_option;
+        buf_tx[COM_PROTOCOL_DATA_OFFSET + 1] = speed;
     }
     transfer();
 }
@@ -142,7 +140,7 @@ QString fl_app_com::transfer_time_date(vfdco_time_t t, vfdco_date_t d)
 
     // Wait to receive
     QThread::msleep(100);
-    return receive_and_extract_data(200);
+    return receive_and_extract_data(1000);
 }
 
 void fl_app_com::transfer_brightness(uint8_t disp_or_led, uint8_t dim_factor)
@@ -225,7 +223,7 @@ QString fl_app_com::transfer_clock_control(com_protocol_clock_control_t control)
     QThread::msleep(100);
     // Response
     if(control == COM_PROTOCOL_FW_VERSION_REQ || control == COM_PROTOCOL_HW_VERSION_REQ || control == COM_PROTOCOL_ENABLED_INSTANCES_REQ) {
-        return receive_and_extract_data(200);
+        return receive_and_extract_data(1000);
     } else return QString("");
 }
 
@@ -284,6 +282,9 @@ void fl_app_com::regular_transfer()
     buf_tx[BUF_TX_SIZE - 1] = 0x25;
     serial_port.write((char const *)buf_tx, BUF_TX_SIZE);
     serial_port.waitForBytesWritten(10);
+
+    for(int i = 0; i < BUF_TX_SIZE; ++i) qDebug() << buf_tx[i];
+    qDebug() << "";
 }
 
 void fl_app_com::legacy_transfer()
@@ -292,6 +293,9 @@ void fl_app_com::legacy_transfer()
     buf_tx[BUF_TX_SIZE - 1] = 0x24;
     serial_port.write((char const *)buf_tx, BUF_TX_SIZE_LEGACY);
     serial_port.waitForBytesWritten(10);
+
+    for(int i = 0; i < BUF_TX_SIZE; ++i) qDebug() << buf_tx[i];
+    qDebug() << "";
 }
 
 QString fl_app_com::receive_and_extract_data(int wait_timeout)

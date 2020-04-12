@@ -181,7 +181,7 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>Arial Black</family>
        <pointsize>96</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -259,7 +259,7 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -684,7 +684,7 @@ color: rgb(255, 255, 255);</string>
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>111</width>
+         <width>91</width>
          <height>31</height>
         </rect>
        </property>
@@ -698,15 +698,15 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>Spectrum Fade</string>
+        <string>Spectrum</string>
        </property>
       </widget>
       <widget class="QPushButton" name="dynamic_rainbow">
        <property name="geometry">
         <rect>
-         <x>250</x>
+         <x>230</x>
          <y>10</y>
-         <width>111</width>
+         <width>91</width>
          <height>31</height>
         </rect>
        </property>
@@ -726,7 +726,7 @@ color: rgb(255, 255, 255);</string>
       <widget class="QPushButton" name="dynamic_bliss_dnc">
        <property name="geometry">
         <rect>
-         <x>130</x>
+         <x>110</x>
          <y>10</y>
          <width>111</width>
          <height>31</height>
@@ -748,9 +748,9 @@ color: rgb(255, 255, 255);</string>
       <widget class="QPushButton" name="dynamic_timecode">
        <property name="geometry">
         <rect>
-         <x>490</x>
+         <x>530</x>
          <y>10</y>
-         <width>111</width>
+         <width>91</width>
          <height>31</height>
         </rect>
        </property>
@@ -770,9 +770,9 @@ color: rgb(255, 255, 255);</string>
       <widget class="QPushButton" name="dynamic_police">
        <property name="geometry">
         <rect>
-         <x>610</x>
+         <x>630</x>
          <y>10</y>
-         <width>111</width>
+         <width>91</width>
          <height>31</height>
         </rect>
        </property>
@@ -792,9 +792,9 @@ color: rgb(255, 255, 255);</string>
       <widget class="QPushButton" name="dynamic_chase">
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>330</x>
          <y>10</y>
-         <width>111</width>
+         <width>91</width>
          <height>31</height>
         </rect>
        </property>
@@ -2455,6 +2455,28 @@ color: rgb(255, 255, 255);</string>
         </item>
        </widget>
       </widget>
+      <widget class="QPushButton" name="dynamic_music">
+       <property name="geometry">
+        <rect>
+         <x>430</x>
+         <y>10</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Music</string>
+       </property>
+      </widget>
       <zorder>dynamic_spectrum</zorder>
       <zorder>dynamic_bliss_dnc</zorder>
       <zorder>dynamic_timecode</zorder>
@@ -2477,6 +2499,7 @@ color: rgb(255, 255, 255);</string>
       <zorder>panel_dyn_tcode</zorder>
       <zorder>panel_dyn_cop</zorder>
       <zorder>panel_dyn_music</zorder>
+      <zorder>dynamic_music</zorder>
      </widget>
      <widget class="QWidget" name="tab_moodsync">
       <attribute name="title">
@@ -2663,6 +2686,330 @@ screen.</string>
       <attribute name="title">
        <string>Shuffle</string>
       </attribute>
+      <widget class="QCheckBox" name="shuffle_en_static">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>110</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Static</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="shuffle_en_music">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>230</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Music</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="shuffle_en_cop">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>250</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Police Lights</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="shuffle_en_chase">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>190</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Chase Fade</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="shuffle_en_spectrum">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>150</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Spectrum Fade</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="shuffle_en_rnb">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>170</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Rainbow Fade</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="shuffle_en_bliss">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>130</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Moments of Bliss</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="shuffle_en_tcode">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>210</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);</string>
+       </property>
+       <property name="text">
+        <string>Time Code</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="shuffle_speed">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>140</y>
+         <width>281</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <pointsize>18</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>minute</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>other minute</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ten minutes</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>half hour</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>hour</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QPushButton" name="shuffle_set">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>210</y>
+         <width>281</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="text">
+        <string>Looks good, go!</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="shuffle_intro1">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>60</y>
+         <width>251</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>let's shuffle through</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="shuffle_intro2">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>110</y>
+         <width>241</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>and shuffle every...</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -5569,11 +5916,11 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_main_control</zorder>
    <zorder>panel_message</zorder>
    <zorder>panel_custom_colors</zorder>
-   <zorder>panel_welcome</zorder>
    <zorder>panel_lsettings</zorder>
    <zorder>panel_timesync</zorder>
-   <zorder>panel_presets</zorder>
    <zorder>panel_settings</zorder>
+   <zorder>panel_presets</zorder>
+   <zorder>panel_welcome</zorder>
   </widget>
  </widget>
  <customwidgets>

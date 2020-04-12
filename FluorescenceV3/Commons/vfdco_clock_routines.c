@@ -152,7 +152,7 @@ inline void vfdco_clock_serialization_initializer() {
   SERIALIZATION_HEADER_STATUS_t read_status = vfdco_serialization_read(serialized_settings, serialized_settings_sizes, NUM_SERIALIZABLE);
   if(read_status != SERIALIZATION_HEADER_STATUS_OK) {
     // Something went wrong. Load default settings!
-    vfdco_clock_settings_default();
+    vfdco_clock_settings_default(1);
   }
 }
 
@@ -350,7 +350,7 @@ inline void vfdco_clock_gui_routine() {
       break;
     }
     case BUTTON_STATE_LONGPRESS: {
-      if(global_gui_instance_counter == GUI_STOPWATCH) vfdco_clock_settings_default();
+      if(global_gui_instance_counter == GUI_STOPWATCH) vfdco_clock_settings_default(0);
       else if(GUI_Format_F4Var) GUI_Format_F4Var(&global_gui_instance);
       GLOBAL_CLEAR_BUTTON(global_button_F4_state); 
       break;
@@ -425,14 +425,16 @@ inline void vfdco_clock_com_routine() {
   * @tableofcontents SECTION_SETTING FUNCTIONS
  **/
 void _vfdco_clock_settings_default_internal();
-void vfdco_clock_settings_default() {
+void vfdco_clock_settings_default(uint8_t silent) {
   // Restore settings for all class members according to settings
   _vfdco_clock_settings_default_internal();
 
   // Message about this
-  vfdco_display_render_message(Messages_Routine_Default1, 0, CONFIG_MESSAGE_SHORT);
-  vfdco_display_render_message(Messages_Routine_Settings, 0, CONFIG_MESSAGE_SHORT);
-  vfdco_display_render_message(Messages_Routine_Default2, 0, CONFIG_MESSAGE_SHORT);
+  if(!silent) {
+    vfdco_display_render_message(Messages_Routine_Default1, 0, CONFIG_MESSAGE_SHORT); 
+    vfdco_display_render_message(Messages_Routine_Settings, 0, CONFIG_MESSAGE_SHORT);
+    vfdco_display_render_message(Messages_Routine_Default2, 0, CONFIG_MESSAGE_SHORT);
+  }
 }
 
 void vfdco_clock_settings_save(uint8_t silent) {
@@ -669,6 +671,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
       }
       // Switch to instance
       light_pattern_instance_t prev_instance_counter = global_light_instance_counter;
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(instance);
       if(global_light_instance_counter != prev_instance_counter) if(Light_Pattern_Hello) Light_Pattern_Hello();
     }
@@ -679,17 +682,17 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
       vfdco_display_render_message(Messages_Routine_Inst, 0, CONFIG_MESSAGE_SHORT);
       vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
     }
-    // Enabled random instances set
+    // Random set
     else if(command_byte == 0x06) {
+      // Apply settings
       SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_speed] = input_buffer[COM_PROTOCOL_DATA_OFFSET + 1];
       vfdco_display_render_message(Messages_Routine_Rnd, 0, CONFIG_MESSAGE_SHORT);
       vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
-    }
-    // Random interval set
-    else if(command_byte == 0x07) {
-      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_speed] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
-      vfdco_display_render_message(Messages_Routine_Rnd, 0, CONFIG_MESSAGE_SHORT);
-      vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
+      // Turn on
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(LIGHT_PATTERN_STATIC);
+      find_next_lights_instance();
+      vfdco_display_render_message(Messages_Routine_RandomOn, 0, CONFIG_MESSAGE_LONG);
     }
 
 
@@ -797,7 +800,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
         // Save request
         case COM_PROTOCOL_SETTINGS_SAVE_REQ: vfdco_clock_settings_save(0); break;
         // Default load request 
-        case COM_PROTOCOL_DEFAULT_REQ: vfdco_clock_settings_default(); break;
+        case COM_PROTOCOL_DEFAULT_REQ: vfdco_clock_settings_default(0); break;
         default: break;
         // Enabled instances request
         case COM_PROTOCOL_ENABLED_INSTANCES_REQ: {

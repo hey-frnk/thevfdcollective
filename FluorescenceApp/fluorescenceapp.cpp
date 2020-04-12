@@ -221,6 +221,7 @@ void FluorescenceApp::on_com_connect_clicked()
 
         // Initialize COM instance & try to connect
         global_com_instance = new fl_app_com(ui->com_select->currentText());
+
         if(global_com_instance->getStatus() == FL_APP_COM_STATUS_CONNECTION_FAILED) {
             error_message("Oh deer 🦌, seems like we couldn't connect to Fluorescence. Please make sure you have connected Fluorescence correctly and try again!", QMessageBox::Critical);
             return;
@@ -462,11 +463,7 @@ void FluorescenceApp::on_dynamic_bliss_dnc_clicked() {
     clear_lights_instance();
     hide_all_dynamic_control_panels();
     Light_Pattern_MomentsOfBliss_Init((struct Light_Pattern_MomentsOfBliss *)&global_lights_instance, NULL);
-    if(!global_is_fw2) {
-        ui->panel_dyn_bliss->show();
-    } else { // Legacy (fw2)
-        ui->panel_dyn_music->show();
-    }
+    ui->panel_dyn_bliss->show();
 }
 
 void FluorescenceApp::on_dynamic_rainbow_clicked() {
@@ -481,6 +478,15 @@ void FluorescenceApp::on_dynamic_chase_clicked() {
     hide_all_dynamic_control_panels();
     Light_Pattern_Chase_Init((struct Light_Pattern_Chase *)&global_lights_instance, &global_time, NULL);
     ui->panel_dyn_chase->show();
+}
+
+
+void FluorescenceApp::on_dynamic_music_clicked()
+{
+    clear_lights_instance();
+    hide_all_dynamic_control_panels();
+    Light_Pattern_Music_Init((struct Light_Pattern_Music *)&global_lights_instance, NULL);
+    ui->panel_dyn_music->show();
 }
 
 void FluorescenceApp::on_dynamic_timecode_clicked() {
@@ -544,6 +550,22 @@ void FluorescenceApp::on_settings_presets_en_set_clicked()
     enabled_instances |=  1 << (ui->settings_presets_en_bliss->isChecked() * LIGHT_PATTERN_MOMENTSOFBLISS);
     enabled_instances |=  1 << (ui->settings_presets_en_static->isChecked() * LIGHT_PATTERN_STATIC);
     global_com_instance->transfer_enable_presets(enabled_instances);
+}
+
+
+void FluorescenceApp::on_shuffle_set_clicked()
+{
+    // Parse checks
+    uint8_t enabled_instances = 0;
+    enabled_instances |=  1 << (ui->shuffle_en_cop->isChecked() * LIGHT_PATTERN_COP);
+    enabled_instances |=  1 << (ui->shuffle_en_tcode->isChecked() * LIGHT_PATTERN_TIME_CODE);
+    enabled_instances |=  1 << (ui->shuffle_en_music->isChecked() * LIGHT_PATTERN_MUSIC);
+    enabled_instances |=  1 << (ui->shuffle_en_chase->isChecked() * LIGHT_PATTERN_CHASE);
+    enabled_instances |=  1 << (ui->shuffle_en_rnb->isChecked() * LIGHT_PATTERN_RAINBOW);
+    enabled_instances |=  1 << (ui->shuffle_en_spectrum->isChecked() * LIGHT_PATTERN_SPECTRUM);
+    enabled_instances |=  1 << (ui->shuffle_en_bliss->isChecked() * LIGHT_PATTERN_MOMENTSOFBLISS);
+    enabled_instances |=  1 << (ui->shuffle_en_static->isChecked() * LIGHT_PATTERN_STATIC);
+    global_com_instance->transfer_random_set(enabled_instances, (random_speed_t)ui->shuffle_speed->currentIndex());
 }
 
 

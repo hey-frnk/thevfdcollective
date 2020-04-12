@@ -58,7 +58,7 @@ void    vfdco_clock_lights_routine();
 void    vfdco_clock_power_initializer();
 void    vfdco_clock_power_routine();
 
-void    vfdco_clock_settings_default();
+void    vfdco_clock_settings_default(uint8_t silent);
 void    vfdco_clock_settings_save(uint8_t silent);
 
 // Communication (Serial/USB, Serial/Bluetooth) routine

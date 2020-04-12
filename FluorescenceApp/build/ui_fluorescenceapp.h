@@ -147,6 +147,7 @@ public:
     QLabel *panel_dyn_music_p2;
     QLabel *panel_dyn_music_ptext_2;
     QComboBox *panel_dyn_music_param2;
+    QPushButton *dynamic_music;
     QWidget *tab_moodsync;
     QLabel *lisync_computer;
     ClickableLabel *lisync_sample;
@@ -159,6 +160,18 @@ public:
     color_widgets::ColorPreview *lisync_c1;
     color_widgets::ColorPreview *lisync_c4;
     QWidget *tab_shuffle;
+    QCheckBox *shuffle_en_static;
+    QCheckBox *shuffle_en_music;
+    QCheckBox *shuffle_en_cop;
+    QCheckBox *shuffle_en_chase;
+    QCheckBox *shuffle_en_spectrum;
+    QCheckBox *shuffle_en_rnb;
+    QCheckBox *shuffle_en_bliss;
+    QCheckBox *shuffle_en_tcode;
+    QComboBox *shuffle_speed;
+    QPushButton *shuffle_set;
+    QLabel *shuffle_intro1;
+    QLabel *shuffle_intro2;
     QWidget *panel_custom_colors;
     color_widgets::ColorWheel *custom_color_wheel;
     color_widgets::HueSlider *custom_slider_h;
@@ -353,7 +366,7 @@ public:
         welcome_click2begin->setObjectName(QString::fromUtf8("welcome_click2begin"));
         welcome_click2begin->setGeometry(QRect(160, 100, 401, 91));
         QFont font4;
-        font4.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
+        font4.setFamily(QString::fromUtf8("Arial Black"));
         font4.setPointSize(96);
         font4.setBold(true);
         font4.setWeight(75);
@@ -486,37 +499,37 @@ public:
         tab_presets_dynamic->setObjectName(QString::fromUtf8("tab_presets_dynamic"));
         dynamic_spectrum = new QPushButton(tab_presets_dynamic);
         dynamic_spectrum->setObjectName(QString::fromUtf8("dynamic_spectrum"));
-        dynamic_spectrum->setGeometry(QRect(10, 10, 111, 31));
+        dynamic_spectrum->setGeometry(QRect(10, 10, 91, 31));
         dynamic_spectrum->setFont(font2);
         dynamic_spectrum->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         dynamic_rainbow = new QPushButton(tab_presets_dynamic);
         dynamic_rainbow->setObjectName(QString::fromUtf8("dynamic_rainbow"));
-        dynamic_rainbow->setGeometry(QRect(250, 10, 111, 31));
+        dynamic_rainbow->setGeometry(QRect(230, 10, 91, 31));
         dynamic_rainbow->setFont(font2);
         dynamic_rainbow->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         dynamic_bliss_dnc = new QPushButton(tab_presets_dynamic);
         dynamic_bliss_dnc->setObjectName(QString::fromUtf8("dynamic_bliss_dnc"));
-        dynamic_bliss_dnc->setGeometry(QRect(130, 10, 111, 31));
+        dynamic_bliss_dnc->setGeometry(QRect(110, 10, 111, 31));
         dynamic_bliss_dnc->setFont(font2);
         dynamic_bliss_dnc->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         dynamic_timecode = new QPushButton(tab_presets_dynamic);
         dynamic_timecode->setObjectName(QString::fromUtf8("dynamic_timecode"));
-        dynamic_timecode->setGeometry(QRect(490, 10, 111, 31));
+        dynamic_timecode->setGeometry(QRect(530, 10, 91, 31));
         dynamic_timecode->setFont(font2);
         dynamic_timecode->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         dynamic_police = new QPushButton(tab_presets_dynamic);
         dynamic_police->setObjectName(QString::fromUtf8("dynamic_police"));
-        dynamic_police->setGeometry(QRect(610, 10, 111, 31));
+        dynamic_police->setGeometry(QRect(630, 10, 91, 31));
         dynamic_police->setFont(font2);
         dynamic_police->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         dynamic_chase = new QPushButton(tab_presets_dynamic);
         dynamic_chase->setObjectName(QString::fromUtf8("dynamic_chase"));
-        dynamic_chase->setGeometry(QRect(370, 10, 111, 31));
+        dynamic_chase->setGeometry(QRect(330, 10, 91, 31));
         dynamic_chase->setFont(font2);
         dynamic_chase->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
@@ -924,6 +937,12 @@ public:
         panel_dyn_music_param2->setGeometry(QRect(180, 50, 141, 31));
         panel_dyn_music_param2->setFont(font8);
         panel_dyn_music_param2->setFrame(false);
+        dynamic_music = new QPushButton(tab_presets_dynamic);
+        dynamic_music->setObjectName(QString::fromUtf8("dynamic_music"));
+        dynamic_music->setGeometry(QRect(430, 10, 91, 31));
+        dynamic_music->setFont(font2);
+        dynamic_music->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
+"color: rgb(255, 255, 255);"));
         tab_presets_container->addTab(tab_presets_dynamic, QString());
         dynamic_spectrum->raise();
         dynamic_bliss_dnc->raise();
@@ -947,6 +966,7 @@ public:
         panel_dyn_tcode->raise();
         panel_dyn_cop->raise();
         panel_dyn_music->raise();
+        dynamic_music->raise();
         tab_moodsync = new QWidget();
         tab_moodsync->setObjectName(QString::fromUtf8("tab_moodsync"));
         lisync_computer = new QLabel(tab_moodsync);
@@ -996,6 +1016,79 @@ public:
         tab_presets_container->addTab(tab_moodsync, QString());
         tab_shuffle = new QWidget();
         tab_shuffle->setObjectName(QString::fromUtf8("tab_shuffle"));
+        shuffle_en_static = new QCheckBox(tab_shuffle);
+        shuffle_en_static->setObjectName(QString::fromUtf8("shuffle_en_static"));
+        shuffle_en_static->setEnabled(false);
+        shuffle_en_static->setGeometry(QRect(90, 110, 71, 20));
+        shuffle_en_static->setFont(font1);
+        shuffle_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_static->setChecked(true);
+        shuffle_en_music = new QCheckBox(tab_shuffle);
+        shuffle_en_music->setObjectName(QString::fromUtf8("shuffle_en_music"));
+        shuffle_en_music->setGeometry(QRect(90, 230, 141, 20));
+        shuffle_en_music->setFont(font1);
+        shuffle_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_cop = new QCheckBox(tab_shuffle);
+        shuffle_en_cop->setObjectName(QString::fromUtf8("shuffle_en_cop"));
+        shuffle_en_cop->setGeometry(QRect(90, 250, 141, 20));
+        shuffle_en_cop->setFont(font1);
+        shuffle_en_cop->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_chase = new QCheckBox(tab_shuffle);
+        shuffle_en_chase->setObjectName(QString::fromUtf8("shuffle_en_chase"));
+        shuffle_en_chase->setGeometry(QRect(90, 190, 141, 20));
+        shuffle_en_chase->setFont(font1);
+        shuffle_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_chase->setChecked(true);
+        shuffle_en_spectrum = new QCheckBox(tab_shuffle);
+        shuffle_en_spectrum->setObjectName(QString::fromUtf8("shuffle_en_spectrum"));
+        shuffle_en_spectrum->setGeometry(QRect(90, 150, 121, 20));
+        shuffle_en_spectrum->setFont(font1);
+        shuffle_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_spectrum->setChecked(true);
+        shuffle_en_rnb = new QCheckBox(tab_shuffle);
+        shuffle_en_rnb->setObjectName(QString::fromUtf8("shuffle_en_rnb"));
+        shuffle_en_rnb->setGeometry(QRect(90, 170, 121, 20));
+        shuffle_en_rnb->setFont(font1);
+        shuffle_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_rnb->setChecked(true);
+        shuffle_en_bliss = new QCheckBox(tab_shuffle);
+        shuffle_en_bliss->setObjectName(QString::fromUtf8("shuffle_en_bliss"));
+        shuffle_en_bliss->setGeometry(QRect(90, 130, 141, 20));
+        shuffle_en_bliss->setFont(font1);
+        shuffle_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_bliss->setChecked(true);
+        shuffle_en_tcode = new QCheckBox(tab_shuffle);
+        shuffle_en_tcode->setObjectName(QString::fromUtf8("shuffle_en_tcode"));
+        shuffle_en_tcode->setGeometry(QRect(90, 210, 141, 20));
+        shuffle_en_tcode->setFont(font1);
+        shuffle_en_tcode->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_tcode->setChecked(false);
+        shuffle_speed = new QComboBox(tab_shuffle);
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->setObjectName(QString::fromUtf8("shuffle_speed"));
+        shuffle_speed->setGeometry(QRect(370, 140, 281, 51));
+        shuffle_speed->setFont(font8);
+        shuffle_speed->setFrame(false);
+        shuffle_set = new QPushButton(tab_shuffle);
+        shuffle_set->setObjectName(QString::fromUtf8("shuffle_set"));
+        shuffle_set->setGeometry(QRect(370, 210, 281, 61));
+        shuffle_set->setFont(font7);
+        shuffle_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
+"color: rgb(255, 255, 255);"));
+        shuffle_intro1 = new QLabel(tab_shuffle);
+        shuffle_intro1->setObjectName(QString::fromUtf8("shuffle_intro1"));
+        shuffle_intro1->setGeometry(QRect(90, 60, 251, 31));
+        shuffle_intro1->setFont(font7);
+        shuffle_intro1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        shuffle_intro2 = new QLabel(tab_shuffle);
+        shuffle_intro2->setObjectName(QString::fromUtf8("shuffle_intro2"));
+        shuffle_intro2->setGeometry(QRect(380, 110, 241, 31));
+        shuffle_intro2->setFont(font7);
+        shuffle_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         tab_presets_container->addTab(tab_shuffle, QString());
         panel_custom_colors = new QWidget(centralwidget);
         panel_custom_colors->setObjectName(QString::fromUtf8("panel_custom_colors"));
@@ -1185,17 +1278,22 @@ public:
         timesync_time_label = new QLabel(panel_timesync);
         timesync_time_label->setObjectName(QString::fromUtf8("timesync_time_label"));
         timesync_time_label->setGeometry(QRect(50, 120, 441, 91));
-        timesync_time_label->setFont(font4);
+        QFont font9;
+        font9.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
+        font9.setPointSize(96);
+        font9.setBold(true);
+        font9.setWeight(75);
+        timesync_time_label->setFont(font9);
         timesync_time_label->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         timesync_date_label = new QLabel(panel_timesync);
         timesync_date_label->setObjectName(QString::fromUtf8("timesync_date_label"));
         timesync_date_label->setGeometry(QRect(50, 220, 391, 31));
-        QFont font9;
-        font9.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font9.setPointSize(24);
-        font9.setBold(true);
-        font9.setWeight(75);
-        timesync_date_label->setFont(font9);
+        QFont font10;
+        font10.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
+        font10.setPointSize(24);
+        font10.setBold(true);
+        font10.setWeight(75);
+        timesync_date_label->setFont(font10);
         timesync_intro = new QLabel(panel_timesync);
         timesync_intro->setObjectName(QString::fromUtf8("timesync_intro"));
         timesync_intro->setGeometry(QRect(510, 80, 211, 41));
@@ -1203,12 +1301,12 @@ public:
         timesync_button = new QPushButton(panel_timesync);
         timesync_button->setObjectName(QString::fromUtf8("timesync_button"));
         timesync_button->setGeometry(QRect(510, 120, 211, 121));
-        QFont font10;
-        font10.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font10.setPointSize(36);
-        font10.setBold(true);
-        font10.setWeight(75);
-        timesync_button->setFont(font10);
+        QFont font11;
+        font11.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
+        font11.setPointSize(36);
+        font11.setBold(true);
+        font11.setWeight(75);
+        timesync_button->setFont(font11);
         timesync_button->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         timesync_button->setFlat(false);
@@ -1224,12 +1322,12 @@ public:
         message_text = new QPlainTextEdit(panel_message);
         message_text->setObjectName(QString::fromUtf8("message_text"));
         message_text->setGeometry(QRect(20, 50, 691, 71));
-        QFont font11;
-        font11.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font11.setPointSize(48);
-        font11.setBold(true);
-        font11.setWeight(75);
-        message_text->setFont(font11);
+        QFont font12;
+        font12.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
+        font12.setPointSize(48);
+        font12.setBold(true);
+        font12.setWeight(75);
+        message_text->setFont(font12);
         message_text->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         message_text->setLineWrapMode(QPlainTextEdit::NoWrap);
         message_intro = new QLabel(panel_message);
@@ -1263,18 +1361,18 @@ public:
         message_length = new QPlainTextEdit(panel_message);
         message_length->setObjectName(QString::fromUtf8("message_length"));
         message_length->setGeometry(QRect(20, 280, 51, 71));
-        message_length->setFont(font11);
+        message_length->setFont(font12);
         message_length->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         message_length->setLineWrapMode(QPlainTextEdit::NoWrap);
         message_intro_7 = new QLabel(panel_message);
         message_intro_7->setObjectName(QString::fromUtf8("message_intro_7"));
         message_intro_7->setGeometry(QRect(90, 280, 311, 61));
-        message_intro_7->setFont(font11);
+        message_intro_7->setFont(font12);
         message_intro_7->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         message_send = new QPushButton(panel_message);
         message_send->setObjectName(QString::fromUtf8("message_send"));
         message_send->setGeometry(QRect(340, 280, 371, 71));
-        message_send->setFont(font10);
+        message_send->setFont(font11);
         message_send->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         message_send->setFlat(false);
@@ -1411,13 +1509,13 @@ public:
         settings_settings->setFlat(true);
         settings_settings_default = new QPushButton(settings_settings);
         settings_settings_default->setObjectName(QString::fromUtf8("settings_settings_default"));
-        settings_settings_default->setGeometry(QRect(10, 30, 121, 41));
+        settings_settings_default->setGeometry(QRect(10, 30, 111, 41));
         settings_settings_default->setFont(font2);
         settings_settings_default->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         settings_settings_save = new QPushButton(settings_settings);
         settings_settings_save->setObjectName(QString::fromUtf8("settings_settings_save"));
-        settings_settings_save->setGeometry(QRect(130, 30, 131, 41));
+        settings_settings_save->setGeometry(QRect(140, 30, 121, 41));
         settings_settings_save->setFont(font2);
         settings_settings_save->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
@@ -1521,13 +1619,13 @@ public:
         settings_update->setFlat(true);
         settings_info_download = new QPushButton(settings_update);
         settings_info_download->setObjectName(QString::fromUtf8("settings_info_download"));
-        settings_info_download->setGeometry(QRect(10, 30, 191, 41));
+        settings_info_download->setGeometry(QRect(10, 30, 181, 41));
         settings_info_download->setFont(font2);
         settings_info_download->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         settings_info_update = new QPushButton(settings_update);
         settings_info_update->setObjectName(QString::fromUtf8("settings_info_update"));
-        settings_info_update->setGeometry(QRect(200, 30, 211, 41));
+        settings_info_update->setGeometry(QRect(220, 30, 191, 41));
         settings_info_update->setFont(font2);
         settings_info_update->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
@@ -1712,15 +1810,15 @@ public:
         panel_main_control->raise();
         panel_message->raise();
         panel_custom_colors->raise();
-        panel_welcome->raise();
         panel_lsettings->raise();
         panel_timesync->raise();
-        panel_presets->raise();
         panel_settings->raise();
+        panel_presets->raise();
+        panel_welcome->raise();
 
         retranslateUi(FluorescenceApp);
 
-        tab_presets_container->setCurrentIndex(2);
+        tab_presets_container->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(FluorescenceApp);
@@ -1753,7 +1851,7 @@ public:
         static_orange->setText(QCoreApplication::translate("FluorescenceApp", "#orange", nullptr));
         static_yellow->setText(QCoreApplication::translate("FluorescenceApp", "#yellow", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_presets_static), QCoreApplication::translate("FluorescenceApp", "Static Presets", nullptr));
-        dynamic_spectrum->setText(QCoreApplication::translate("FluorescenceApp", "Spectrum Fade", nullptr));
+        dynamic_spectrum->setText(QCoreApplication::translate("FluorescenceApp", "Spectrum", nullptr));
         dynamic_rainbow->setText(QCoreApplication::translate("FluorescenceApp", "Rainbow Fade", nullptr));
         dynamic_bliss_dnc->setText(QCoreApplication::translate("FluorescenceApp", "Moments of Bliss", nullptr));
         dynamic_timecode->setText(QCoreApplication::translate("FluorescenceApp", "Time Code", nullptr));
@@ -1826,6 +1924,7 @@ public:
         panel_dyn_music_param2->setItemText(1, QCoreApplication::translate("FluorescenceApp", "medium", nullptr));
         panel_dyn_music_param2->setItemText(2, QCoreApplication::translate("FluorescenceApp", "low", nullptr));
 
+        dynamic_music->setText(QCoreApplication::translate("FluorescenceApp", "Music", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_presets_dynamic), QCoreApplication::translate("FluorescenceApp", "Dynamic Presets", nullptr));
         lisync_computer->setText(QString());
         lisync_sample->setText(QString());
@@ -1834,6 +1933,23 @@ public:
 "screen.", nullptr));
         lisync_status->setText(QCoreApplication::translate("FluorescenceApp", "Click on the computer to begin.", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_moodsync), QCoreApplication::translate("FluorescenceApp", "Ambient Light", nullptr));
+        shuffle_en_static->setText(QCoreApplication::translate("FluorescenceApp", "Static", nullptr));
+        shuffle_en_music->setText(QCoreApplication::translate("FluorescenceApp", "Music", nullptr));
+        shuffle_en_cop->setText(QCoreApplication::translate("FluorescenceApp", "Police Lights", nullptr));
+        shuffle_en_chase->setText(QCoreApplication::translate("FluorescenceApp", "Chase Fade", nullptr));
+        shuffle_en_spectrum->setText(QCoreApplication::translate("FluorescenceApp", "Spectrum Fade", nullptr));
+        shuffle_en_rnb->setText(QCoreApplication::translate("FluorescenceApp", "Rainbow Fade", nullptr));
+        shuffle_en_bliss->setText(QCoreApplication::translate("FluorescenceApp", "Moments of Bliss", nullptr));
+        shuffle_en_tcode->setText(QCoreApplication::translate("FluorescenceApp", "Time Code", nullptr));
+        shuffle_speed->setItemText(0, QCoreApplication::translate("FluorescenceApp", "minute", nullptr));
+        shuffle_speed->setItemText(1, QCoreApplication::translate("FluorescenceApp", "other minute", nullptr));
+        shuffle_speed->setItemText(2, QCoreApplication::translate("FluorescenceApp", "ten minutes", nullptr));
+        shuffle_speed->setItemText(3, QCoreApplication::translate("FluorescenceApp", "half hour", nullptr));
+        shuffle_speed->setItemText(4, QCoreApplication::translate("FluorescenceApp", "hour", nullptr));
+
+        shuffle_set->setText(QCoreApplication::translate("FluorescenceApp", "Looks good, go!", nullptr));
+        shuffle_intro1->setText(QCoreApplication::translate("FluorescenceApp", "let's shuffle through", nullptr));
+        shuffle_intro2->setText(QCoreApplication::translate("FluorescenceApp", "and shuffle every...", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_shuffle), QCoreApplication::translate("FluorescenceApp", "Shuffle", nullptr));
         custom_label_r->setText(QCoreApplication::translate("FluorescenceApp", "R:", nullptr));
         custom_label_g->setText(QCoreApplication::translate("FluorescenceApp", "G:", nullptr));

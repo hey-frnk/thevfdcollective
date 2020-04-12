@@ -28,8 +28,7 @@ public:
 
     void transfer_light_pattern(uint8_t instance, uint8_t param0, uint8_t param1); // Legacy: Only param0 relevant
     void transfer_enable_presets(uint8_t enabled_instances); // Legacy: Unsupported
-    void transfer_random_enabled_presets(uint8_t enabled_instances); // Legacy: Unsupported
-    void transfer_random_changing_speed(uint8_t changing_speed_option); // Legacy: Unsupported
+    void transfer_random_set(uint8_t enabled_instances, random_speed_t speed); // Legacy: Unsupported
 
     void transfer_gui_set(uint8_t instance, uint8_t param0); // Legacy: Unsupported
     void legacy_transfer_clock_flags(uint8_t clock_flag, uint8_t clock_flag_value);

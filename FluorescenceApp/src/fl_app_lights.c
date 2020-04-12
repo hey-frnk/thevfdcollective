@@ -608,6 +608,84 @@ void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self
 }
 
 /** Begin of:
+* @tableofcontents SECTION_LIGHT_PATTERN_MUSIC
+**/
+/**
+* @brief  Implementation of virtual function Light_Pattern_MUSIC::Update (static void _Light_Pattern_Music_Update)
+**/
+static void _Light_Pattern_Music_Update(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Music *self = (struct Light_Pattern_Music *)unsafe_self;
+  if(Time_Event_Update(&self->state_timer)) {
+    // If interval passed, decrease turned on LEDs by one (regular state update)
+    if(self->state < 7) ++self->state;
+
+    // Rainbow fade position update
+    ++self->color_pos_timer;
+    if(self->color_pos_timer == 3) {
+        self->color_pos_timer = 0;
+        ++self->color_pos; // Intended overflow
+    }
+
+    uint8_t mic_read_in = 6 - vfdco_util_random(3);
+
+    if(self->state >= mic_read_in) {
+      self->state = mic_read_in;
+      self->delay_state = 0;
+    } else {
+      // Update delay timer
+      ++self->delay_timer;
+      if(self->delay_timer == 13) {
+          self->delay_timer = 0;
+          self->delay_state = 1;
+      }
+    }
+
+    if(self->state < 7) {
+      for(int8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
+        if(i < CONFIG_NUM_PIXELS - self->state) {
+          uint8_t _h = self->color_pos + i * self->color_peak_diff; // i-th hue difference (delta), intended angle overflow
+          uint32_t target_color = _led_color_hsl2rgb(_h, self->saturation, LIGHTNESS_H);  // Get target RGB
+          vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+        } else {
+          vfdco_clr_set_RGB(i, 196, 196, 196); // Black out
+        }
+      }
+
+      if(self->delay_state) {
+        if(self->state < CONFIG_NUM_PIXELS) {
+          for(uint8_t i = 0; i < (CONFIG_NUM_PIXELS - 1 - self->state); ++i)
+            vfdco_clr_set_RGB(i, 196, 196, 196);
+        }
+      }
+    }
+
+    vfdco_clr_render();
+  }
+}
+
+/**
+* @brief  Constructor of Light_Pattern_Music class
+**/
+void Light_Pattern_Music_Init(struct Light_Pattern_Music *self, uint8_t *settings) {
+  // Default loading if saved value is waste, then load by assignment
+  /* if((settings[LIGHT_PATTERN_SETTING_MUSIC_saturation] == 0) || settings[LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff] == 0)
+    Light_Pattern_Music_Default(settings); */
+
+  self->state_timer = Time_Event_Init(20);
+  self->color_pos_timer = 0; // 3x multiplicator (60 ms)
+  self->delay_timer = 0; // 12x multiplicator (240 ms)
+  self->color_pos = 0;
+  self->color_peak_diff = 21;
+  self->saturation = SATURATION_H;
+  self->state = 0;
+  self->delay_state = 0;
+
+  self->settings = settings;
+
+  Light_Pattern_Update = _Light_Pattern_Music_Update;
+}
+
+/** Begin of:
   * @tableofcontents SECTION_CONTAINER_LIGHT_PATTERN
 **/
 void Container_Light_Pattern_Clear(Light_Pattern *self) {
