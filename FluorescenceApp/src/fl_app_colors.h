@@ -17,15 +17,12 @@ extern "C" {
 #ifndef _VFDCO_LED_DRIVER
 #define _VFDCO_LED_DRIVER
 
-#define CONFIG_NUM_PIXELS 6
-#define CONFIG_NUM_BPP 4
-#define CONFIG_NUM_BYTES (CONFIG_NUM_PIXELS * CONFIG_NUM_BPP)
-
 #include <stdint.h>
+#include "../FluorescenceV3/vfdco_config.h"
 
          // Array of color values of size n um_bytes to be written in the next write cycle
          // to the physical WS2812B/SK6812 LEDs
-extern uint8_t rgb_arr[CONFIG_NUM_BYTES];
+// extern uint8_t rgb_arr[4 * CONFIG_NUM_PIXELS];
 
 // Initialize SW/HW of num_pixels * SK6812 LEDs
 void vfdco_clr_init(uint8_t initial_dim_factor);

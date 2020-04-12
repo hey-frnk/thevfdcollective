@@ -27,7 +27,6 @@
 #include "fl_app_lights.h"
 #include "fl_app_colors.h"
 
-// #include <stdlib.h>
 #include <string.h>
 
 /** Begin of:
@@ -36,8 +35,6 @@
  **/
 // HSL to RGB fast calculation
 uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l);
-// Generate random number
-uint8_t led_color_simple_randomizer(uint8_t bits);
 
 /** Begin of:
   * @tableofcontents SECTION_HSL
@@ -155,13 +152,6 @@ void LED_Color_Fader_Init(
 }
 
 LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
-
-
-#define CONFIG_SINGLE_COLOR_FADE_SPEED     1
-#define CONFIG_SPECTRUM_FADE_SPEED         1
-#define CONFIG_CHASE_FADE_SPEED            1
-#define CONFIG_COP_FADE_SPEED              1
-#define CONFIG_MOMENTSOFBLISS_FADE_SPEED   1
 
 // Static Constants
 #define   NUM_STATIC_COLOR_SPECIAL    3
@@ -300,7 +290,7 @@ static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) 
   * @brief  Constructor of Light_Pattern_Static class
  **/
 void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *settings) {
-  memset(self->target_arr, 0, CONFIG_NUM_BYTES);
+  memset(self->target_arr, 0, 4 * CONFIG_NUM_PIXELS);
 
   // Default loading if saved value is rubbish, then load by assignment
   self->position = 0;
@@ -496,7 +486,7 @@ static void _Light_Pattern_Time_Code_Update(Light_Pattern *unsafe_self) {
   * @brief  Constructor of Light_Pattern_Time_Code class
  **/
 void Light_Pattern_Time_Code_Init(struct Light_Pattern_Time_Code *self, vfdco_time_t *time_instance) {
-  memset(self->target_arr, 0, CONFIG_NUM_BYTES);
+  memset(self->target_arr, 0, 4 * CONFIG_NUM_PIXELS);
   self->clock = Time_Event_Init(1);
   self->time = time_instance;
 
@@ -559,13 +549,13 @@ static void _Light_Pattern_MomentsOfBliss_Update(Light_Pattern *unsafe_self) {
     ++self->undrift_counter;
     if(self->undrift_counter < self->undrift_max) {
       // Randomize new hue & hue diff by a pos or neg number biased around 0 by (1<<bits) / 2
-      base->color_1.h = base->color_1.h -((1 << (bits & 0x0F)) >> 1) + led_color_simple_randomizer(bits & 0x0F);
+      base->color_1.h = base->color_1.h -((1 << (bits & 0x0F)) >> 1) + vfdco_util_random(bits & 0x0F);
       // ((struct LED_Color_Fader *)self->base_fader)->chain_hue_diff = led_color_simple_randomizer(bits >> 4) - ((1 << (bits >> 4)) >> 1);
     } else {
       // Restore hue
       base->color_1.h = MomentsOfBliss_Colors[self->moment][0];
       self->undrift_counter = 0;
-      self->undrift_max = led_color_simple_randomizer(2) + 2;
+      self->undrift_max = vfdco_util_random(2) + 2;
     }
 
     // Huediff variation, operates independently from color diff
@@ -587,7 +577,7 @@ static void _Light_Pattern_MomentsOfBliss_Update(Light_Pattern *unsafe_self) {
     }
     if(!base->chain_hue_diff) {
       uint8_t huediff_max = MomentsOfBliss_Colors[self->moment][6] >> 4;
-      self->undrift_huediff_max = led_color_simple_randomizer(huediff_max) - ((1 << huediff_max) >> 1) + 1;
+      self->undrift_huediff_max = vfdco_util_random(huediff_max) - ((1 << huediff_max) >> 1) + 1;
     }
   }
 }
@@ -601,9 +591,9 @@ static inline void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_M
     0
   );
 
-  self->undrift_max = led_color_simple_randomizer(2) + 2; // some number between 2 and 5 lol
+  self->undrift_max = vfdco_util_random(2) + 2; // some number between 2 and 5 lol
   uint8_t huediff_max = MomentsOfBliss_Colors[self->moment][6] >> 4;
-  self->undrift_huediff_max = led_color_simple_randomizer(huediff_max) - ((1 << huediff_max) >> 1);
+  self->undrift_huediff_max = vfdco_util_random(huediff_max) - ((1 << huediff_max) >> 1);
 }
 
 /**
@@ -661,29 +651,5 @@ uint32_t _led_color_hsl2rgb(uint8_t h, uint8_t s, uint8_t l) {
     default: r = c; g = 0; b = x; break; // M to R
   }
 
-  return ((r + m) << 8) | ((g + m) << 16) | (b + m);
+  return (((uint32_t)r + m) << 8) | (((uint32_t)g + m) << 16) | ((uint32_t)b + m);
 }
-
-volatile uint8_t _rrx = 0;
-volatile uint8_t _rry = 0;
-volatile uint8_t _rrz = 0;
-volatile uint8_t _rra = 1;
-/**
- * @brief <= 7 Bit Xorshift randomizer between [0 .. 2^(bits) - 1]]
- * @param bits Max. 7 bit!
- * @return uint8_t Random number
- */
-uint8_t led_color_simple_randomizer(uint8_t bits) {
-  if(!bits) return 0;
-  uint8_t _rrt = _rrx ^ (_rrx >> 1);
-  _rrx = _rry;
-  _rry = _rrz;
-  _rrz = _rra;
-  _rra = _rrz ^ _rrt ^ (_rrz >> 3) ^ (_rrt << 1);
-  return _rra & ((1 << bits) - 1);
-}
-
-/*
-Waiting for your call and for the mood
-to release me from the longest afternoon
-*/

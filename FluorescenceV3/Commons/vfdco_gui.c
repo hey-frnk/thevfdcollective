@@ -51,30 +51,38 @@ static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
 #define _SHARED_dim_factor_night_shift_end_m    5
 
 
-#define MESSAGES_BRIGHTNESS_SET_IDLE_MAX 11
-#define MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT 2
-#define MESSAGES_BRIGHTNESS_SET_CONTINUE 4
-static const char Messages_Brightness_Set_Idle[MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT][CONFIG_NUM_DIGITS] = {
+#define MESSAGES_BRIGHTNESS_SET_IDLE_MAX 6
+static const char Messages_Brightness_Set_Idle[MESSAGES_BRIGHTNESS_SET_IDLE_MAX][CONFIG_NUM_DIGITS] = {
   {'B', 'R', 'I', 'S', 'E', 'T'}, // 0
   {'F',  2 , ' ', 'V', 'F', 'D'}, // 1
   {'F',  3 , ' ', 'L', 'E', 'D'}, // 2
   {'F',  4 , ' ', 'S', 'E', 'T'}, // 3
-  {' ', 'N', 'I', 'G', 'H', 'T'}, // 4, 9
-  {' ', 'S', 'H', 'I', 'F', 'T'}, // 5, 10
-  {'F',  4 , ' ', ' ', ' ', ' '}, // 6
-  {' ', ' ', 'L', 'O', 'N', 'G'}, // 7
-  {'D', 'I', 'S', 'A', 'B', 'L'}, // 8
+  {' ', 'N', 'I', 'G', 'H', 'T'}, // 4
+  {' ', 'S', 'H', 'I', 'F', 'T'}, // 5
 };
-static const uint8_t Messages_Brightness_Set_Idle_Dots[MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT] = {
-  0b00000100, 0b00001000, 0b00001000, 0b00001000, 0, 0, 0b00001000, 0, 0
-};
-static const char Messages_Brightness_Set_Continue[MESSAGES_BRIGHTNESS_SET_CONTINUE][2] = {
-  {'F',  4 },
-  {'T', 'O'},
-  {'S', 'A'},
-  {'V', 'E'}
+static const uint8_t Messages_Brightness_Set_Idle_Dots[MESSAGES_BRIGHTNESS_SET_IDLE_MAX] = {
+  0b00000100, 0b00001000, 0b00001000, 0b00001000, 0, 0
 };
 
+#define MESSAGES_BRIGHTNESS_SET_NSH 6
+static const uint8_t Brightness_Set_Night_Shift_Times[MESSAGES_BRIGHTNESS_SET_NSH][2] = {
+  { 0,  0}, // Off
+  {20,  5}, // Farmer: 8 PM -> 5 AM
+  {21,  6}, // Early bird: 9 PM -> 6 AM
+  {22,  8}, // Average joe: 10 PM -> 8 AM
+  { 0,  9}, // Night owl: Midnight -> 9 AM
+  { 2, 10}  // Student: 2 AM -> 10 AM
+};
+static const char Messages_Brightness_Set_Nsh[MESSAGES_BRIGHTNESS_SET_NSH][CONFIG_NUM_DIGITS] = {
+  {'O', 'F', 'F', ' ', ' ', ' '}, // Off
+  {'E', 'R', 'L', 'I', 'S', 'T'}, // Earliest
+  {'E', 'A', 'R', 'L', 'Y', ' '}, // Early bird
+  {'A', 'V', 'E', 'R', 'A', 'G'}, // Average Joe
+  {'O', 'V', 'L', ' ', ' ', ' '}, // Owl
+  {'S', 'T', 'U', 'D', 'N', 'T'}  // Student
+};
+
+ 
 /** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT
 **/
@@ -514,217 +522,105 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, vfdco_time_t *
 
 /**
  * @tableofcontents SECTION_GUI_BRIGHTNESS_SETTER
- * F2 to set display brightness, immediate effect
- * F3 to set LED brightness, immediate effect
- * F4 to enable night shift set menu
- *    - Step 1: Set starting time. F2: digit switch, F3: --, F4: ++. F4Var to next step
- *    - Setp 2: Set ending time.   F2: digit switch, F3: --, F4: ++. F4Var to save
+ * F2 to set display brightness
+ * F3 to set LED brightness
+ * F4 to set night shift options
  * F4Var to disable night shift, if enabled
  */
 
-enum {
-  GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED = 0,
-  GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START = 1,
-  GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_END = 2
-}; 
-
 static void _GUI_Format_Brightness_Setter_Update(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
-  if(Time_Event_Update(&self->blank_timer)) {
-    if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
-      // Idle. Waiting for F2/F3/F4/F4Var
-      // Just cycle through all the messages
-      uint8_t message_counter = self->message_counter;
-      if(message_counter < (MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT)) {
-        vfdco_display_render_message(
-          Messages_Brightness_Set_Idle[message_counter], 
-          Messages_Brightness_Set_Idle_Dots[message_counter], 
-          0
-        );
-      } else {
-        vfdco_display_render_message(
-          Messages_Brightness_Set_Idle[MESSAGES_BRIGHTNESS_SET_CONTINUE + message_counter - (MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT)], 
-          Messages_Brightness_Set_Idle_Dots[MESSAGES_BRIGHTNESS_SET_CONTINUE + message_counter - (MESSAGES_BRIGHTNESS_SET_IDLE_MAX - MESSAGES_BRIGHTNESS_SET_IDLE_REPEAT)], 
-          0
-        );
-      }
-      ++self->message_counter;
-      if(self->message_counter == MESSAGES_BRIGHTNESS_SET_IDLE_MAX) self->message_counter = 0;
-    } else {
-      // Show NSH start time or NSH stop time with blinking active digit
-      char _render_msg[CONFIG_NUM_DIGITS];
-      self->blank_active = !self->blank_active;
-      // T4 TO SA VE
-      _render_msg[4] = Messages_Brightness_Set_Continue[self->message_counter][0];
-      _render_msg[5] = Messages_Brightness_Set_Continue[self->message_counter][1];
-      ++self->message_counter;
-      if(self->message_counter == MESSAGES_BRIGHTNESS_SET_CONTINUE) self->message_counter = 0;
-
-      uint8_t _h = 0, _m = 0;
-      if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START) {
-        _h = self->night_shift_new_start_h;
-        _m = self->night_shift_new_start_m;
-      } else {
-        _h = self->night_shift_new_end_h;
-        _m = self->night_shift_new_end_m;
-      }
-      _render_msg[0] = _h / 10;
-      _render_msg[1] = _h % 10;
-      _render_msg[2] = _m / 10;
-      _render_msg[3] = _m % 10;
-
-      if(self->blank_active) {
-        if(self->active_digit == 0) {
-          _render_msg[0] = ' ';
-          _render_msg[1] = ' ';
-        } else if(self->active_digit == 1) {
-          _render_msg[2] = ' ';
-          _render_msg[3] = ' ';
-        }
-      }
-      vfdco_display_render_message(_render_msg, 0, 0);
-    }
+  if(Time_Event_Update(&self->message_timer)) {
+    // Idle. Waiting for F2/F3/F4/F4Var
+    // Just cycle through all the messages
+    uint8_t message_counter = self->message_counter;
+    vfdco_display_render_message(
+      Messages_Brightness_Set_Idle[message_counter], 
+      Messages_Brightness_Set_Idle_Dots[message_counter], 
+      0
+    );
+    ++self->message_counter;
+    if(self->message_counter == MESSAGES_BRIGHTNESS_SET_IDLE_MAX) self->message_counter = 0;
   }
 }
 
 static void _GUI_Format_Brightness_Setter_F2(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
-  if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
-    char _msg[CONFIG_NUM_DIGITS] = {'D', ' ', 'B', 'R', 'I',  3 };
-    if(self->dim_factor_display == CONFIG_BRIGHTNESS_MAX) {
-      self->dim_factor_display = CONFIG_BRIGHTNESS_HALF;
-      _msg[5] = 2;
-    } else if(self->dim_factor_display == CONFIG_BRIGHTNESS_HALF) {
-      self->dim_factor_display = CONFIG_BRIGHTNESS_MIN;
-      _msg[5] = 1;
-    } else {
-      self->dim_factor_display = CONFIG_BRIGHTNESS_MAX;
-    }
-    vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_SHORT);
-    self->message_counter = 0; // Resume message cycling
+  char _msg[CONFIG_NUM_DIGITS] = {'D', ' ', 'B', 'R', 'I',  3 };
+  if(self->dim_factor_display == CONFIG_BRIGHTNESS_MAX) {
+    self->dim_factor_display = CONFIG_BRIGHTNESS_HALF;
+    _msg[5] = 2;
+  } else if(self->dim_factor_display == CONFIG_BRIGHTNESS_HALF) {
+    self->dim_factor_display = CONFIG_BRIGHTNESS_MIN;
+    _msg[5] = 1;
   } else {
-    ++self->active_digit;
-    if(self->active_digit == 2) self->active_digit = 0;
+    self->dim_factor_display = CONFIG_BRIGHTNESS_MAX;
   }
+  vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_SHORT);
+  self->message_counter = 0; // Resume message cycling
 }
 
 static void _GUI_Format_Brightness_Setter_F3(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
-  if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
-    char _msg[CONFIG_NUM_DIGITS] = {'L', ' ', 'B', 'R', 'I', 3};
-    if(self->dim_factor_led == CONFIG_BRIGHTNESS_MAX) {
-      self->dim_factor_led = CONFIG_BRIGHTNESS_HALF;
-      _msg[5] = 2;
-    } else if(self->dim_factor_led == CONFIG_BRIGHTNESS_HALF) {
-      self->dim_factor_led = CONFIG_BRIGHTNESS_MIN;
-      _msg[5] = 1;
-    } else {
-      self->dim_factor_led = CONFIG_BRIGHTNESS_MAX;
-    }
-    vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_SHORT);
-    self->message_counter = 0; // Resume message cycling
-  } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START) {
-    // Decrease NSH start digit
-    if      (self->active_digit == 0) { // Set hour
-      if       (self->night_shift_new_start_h  > 0)    self->night_shift_new_start_h--;
-      else if  (self->night_shift_new_start_h == 0)    self->night_shift_new_start_h = 23;
-    }
-    else if (self->active_digit == 1) { // Set minute
-      if       (self->night_shift_new_start_m  > 0)    self->night_shift_new_start_m--;
-      else if  (self->night_shift_new_start_m == 0)    self->night_shift_new_start_m = 59;
-    }
-  } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_END) {
-    // Decrease NSH end digit
-    if      (self->active_digit == 0) { // Set hour
-      if       (self->night_shift_new_end_h  > 0)    self->night_shift_new_end_h--;
-      else if  (self->night_shift_new_end_h == 0)    self->night_shift_new_end_h = 23;
-    }
-    else if (self->active_digit == 1) { // Set minute
-      if       (self->night_shift_new_end_m  > 0)    self->night_shift_new_end_m--;
-      else if  (self->night_shift_new_end_m == 0)    self->night_shift_new_end_m = 59;
-    }
+  char _msg[CONFIG_NUM_DIGITS] = {'L', ' ', 'B', 'R', 'I', 3};
+  if(self->dim_factor_led == CONFIG_BRIGHTNESS_MAX) {
+    self->dim_factor_led = CONFIG_BRIGHTNESS_HALF;
+    _msg[5] = 2;
+  } else if(self->dim_factor_led == CONFIG_BRIGHTNESS_HALF) {
+    self->dim_factor_led = CONFIG_BRIGHTNESS_MIN;
+    _msg[5] = 1;
+  } else {
+    self->dim_factor_led = CONFIG_BRIGHTNESS_MAX;
   }
+  vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_SHORT);
+  self->message_counter = 0; // Resume message cycling
 }
 
 static void _GUI_Format_Brightness_Setter_F4(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
-  if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
-    self->menu_state = GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START;
-    // "NIGHT" "SHIFT"
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_LONG);
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_LONG);
-    self->message_counter = 0;
-  } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START) {
-    // Increase NSH start digit
-    if      (self->active_digit == 0) { // Set hour
-      if       (self->night_shift_new_start_h  < 23)    self->night_shift_new_start_h++;
-      else if  (self->night_shift_new_start_h == 23)    self->night_shift_new_start_h = 0;
-    }
-    else if (self->active_digit == 1) { // Set minute
-      if       (self->night_shift_new_start_m  < 59)    self->night_shift_new_start_m++;
-      else if  (self->night_shift_new_start_m == 59)    self->night_shift_new_start_m = 0;
-    }
-  } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_END) {
-    // Increase NSH end digit
-    if      (self->active_digit == 0) { // Set hour
-      if       (self->night_shift_new_end_h  < 23)    self->night_shift_new_end_h++;
-      else if  (self->night_shift_new_end_h == 23)    self->night_shift_new_end_h = 0;
-    }
-    else if (self->active_digit == 1) { // Set minute
-      if       (self->night_shift_new_end_m  < 59)    self->night_shift_new_end_m++;
-      else if  (self->night_shift_new_end_m == 59)    self->night_shift_new_end_m = 0;
-    }
-  }
-}
 
-static void _GUI_Format_Brightness_Setter_F4Var(GUI_Format *unsafe_self) {
-  struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
-  if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED) {
-    // Disable/clear NSH
-    self->night_shift_new_start_h = 0;
-    self->night_shift_new_start_m = 0;
-    self->night_shift_new_end_h = 0;
-    self->night_shift_new_end_m = 0;
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_SHORT);
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_SHORT);
-    const char _msg[CONFIG_NUM_DIGITS] = {' ', ' ', ' ', 'O', 'F', 'F'};
-    vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_SHORT);
-  } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_START) {
-    // Go to set NSH end
-    self->menu_state = GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_END;
-    self->message_counter = 0;
-  } else if(self->menu_state == GUI_FORMAT_BRIGHTNESS_SETTER_STATE_SET_NSH_END) {
-    // Go back to menu idle
-    self->menu_state = GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED;
-    self->message_counter = 0;
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_LONG);
-    vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_LONG);
-    const char _msg[CONFIG_NUM_DIGITS] = {' ', 'S', 'A', 'V', 'E', 'D'};
-    vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_SHORT);
+  ++self->night_shift_state;
+  if(self->night_shift_state == MESSAGES_BRIGHTNESS_SET_NSH) self->night_shift_state = 0;
+
+  self->night_shift_new_start_h = Brightness_Set_Night_Shift_Times[self->night_shift_state][0]; // Get start hour
+  self->night_shift_new_end_h   = Brightness_Set_Night_Shift_Times[self->night_shift_state][1]; // Get stop hour
+
+  // "NIGHT" "SHIFT", parameter
+  vfdco_display_render_message(Messages_Brightness_Set_Idle[4], 0x00, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Brightness_Set_Idle[5], 0x00, CONFIG_MESSAGE_LONG);
+  vfdco_display_render_message(Messages_Brightness_Set_Nsh[self->night_shift_state], 0x00, CONFIG_MESSAGE_LONG);
+
+  // If not off, tell when it starts
+  if(self->night_shift_state) {
+    char _msg[CONFIG_NUM_DIGITS] = {
+      Brightness_Set_Night_Shift_Times[self->night_shift_state][0] / 10, // Start hour dec
+      Brightness_Set_Night_Shift_Times[self->night_shift_state][0] % 10, // Start hour
+      '-', ' ',
+      Brightness_Set_Night_Shift_Times[self->night_shift_state][1] / 10, // Stop hour dec
+      Brightness_Set_Night_Shift_Times[self->night_shift_state][1] % 10, // Stop hour
+    };
+    vfdco_display_render_message(_msg, 0x00, CONFIG_MESSAGE_LONG);
   }
 }
 
 void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self, const uint8_t *shared_initializer) {
-  self->menu_state = GUI_FORMAT_BRIGHTNESS_SETTER_STATE_INITIALIZED;
   // Initialize potential new NSH times with existing NSH times
   self->dim_factor_display = shared_initializer[_SHARED_dim_factor_display];
   self->dim_factor_led = shared_initializer[_SHARED_dim_factor_led];
+
   self->night_shift_new_start_h = shared_initializer[_SHARED_dim_factor_night_shift_start_h];
-  self->night_shift_new_start_m = shared_initializer[_SHARED_dim_factor_night_shift_start_m];
   self->night_shift_new_end_h = shared_initializer[_SHARED_dim_factor_night_shift_end_h];
-  self->night_shift_new_end_m = shared_initializer[_SHARED_dim_factor_night_shift_end_m];
-  // Digit blanking at set
+  self->night_shift_state = 0;
+  
+  self->message_timer = Time_Event_Init(800);
   self->message_counter = 0;
-  self->blank_active = 0;
-  self->active_digit = 0;
-  self->blank_timer = Time_Event_Init(800);
 
   GUI_Format_F2 = _GUI_Format_Brightness_Setter_F2;
   GUI_Format_F3 = _GUI_Format_Brightness_Setter_F3;
   GUI_Format_F4 = _GUI_Format_Brightness_Setter_F4;
   GUI_Format_F2Var = NULL;
   GUI_Format_F3Var = NULL;
-  GUI_Format_F4Var = _GUI_Format_Brightness_Setter_F4Var;
+  GUI_Format_F4Var = NULL;
   GUI_Format_Update = _GUI_Format_Brightness_Setter_Update;
   GUI_Format_Save = NULL;
 }

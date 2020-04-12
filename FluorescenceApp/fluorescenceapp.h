@@ -2,6 +2,7 @@
 #define FLUORESCENCEAPP_H
 
 #include <QMainWindow>
+#include <QMessageBox>
 #include "fl_app_com.h"
 #include "src/fl_app_lights.h"
 
@@ -164,6 +165,8 @@ private slots:
 
     void on_lisync_sample_clicked();
 
+    void on_settings_presets_en_set_clicked();
+
 private:
     Ui::FluorescenceApp *ui;
 
@@ -193,6 +196,7 @@ private:
     void hide_all_dynamic_control_panels();
     void clear_lights_instance();
     void custom_color_update_all_sliders(bool);
+    void error_message(QString message, QMessageBox::Icon i);
 
     void preset_ambient_light_update(uint_fast8_t counter);
 };

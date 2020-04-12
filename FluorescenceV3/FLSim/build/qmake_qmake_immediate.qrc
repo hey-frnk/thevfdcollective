@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file alias="protocol.csv">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceV3/FLSim/protocol.csv</file>
+</qresource>
+</RCC>

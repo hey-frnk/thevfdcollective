@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>FLClassic</name>
-	<comment />
+	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -28,7 +28,7 @@
 		<link>
 			<name>Commons</name>
 			<type>2</type>
-			<location>/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/openvfd_firmware_development/Commons</location>
+			<location>/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceV3/Commons</location>
 		</link>
 	</linkedResources>
 </projectDescription>

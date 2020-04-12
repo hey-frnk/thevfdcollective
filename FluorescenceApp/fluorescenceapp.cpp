@@ -3,6 +3,8 @@
 
 #include "src/fl_app_time.h"
 #include "src/fl_app_lights.h"
+#include "../FluorescenceV3/Commons/vfdco_clock_routine_defines.h"
+#include "../FluorescenceV3/vfdco_config.h"
 
 #include <QtSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
@@ -21,9 +23,9 @@
 using namespace color_widgets;
 
 // Global dynamic colors
-QWidget *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
-QWidget *preset_dynamic_time[NUM_PRESET_DYNAMIC_TIME];
-QWidget *preset_dynamic_lisync[NUM_PRESET_LIGHT_SYNC];
+color_widgets::ColorPreview *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
+color_widgets::ColorPreview *preset_dynamic_time[NUM_PRESET_DYNAMIC_TIME];
+color_widgets::ColorPreview *preset_dynamic_lisync[NUM_PRESET_LIGHT_SYNC];
 
 #define GLOBAL_UPDATE_TIMER_INTERVAL 50
 #define NUM_AMBIENT_LIGHT_SAMPLES 3
@@ -95,19 +97,19 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
 
     custom_color_update_all_sliders(0);
 
-    // Init dynamic colors & time. Dude this is so stupid but y know it does the job, kinda.
-    QWidget *tmp_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS] = {ui->dynamic_c1, ui->dynamic_c2, ui->dynamic_c3, ui->dynamic_c4, ui->dynamic_c5, ui->dynamic_c6};
-    QWidget *tmp_dynamic_time[NUM_PRESET_DYNAMIC_TIME] = {
+    // Init dynamic colors & time
+    color_widgets::ColorPreview *tmp_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS] = {ui->dynamic_c1, ui->dynamic_c2, ui->dynamic_c3, ui->dynamic_c4, ui->dynamic_c5, ui->dynamic_c6};
+    color_widgets::ColorPreview *tmp_dynamic_time[NUM_PRESET_DYNAMIC_TIME] = {
         ui->dynamic_t_1, ui->dynamic_t_2, ui->dynamic_t_3, ui->dynamic_t_4, ui->dynamic_t_5, ui->dynamic_t_6, ui->dynamic_t_7,
         ui->dynamic_t_8, ui->dynamic_t_9, ui->dynamic_t_10, ui->dynamic_t_11, ui->dynamic_t_12, ui->dynamic_t_13, ui->dynamic_t_14,
         ui->dynamic_t_15, ui->dynamic_t_16, ui->dynamic_t_17, ui->dynamic_t_18, ui->dynamic_t_19, ui->dynamic_t_20, ui->dynamic_t_21
     };
-    QWidget *tmp_dynamic_lisync[NUM_PRESET_LIGHT_SYNC] = {
+    color_widgets::ColorPreview *tmp_dynamic_lisync[NUM_PRESET_LIGHT_SYNC] = {
         ui->lisync_c1, ui->lisync_c2, ui->lisync_c3, ui->lisync_c4, ui->lisync_c5, ui->lisync_c6
     };
-    memcpy(preset_dynamic_colors, tmp_dynamic_colors, NUM_PRESET_DYNAMIC_COLORS * sizeof(QWidget *));
-    memcpy(preset_dynamic_time, tmp_dynamic_time, NUM_PRESET_DYNAMIC_TIME * sizeof(QWidget *));
-    memcpy(preset_dynamic_lisync, tmp_dynamic_lisync, NUM_PRESET_LIGHT_SYNC * sizeof(QWidget *));
+    memcpy(preset_dynamic_colors, tmp_dynamic_colors, NUM_PRESET_DYNAMIC_COLORS * sizeof(color_widgets::ColorPreview *));
+    memcpy(preset_dynamic_time, tmp_dynamic_time, NUM_PRESET_DYNAMIC_TIME * sizeof(color_widgets::ColorPreview *));
+    memcpy(preset_dynamic_lisync, tmp_dynamic_lisync, NUM_PRESET_LIGHT_SYNC * sizeof(color_widgets::ColorPreview *));
     hide_all_dynamic_control_panels();
     clear_lights_instance();
     Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_lights_instance, NULL);
@@ -123,15 +125,15 @@ FluorescenceApp::~FluorescenceApp()
 }
 
 void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
-    QImage src_q;
     if(preset_dynamic_light_sync_enable) {
+        QImage src_q;
         QScreen *screen = QGuiApplication::primaryScreen();
         if (const QWindow *window = windowHandle()) screen = this->screen();
         if (!screen) return;
         src_q = screen->grabWindow(0).toImage().convertToFormat(QImage::Format_RGB888);
 
+        src_q = src_q.scaled(64, 64, Qt::IgnoreAspectRatio, Qt::TransformationMode::FastTransformation);
         // ui->lisync_sample->setPixmap(QPixmap::fromImage(src_q));
-        src_q.scaled(50, 50, Qt::KeepAspectRatio, Qt::TransformationMode::FastTransformation);
 
         // Article: https://www.thevfdcollective.com/blog/aesthetic-color-palettes-with-qt-and-opencv-in-c
         // Parse Image
@@ -145,34 +147,28 @@ void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
 
         std::vector<int> labels;
         cv::Mat3f centers;
-        cv::kmeans(serialized_data, 6, labels, cv::TermCriteria(), 1, cv::KMEANS_RANDOM_CENTERS, centers);
+        cv::kmeans(serialized_data, 8, labels, cv::TermCriteria(), 1, cv::KMEANS_RANDOM_CENTERS, centers);
 
         // Make it pretty by sorting it by energy
         std::sort(centers.begin(), centers.end(), [](const cv::Vec3f &a, const cv::Vec3f &b) -> bool {
             return a[0] + a[1] + a[2] > b[0] + b[1] + b[2];
         });
 
-        /* for(int i = 0; i < 6; ++i) {
-            dynamic_cast<ColorPreview *>(preset_dynamic_lisync[i])->setColor(QColor::fromRgb(
-                centers.at<float>(i + 0, 2),
-                centers.at<float>(i + 0, 1),
-                centers.at<float>(i + 0, 0))
-            );
-        } */
         // Set to clock
-        uint8_t color_arr[CONFIG_NUM_BYTES];
-        for(uint_fast8_t i = 0; i < CONFIG_NUM_BYTES; ++i) {
-            color_arr[4 * i] = (uint8_t)centers.at<float>(i + 0, 2);
-            color_arr[4 * i + 1] = (uint8_t)centers.at<float>(i + 0, 1);
-            color_arr[4 * i + 2] = (uint8_t)centers.at<float>(i + 0, 0);
+        uint8_t color_arr[4 * CONFIG_NUM_PIXELS];
+        for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
+            const cv::Vec3f &clr = centers.at<cv::Vec3f>(i + i);
+            QColor tmp_clr = QColor::fromRgb((uint8_t)clr[2], (uint8_t)clr[1], (uint8_t)clr[0]);
+            tmp_clr.setHsl(tmp_clr.hue(), tmp_clr.saturation() | 0xE0, (tmp_clr.lightness() & 0x7F) | 0x80);
+            color_arr[4 * i] = (uint8_t)tmp_clr.red();
+            color_arr[4 * i + 1] = (uint8_t)tmp_clr.green();
+            color_arr[4 * i + 2] = (uint8_t)tmp_clr.blue();
             color_arr[4 * i + 3] = 0;
         }
-        global_com_instance->transfer_serial1(color_arr);
+        if(global_com_instance) global_com_instance->transfer_serial1(color_arr);
     } else {
         ui->lisync_sample->setPixmap(QPixmap::fromImage(QImage(ambient_light_sample_paths[counter])));
-        for(int i = 0; i < 6; ++i) {
-            dynamic_cast<ColorPreview *>(preset_dynamic_lisync[i])->setColor(ambient_light_colors[counter][i]);
-        }
+        for(int i = 0; i < 6; ++i) preset_dynamic_lisync[i]->setColor(ambient_light_colors[counter][i]);
     }
 }
 
@@ -190,8 +186,8 @@ void FluorescenceApp::update(){
     ++preset_dynamic_timer;
     for(uint_fast8_t i = 0; i < NUM_PRESET_DYNAMIC_TIME; ++i) {
         uint_fast8_t hpdt = preset_dynamic_timer / 8;
-        if(i < hpdt) dynamic_cast<ColorPreview *>(preset_dynamic_time[i])->setColor(QColor::fromRgb(16, 128, 128));
-        else dynamic_cast<ColorPreview *>(preset_dynamic_time[i])->setColor(QColor::fromRgb(196, 196, 196));
+        if(i < hpdt) preset_dynamic_time[i]->setColor(QColor::fromRgb(16, 128, 128));
+        else preset_dynamic_time[i]->setColor(QColor::fromRgb(196, 196, 196));
     }
     if(preset_dynamic_timer == (NUM_PRESET_DYNAMIC_TIME * 8)) preset_dynamic_timer = 0;
 
@@ -217,31 +213,32 @@ void FluorescenceApp::hide_all_panels() {
 void FluorescenceApp::on_com_connect_clicked()
 {
     if(ui->com_label_connect->text() == "Connect") {
-        global_com_instance = new fl_app_com(ui->com_label_connect->text());
-        if(global_com_instance->getStatus() == FL_APP_COM_STATUS_CONNECTION_FAILED) {
-            QMessageBox err_zero;
-            err_zero.setText("Oh deer 🦌, seems like we couldn't connect to Fluorescence. Please make sure you have connected Fluorescence correctly and try again!");
-            err_zero.setIcon(QMessageBox::Critical);
-            err_zero.exec();
-            // return;
-        }
-        try {
-            // Request FW version
-            QString fw_version = global_com_instance->transfer_clock_control(FL_APP_COM_CONTROL_FW_VERSION_REQ);
-            if(global_com_instance->legacy_protocol()) {
-                global_is_fw2 = true;
-                ui->lsettings_info_fw->setText(fw_version);
-            } else {
-                global_is_fw2 = false;
-                ui->settings_info_fw->setText(fw_version);
-                QString hw_version = global_com_instance->transfer_clock_control(FL_APP_COM_CONTROL_HW_VERSION_REQ);
-                ui->settings_info_hw->setText(hw_version);
-            }
-        } catch (std::exception &e) {
-            QMessageBox err_zero;
-            err_zero.setText("Oops: " + QString::fromStdString(e.what()));
-            err_zero.exec();
+        // Check for no selection
+        if(!QString::compare(ui->com_select->currentText(), "")) {
+            error_message("Please select a device from the list", QMessageBox::Critical);
             return;
+        }
+
+        // Initialize COM instance & try to connect
+        global_com_instance = new fl_app_com(ui->com_select->currentText());
+        if(global_com_instance->getStatus() == FL_APP_COM_STATUS_CONNECTION_FAILED) {
+            error_message("Oh deer 🦌, seems like we couldn't connect to Fluorescence. Please make sure you have connected Fluorescence correctly and try again!", QMessageBox::Critical);
+            return;
+        }
+
+        // Request FW version
+        QString fw_version = global_com_instance->transfer_clock_control(COM_PROTOCOL_FW_VERSION_REQ);
+        if(global_com_instance->legacy_protocol()) {
+            // Set legacy
+            global_is_fw2 = true;
+            ui->lsettings_info_fw->setText(fw_version);
+        } else {
+            // Set regular
+            global_is_fw2 = false;
+            ui->settings_info_fw->setText(fw_version.mid(0, 6));
+            // Additional hardware version
+            QString hw_version = global_com_instance->transfer_clock_control(COM_PROTOCOL_HW_VERSION_REQ);
+            ui->settings_info_hw->setText(hw_version.mid(0, 4));
         }
 
         ui->panel_main_control->setEnabled(true);
@@ -258,8 +255,6 @@ void FluorescenceApp::on_com_connect_clicked()
 
         hide_all_panels();
         ui->panel_welcome->show();
-    } else {
-        // Oops, you should never get to this point
     }
 }
 
@@ -345,7 +340,7 @@ void FluorescenceApp::custom_color_update_all_sliders(bool block_color_wheel) {
             ui->custom_select_led_1, ui->custom_select_led_2, ui->custom_select_led_3,
             ui->custom_select_led_4, ui->custom_select_led_5, ui->custom_select_led_6
         };
-        uint8_t color_arr[CONFIG_NUM_BYTES] = {0};
+        uint8_t color_arr[4 * CONFIG_NUM_PIXELS] = {0};
         for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
             if(ch[i]->checkState() == Qt::Checked) {
                 custom_led_colors[i] = custom_global_color;
@@ -362,6 +357,14 @@ void FluorescenceApp::custom_color_update_all_sliders(bool block_color_wheel) {
     blockSignals(blocked);
     Q_FOREACH(QWidget* w, findChildren<QWidget*>())
         w->blockSignals(false);
+}
+
+void FluorescenceApp::error_message(QString message, QMessageBox::Icon i)
+{
+    QMessageBox err;
+    err.setText(message);
+    err.setIcon(i);
+    err.exec();
 }
 
 void FluorescenceApp::on_custom_slider_r_sliderMoved(int position)
@@ -528,10 +531,26 @@ void FluorescenceApp::on_settings_bri_set_clicked()
     global_com_instance->transfer_brightness(1, brightness_led);
 }
 
+void FluorescenceApp::on_settings_presets_en_set_clicked()
+{
+    // Parse checks
+    uint8_t enabled_instances = 0;
+    enabled_instances |=  1 << (ui->settings_presets_en_cop->isChecked() * LIGHT_PATTERN_COP);
+    enabled_instances |=  1 << (ui->settings_presets_en_tcode->isChecked() * LIGHT_PATTERN_TIME_CODE);
+    enabled_instances |=  1 << (ui->settings_presets_en_music->isChecked() * LIGHT_PATTERN_MUSIC);
+    enabled_instances |=  1 << (ui->settings_presets_en_chase->isChecked() * LIGHT_PATTERN_CHASE);
+    enabled_instances |=  1 << (ui->settings_presets_en_rnb->isChecked() * LIGHT_PATTERN_RAINBOW);
+    enabled_instances |=  1 << (ui->settings_presets_en_spectrum->isChecked() * LIGHT_PATTERN_SPECTRUM);
+    enabled_instances |=  1 << (ui->settings_presets_en_bliss->isChecked() * LIGHT_PATTERN_MOMENTSOFBLISS);
+    enabled_instances |=  1 << (ui->settings_presets_en_static->isChecked() * LIGHT_PATTERN_STATIC);
+    global_com_instance->transfer_enable_presets(enabled_instances);
+}
+
+
 void FluorescenceApp::on_settings_nsh_enable_stateChanged(int arg1)
 {
     if(arg1 == Qt::Checked) ui->settings_nsh_panel->setEnabled(true);
-    else ui->settings_nsh_panel->setEnabled(true);
+    else ui->settings_nsh_panel->setEnabled(false);
 }
 
 void FluorescenceApp::on_settings_nsh_set_clicked()
@@ -550,12 +569,12 @@ void FluorescenceApp::on_settings_nsh_set_clicked()
 }
 
 void FluorescenceApp::on_settings_settings_default_clicked() {
-    global_com_instance->transfer_clock_control(FL_APP_COM_CONTROL_DEFAULT_REQ);
+    global_com_instance->transfer_clock_control(COM_PROTOCOL_DEFAULT_REQ);
 }
 
 void FluorescenceApp::on_settings_settings_save_clicked()
 {
-    global_com_instance->transfer_clock_control(FL_APP_COM_CONTROL_SETTINGS_SAVE_REQ);
+    global_com_instance->transfer_clock_control(COM_PROTOCOL_SETTINGS_SAVE_REQ);
 }
 
 void FluorescenceApp::on_settings_info_download_clicked()
@@ -627,22 +646,22 @@ void FluorescenceApp::on_timesync_button_clicked()
     global_com_instance->transfer_time_date(v_time, v_date);
 }
 
-void FluorescenceApp::on_static_off_clicked() {         global_com_instance->transfer_light_pattern(0, 0, 0); }
-void FluorescenceApp::on_static_white_clicked() {       global_com_instance->transfer_light_pattern(0, 1, 0); }
-void FluorescenceApp::on_static_warmwhite_clicked() {   global_com_instance->transfer_light_pattern(0, 2, 0); }
-void FluorescenceApp::on_static_red_clicked() {         global_com_instance->transfer_light_pattern(0, 3, 0); }
-void FluorescenceApp::on_static_green_clicked() {       global_com_instance->transfer_light_pattern(0, 4, 0); }
-void FluorescenceApp::on_static_blue_clicked() {        global_com_instance->transfer_light_pattern(0, 5, 0); }
-void FluorescenceApp::on_static_yellow_clicked() {      global_com_instance->transfer_light_pattern(0, 6, 0); }
-void FluorescenceApp::on_static_orange_clicked() {      global_com_instance->transfer_light_pattern(0, 7, 0); }
-void FluorescenceApp::on_static_cyan_clicked() {        global_com_instance->transfer_light_pattern(0, 8, 0); }
-void FluorescenceApp::on_static_magenta_clicked() {     global_com_instance->transfer_light_pattern(0, 9, 0); }
-void FluorescenceApp::on_static_violet_clicked() {      global_com_instance->transfer_light_pattern(0, 10, 0); }
-void FluorescenceApp::on_static_rainbow_clicked() {     global_com_instance->transfer_light_pattern(0, 11, 0); }
-void FluorescenceApp::on_static_pastelrainbow_clicked(){global_com_instance->transfer_light_pattern(0, 12, 0); }
-void FluorescenceApp::on_static_green2blue_clicked() {  global_com_instance->transfer_light_pattern(0, 13, 0); }
-void FluorescenceApp::on_static_red2blue_clicked() {    global_com_instance->transfer_light_pattern(0, 14, 0); }
-void FluorescenceApp::on_static_red2green_clicked() {   global_com_instance->transfer_light_pattern(0, 15, 0); }
+void FluorescenceApp::on_static_off_clicked() {         global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 0, 0); }
+void FluorescenceApp::on_static_white_clicked() {       global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 1, 0); }
+void FluorescenceApp::on_static_warmwhite_clicked() {   global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 2, 0); }
+void FluorescenceApp::on_static_red_clicked() {         global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 3, 0); }
+void FluorescenceApp::on_static_green_clicked() {       global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 4, 0); }
+void FluorescenceApp::on_static_blue_clicked() {        global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 5, 0); }
+void FluorescenceApp::on_static_yellow_clicked() {      global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 6, 0); }
+void FluorescenceApp::on_static_orange_clicked() {      global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 7, 0); }
+void FluorescenceApp::on_static_cyan_clicked() {        global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 8, 0); }
+void FluorescenceApp::on_static_magenta_clicked() {     global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 9, 0); }
+void FluorescenceApp::on_static_violet_clicked() {      global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 10, 0); }
+void FluorescenceApp::on_static_rainbow_clicked() {     global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 11, 0); }
+void FluorescenceApp::on_static_pastelrainbow_clicked(){global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 12, 0); }
+void FluorescenceApp::on_static_green2blue_clicked() {  global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 13, 0); }
+void FluorescenceApp::on_static_red2blue_clicked() {    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 14, 0); }
+void FluorescenceApp::on_static_red2green_clicked() {   global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 15, 0); }
 
 void FluorescenceApp::on_panel_dyn_spectrum_set_clicked()
 {
@@ -658,14 +677,14 @@ void FluorescenceApp::on_panel_dyn_spectrum_set_clicked()
     else if(param1 == "medium") param2_value = 90;
     else param2_value = 127;
 
-    global_com_instance->transfer_light_pattern(1, param1_value, param2_value);
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_SPECTRUM, param1_value, param2_value);
 }
 
 void FluorescenceApp::on_panel_dyn_bliss_set_clicked()
 {
     // Direct index parsing
     uint8_t param1 = ui->panel_dyn_bliss_param->currentIndex();
-    global_com_instance->transfer_light_pattern(2, param1, 0);
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_MOMENTSOFBLISS, param1, 0);
 }
 
 void FluorescenceApp::on_panel_dyn_rnb_set_clicked()
@@ -677,7 +696,7 @@ void FluorescenceApp::on_panel_dyn_rnb_set_clicked()
     if(param2 == "low") param2_value = 127;
     else if(param2 == "medium") param2_value = 196;
     else param2_value = 255;
-    global_com_instance->transfer_light_pattern(3, param1_value, param2_value);
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_RAINBOW, param1_value, param2_value);
 }
 
 void FluorescenceApp::on_panel_dyn_chase_set_clicked()
@@ -689,21 +708,21 @@ void FluorescenceApp::on_panel_dyn_chase_set_clicked()
     if(param2 == "low") param2_value = 127;
     else if(param2 == "medium") param2_value = 196;
     else param2_value = 255;
-    global_com_instance->transfer_light_pattern(4, param1_value, param2_value);
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_CHASE, param1_value, param2_value);
 }
 
 void FluorescenceApp::on_panel_dyn_tcode_set_clicked()
 {
     // Direct index parsing
     uint8_t param1 = ui->panel_dyn_tcode_param1->currentIndex();
-    global_com_instance->transfer_light_pattern(5, param1, 0);
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_TIME_CODE, param1, 0);
 }
 
 void FluorescenceApp::on_panel_dyn_cop_set_clicked()
 {
     // Direct index parsing
     uint8_t param1 = ui->panel_dyn_cop_param1->currentIndex();
-    global_com_instance->transfer_light_pattern(6, param1, 0);
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_COP, param1, 0);
 }
 
 void FluorescenceApp::on_panel_dyn_music_set_clicked()
@@ -715,7 +734,7 @@ void FluorescenceApp::on_panel_dyn_music_set_clicked()
     if(param2 == "low") param2_value = 127;
     else if(param2 == "medium") param2_value = 196;
     else param2_value = 255;
-    global_com_instance->transfer_light_pattern(7, param1_value, param2_value);
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_MUSIC, param1_value, param2_value);
 }
 
 
@@ -725,49 +744,40 @@ void FluorescenceApp::on_message_send_clicked()
     uint8_t *m[4] = {NULL, NULL, NULL, NULL};
 
     if(message.length() == 0) {
-        QMessageBox err_zero;
-        err_zero.setText("Oops, u forgot the message, did ya?");
-        err_zero.setIcon(QMessageBox::Information);
-        err_zero.exec();
+        error_message("Oops, u forgot the message, did ya?", QMessageBox::Information);
         return;
     }
     if(ui->message_set_custom_welcome->checkState() == Qt::Checked) {
         if(message.length() == 6) {
             uint8_t welcome_msg[6];
-            for(uint_fast8_t i = 0; i < 6; ++i) welcome_msg[i] = message.toLatin1().data()[i];
+            for(uint_fast8_t i = 0; i < 6; ++i) welcome_msg[i] = message.toLatin1().toUpper().data()[i];
             global_com_instance->transfer_welcome_set(welcome_msg);
         } else {
-            QMessageBox err_non6;
-            err_non6.setText("Oops, the welcome message needs exactly 6 characters!");
-            err_non6.setIcon(QMessageBox::Information);
-            err_non6.exec();
+            error_message("Oops, the welcome message needs exactly 6 characters!", QMessageBox::Information);
             return;
         }
     } else {
         if(message.length() > 4 * 6) {
-            QMessageBox err_too_long;
-            err_too_long.setText("Oops, the message is longer than 4 * 6 = 24 characters.\n Please try again with less.");
-            err_too_long.setIcon(QMessageBox::Information);
-            err_too_long.exec();
+            error_message("Oops, the message is longer than 4 * 6 = 24 characters.\n Please try again with less.", QMessageBox::Information);
             return;
         }
         uint_fast8_t n_iterations = message.length() / 6;
         uint_fast8_t remainder = message.length() % 6;
         uint_fast8_t i;
         for(i = 0; i < n_iterations; ++i) {
-            m[i] = (uint8_t *)calloc(6, sizeof(uint8_t));
-            QString message_substr = message.mid(i * 6, 6);
+            m[i] = (uint8_t *)malloc(6 * sizeof(uint8_t));
+            memset(m[i], ' ', 6);
+            QString message_substr = message.mid(i * 6, 6).toUpper();
             for(uint_fast8_t j = 0; j < message_substr.length(); ++j) m[i][j] = message_substr.at(j).toLatin1();
         }
         if(remainder) {
-            m[i] = (uint8_t *)calloc(6, sizeof(uint8_t));
-            QString message_substr = message.mid(i * 6, remainder);
+            m[i] = (uint8_t *)malloc(6 * sizeof(uint8_t));
+            memset(m[i], ' ', 6);
+            QString message_substr = message.mid(i * 6, remainder).toUpper();
             for(uint_fast8_t j = 0; j < message_substr.length(); ++j) m[i][j] = message_substr.at(j).toLatin1();
         }
         global_com_instance->transfer_message(m[0], m[1], m[2], m[3], (uint8_t)ui->message_length->toPlainText().toUShort());
-        for(uint_fast8_t i = 0; i < 4; ++i) {
-            if(m[i]) free(m[i]);
-        }
+        for(auto message : m) if(message) free(message);
     }
 }
 

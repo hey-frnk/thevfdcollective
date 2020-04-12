@@ -80,18 +80,15 @@ light_pattern_instance_t global_light_instance_random;
 #define GLOBAL_LIGHT_INSTANCE_RANDOM_OFF 255
 #define GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON (global_light_instance_random != GLOBAL_LIGHT_INSTANCE_RANDOM_OFF)
 
-static uint8_t global_light_it_register;   // For iterable instances, this register includes or excludes an instance during regular light instance F2 switching
-static uint8_t global_light_rnd_register;  // For random instances, this register includes or excludes an instance from being randomized
-#define GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(_instance)     ((global_light_it_register) &   (1 << (_instance)))
-#define GLOBAL_ITERABLE_INSTANCE_ENABLE(_instance)         ((global_light_it_register) |=  (1 << (_instance)))
-#define GLOBAL_ITERABLE_INSTANCE_DISABLE(_instance)        ((global_light_it_register) &= ~(1 << (_instance)))
-#define GLOBAL_RANDOM_INSTANCE_IS_ENABLED(_instance)     ((global_light_rnd_register)  &   (1 << (_instance)))
-#define GLOBAL_RANDOM_INSTANCE_ENABLE(_instance)         ((global_light_rnd_register)  |=  (1 << (_instance)))
-#define GLOBAL_RANDOM_INSTANCE_DISABLE(_instance)        ((global_light_rnd_register)  &= ~(1 << (_instance)))
-static uint8_t random_unsaved_settings[2];
+#define GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(_instance)     ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register]) &   (1 << (_instance)))
+#define GLOBAL_ITERABLE_INSTANCE_ENABLE(_instance)         ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register]) |=  (1 << (_instance)))
+#define GLOBAL_ITERABLE_INSTANCE_DISABLE(_instance)        ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register]) &= ~(1 << (_instance)))
+#define GLOBAL_RANDOM_INSTANCE_IS_ENABLED(_instance)     ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register])  &   (1 << (_instance)))
+#define GLOBAL_RANDOM_INSTANCE_ENABLE(_instance)         ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register])  |=  (1 << (_instance)))
+#define GLOBAL_RANDOM_INSTANCE_DISABLE(_instance)        ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register])  &= ~(1 << (_instance)))
 
 // Clock power variables
-static uint8_t global_night_shift_state;
+static night_shift_state_t global_night_shift_state;
 
 // COM variables
 struct COM_Data global_com_data;
@@ -104,6 +101,11 @@ static const char Messages_Routine_Saved1[CONFIG_NUM_DIGITS]     = {'A', 'L', 'L
 static const char Messages_Routine_Saved2[CONFIG_NUM_DIGITS]     = {'S', 'A', 'V', 'E', 'D', ' '};
 static const char Messages_Routine_RandomOn[CONFIG_NUM_DIGITS]   = {'R', 'N', 'D', ' ', 'O', 'N'};
 static const char Messages_Routine_RandomOff[CONFIG_NUM_DIGITS]  = {'R', 'N', 'D', 'O', 'F', 'F'};
+static const char Messages_Routine_Inst[CONFIG_NUM_DIGITS]       = {'E', 'N', 'A', 'B', 'L', 'E'};
+static const char Messages_Routine_Rnd[CONFIG_NUM_DIGITS]        = {'R', 'A', 'N', 'D', ' ', ' '};
+static const char Messages_Routine_Set[CONFIG_NUM_DIGITS]        = {'S', 'E', 'T', ' ', ' ', ' '};
+static const char Messages_Routine_Night[CONFIG_NUM_DIGITS]      = {' ', 'N', 'I', 'G', 'H', 'T'};
+static const char Messages_Routine_Shift[CONFIG_NUM_DIGITS]      = {' ', 'S', 'H', 'I', 'F', 'T'};
 
 /** Begin of:
   * @tableofcontents SECTION_SUPPORTING_FUNCTIONS
@@ -136,8 +138,6 @@ void vfdco_clock_initializer() {
   vfdco_clock_mic_initializer();
   
   // All good? All good! Fluorescence, say hello!
-  // char welcome[CONFIG_NUM_DIGITS] = {0};
-  // for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) welcome[i] = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i];
   vfdco_welcome((char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome);
 
   // Random seed
@@ -184,8 +184,6 @@ inline void vfdco_clock_lights_initializer() {
   // Start by loading the saved lights instance
   GLOBAL_SET_NEXT_RANDOM_INSTANCE(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_random]);
   set_next_lights_instance((light_pattern_instance_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_instance_counter]);
-  global_light_it_register = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register];
-  global_light_rnd_register = SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register];
 }
 
 inline void vfdco_clock_com_initializer() {
@@ -306,9 +304,9 @@ inline void vfdco_clock_gui_routine() {
         vfdco_display_set_dim_factor(self->dim_factor_display);
         vfdco_clr_set_dim_factor(self->dim_factor_led);
         SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = self->night_shift_new_start_h;
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = self->night_shift_new_start_m;
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = 0;
         SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = self->night_shift_new_end_h;
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = self->night_shift_new_end_m;
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = 0;
         break;
       }
       default: break;
@@ -394,7 +392,17 @@ inline void vfdco_clock_lights_routine() {
   // Randomizer on? Randomize next instance!
   if(GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
     static uint8_t prev_s = 0; // Last second
-    if((prev_s == 58) && (global_time.s == 59)) find_next_lights_instance();
+    uint8_t trigger_rnd = 0; // Random trigger
+    if((prev_s == 58) && (global_time.s == 59)) {
+      switch(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_speed]) {
+        case CONFIG_RANDOM_SPEED_1_ONE_MINUTE: {                              trigger_rnd = 1; break; }
+        case CONFIG_RANDOM_SPEED_2_TWO_MINUTES: { if(!(global_time.m & 0x01)) trigger_rnd = 1; break; }
+        case CONFIG_RANDOM_SPEED_3_TEN_MINUTES: { if(global_time.m % 10 == 0) trigger_rnd = 1; break; }
+        case CONFIG_RANDOM_SPEED_4_HALF_HOUR: {   if(global_time.m % 30 == 0) trigger_rnd = 1; break; }
+        case CONFIG_RANDOM_SPEED_5_HOUR: {        if(global_time.m == 0)      trigger_rnd = 1; break; }
+      }
+    }
+    if(trigger_rnd) find_next_lights_instance();
     prev_s = global_time.s;
   }
 }
@@ -535,6 +543,7 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
   if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
     if(mapped_instance != INSTANCE_NO_SETTINGS) instance_settings = serialized_settings[mapped_instance]; // Saved settings
   } else {
+    static uint8_t random_unsaved_settings[2];    // Unsaved settings
     instance_settings = random_unsaved_settings;  // Or any random settings. Shuffle it for real
     instance_settings[0] = (vfdco_util_random(7) << 1) | (global_time.s & 0x01);
     instance_settings[1] = (vfdco_util_random(7) << 1) | (global_time.s & 0x01);
@@ -548,18 +557,18 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
         break;
       }
       case LIGHT_PATTERN_SPECTRUM: {
-        instance_settings[0] |= 0x80; // Sat: at least 128
-        instance_settings[1] = CONFIG_LIGHTNESS_MEDIUM + _reduce(instance_settings[0], 96); // Li: max 128
+        instance_settings[0] |= 0xC0; // Sat: at least 192
+        instance_settings[1] = CONFIG_LIGHTNESS_MEDIUM + _reduce(instance_settings[0], 38); // Li: max 128
         break;
       }
       case LIGHT_PATTERN_RAINBOW: {
         instance_settings[0] = 10 + _reduce(instance_settings[0], 33); // Diff: at least 10, max 42
-        instance_settings[1] |= 0x80; // Sat: at least 128
+        instance_settings[1] |= 0xC0; // Sat: at least 192
         break;
       }
       case LIGHT_PATTERN_CHASE: {
         instance_settings[0] = _reduce(instance_settings[0], 3); // Mode: Max 2
-        instance_settings[1] = _reduce(instance_settings[0], 7); // Diff: Max 6
+        instance_settings[1] = _reduce(instance_settings[1], 7); // Diff: Max 6
         break;
       }
       case LIGHT_PATTERN_MUSIC: {
@@ -621,14 +630,14 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
 
 static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) {
   if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
-    const uint8_t command_byte = input_buffer[1];
+    const uint8_t command_byte = input_buffer[COM_PROTOCOL_COMMAND_OFFSET];
 
     // LED set
     if(command_byte == 0x00) {
       if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
       memcpy(
         serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
-        input_buffer + COM_PROTOCOL_SER0_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
+        input_buffer + COM_PROTOCOL_DATA_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
       );
       GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(LIGHT_PATTERN_SERIAL0);
@@ -638,7 +647,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
       if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
       memcpy(
         serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL1)], 
-        input_buffer + COM_PROTOCOL_SER1_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
+        input_buffer + COM_PROTOCOL_DATA_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
       );
       GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
@@ -646,15 +655,15 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
 
     // LED presets 
     else if(command_byte == 0x04) {
-      light_pattern_instance_t instance = input_buffer[COM_PROTOCOL_LIGHT_SET_OFFSET_INSTANCE];
+      light_pattern_instance_t instance = input_buffer[COM_PROTOCOL_CONTROL_OFFSET];
       if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
       // If it has saved settings
       uint8_t mapped_settings_index = _map_lights_instance_to_serialized_settings_index(instance);
       if(mapped_settings_index != 255) {
         if(serialized_settings_sizes[mapped_settings_index] >= 1) { // One setting parameter
-          serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_LIGHT_SET_OFFSET_SETTING0];
+          serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
           if(serialized_settings_sizes[mapped_settings_index] == 2) { // Two setting parameters
-            serialized_settings[mapped_settings_index][1] = input_buffer[COM_PROTOCOL_LIGHT_SET_OFFSET_SETTING1];
+            serialized_settings[mapped_settings_index][1] = input_buffer[COM_PROTOCOL_PARAM1_OFFSET];
           }
         }
       }
@@ -664,25 +673,46 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
       if(global_light_instance_counter != prev_instance_counter) if(Light_Pattern_Hello) Light_Pattern_Hello();
     }
 
+    // Enabled iterable instances set
+    else if(command_byte == 0x05) {
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
+      vfdco_display_render_message(Messages_Routine_Inst, 0, CONFIG_MESSAGE_SHORT);
+      vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
+    }
+    // Enabled random instances set
+    else if(command_byte == 0x06) {
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
+      vfdco_display_render_message(Messages_Routine_Rnd, 0, CONFIG_MESSAGE_SHORT);
+      vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
+    }
+    // Random interval set
+    else if(command_byte == 0x07) {
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_speed] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
+      vfdco_display_render_message(Messages_Routine_Rnd, 0, CONFIG_MESSAGE_SHORT);
+      vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
+    }
+
+
     // GUI setting set
     else if(command_byte == 0x10) {
-      gui_instance_t instance = input_buffer[COM_PROTOCOL_GUI_SET_OFFSET_INSTANCE];
+      gui_instance_t instance = input_buffer[COM_PROTOCOL_CONTROL_OFFSET];
       uint8_t mapped_settings_index = _map_gui_instance_to_serialized_settings_index(instance);
       if(mapped_settings_index != 255) {
-        serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_GUI_SET_OFFSET_SETTING0];
+        serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
       }
+      vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_LONG);
     }
 
     // If time set command is detected
     else if(command_byte == 0x20) {
       if(input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_FLAG] == 0x23 /* Make sure flag */) {
         // Send to RTC
-        global_time.s = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 2];
-        global_time.m = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 1];
-        global_time.h = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 2];
-        global_date.d = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 3];
-        global_date.m = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 4];
-        global_date.y = input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_DATA + 5];
+        global_time.s = input_buffer[COM_PROTOCOL_DATA_OFFSET + 0];
+        global_time.m = input_buffer[COM_PROTOCOL_DATA_OFFSET + 1];
+        global_time.h = input_buffer[COM_PROTOCOL_DATA_OFFSET + 2];
+        global_date.d = input_buffer[COM_PROTOCOL_DATA_OFFSET + 3];
+        global_date.m = input_buffer[COM_PROTOCOL_DATA_OFFSET + 4];
+        global_date.y = input_buffer[COM_PROTOCOL_DATA_OFFSET + 5];
         vfdco_set_date_time(&global_date, &global_time);
         // Say that time and date is synced now.
         const char _msg_tsync1[CONFIG_NUM_DIGITS] = {'T', '-', 'D', ' ', ' ', ' '};
@@ -699,27 +729,30 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
 
     // If brightness set command is detected
     else if(command_byte == 0x21) {
-      if(!input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DISPLED]) { // 0: Set display brightness 
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR];
-        vfdco_display_set_dim_factor(input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR]);
+      if(!input_buffer[COM_PROTOCOL_CONTROL_OFFSET]) { // 0: Set display brightness
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
+        vfdco_display_set_dim_factor(input_buffer[COM_PROTOCOL_PARAM0_OFFSET]);
       } else { // 1: Set LED brightness
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR];
-        vfdco_clr_set_dim_factor(input_buffer[COM_PROTOCOL_BRIGHTNESS_SET_OFFSET_DIMFACTOR]);
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
+        vfdco_clr_set_dim_factor(input_buffer[COM_PROTOCOL_PARAM0_OFFSET]);
       }
     }
 
     // If night shift set is detected
     else if(command_byte == 0x22) {
-      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET];
-      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET + 1];
-      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET + 2];
-      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = input_buffer[COM_PROTOCOL_NSH_SET_OFFSET + 3];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = input_buffer[COM_PROTOCOL_DATA_OFFSET + 1];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = input_buffer[COM_PROTOCOL_DATA_OFFSET + 2];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = input_buffer[COM_PROTOCOL_DATA_OFFSET + 3];
+      vfdco_display_render_message(Messages_Routine_Night, 0, CONFIG_MESSAGE_LONG);
+      vfdco_display_render_message(Messages_Routine_Shift, 0, CONFIG_MESSAGE_LONG);
+      vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_LONG);
     }
 
     // If welcome message set is detected
     else if(command_byte == 0x25) {
-      for(uint8_t i = COM_PROTOCOL_WELCOME_SET_OFFSET; i < (COM_PROTOCOL_WELCOME_SET_OFFSET + CONFIG_NUM_DIGITS); ++i) 
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i - COM_PROTOCOL_WELCOME_SET_OFFSET] = (char)input_buffer[i];
+      for(uint8_t i = COM_PROTOCOL_DATA_OFFSET; i < (COM_PROTOCOL_DATA_OFFSET + CONFIG_NUM_DIGITS); ++i)
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_welcome + i - COM_PROTOCOL_DATA_OFFSET] = (char)input_buffer[i];
       vfdco_clock_settings_save(1);
       vfdco_display_render_message((const char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, 0x00, CONFIG_MESSAGE_LONG);
     }
@@ -727,7 +760,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
     // If message display set is detected
     else if(command_byte == 0x26) {
       // Get message delay time. It's the incoming value in seconds
-      uint8_t offset = COM_PROTOCOL_MESSAGE_DISPLAY_OFFSET;
+      uint8_t offset = COM_PROTOCOL_DATA_OFFSET;
       for(uint8_t i = 0; i < 4; ++i) {
         if(input_buffer[offset] == 0) break;
         vfdco_display_render_message((char *)input_buffer + offset, 0x00, CONFIG_MESSAGE_LONG);
@@ -737,10 +770,10 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
 
     // If clock control is detected
     else if(command_byte == 0x30) {
-      const uint8_t control_byte = input_buffer[COM_PROTOCOL_CLOCK_CONTROL_OFFSET];
+      const com_protocol_clock_control_t control_byte = input_buffer[COM_PROTOCOL_CONTROL_OFFSET];
       switch(control_byte) {
         // HW Version Request
-        case 0x00: {
+        case COM_PROTOCOL_HW_VERSION_REQ: {
           uint8_t transfer_buffer[10] = CONFIG_HW_STRING;
           for(uint8_t i = 0; i < CONFIG_HW_STRING_LENGTH; ++i) 
             transfer_buffer[2 + (CONFIG_HW_STRING_LENGTH - i - 1)] = transfer_buffer[(CONFIG_HW_STRING_LENGTH - i - 1)];
@@ -751,7 +784,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
           break;
         }
         // SW Version Request
-        case 0x01: {
+        case COM_PROTOCOL_FW_VERSION_REQ: {
           uint8_t transfer_buffer[10] = CONFIG_SW_STRING;
           for(uint8_t i = 0; i < CONFIG_SW_STRING_LENGTH; ++i) 
             transfer_buffer[2 + (CONFIG_SW_STRING_LENGTH - i - 1)] = transfer_buffer[(CONFIG_SW_STRING_LENGTH - i - 1)];
@@ -762,10 +795,23 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
           break;
         }
         // Save request
-        case 0x02: vfdco_clock_settings_save(0); break;
+        case COM_PROTOCOL_SETTINGS_SAVE_REQ: vfdco_clock_settings_save(0); break;
         // Default load request 
-        case 0x03: vfdco_clock_settings_default(); break;
+        case COM_PROTOCOL_DEFAULT_REQ: vfdco_clock_settings_default(); break;
         default: break;
+        // Enabled instances request
+        case COM_PROTOCOL_ENABLED_INSTANCES_REQ: {
+          uint8_t transfer_buffer[10] = {
+            0x24, 0x33, 
+            SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register], 
+            SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register], 
+            0, 0, 0, 0, 0, 0x25
+          };
+          global_com_data.tx_buffer = transfer_buffer;
+          com_encoder(&global_com_data);
+          global_com_data.tx_buffer = NULL;
+          break;
+        }
       }
     }
   }

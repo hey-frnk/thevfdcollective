@@ -259,7 +259,7 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -3764,7 +3764,7 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>331</width>
+       <width>271</width>
        <height>131</height>
       </rect>
      </property>
@@ -3787,9 +3787,9 @@ color: rgb(255, 255, 255);</string>
      <widget class="QComboBox" name="settings_td_timemode">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>140</x>
         <y>30</y>
-        <width>171</width>
+        <width>121</width>
         <height>21</height>
        </rect>
       </property>
@@ -3871,9 +3871,9 @@ color: rgb(255, 255, 255);</string>
      <widget class="QComboBox" name="settings_td_datemode">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>140</x>
         <y>60</y>
-        <width>171</width>
+        <width>121</width>
         <height>21</height>
        </rect>
       </property>
@@ -3901,7 +3901,7 @@ color: rgb(255, 255, 255);</string>
      <widget class="QPushButton" name="settings_td_set">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>150</x>
         <y>90</y>
         <width>111</width>
         <height>21</height>
@@ -3926,7 +3926,7 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>10</x>
        <y>140</y>
-       <width>331</width>
+       <width>271</width>
        <height>131</height>
       </rect>
      </property>
@@ -3946,9 +3946,9 @@ color: rgb(255, 255, 255);</string>
      <widget class="QComboBox" name="settings_bri_disp">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>140</x>
         <y>30</y>
-        <width>171</width>
+        <width>121</width>
         <height>21</height>
        </rect>
       </property>
@@ -4027,9 +4027,9 @@ color: rgb(255, 255, 255);</string>
      <widget class="QComboBox" name="settings_bri_led">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>140</x>
         <y>60</y>
-        <width>171</width>
+        <width>121</width>
         <height>21</height>
        </rect>
       </property>
@@ -4062,7 +4062,7 @@ color: rgb(255, 255, 255);</string>
      <widget class="QPushButton" name="settings_bri_set">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>150</x>
         <y>90</y>
         <width>111</width>
         <height>21</height>
@@ -4085,10 +4085,10 @@ color: rgb(255, 255, 255);</string>
     <widget class="QGroupBox" name="settings_nsh">
      <property name="geometry">
       <rect>
-       <x>360</x>
+       <x>470</x>
        <y>10</y>
-       <width>371</width>
-       <height>171</height>
+       <width>261</width>
+       <height>161</height>
       </rect>
      </property>
      <property name="font">
@@ -4130,8 +4130,8 @@ color: rgb(255, 255, 255);</string>
      <widget class="QPushButton" name="settings_nsh_set">
       <property name="geometry">
        <rect>
-        <x>260</x>
-        <y>140</y>
+        <x>130</x>
+        <y>130</y>
         <width>111</width>
         <height>21</height>
        </rect>
@@ -4156,8 +4156,8 @@ color: rgb(255, 255, 255);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
-        <width>361</width>
+        <y>50</y>
+        <width>241</width>
         <height>71</height>
        </rect>
       </property>
@@ -4169,9 +4169,9 @@ color: rgb(255, 255, 255);</string>
       <widget class="QTimeEdit" name="settings_nsh_start">
        <property name="geometry">
         <rect>
-         <x>250</x>
+         <x>140</x>
          <y>10</y>
-         <width>91</width>
+         <width>81</width>
          <height>22</height>
         </rect>
        </property>
@@ -4193,7 +4193,7 @@ color: rgb(255, 255, 255);</string>
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>141</width>
+         <width>131</width>
          <height>16</height>
         </rect>
        </property>
@@ -4214,9 +4214,9 @@ color: rgb(255, 255, 255);</string>
       <widget class="QTimeEdit" name="settings_nsh_stop">
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>50</x>
          <y>40</y>
-         <width>91</width>
+         <width>81</width>
          <height>22</height>
         </rect>
        </property>
@@ -4236,7 +4236,7 @@ color: rgb(255, 255, 255);</string>
       <widget class="QLabel" name="settings_nsh_intro3">
        <property name="geometry">
         <rect>
-         <x>230</x>
+         <x>140</x>
          <y>40</y>
          <width>111</width>
          <height>20</height>
@@ -4253,7 +4253,7 @@ color: rgb(255, 255, 255);</string>
         <string notr="true">color: rgb(16, 128, 128);</string>
        </property>
        <property name="text">
-        <string>the next morning</string>
+        <string>next morning.</string>
        </property>
       </widget>
       <widget class="QLabel" name="settings_nsh_intro2">
@@ -4261,7 +4261,7 @@ color: rgb(255, 255, 255);</string>
         <rect>
          <x>10</x>
          <y>40</y>
-         <width>41</width>
+         <width>31</width>
          <height>16</height>
         </rect>
        </property>
@@ -4286,7 +4286,7 @@ color: rgb(255, 255, 255);</string>
       <rect>
        <x>10</x>
        <y>270</y>
-       <width>331</width>
+       <width>271</width>
        <height>81</height>
       </rect>
      </property>
@@ -4308,7 +4308,7 @@ color: rgb(255, 255, 255);</string>
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>151</width>
+        <width>111</width>
         <height>41</height>
        </rect>
       </property>
@@ -4328,9 +4328,9 @@ color: rgb(255, 255, 255);</string>
      <widget class="QPushButton" name="settings_settings_save">
       <property name="geometry">
        <rect>
-        <x>170</x>
+        <x>140</x>
         <y>30</y>
-        <width>151</width>
+        <width>121</width>
         <height>41</height>
        </rect>
       </property>
@@ -4351,10 +4351,10 @@ color: rgb(255, 255, 255);</string>
     <widget class="QGroupBox" name="settings_info">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>180</y>
-       <width>371</width>
-       <height>171</height>
+       <x>470</x>
+       <y>170</y>
+       <width>251</width>
+       <height>91</height>
       </rect>
      </property>
      <property name="font">
@@ -4365,7 +4365,7 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="title">
-      <string>Hardware &amp;&amp; Firmware</string>
+      <string>Hardware &amp;&amp; Firmware Info</string>
      </property>
      <property name="flat">
       <bool>true</bool>
@@ -4393,32 +4393,10 @@ color: rgb(255, 255, 255);</string>
        <string>Hardware version:</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="settings_info_update">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>110</y>
-        <width>171</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>.AppleSystemUIFont</family>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="text">
-       <string>Firmware Update</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="settings_info_hw">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>140</x>
         <y>30</y>
         <width>91</width>
         <height>20</height>
@@ -4464,7 +4442,7 @@ color: rgb(255, 255, 255);</string>
      <widget class="QLabel" name="settings_info_fw">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>140</x>
         <y>50</y>
         <width>91</width>
         <height>20</height>
@@ -4504,13 +4482,13 @@ color: rgb(255, 255, 255);</string>
        <string notr="true">color: rgb(16, 128, 128);</string>
       </property>
       <property name="text">
-       <string>Fluorescence app version:</string>
+       <string>App version:</string>
       </property>
      </widget>
      <widget class="QLabel" name="settings_info_app">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>140</x>
         <y>70</y>
         <width>91</width>
         <height>20</height>
@@ -4530,13 +4508,65 @@ color: rgb(255, 255, 255);</string>
        <string>3.0</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="settings_info_download">
+    </widget>
+    <widget class="QGroupBox" name="settings_presets">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>10</y>
+       <width>151</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Enabled presets</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QCheckBox" name="settings_presets_en_static">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>110</y>
-        <width>171</width>
-        <height>51</height>
+        <y>30</y>
+        <width>71</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Static</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="settings_presets_en_set">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>210</y>
+        <width>111</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -4549,8 +4579,250 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
-       <string>Download 
-Latest Firmware</string>
+       <string>Set</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="settings_presets_en_spectrum">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>121</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Spectrum Fade</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="settings_presets_en_rnb">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>121</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Rainbow Fade</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="settings_presets_en_bliss">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Moments of Bliss</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="settings_presets_en_chase">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Chase Fade</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="settings_presets_en_tcode">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Time Code</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="settings_presets_en_music">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>150</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Music</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="settings_presets_en_cop">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>170</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(16, 128, 128);</string>
+      </property>
+      <property name="text">
+       <string>Police Lights</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="settings_update">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>270</y>
+       <width>421</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Updates</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <widget class="QPushButton" name="settings_info_download">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>181</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Download Latest Firmware</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="settings_info_update">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>30</y>
+        <width>191</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>Firmware Update</string>
       </property>
      </widget>
     </widget>
@@ -5295,13 +5567,13 @@ color: rgb(255, 255, 255);</string>
    </widget>
    <zorder>com_group</zorder>
    <zorder>panel_main_control</zorder>
-   <zorder>panel_settings</zorder>
    <zorder>panel_message</zorder>
    <zorder>panel_custom_colors</zorder>
-   <zorder>panel_presets</zorder>
    <zorder>panel_welcome</zorder>
    <zorder>panel_lsettings</zorder>
    <zorder>panel_timesync</zorder>
+   <zorder>panel_presets</zorder>
+   <zorder>panel_settings</zorder>
   </widget>
  </widget>
  <customwidgets>

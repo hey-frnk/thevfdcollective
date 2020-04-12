@@ -57,7 +57,7 @@ extern "C" {
 #define NUM_SERIALIZABLE_LIGHTS 8
      // ENTRY:  Index|    Size| Corresponding enum mapping     | Instance
 #define CREATE_SERIALIZED_GLOBAL(ENTRY) \
-        ENTRY(      0,      16, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
+        ENTRY(      0,      17, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
                // SUBENTRY: Entry|Offset| Size| Setting identifier                                    | Default value                            | Description, just for documentation Has no effect on anything
 #define CREATE_SERIALIZED_GLOBAL_POSITIONS(SUBENTRY) \
           /*-->*/ SUBENTRY(      0,    0,    6, CLOCK_ROUTINE_SETTING_welcome                         , CONFIG_WELCOME_MESSAGE_DEFAULT           , "6 * char, welcome message") \
@@ -65,12 +65,13 @@ extern "C" {
           /*-->*/ SUBENTRY(      0,    7,    1, CLOCK_ROUTINE_SETTING_global_light_instance_random    , GLOBAL_LIGHT_INSTANCE_RANDOM_OFF /*!*/   , "uint8_t, global_light_instance_random, random instance") \
           /*-->*/ SUBENTRY(      0,    8,    1, CLOCK_ROUTINE_SETTING_global_light_it_register        , CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT, "uint8_t, global_light_it_register, iterable instance enable register") \
           /*-->*/ SUBENTRY(      0,    9,    1, CLOCK_ROUTINE_SETTING_global_light_rnd_register       , CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT  , "uint8_t, global_light_rnd_register, random instance enable register") \
-          /*-->*/ SUBENTRY(      0,   10,    1, CLOCK_ROUTINE_SETTING_dim_factor_display              , CONFIG_BRIGHTNESS_MAX                    , "uint8_t, dim_factor_display") \
-          /*-->*/ SUBENTRY(      0,   11,    1, CLOCK_ROUTINE_SETTING_dim_factor_led                  , CONFIG_BRIGHTNESS_MAX                    , "uint8_t, dim_factor_led") \
-          /*-->*/ SUBENTRY(      0,   12,    1, CLOCK_ROUTINE_SETTING_night_shift_start_h             , 0                                        , "uint8_t, night_shift_start_h") \
-          /*-->*/ SUBENTRY(      0,   13,    1, CLOCK_ROUTINE_SETTING_night_shift_start_m             , 0                                        , "uint8_t, night_shift_start_m") \
-          /*-->*/ SUBENTRY(      0,   14,    1, CLOCK_ROUTINE_SETTING_night_shift_end_h               , 0                                        , "uint8_t, night_shift_end_h") \
-          /*-->*/ SUBENTRY(      0,   15,    1, CLOCK_ROUTINE_SETTING_night_shift_end_m               , 0                                        , "uint8_t, night_shift_end_m")
+          /*-->*/ SUBENTRY(      0,   10,    1, CLOCK_ROUTINE_SETTING_global_light_rnd_speed          , CONFIG_RANDOM_SPEED_2_TWO_MINUTES        , "uint8_t, global_light_rnd_speed, random instance speed") \
+          /*-->*/ SUBENTRY(      0,   11,    1, CLOCK_ROUTINE_SETTING_dim_factor_display              , CONFIG_BRIGHTNESS_MAX                    , "uint8_t, dim_factor_display") \
+          /*-->*/ SUBENTRY(      0,   12,    1, CLOCK_ROUTINE_SETTING_dim_factor_led                  , CONFIG_BRIGHTNESS_MAX                    , "uint8_t, dim_factor_led") \
+          /*-->*/ SUBENTRY(      0,   13,    1, CLOCK_ROUTINE_SETTING_night_shift_start_h             , 0                                        , "uint8_t, night_shift_start_h") \
+          /*-->*/ SUBENTRY(      0,   14,    1, CLOCK_ROUTINE_SETTING_night_shift_start_m             , 0                                        , "uint8_t, night_shift_start_m") \
+          /*-->*/ SUBENTRY(      0,   15,    1, CLOCK_ROUTINE_SETTING_night_shift_end_h               , 0                                        , "uint8_t, night_shift_end_h") \
+          /*-->*/ SUBENTRY(      0,   16,    1, CLOCK_ROUTINE_SETTING_night_shift_end_m               , 0                                        , "uint8_t, night_shift_end_m")
 
 #define CREATE_SERIALIZED_GUI(ENTRY) \
         ENTRY(      1,       2, GUI_TIME                       , SERIALIZABLE_GUI_TIME         ) \

@@ -53,6 +53,8 @@ SOURCES += \
     src/fl_app_time.c
 
 HEADERS += \
+    ../FluorescenceV3/Commons/vfdco_clock_routine_defines.h \
+    ../FluorescenceV3/vfdco_config.h \
     QtColorWidgets/AbstractWidgetList \
     QtColorWidgets/BoundColorSelector \
     QtColorWidgets/ColorDelegate \

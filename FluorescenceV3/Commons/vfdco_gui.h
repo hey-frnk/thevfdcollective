@@ -141,15 +141,14 @@ void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, vfdco_time_t *
  */
 
 struct GUI_Format_Brightness_Setter {
-  uint8_t           menu_state;
+  time_event_t      message_timer; // Message timer
   uint8_t           message_counter;
-  uint8_t           night_shift_new_start_h, night_shift_new_start_m;
-  uint8_t           night_shift_new_end_h, night_shift_new_end_m;
-  uint8_t           dim_factor_display, dim_factor_led;
 
-  uint8_t           active_digit; // Group with blank digits
-  uint8_t           blank_active; // Blank period?
-  time_event_t      blank_timer; // Blank timer
+  uint8_t           dim_factor_display, dim_factor_led;
+  
+  uint8_t           night_shift_new_start_h;
+  uint8_t           night_shift_new_end_h;
+  uint8_t           night_shift_state;
 };
 
 void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self, const uint8_t *shared_initializer);
