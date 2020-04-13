@@ -149,6 +149,7 @@ struct GUI_Format_Brightness_Setter {
   uint8_t           night_shift_new_start_h;
   uint8_t           night_shift_new_end_h;
   uint8_t           night_shift_state;
+  uint8_t           night_shift_changed;
 };
 
 void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self, const uint8_t *shared_initializer);

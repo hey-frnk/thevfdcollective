@@ -303,10 +303,14 @@ inline void vfdco_clock_gui_routine() {
         struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter*)&global_gui_instance;
         vfdco_display_set_dim_factor(self->dim_factor_display);
         vfdco_clr_set_dim_factor(self->dim_factor_led);
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = self->night_shift_new_start_h;
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = 0;
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = self->night_shift_new_end_h;
-        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = 0;
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = self->dim_factor_display;
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = self->dim_factor_led;
+        if(self->night_shift_changed) {
+          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] = self->night_shift_new_start_h;
+          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] = 0;
+          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] = self->night_shift_new_end_h;
+          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] = 0;
+        }
         break;
       }
       default: break;
@@ -636,27 +640,28 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
 
     // LED set
     if(command_byte == 0x00) {
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
       memcpy(
         serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL0)], 
         input_buffer + COM_PROTOCOL_DATA_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
       );
-      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(LIGHT_PATTERN_SERIAL0);
     }
     // LED smooth set 
     else if(command_byte == 0x01) {
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
       memcpy(
         serialized_settings[_map_lights_instance_to_serialized_settings_index(LIGHT_PATTERN_SERIAL1)], 
         input_buffer + COM_PROTOCOL_DATA_OFFSET, 4 * CONFIG_NUM_PIXELS * sizeof(uint8_t)
       );
-      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(LIGHT_PATTERN_SERIAL1);
     }
 
     // LED presets 
     else if(command_byte == 0x04) {
+      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       light_pattern_instance_t instance = input_buffer[COM_PROTOCOL_CONTROL_OFFSET];
       if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
       // If it has saved settings
@@ -671,7 +676,6 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
       }
       // Switch to instance
       light_pattern_instance_t prev_instance_counter = global_light_instance_counter;
-      GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF); // Immediately turn off
       set_next_lights_instance(instance);
       if(global_light_instance_counter != prev_instance_counter) if(Light_Pattern_Hello) Light_Pattern_Hello();
     }
@@ -703,7 +707,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
       if(mapped_settings_index != 255) {
         serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
       }
-      vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_LONG);
+      if(instance == global_gui_instance_counter) vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_LONG);
     }
 
     // If time set command is detected

@@ -38,6 +38,12 @@ void _write_eeprom_internal(uint16_t address, uint8_t *data, uint8_t data_length
   }
 }
 
+static inline uint16_t _vfdco_calculate_length(const uint8_t *length_arr, const uint8_t length_arr_length) {
+  uint16_t calculated_data_size = 0;
+  for(uint8_t i = 0; i < length_arr_length; ++i) calculated_data_size += length_arr[i];
+  return calculated_data_size;
+}
+
 inline void vfdco_serialization_write(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length) {
   struct Serialization_Header _h = {
     .vfdco_1 = 'v',

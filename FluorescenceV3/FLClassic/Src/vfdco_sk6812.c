@@ -63,10 +63,6 @@ inline void vfdco_clr_init(uint8_t initial_dim_factor) {
   HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
 }
 
-inline void vfdco_clr_deInit() {
-  HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
-}
-
 void vfdco_clr_set_dim_factor(uint8_t dim_factor) {
   _led_dim_factor = dim_factor;
 }

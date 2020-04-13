@@ -24,7 +24,6 @@ uint8_t rgb_arr[4 * CONFIG_NUM_PIXELS] = {0};
 extern color_widgets::ColorPreview *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
 
 void vfdco_clr_init(uint8_t initial_dim_factor) { (void)initial_dim_factor; }
-void vfdco_clr_deInit(void) { }
 void vfdco_clr_set_dim_factor(uint8_t dim_factor) { (void)dim_factor; }
 
 void vfdco_clr_set_RGB(uint8_t index, uint8_t r, uint8_t g, uint8_t b) {

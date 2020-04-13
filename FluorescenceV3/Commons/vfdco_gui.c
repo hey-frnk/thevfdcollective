@@ -578,6 +578,7 @@ static void _GUI_Format_Brightness_Setter_F3(GUI_Format *unsafe_self) {
 
 static void _GUI_Format_Brightness_Setter_F4(GUI_Format *unsafe_self) {
   struct GUI_Format_Brightness_Setter *self = (struct GUI_Format_Brightness_Setter *)unsafe_self;
+  self->night_shift_changed = 1;
 
   ++self->night_shift_state;
   if(self->night_shift_state == MESSAGES_BRIGHTNESS_SET_NSH) self->night_shift_state = 0;
@@ -611,6 +612,7 @@ void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self
   self->night_shift_new_start_h = shared_initializer[_SHARED_dim_factor_night_shift_start_h];
   self->night_shift_new_end_h = shared_initializer[_SHARED_dim_factor_night_shift_end_h];
   self->night_shift_state = 0;
+  self->night_shift_changed = 0;
   
   self->message_timer = Time_Event_Init(800);
   self->message_counter = 0;

@@ -23,36 +23,33 @@ extern TIM_HandleTypeDef htim16;
 uint8_t display_buf[CONFIG_NUM_DIGITS] = {0};
 const uint8_t _display_zeros[CONFIG_NUM_DIGITS] = {0}; // Somehow DMA doesn't like stack memory
 
-struct Display_Dimmer {
-  uint8_t dim_factor;
-  uint8_t dim_counter;
-};
-struct Display_Dimmer display_dimmer;
+uint8_t _dim_factor;
+uint8_t _dim_counter;
 
 void vfdco_display_set_dim_factor(uint8_t dim_factor) {
-  display_dimmer.dim_factor = dim_factor;
-  display_dimmer.dim_counter = 0;
+  _dim_factor = dim_factor;
+  _dim_counter = 0;
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-  if(htim->Instance == TIM16) {
-    if(display_dimmer.dim_counter < 1) {
+  // if(htim->Instance == TIM16) {
+    if(_dim_counter < 1) {
       // If the pulse is ON, write data to SPI
       HAL_SPI_Transmit_DMA(&hspi1, display_buf, CONFIG_NUM_DIGITS);
     } else {
       // If the pulse is ON, else write zeros to SPI
       HAL_SPI_Transmit_DMA(&hspi1, _display_zeros, CONFIG_NUM_DIGITS);
     }
-  }
+  // }
 }
 
 void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
-  // Count dimmer
-  ++display_dimmer.dim_counter;
-  if(display_dimmer.dim_counter == (1 << display_dimmer.dim_factor)) display_dimmer.dim_counter = 0;
   // Toggle set/reset upon SPI transfer completion
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+  // Count dimmer
+  ++_dim_counter;
+  if(_dim_counter == (1 << _dim_factor)) _dim_counter = 0;
 }
 
 uint8_t vfdco_display_char_convert(char input) {

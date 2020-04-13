@@ -38,10 +38,6 @@ void vfdco_clr_init(uint8_t initial_dim_factor) {
   vfdco_clr_set_dim_factor(initial_dim_factor);
 }
 
-void vfdco_clr_deInit(void) {
-  printf("SK6812 tester: DeInit success.\n");
-}
-
 void vfdco_clr_set_dim_factor(uint8_t dim_factor) {
   printf("SK6812 tester: Set with dim factor %hhu.\n", dim_factor);
   _led_dim_factor = dim_factor;

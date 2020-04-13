@@ -53,10 +53,6 @@ void vfdco_clr_init(uint8_t initial_dim_factor) {
   _led_dim_factor = initial_dim_factor;
 }
 
-void vfdco_clr_deInit() {
-
-}
-
 void vfdco_clr_set_dim_factor(uint8_t dim_factor) {
   _led_dim_factor = dim_factor;
 }
