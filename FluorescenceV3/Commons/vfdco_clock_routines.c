@@ -732,10 +732,10 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Da
 
     // If brightness set command is detected
     else if(command_byte == 0x21) {
-      if(!input_buffer[COM_PROTOCOL_CONTROL_OFFSET]) { // 0: Set display brightness
+      if(input_buffer[COM_PROTOCOL_CONTROL_OFFSET] == 0) { // 0: Set display brightness
         SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
         vfdco_display_set_dim_factor(input_buffer[COM_PROTOCOL_PARAM0_OFFSET]);
-      } else { // 1: Set LED brightness
+      } else if (input_buffer[COM_PROTOCOL_CONTROL_OFFSET] == 1) { // 1: Set LED brightness
         SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
         vfdco_clr_set_dim_factor(input_buffer[COM_PROTOCOL_PARAM0_OFFSET]);
       }

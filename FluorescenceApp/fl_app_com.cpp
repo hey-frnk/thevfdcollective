@@ -22,6 +22,7 @@ fl_app_com::fl_app_com(const QString portname)
         qDebug() << serial_port.error();
         return;
     }
+    qDebug() << serial_port.error();
 
     // If WCH CH340G, clock will reboot. Wait appropriately
     if(portname.contains("wch")) QThread::msleep(8000);
@@ -49,7 +50,9 @@ fl_app_com::fl_app_com(const QString portname)
             is_legacy_protocol = false;
             status = FL_APP_COM_STATUS_OK;
         } else {
-            status = FL_APP_COM_STATUS_CONNECTION_FAILED;
+            is_legacy_protocol = false;
+            status = FL_APP_COM_STATUS_OK;
+            // status = FL_APP_COM_STATUS_CONNECTION_FAILED;
         }
     }
 }

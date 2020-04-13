@@ -22,8 +22,7 @@
 #define    LATCH_PIN   3    // ATMEGA:  5   74HC595 SPI Latch Pin, RCK
 #define    DATA_PIN    4    // ATMEGA:  6   74HC595 SPI Data Pin, SER
 
-// uint8_t display_buf[CONFIG_NUM_DIGITS] = {0};
-// const uint8_t _display_zeros[CONFIG_NUM_DIGITS] = {0}; // Somehow DMA doesn't like stack memory
+uint8_t display_buf[CONFIG_NUM_DIGITS] = {0};
 
 struct Display_Dimmer {
   uint8_t dim_factor;
@@ -31,33 +30,44 @@ struct Display_Dimmer {
 };
 struct Display_Dimmer display_dimmer;
 
-void vfdco_display_render_direct(uint8_t *data);
+// void vfdco_display_render_direct(uint8_t *data);
 
 void vfdco_display_set_dim_factor(uint8_t dim_factor) {
   display_dimmer.dim_factor = dim_factor;
   display_dimmer.dim_counter = 0;
 }
 
-/* void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-  if(htim->Instance == TIM16) {
-    if(display_dimmer.dim_counter < 1) {
-      // If the pulse is ON, write data to SPI
-      HAL_SPI_Transmit_DMA(&hspi1, display_buf, CONFIG_NUM_DIGITS);
-    } else {
-      // If the pulse is ON, else write zeros to SPI
-      HAL_SPI_Transmit_DMA(&hspi1, _display_zeros, CONFIG_NUM_DIGITS);
+// Interrupt callback
+ISR(TIMER1_COMPA_vect) {
+  if(display_dimmer.dim_counter < 1) {
+    // If the pulse is ON, write data to SPI
+    for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
+      register uint8_t d = display_buf[i];
+      for(volatile register uint_fast8_t j = 0; j < 8; ++j)  {
+        PORTD = (d & (1 << j)) ? PORTD | _BV(PD4) : PORTD & ~_BV(PD4);
+        PORTD |= _BV(PD2);
+        PORTD &= ~_BV(PD2);
+      }
     }
+    PORTD &= ~_BV(PD3);
+    PORTD |= _BV(PD3);
+    
+  } else {
+    // If the pulse is ON, else write zeros to SPI
+    for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
+      register uint8_t d = display_buf[i];
+      for(volatile register uint_fast8_t j = 0; j < 8; ++j)  {
+        PORTD &= ~_BV(PD4);
+        PORTD |= _BV(PD2);
+        PORTD &= ~_BV(PD2);
+      }
+    }
+    PORTD &= ~_BV(PD3);
+    PORTD |= _BV(PD3);
   }
-}
-
-void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
-  // Count dimmer
   ++display_dimmer.dim_counter;
   if(display_dimmer.dim_counter == (1 << display_dimmer.dim_factor)) display_dimmer.dim_counter = 0;
-  // Toggle set/reset upon SPI transfer completion
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
-} */
+}
 
 uint8_t vfdco_display_char_convert(char input) {
   // Takes char value (0 to 255) and converts to VFD clock display pattern
@@ -127,7 +137,8 @@ void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_reg
   if(time_mode == TIME_FORMAT_12H_NO_LZ) {
     if(time->h > 12 && time->h < 22) _rreg[5] &= 0x01;
   }
-  vfdco_display_render_direct(_rreg);
+  // vfdco_display_render_direct(_rreg);
+  memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
 }
 
 void vfdco_display_render_date(vfdco_date_t *date, /*const uint8_t decimal_dot_register, */date_format_t date_mode) {
@@ -146,41 +157,47 @@ void vfdco_display_render_date(vfdco_date_t *date, /*const uint8_t decimal_dot_r
     _rreg[4] = vfdco_display_char_convert(date->m % 10) | 0x01;
     _rreg[5] = vfdco_display_char_convert(date->m / 10);
   }
-  vfdco_display_render_direct(_rreg);
+  // vfdco_display_render_direct(_rreg);
+  memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
 }
 
-void vfdco_display_render_message(const char *message, const uint8_t decimal_dot_register, uint16_t delay) {
+void vfdco_display_render_message(const char *message, const uint8_t decimal_dot_register, uint16_t delay_option) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; ++i) {
     _rreg[CONFIG_NUM_DIGITS - i - 1] = vfdco_display_char_convert(message[i]) | ((decimal_dot_register >> (5 - i)) & 0x01);
   }
-  /* if(delay) {
+  if(delay_option) {
     // Temporarily disable interrupts, write message
-    NVIC_DisableIRQ(TIM16_IRQn);
-    HAL_SPI_Transmit(&hspi1, _rreg, CONFIG_NUM_DIGITS, 40);
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
-    vfdco_time_delay_milliseconds(delay);
-    NVIC_EnableIRQ(TIM16_IRQn);
+    TIMSK1 &= ~(1 << OCIE1A);
+    digitalWriteFast(LATCH_PIN, LOW);
+    for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; i++) shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, _rreg[i]);
+    digitalWriteFast(LATCH_PIN, HIGH);
+    vfdco_time_delay_milliseconds(delay_option);
+    TIMSK1 |= (1 << OCIE1A);
   } else {
     memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
-  }*/
-  vfdco_display_render_direct(_rreg);
-  if(delay) vfdco_time_delay_milliseconds(delay);
-}
-
-void vfdco_display_render_direct(uint8_t *data) {
-  // Write to SPI buffer & toggle latch
-  digitalWriteFast(LATCH_PIN, LOW);
-  for(uint8_t i = 0; i < CONFIG_NUM_DIGITS; i++) shiftOut(DATA_PIN, CLOCK_PIN, LSBFIRST, data[i]);
-  digitalWriteFast(LATCH_PIN, HIGH);
+  }
 }
 
 // Function mapping
 void vfdco_display_init(uint8_t initial_dim_factor) {
+  // Pin configuration
   pinMode(CLOCK_PIN, OUTPUT);
   pinMode(LATCH_PIN, OUTPUT);
   pinMode(DATA_PIN, OUTPUT);
+
+  // Timer configuration
+  TCNT1 = 0;
+  // ~ 1kHz
+  OCR1A = 16000;
+  // Interrupt request
+  TIMSK1 |= (1 << OCIE1A); 
+  sei();
+  // CTC mode
+  TCCR1B |= (1 << WGM12);
+  // Prescaler, 64
+  TCCR1B |= (1 << CS10);
+  // TCCR1B |= (1 << CS11);
 
   vfdco_display_set_dim_factor(initial_dim_factor);
 }

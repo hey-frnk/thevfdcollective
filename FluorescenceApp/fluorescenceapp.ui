@@ -2495,11 +2495,11 @@ color: rgb(255, 255, 255);</string>
       <zorder>panel_dyn_bliss</zorder>
       <zorder>dynamic_rainbow</zorder>
       <zorder>panel_dyn_rnb</zorder>
-      <zorder>panel_dyn_chase</zorder>
       <zorder>panel_dyn_tcode</zorder>
       <zorder>panel_dyn_cop</zorder>
       <zorder>panel_dyn_music</zorder>
       <zorder>dynamic_music</zorder>
+      <zorder>panel_dyn_chase</zorder>
      </widget>
      <widget class="QWidget" name="tab_moodsync">
       <attribute name="title">
@@ -5919,8 +5919,8 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_lsettings</zorder>
    <zorder>panel_timesync</zorder>
    <zorder>panel_settings</zorder>
-   <zorder>panel_presets</zorder>
    <zorder>panel_welcome</zorder>
+   <zorder>panel_presets</zorder>
   </widget>
  </widget>
  <customwidgets>

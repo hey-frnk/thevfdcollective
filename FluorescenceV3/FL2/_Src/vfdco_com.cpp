@@ -6,7 +6,11 @@ void COM_Handler_USB_Init() {
 }
 
 void COM_Handler_USB_Transfer(struct COM_Data *self) {
-  if(self->tx_buffer) Serial.write(self->tx_buffer, self->tx_buffer_length);
+  if(self->tx_buffer) {
+    TIMSK1 &= ~(1 << OCIE1A);
+    Serial.write(self->tx_buffer, self->tx_buffer_length);
+    TIMSK1 |= (1 << OCIE1A);
+  }
 }
 
 extern struct COM_Data global_com_data;
@@ -19,7 +23,10 @@ void serialEvent() {
   if(sRead > 0) {
     // If the communication pattern of 16 bytes is detected, write a message
     // Serial.print(sRead);
+    // Temporarily disable interrupts, write message
+    TIMSK1 &= ~(1 << OCIE1A);
     Serial.readBytes(global_com_data.rx_buffer, CONFIG_COM_RX_BUF_MAX);
+    TIMSK1 |= (1 << OCIE1A);
 
     if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_IDLE) {
       global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_USB_BUSY;

@@ -962,11 +962,11 @@ public:
         panel_dyn_bliss->raise();
         dynamic_rainbow->raise();
         panel_dyn_rnb->raise();
-        panel_dyn_chase->raise();
         panel_dyn_tcode->raise();
         panel_dyn_cop->raise();
         panel_dyn_music->raise();
         dynamic_music->raise();
+        panel_dyn_chase->raise();
         tab_moodsync = new QWidget();
         tab_moodsync->setObjectName(QString::fromUtf8("tab_moodsync"));
         lisync_computer = new QLabel(tab_moodsync);
@@ -1813,8 +1813,8 @@ public:
         panel_lsettings->raise();
         panel_timesync->raise();
         panel_settings->raise();
-        panel_presets->raise();
         panel_welcome->raise();
+        panel_presets->raise();
 
         retranslateUi(FluorescenceApp);
 

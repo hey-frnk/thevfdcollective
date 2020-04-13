@@ -26,7 +26,7 @@ uint8_t	 rgb_arr[CONFIG_NUM_BYTES] = {0};
 void render();
 
 // Dimming
-uint8_t _led_dim_factor = 0;
+volatile uint8_t _led_dim_factor = 0;
 
 #if CONFIG_ENABLE_GAMMACORRECTION == 1
 static const uint8_t gamma8[] = { // Cheap gamma correction https://learn.adafruit.com/led-tricks-gamma-correction/the-quick-fix
@@ -126,11 +126,9 @@ void vfdco_clr_minimize_difference(uint8_t *target_arr) {
     else if(rgb_arr[j] > target_arr[i]) rgb_arr[j]--;
     ++j;
   }
-  // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
 }
 
 void vfdco_clr_render() {
-  for(uint8_t i = 0; i < CONFIG_NUM_BYTES; ++i) rgb_arr[i] >>= _led_dim_factor;
   render();
 }
 
@@ -148,9 +146,11 @@ uint32_t t_f = 0;
 inline void render(void) {
   while((micros() - t_f) < 50L);  // wait for 50us (data latch)
   cli(); // Disable interrupts so that timing is as precise as possible
+  static volatile uint8_t shifted_rgb_arr[CONFIG_NUM_BYTES];
+  for(uint_fast8_t i = 0; i < CONFIG_NUM_BYTES; ++i) shifted_rgb_arr[i] = rgb_arr[i] >> _led_dim_factor;
   volatile uint8_t
-   *p    = rgb_arr,   // Copy the start address of our data array
-    val  = *p++,      // Get the current byte value & point to next byte
+   *p    = shifted_rgb_arr,   // Copy the start address of our data array
+    val  = *p++, // Get the current byte value, dim & point to next byte
     high = PORT |  _BV(PORT_PIN), // Bitmask for sending HIGH to pin
     low  = PORT & ~_BV(PORT_PIN), // Bitmask for sending LOW to pin
     tmp  = low,       // Swap variable to adjust duty cycle

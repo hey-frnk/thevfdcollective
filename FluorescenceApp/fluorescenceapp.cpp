@@ -525,6 +525,7 @@ void FluorescenceApp::on_settings_td_set_clicked()
     uint8_t time_format = ui->settings_td_timemode->currentIndex();
     uint8_t date_format = ui->settings_td_datemode->currentIndex();
     global_com_instance->transfer_gui_set(0, time_format);
+    QThread::msleep(100);
     global_com_instance->transfer_gui_set(1, date_format);
 }
 
@@ -534,6 +535,7 @@ void FluorescenceApp::on_settings_bri_set_clicked()
     uint8_t brightness_display = ui->settings_bri_disp->currentIndex() << 1;
     uint8_t brightness_led = ui->settings_bri_led->currentIndex() << 1;
     global_com_instance->transfer_brightness(0, brightness_display);
+    QThread::msleep(100);
     global_com_instance->transfer_brightness(1, brightness_led);
 }
 
@@ -724,13 +726,8 @@ void FluorescenceApp::on_panel_dyn_rnb_set_clicked()
 void FluorescenceApp::on_panel_dyn_chase_set_clicked()
 {
     uint8_t param1_value = (uint8_t)ui->panel_dyn_chase_param1->value();
-    QString param2 = ui->panel_dyn_chase_param2->currentText();
-    uint8_t param2_value;
-    // Sat
-    if(param2 == "low") param2_value = 127;
-    else if(param2 == "medium") param2_value = 196;
-    else param2_value = 255;
-    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_CHASE, param1_value, param2_value);
+    uint8_t param2_value = (uint8_t)ui->panel_dyn_chase_param2->currentIndex();
+    global_com_instance->transfer_light_pattern(LIGHT_PATTERN_CHASE, param2_value, param1_value);
 }
 
 void FluorescenceApp::on_panel_dyn_tcode_set_clicked()
