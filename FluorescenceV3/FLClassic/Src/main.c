@@ -416,13 +416,22 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
 volatile uint32_t _bootloader_flag = 0xABCDEF;
 
 void activate_bootloader(uint32_t bootloader_status) {
 	if(bootloader_status == 1) {
+		// Write DFU message
+		uint8_t dfu_msg[6] = {0x00, 0x00, 0x00, 0x7C, 0x8E, 0x7A};
+		NVIC_DisableIRQ(TIM16_IRQn);
+		HAL_SPI_Transmit(&hspi1, dfu_msg, CONFIG_NUM_DIGITS, 40);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+		NVIC_EnableIRQ(TIM16_IRQn);
+		// Disable interrupts
+		__disable_irq();
 		// http://blog.fahhem.com/2017/12/jump-to-emb-bootloader/
-		_bootloader_flag = 0x00C0FFEE; // Magic number flag. See you latte.
+		_bootloader_flag = 0x00C0FFEE; // Magic number flag set
+		// See you latte
 		NVIC_SystemReset();
 
 	  while(1);

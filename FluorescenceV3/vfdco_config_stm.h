@@ -75,7 +75,7 @@ extern "C" {
 // How many milliseconds should a regular message last?
 #define CONFIG_MESSAGE_LONG       1000
 // What should be the default welcome message? (Default: {'H', 'E', 'L', 'L', 'O', ' '})
-#define CONFIG_WELCOME_MESSAGE_DEFAULT 'H', 'E', 'L', 'L', 'O', ' '
+#define CONFIG_WELCOME_MESSAGE_DEFAULT 'E', 'Y', 'E', 'Y', 'E', 'T'
 
 /**
  * @tableofcontents SECTION_CONFIG_LIGHTS
