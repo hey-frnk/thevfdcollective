@@ -36,6 +36,7 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 extern struct COM_Data global_com_data;
+extern void activate_bootloader(uint32_t);
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -272,8 +273,20 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_IDLE) {
     // Set buffer & data present flag
     if(*Len <= CONFIG_COM_RX_BUF_MAX) {
-      memcpy(global_com_data.rx_buffer, Buf, *Len);
+      uint32_t new_len = *Len;
+      memcpy(global_com_data.rx_buffer, Buf, new_len);
       global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_USB_BUSY;
+
+      // Invoke bootloader when all 27 bytes are 0x30 sent by FL App
+      if(new_len == 27 && Buf[0] == 0x30) {
+      	uint8_t _activate_bootloader = 1;
+      	for(uint8_t i = 0; i < new_len; ++i) {
+      		if(Buf[i] != 0x30) _activate_bootloader = 0;
+      	}
+      	if(_activate_bootloader) {
+      		activate_bootloader(1);
+      	}
+      }
     } else {
       return (USBD_FAIL);
     }

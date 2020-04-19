@@ -230,6 +230,13 @@ QString fl_app_com::transfer_clock_control(com_protocol_clock_control_t control)
     } else return QString("");
 }
 
+void fl_app_com::transfer_dfu_request()
+{
+    memset(buf_tx, 0x30, BUF_TX_SIZE); // All 0x30!
+    serial_port.write((char const *)buf_tx, BUF_TX_SIZE);
+    serial_port.waitForBytesWritten(10);
+}
+
 bool fl_app_com::legacy_protocol()
 {
     return is_legacy_protocol;

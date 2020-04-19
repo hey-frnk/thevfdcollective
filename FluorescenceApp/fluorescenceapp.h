@@ -171,7 +171,9 @@ private slots:
 
     void on_dynamic_music_clicked();
 
-private:
+    void on_settings_info_update_clicked();
+
+public:
     Ui::FluorescenceApp *ui;
 
     fl_app_com *global_com_instance = nullptr;

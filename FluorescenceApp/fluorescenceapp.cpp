@@ -1,6 +1,8 @@
 #include "fluorescenceapp.h"
 #include "ui_fluorescenceapp.h"
 
+#include "fwupdatestm.h"
+
 #include "src/fl_app_time.h"
 #include "src/fl_app_lights.h"
 #include "../FluorescenceV3/Commons/vfdco_clock_routine_defines.h"
@@ -17,8 +19,8 @@
 
 #include "QtColorWidgets/colorwidgets_global.hpp"
 
-#include <opencv2/opencv.hpp>
-#include "asmOpenCV.h"
+// #include <opencv2/opencv.hpp>
+// #include "asmOpenCV.h"
 
 using namespace color_widgets;
 
@@ -126,7 +128,7 @@ FluorescenceApp::~FluorescenceApp()
 
 void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
     if(preset_dynamic_light_sync_enable) {
-        QImage src_q;
+        /* QImage src_q;
         QScreen *screen = QGuiApplication::primaryScreen();
         if (const QWindow *window = windowHandle()) screen = this->screen();
         if (!screen) return;
@@ -165,7 +167,7 @@ void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
             color_arr[4 * i + 2] = (uint8_t)tmp_clr.blue();
             color_arr[4 * i + 3] = 0;
         }
-        if(global_com_instance) global_com_instance->transfer_serial1(color_arr);
+        if(global_com_instance) global_com_instance->transfer_serial1(color_arr); */
     } else {
         ui->lisync_sample->setPixmap(QPixmap::fromImage(QImage(ambient_light_sample_paths[counter])));
         for(int i = 0; i < 6; ++i) preset_dynamic_lisync[i]->setColor(ambient_light_colors[counter][i]);
@@ -809,4 +811,14 @@ void FluorescenceApp::on_lisync_sample_clicked()
     } else {
         ui->lisync_status->setText("Click on the computer to begin.");
     }
+}
+
+void FluorescenceApp::on_settings_info_update_clicked()
+{
+    /*FWUpdateSTM fw_update_dialog;
+    fw_update_dialog.setModal(true);
+    fw_update_dialog.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+    fw_update_dialog.setFixedSize(321, fw_update_dialog.height());
+    fw_update_dialog.exec();*/
+    global_com_instance->transfer_dfu_request();
 }

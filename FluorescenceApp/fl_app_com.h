@@ -43,6 +43,8 @@ public:
     void transfer_message(uint8_t *m1, uint8_t *m2, uint8_t *m3, uint8_t *m4, uint8_t duration); // Legacy: Up to m3
     QString transfer_clock_control(com_protocol_clock_control_t control); // Legacy: No HW request
 
+    void transfer_dfu_request(void); // Legacy: Unsupported
+
     bool legacy_protocol();
     fl_app_status_t getStatus();
 private:

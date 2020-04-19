@@ -259,7 +259,7 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -2693,7 +2693,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>110</y>
+         <y>120</y>
          <width>71</width>
          <height>20</height>
         </rect>
@@ -2719,7 +2719,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>230</y>
+         <y>240</y>
          <width>141</width>
          <height>20</height>
         </rect>
@@ -2742,7 +2742,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>250</y>
+         <y>260</y>
          <width>141</width>
          <height>20</height>
         </rect>
@@ -2765,7 +2765,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>190</y>
+         <y>200</y>
          <width>141</width>
          <height>20</height>
         </rect>
@@ -2791,7 +2791,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>150</y>
+         <y>160</y>
          <width>121</width>
          <height>20</height>
         </rect>
@@ -2817,7 +2817,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>170</y>
+         <y>180</y>
          <width>121</width>
          <height>20</height>
         </rect>
@@ -2843,7 +2843,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>130</y>
+         <y>140</y>
          <width>141</width>
          <height>20</height>
         </rect>
@@ -2869,7 +2869,7 @@ screen.</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>210</y>
+         <y>220</y>
          <width>141</width>
          <height>20</height>
         </rect>
@@ -2966,8 +2966,8 @@ color: rgb(255, 255, 255);</string>
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>60</y>
-         <width>251</width>
+         <y>30</y>
+         <width>291</width>
          <height>31</height>
         </rect>
        </property>
@@ -2983,15 +2983,15 @@ color: rgb(255, 255, 255);</string>
         <string notr="true">color: rgb(128, 0, 128);</string>
        </property>
        <property name="text">
-        <string>let's shuffle through</string>
+        <string>Not in the mood to pick?</string>
        </property>
       </widget>
       <widget class="QLabel" name="shuffle_intro2">
        <property name="geometry">
         <rect>
-         <x>380</x>
+         <x>300</x>
          <y>110</y>
-         <width>241</width>
+         <width>351</width>
          <height>31</height>
         </rect>
        </property>
@@ -3007,7 +3007,32 @@ color: rgb(255, 255, 255);</string>
         <string notr="true">color: rgb(128, 0, 128);</string>
        </property>
        <property name="text">
-        <string>and shuffle every...</string>
+        <string>and pick another one every...</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="shuffle_intro3">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>60</y>
+         <width>191</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>.AppleSystemUIFont</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(128, 0, 128);</string>
+       </property>
+       <property name="text">
+        <string>Not a problem! Shuffle to let 
+Fluorescence pick 
+a pattern randomly out of:</string>
        </property>
       </widget>
      </widget>
@@ -5918,9 +5943,9 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_custom_colors</zorder>
    <zorder>panel_lsettings</zorder>
    <zorder>panel_timesync</zorder>
-   <zorder>panel_settings</zorder>
    <zorder>panel_welcome</zorder>
    <zorder>panel_presets</zorder>
+   <zorder>panel_settings</zorder>
   </widget>
  </widget>
  <customwidgets>

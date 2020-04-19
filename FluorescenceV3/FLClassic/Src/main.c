@@ -417,6 +417,19 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+volatile uint32_t _bootloader_flag = 0xABCDEF;
+
+void activate_bootloader(uint32_t bootloader_status) {
+	if(bootloader_status == 1) {
+		// http://blog.fahhem.com/2017/12/jump-to-emb-bootloader/
+		_bootloader_flag = 0x00C0FFEE; // Magic number flag. See you latte.
+		NVIC_SystemReset();
+
+	  while(1);
+	}
+}
+
+
 /* USER CODE END 4 */
 
 /**

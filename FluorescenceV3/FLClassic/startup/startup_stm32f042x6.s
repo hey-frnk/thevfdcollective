@@ -61,6 +61,14 @@ Reset_Handler:
   ldr   r0, =_estack
   mov   sp, r0          /* set stack pointer */
 
+/*Check for bootloader*/
+	ldr r0, =_bootloader_flag // Load bootloader flag address
+	ldr r1, =0x00C0FFEE // Load magic number
+	ldr r2, [r0, #0] // Dereference flag
+	str r0, [r0, #0] // Clear
+	cmp r2, r1 // Check flag
+	beq Reboot_Loader // Flag detected? Go to loader
+
 /*Check if boot space corresponds to test memory*/
  
     LDR R0,=0x00000004
@@ -88,6 +96,13 @@ ApplicationStart:
   ldr r2, =_sidata
   movs r3, #0
   b LoopCopyDataInit
+
+Reboot_Loader:
+	ldr r0, =0x1FFFC400 // Load bootloader address
+	ldr r1, [r0, #0] // Load default stack pointer
+	mov sp, r1 // Set stack pointer to default
+	ldr r0, [r0, #4] // Load bootloader +4
+	bx r0 // Go to bootloader +4
 
 CopyDataInit:
   ldr r4, [r2, r3]
@@ -121,7 +136,7 @@ LoopFillZerobss:
   bl main
 
 LoopForever:
-    b LoopForever
+  b LoopForever
 
 
 .size Reset_Handler, .-Reset_Handler

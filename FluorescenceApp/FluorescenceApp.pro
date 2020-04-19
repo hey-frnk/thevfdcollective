@@ -9,9 +9,9 @@ CONFIG += c++11
             # plugin
 
 # TEMPLATE = lib
-PKG_CONFIG = /usr/local/bin/pkg-config
-CONFIG += link_pkgconfig
-PKGCONFIG += opencv
+#PKG_CONFIG = /usr/local/bin/pkg-config
+#CONFIG += link_pkgconfig
+#PKGCONFIG += opencv
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -46,6 +46,7 @@ SOURCES += \
     QtColorWidgets/swatch.cpp \
     clickablelabel.cpp \
     fl_app_com.cpp \
+    fwupdatestm.cpp \
     main.cpp \
     fluorescenceapp.cpp \
     src/fl_app_colors.cpp \
@@ -89,10 +90,10 @@ HEADERS += \
     QtColorWidgets/swatch.hpp \
     QtColorWidgets/ui_color_dialog.h \
     QtColorWidgets/ui_color_palette_widget.h \
-    asmOpenCV.h \
     clickablelabel.h \
     fl_app_com.h \
     fluorescenceapp.h \
+    fwupdatestm.h \
     src/fl_app_colors.h \
     src/fl_app_lights.h \
     src/fl_app_time.h
@@ -100,7 +101,8 @@ HEADERS += \
 FORMS += \
     QtColorWidgets/color_dialog.ui \
     QtColorWidgets/color_palette_widget.ui \
-    fluorescenceapp.ui
+    fluorescenceapp.ui \
+    fwupdatestm.ui
 
 TRANSLATIONS += \
     FluorescenceApp_en_US.ts
@@ -124,7 +126,8 @@ RESOURCES += \
     Resources/res0.jpg \
     Resources/res1.jpg \
     Resources/res2.jpg \
-    Resources/res3.jpg
+    Resources/res3.jpg \
+    Resources/HXP_TN.png
 
 
 
