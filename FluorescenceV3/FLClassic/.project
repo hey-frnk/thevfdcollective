@@ -30,5 +30,10 @@
 			<type>2</type>
 			<location>/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceV3/Commons</location>
 		</link>
+		<link>
+			<name>FL3</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/FL3</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

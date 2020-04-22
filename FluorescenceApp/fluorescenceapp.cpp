@@ -815,11 +815,11 @@ void FluorescenceApp::on_lisync_sample_clicked()
 
 void FluorescenceApp::on_settings_info_update_clicked()
 {
-    FWUpdateSTM fw_update_dialog(this, FIRMWARE_UPDATE_STM);
+    /* FWUpdateSTM fw_update_dialog(this, FIRMWARE_UPDATE_STM);
     fw_update_dialog.setModal(true);
     fw_update_dialog.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     fw_update_dialog.setFixedSize(321, fw_update_dialog.height());
     fw_update_dialog.setWindowTitle("Fluorescence Updater");
-    fw_update_dialog.exec();
-    // global_com_instance->transfer_dfu_request();
+    fw_update_dialog.exec(); */
+    global_com_instance->transfer_dfu_request();
 }

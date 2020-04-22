@@ -149,7 +149,7 @@ void vfdco_clock_initializer() {
  **/
 inline void vfdco_clock_serialization_initializer() {
   // Load all clock parameters
-  SERIALIZATION_HEADER_STATUS_t read_status = vfdco_serialization_read(serialized_settings, serialized_settings_sizes, NUM_SERIALIZABLE);
+  volatile SERIALIZATION_HEADER_STATUS_t read_status = vfdco_serialization_read(serialized_settings, serialized_settings_sizes, NUM_SERIALIZABLE);
   if(read_status != SERIALIZATION_HEADER_STATUS_OK) {
     // Something went wrong. Load default settings!
     vfdco_clock_settings_default(1);
