@@ -1,3 +1,26 @@
+/*MIT License
+
+Copyright (c) The VFD Collective, Frank from The VFD Collective (Fu Zheng)
+Date: 04/25/2020
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
 /**
   ******************************************************************************
   * @file     vfdco_routines.c
@@ -19,30 +42,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef __AVR__
-  // Configuration header
-  #include "../vfdco_config.h"
-  // Low Level/Primitive libraries
-  #include "../vfdco_serialization.h"		// Physical serialization driver
-  #include "../vfdco_led.h"             // Physical LED driver
-  #include "../vfdco_display.h"         // Physical display driver
-  #include "../vfdco_time.h"            // Physical timing & RTC driver
-  #include "../vfdco_hid.h"             // Physical HID driver
-  #include "../vfdco_com.h"             // Physical Communication driver
-  #include "../vfdco_mic.h"             // Physical Microphone driver
 
-#else 
-  // Configuration header
-  #include "vfdco_config.h"
-  // Low Level/Primitive libraries
-  #include "vfdco_serialization.h"	 // Physical serialization driver
-  #include "vfdco_led.h"             // Physical LED driver
-  #include "vfdco_display.h"         // Physical display driver
-  #include "vfdco_time.h"            // Physical timing & RTC driver
-  #include "vfdco_hid.h"             // Physical HID driver
-  #include "vfdco_com.h"             // Physical Communication driver
-  #include "vfdco_mic.h"             // Physical Microphone driver
-#endif
+// Configuration header
+#include "vfdco_config.h"
+// Low Level/Primitive libraries
+#include "vfdco_serialization.h"	 // Physical serialization driver
+#include "vfdco_led.h"             // Physical LED driver
+#include "vfdco_display.h"         // Physical display driver
+#include "vfdco_time.h"            // Physical timing & RTC driver
+#include "vfdco_hid.h"             // Physical HID driver
+#include "vfdco_com.h"             // Physical Communication driver
+#include "vfdco_mic.h"             // Physical Microphone driver
 
 // Application specific libraries
 #include "vfdco_lights.h"          // Library of light patterns
@@ -117,7 +127,7 @@ static void set_next_gui_instance(gui_instance_t next_instance);
 static void find_next_lights_instance();
 static void set_next_lights_instance(light_pattern_instance_t next_instance);
 
-static void com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(struct COM_Data *));
+static void com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(const struct COM_Data *));
 
 
 /** Begin of:
@@ -634,7 +644,7 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
   }
 }
 
-static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(struct COM_Data *)) {
+static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct COM_Data *)) {
   if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
     const uint8_t command_byte = input_buffer[COM_PROTOCOL_COMMAND_OFFSET];
 

@@ -48,7 +48,7 @@ void vfdco_get_date_time(vfdco_date_t *date, vfdco_time_t *time) {
   date->y = now.year() % 100;
 }
 
-void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {
+void vfdco_set_date_time(const vfdco_date_t *date, const vfdco_time_t *time) {
   Wire.beginTransmission(0x68);
   Wire.write(0);
   Wire.write(_vfdco_dec2bcd(time->s));

@@ -331,7 +331,7 @@ DIST          = /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.14.1/clang_64/mkspecs/features/yacc.prf \
 		/Applications/Qt/5.14.1/clang_64/mkspecs/features/lex.prf \
 		../../FluorescenceApp.pro ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h \
-		../../FluorescenceV3/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
 		../QtColorWidgets/AbstractWidgetList \
 		../QtColorWidgets/BoundColorSelector \
 		../QtColorWidgets/ColorDelegate \
@@ -829,7 +829,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtColorWidgets/color_widgets.qrc qmake_qmake_immediate.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h ../../FluorescenceV3/vfdco_config.h ../QtColorWidgets/AbstractWidgetList ../QtColorWidgets/BoundColorSelector ../QtColorWidgets/ColorDelegate ../QtColorWidgets/ColorDialog ../QtColorWidgets/ColorListWidget ../QtColorWidgets/ColorPreview ../QtColorWidgets/ColorSelector ../QtColorWidgets/ColorWheel ../QtColorWidgets/GradientEditor ../QtColorWidgets/GradientSlider ../QtColorWidgets/HueSlider ../QtColorWidgets/abstract_widget_list.hpp ../QtColorWidgets/bound_color_selector.hpp ../QtColorWidgets/color_2d_slider.hpp ../QtColorWidgets/color_delegate.hpp ../QtColorWidgets/color_dialog.hpp ../QtColorWidgets/color_line_edit.hpp ../QtColorWidgets/color_list_widget.hpp ../QtColorWidgets/color_names.hpp ../QtColorWidgets/color_palette.hpp ../QtColorWidgets/color_palette_model.hpp ../QtColorWidgets/color_palette_widget.hpp ../QtColorWidgets/color_preview.hpp ../QtColorWidgets/color_selector.hpp ../QtColorWidgets/color_utils.hpp ../QtColorWidgets/color_wheel.hpp ../QtColorWidgets/colorwidgets_global.hpp ../QtColorWidgets/gradient_editor.hpp ../QtColorWidgets/gradient_helper.hpp ../QtColorWidgets/gradient_slider.hpp ../QtColorWidgets/hue_slider.hpp ../QtColorWidgets/swatch.hpp ../QtColorWidgets/ui_color_dialog.h ../QtColorWidgets/ui_color_palette_widget.h ../clickablelabel.h ../fl_app_com.h ../fluorescenceapp.h ../fwupdatestm.h ../src/fl_app_colors.h ../src/fl_app_lights.h ../src/fl_app_time.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h ../../FluorescenceV3/Commons/vfdco_config.h ../QtColorWidgets/AbstractWidgetList ../QtColorWidgets/BoundColorSelector ../QtColorWidgets/ColorDelegate ../QtColorWidgets/ColorDialog ../QtColorWidgets/ColorListWidget ../QtColorWidgets/ColorPreview ../QtColorWidgets/ColorSelector ../QtColorWidgets/ColorWheel ../QtColorWidgets/GradientEditor ../QtColorWidgets/GradientSlider ../QtColorWidgets/HueSlider ../QtColorWidgets/abstract_widget_list.hpp ../QtColorWidgets/bound_color_selector.hpp ../QtColorWidgets/color_2d_slider.hpp ../QtColorWidgets/color_delegate.hpp ../QtColorWidgets/color_dialog.hpp ../QtColorWidgets/color_line_edit.hpp ../QtColorWidgets/color_list_widget.hpp ../QtColorWidgets/color_names.hpp ../QtColorWidgets/color_palette.hpp ../QtColorWidgets/color_palette_model.hpp ../QtColorWidgets/color_palette_widget.hpp ../QtColorWidgets/color_preview.hpp ../QtColorWidgets/color_selector.hpp ../QtColorWidgets/color_utils.hpp ../QtColorWidgets/color_wheel.hpp ../QtColorWidgets/colorwidgets_global.hpp ../QtColorWidgets/gradient_editor.hpp ../QtColorWidgets/gradient_helper.hpp ../QtColorWidgets/gradient_slider.hpp ../QtColorWidgets/hue_slider.hpp ../QtColorWidgets/swatch.hpp ../QtColorWidgets/ui_color_dialog.h ../QtColorWidgets/ui_color_palette_widget.h ../clickablelabel.h ../fl_app_com.h ../fluorescenceapp.h ../fwupdatestm.h ../src/fl_app_colors.h ../src/fl_app_lights.h ../src/fl_app_time.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtColorWidgets/abstract_widget_list.cpp ../QtColorWidgets/bound_color_selector.cpp ../QtColorWidgets/color_2d_slider.cpp ../QtColorWidgets/color_delegate.cpp ../QtColorWidgets/color_dialog.cpp ../QtColorWidgets/color_line_edit.cpp ../QtColorWidgets/color_list_widget.cpp ../QtColorWidgets/color_names.cpp ../QtColorWidgets/color_palette.cpp ../QtColorWidgets/color_palette_model.cpp ../QtColorWidgets/color_palette_widget.cpp ../QtColorWidgets/color_preview.cpp ../QtColorWidgets/color_selector.cpp ../QtColorWidgets/color_utils.cpp ../QtColorWidgets/color_wheel.cpp ../QtColorWidgets/gradient_editor.cpp ../QtColorWidgets/gradient_slider.cpp ../QtColorWidgets/hue_slider.cpp ../QtColorWidgets/swatch.cpp ../clickablelabel.cpp ../fl_app_com.cpp ../fwupdatestm.cpp ../main.cpp ../fluorescenceapp.cpp ../src/fl_app_colors.cpp ../src/fl_app_lights.c ../src/fl_app_time.c $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtColorWidgets/color_dialog.ui ../QtColorWidgets/color_palette_widget.ui ../fluorescenceapp.ui ../fwupdatestm.ui $(DISTDIR)/
 	$(COPY_FILE) --parents FluorescenceApp_en_US.ts $(DISTDIR)/
@@ -1138,8 +1138,6 @@ moc_fluorescenceapp.cpp: ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
-		../../FluorescenceV3/vfdco_config.h \
-		../../FluorescenceV3/vfdco_config_stm.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
 	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fluorescenceapp.h -o moc_fluorescenceapp.cpp
@@ -1664,18 +1662,59 @@ fl_app_com.o: ../fl_app_com.cpp ../fl_app_com.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
-		../../FluorescenceV3/vfdco_config.h \
-		../../FluorescenceV3/vfdco_config_stm.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QTranslator \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qtranslator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fl_app_com.o ../fl_app_com.cpp
 
-fwupdatestm.o: ../fwupdatestm.cpp ../fwupdatestm.h \
+fwupdatestm.o: ../fwupdatestm.cpp ../fluorescenceapp.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
+		../fl_app_com.h \
+		../src/fl_app_time.h \
+		../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/QtSerialPort \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportglobal.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		../src/fl_app_lights.h \
+		../src/fl_app_colors.h \
+		ui_fluorescenceapp.h \
+		../QtColorWidgets/color_line_edit.hpp \
+		../QtColorWidgets/colorwidgets_global.hpp \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		../QtColorWidgets/color_preview.hpp \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../QtColorWidgets/color_wheel.hpp \
+		../QtColorWidgets/gradient_slider.hpp \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		../QtColorWidgets/hue_slider.hpp \
+		../clickablelabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
+		../fwupdatestm.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		ui_fwupdatestm.h
+		ui_fwupdatestm.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLayout \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlayout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fwupdatestm.o ../fwupdatestm.cpp
 
 main.o: ../main.cpp ../fluorescenceapp.h \
@@ -1695,8 +1734,6 @@ main.o: ../main.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
-		../../FluorescenceV3/vfdco_config.h \
-		../../FluorescenceV3/vfdco_config_stm.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
@@ -1718,8 +1755,6 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
-		../../FluorescenceV3/vfdco_config.h \
-		../../FluorescenceV3/vfdco_config_stm.h \
 		ui_fluorescenceapp.h \
 		../QtColorWidgets/color_line_edit.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1756,8 +1791,6 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fluorescenceapp.o ../fluorescenceapp.cpp
 
 fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
-		../../FluorescenceV3/vfdco_config.h \
-		../../FluorescenceV3/vfdco_config_stm.h \
 		../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -1800,9 +1833,7 @@ fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
 
 fl_app_lights.o: ../src/fl_app_lights.c ../src/fl_app_lights.h \
 		../src/fl_app_time.h \
-		../src/fl_app_colors.h \
-		../../FluorescenceV3/vfdco_config.h \
-		../../FluorescenceV3/vfdco_config_stm.h
+		../src/fl_app_colors.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o fl_app_lights.o ../src/fl_app_lights.c
 
 fl_app_time.o: ../src/fl_app_time.c ../src/fl_app_time.h

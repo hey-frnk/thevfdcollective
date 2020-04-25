@@ -1,6 +1,6 @@
 // Dummy HID driver
 
-#include "../vfdco_hid.h"
+#include "../Commons/vfdco_hid.h"
 
 #ifdef _HID_IMPLEMENTATION
 #error "An implementation of the HID driver already exists!"

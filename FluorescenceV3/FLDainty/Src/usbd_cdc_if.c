@@ -25,8 +25,8 @@
 /* USER CODE BEGIN INCLUDE */
 #include <string.h>
 #include <stdlib.h>
-#include "../../vfdco_config.h"
-#include "../../vfdco_com.h"
+#include "../../Commons/vfdco_config.h"
+#include "../../Commons/vfdco_com.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "../vfdco_config.h"
-#include "../vfdco_serialization.h"
+#include "../Commons/vfdco_config.h"
+#include "../Commons/vfdco_serialization.h"
 
 #ifdef _SERIALIZATION_IMPLEMENTATION
 #error "An implementation of the serialization driver already exists!"

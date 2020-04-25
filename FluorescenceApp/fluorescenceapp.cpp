@@ -6,7 +6,7 @@
 #include "src/fl_app_time.h"
 #include "src/fl_app_lights.h"
 #include "../FluorescenceV3/Commons/vfdco_clock_routine_defines.h"
-#include "../FluorescenceV3/vfdco_config.h"
+#include "../FluorescenceV3/Commons/vfdco_config.h"
 
 #include <QtSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
@@ -128,46 +128,86 @@ FluorescenceApp::~FluorescenceApp()
 
 void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
     if(preset_dynamic_light_sync_enable) {
-        /* QImage src_q;
+        QImage src_q;
         QScreen *screen = QGuiApplication::primaryScreen();
         if (const QWindow *window = windowHandle()) screen = this->screen();
         if (!screen) return;
         src_q = screen->grabWindow(0).toImage().convertToFormat(QImage::Format_RGB888);
 
-        src_q = src_q.scaled(64, 64, Qt::IgnoreAspectRatio, Qt::TransformationMode::FastTransformation);
+        const uint_fast8_t W = 60, H = 10;
+        src_q = src_q.scaled(W, H, Qt::IgnoreAspectRatio, Qt::TransformationMode::FastTransformation);
         // ui->lisync_sample->setPixmap(QPixmap::fromImage(src_q));
 
-        // Article: https://www.thevfdcollective.com/blog/aesthetic-color-palettes-with-qt-and-opencv-in-c
-        // Parse Image
-        // Parse: https://asmaloney.com/2013/11/code/converting-between-cvmat-and-qimage-or-qpixmap/
-        cv::Mat source_img = ASM::QImageToCvMat(src_q);
+        uint8_t color_arr[4 * CONFIG_NUM_PIXELS] = {0};
+        for(uint_fast8_t p = 0; p < CONFIG_NUM_PIXELS; ++p) {
+            uint32_t r_mean = 0, g_mean = 0, b_mean = 0;
 
-        // Serialize, float
-        int serialized_size = source_img.total();
-        cv::Mat serialized_data = source_img.reshape(1, serialized_size);
-        serialized_data.convertTo(serialized_data, CV_32F);
+            for(uint_fast8_t i = 0; i < H; ++i) {
+                for(uint_fast8_t j = 1; j < 7; ++j) {
+                    uint32_t k = i + (H * p);
+                    r_mean += src_q.pixelColor(k, j).red();
+                    g_mean += src_q.pixelColor(k, j).green();
+                    b_mean += src_q.pixelColor(k, j).blue();
+                }
+            }
+            r_mean /= 70;
+            g_mean /= 70;
+            b_mean /= 70;
+            qDebug() << r_mean << " " << g_mean << " " << b_mean;
+            QColor rgbval = QColor(r_mean, g_mean, b_mean);
 
-        std::vector<int> labels;
-        cv::Mat3f centers;
-        cv::kmeans(serialized_data, 8, labels, cv::TermCriteria(), 1, cv::KMEANS_RANDOM_CENTERS, centers);
+            int16_t r_s = rgbval.red() < 128 ? rgbval.red() : rgbval.red() - 256;
+            int16_t g_s = rgbval.green() < 128 ? rgbval.green() : rgbval.green() - 256;
+            int16_t b_s = rgbval.blue() < 128 ? rgbval.blue() : rgbval.blue() - 256;
 
-        // Make it pretty by sorting it by energy
-        std::sort(centers.begin(), centers.end(), [](const cv::Vec3f &a, const cv::Vec3f &b) -> bool {
-            return a[0] + a[1] + a[2] > b[0] + b[1] + b[2];
-        });
+            uint8_t threshold = 0, right_shift_factor = 1;
+            // Weighting
+            if(rgbval.red() > rgbval.blue() && rgbval.red() > rgbval.green()) {
+                threshold = rgbval.red() >> 2;
+                int16_t b_g_diff = b_s - g_s;
+                if(b_g_diff > threshold) {
+                    rgbval.setGreen(rgbval.green() >> right_shift_factor);
+                } else if(b_g_diff < threshold) {
+                    rgbval.setBlue(rgbval.blue() >> (right_shift_factor + 1));
+                } else {
+                    rgbval.setGreen(rgbval.green() >> right_shift_factor);
+                    rgbval.setBlue(rgbval.blue() >> (right_shift_factor + 1));
+                }
+            } else if(rgbval.green() > rgbval.red() && rgbval.green() > rgbval.blue()) {
+                if((uint16_t)rgbval.green() + (rgbval.green() / 2) < 255) {
+                    rgbval.setGreen(rgbval.green() + rgbval.green() / 2);
+                } else {
+                    rgbval.setGreen(255);
+                }
+                threshold = rgbval.green() >> 2;
+                int16_t r_b_diff = r_s - b_s;
+                if(r_b_diff > threshold) {
+                    rgbval.setBlue(rgbval.blue() >> (right_shift_factor + 3));
+                } else if(r_b_diff < threshold) {
+                    rgbval.setRed(rgbval.red() >> (right_shift_factor + 1));
+                } else {
+                    rgbval.setRed(rgbval.red() >> (right_shift_factor + 1));
+                    rgbval.setBlue(rgbval.blue() >> (right_shift_factor + 3));
+                }
+            } else if(rgbval.blue() > rgbval.red() && rgbval.blue() > rgbval.green()) {
+                threshold = rgbval.blue() >> 2;
+                int16_t r_g_diff = r_s - g_s;
+                if(r_g_diff > threshold) {
+                    rgbval.setGreen(rgbval.green() >> right_shift_factor);
+                } else if(r_g_diff < threshold) {
+                    rgbval.setRed(rgbval.red() >> right_shift_factor);
+                } else {
+                    rgbval.setRed(rgbval.red() >> right_shift_factor);
+                    rgbval.setGreen(rgbval.green() >> right_shift_factor);
+                }
+            }
 
-        // Set to clock
-        uint8_t color_arr[4 * CONFIG_NUM_PIXELS];
-        for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-            const cv::Vec3f &clr = centers.at<cv::Vec3f>(i + i);
-            QColor tmp_clr = QColor::fromRgb((uint8_t)clr[2], (uint8_t)clr[1], (uint8_t)clr[0]);
-            tmp_clr.setHsl(tmp_clr.hue(), tmp_clr.saturation() | 0xE0, (tmp_clr.lightness() & 0x7F) | 0x80);
-            color_arr[4 * i] = (uint8_t)tmp_clr.red();
-            color_arr[4 * i + 1] = (uint8_t)tmp_clr.green();
-            color_arr[4 * i + 2] = (uint8_t)tmp_clr.blue();
-            color_arr[4 * i + 3] = 0;
+            color_arr[4 * (CONFIG_NUM_PIXELS - 1) - 4 * p] = (uint8_t)rgbval.red();
+            color_arr[4 * (CONFIG_NUM_PIXELS - 1) - 4 * p + 1] = (uint8_t)rgbval.green();
+            color_arr[4 * (CONFIG_NUM_PIXELS - 1) - 4 * p + 2] = (uint8_t)rgbval.blue();
+            color_arr[4 * (CONFIG_NUM_PIXELS - 1) - 4 * p + 3] = 0;
         }
-        if(global_com_instance) global_com_instance->transfer_serial1(color_arr); */
+        if(global_com_instance) global_com_instance->transfer_serial1(color_arr);
     } else {
         ui->lisync_sample->setPixmap(QPixmap::fromImage(QImage(ambient_light_sample_paths[counter])));
         for(int i = 0; i < 6; ++i) preset_dynamic_lisync[i]->setColor(ambient_light_colors[counter][i]);

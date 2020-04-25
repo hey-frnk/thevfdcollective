@@ -1819,12 +1819,12 @@ public:
         panel_lsettings->raise();
         panel_timesync->raise();
         panel_welcome->raise();
-        panel_presets->raise();
         panel_settings->raise();
+        panel_presets->raise();
 
         retranslateUi(FluorescenceApp);
 
-        tab_presets_container->setCurrentIndex(3);
+        tab_presets_container->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(FluorescenceApp);

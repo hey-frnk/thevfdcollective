@@ -118,7 +118,7 @@ uint8_t vfdco_display_char_convert(char input) {
 // Decimal dot overlay function: uint8_t decimal_dot_register
 // [ reserved | reserved | dot5. | dot4. | dot3. | dot2. | dot1. | dot0. ]
 // 7                                                                     0
-void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_register, time_format_t time_mode) {
+void vfdco_display_render_time(const vfdco_time_t *time, const uint8_t decimal_dot_register, time_format_t time_mode) {
   uint8_t _hour = time->h; // 12h fix
   if(time_mode != TIME_FORMAT_24H) {
     if       (_hour > 12) _hour -= 12; // 12h offset
@@ -141,7 +141,7 @@ void vfdco_display_render_time(vfdco_time_t *time, const uint8_t decimal_dot_reg
   memcpy(display_buf, _rreg, CONFIG_NUM_DIGITS);
 }
 
-void vfdco_display_render_date(vfdco_date_t *date, /*const uint8_t decimal_dot_register, */date_format_t date_mode) {
+void vfdco_display_render_date(const vfdco_date_t *date, /*const uint8_t decimal_dot_register, */date_format_t date_mode) {
   uint8_t _rreg[CONFIG_NUM_DIGITS];
   _rreg[0] = vfdco_display_char_convert(date->y % 10);
   _rreg[1] = vfdco_display_char_convert(date->y / 10);

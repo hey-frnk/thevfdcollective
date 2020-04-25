@@ -1,7 +1,7 @@
 #include "fl_app_com.h"
 
 #include "src/fl_app_lights.h"
-#include "../FluorescenceV3/vfdco_config.h"
+#include "../FluorescenceV3/Commons/vfdco_config.h"
 
 #include <QMessageBox>
 #include <QTranslator>

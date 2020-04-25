@@ -1,3 +1,26 @@
+/*MIT License
+
+Copyright (c) The VFD Collective, Frank from The VFD Collective (Fu Zheng)
+Date: 04/25/2020
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
 /**
   ******************************************************************************
   * @file     vfdco_com.h
@@ -59,7 +82,7 @@ void COM_Handler_USB_Init();
  * @brief In this function, data in self->tx_buffer is sent over the USB interface
  * @param self The COM structure holding the tx_buffer to be transfered
  */
-void COM_Handler_USB_Transfer(struct COM_Data *self);
+void COM_Handler_USB_Transfer(const struct COM_Data *self);
 
 /**
  * @brief This is the callback function, data from the USB interface is present

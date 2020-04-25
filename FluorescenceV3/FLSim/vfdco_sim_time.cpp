@@ -10,7 +10,7 @@
   ******************************************************************************
  **/
 
-#include "../vfdco_time.h"
+#include "../Commons/vfdco_time.h"
 #include <stdio.h>
 #include <chrono>
 #include <QTime>
@@ -52,7 +52,7 @@ void vfdco_get_date_time(vfdco_date_t *_date, vfdco_time_t *_time) {
   _time->s = timeinfo->tm_sec;
 }
 
-void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {
+void vfdco_set_date_time(const vfdco_date_t *date, const vfdco_time_t *time) {
   printf("Dummy date/time set: %02hhu.%02hhu.20%02hhu - %02hhu:%02hhu:%02hhu",
     date->d, date->m, date->y, time->h, time->m, time->s
   );

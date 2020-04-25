@@ -54,10 +54,10 @@
 #define __FLT16_HAS_QUIET_NAN__ 1
 #define __FLT16_MANT_DIG__ 11
 #define __FLT16_MAX_10_EXP__ 4
-#define __FLT16_MAX_EXP__ 15
+#define __FLT16_MAX_EXP__ 16
 #define __FLT16_MAX__ 6.5504e+4F16
-#define __FLT16_MIN_10_EXP__ (-13)
-#define __FLT16_MIN_EXP__ (-14)
+#define __FLT16_MIN_10_EXP__ (-4)
+#define __FLT16_MIN_EXP__ (-13)
 #define __FLT16_MIN__ 6.103515625e-5F16
 #define __FLT_DECIMAL_DIG__ 9
 #define __FLT_DENORM_MIN__ 1.40129846e-45F
@@ -76,6 +76,7 @@
 #define __FLT_MIN__ 1.17549435e-38F
 #define __FLT_RADIX__ 2
 #define __FXSR__ 1
+#define __GCC_ASM_FLAG_OUTPUTS__ 1
 #define __GCC_ATOMIC_BOOL_LOCK_FREE 2
 #define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
 #define __GCC_ATOMIC_CHAR32_T_LOCK_FREE 2
@@ -337,7 +338,7 @@
 #define __UINT_LEAST8_MAX__ 255
 #define __UINT_LEAST8_TYPE__ unsigned char
 #define __USER_LABEL_PREFIX__ _
-#define __VERSION__ "4.2.1 Compatible Apple LLVM 11.0.0 (clang-1100.0.33.17)"
+#define __VERSION__ "4.2.1 Compatible Apple LLVM 11.0.3 (clang-1103.0.32.29)"
 #define __WCHAR_MAX__ 2147483647
 #define __WCHAR_TYPE__ int
 #define __WCHAR_WIDTH__ 32
@@ -346,13 +347,13 @@
 #define __WINT_WIDTH__ 32
 #define __amd64 1
 #define __amd64__ 1
-#define __apple_build_version__ 11000033
+#define __apple_build_version__ 11030032
 #define __block __attribute__((__blocks__(byref)))
 #define __clang__ 1
 #define __clang_major__ 11
 #define __clang_minor__ 0
-#define __clang_patchlevel__ 0
-#define __clang_version__ "11.0.0 (clang-1100.0.33.17)"
+#define __clang_patchlevel__ 3
+#define __clang_version__ "11.0.3 (clang-1103.0.32.29)"
 #define __code_model_small_ 1
 #define __core2 1
 #define __core2__ 1
@@ -376,6 +377,7 @@
 #define __cpp_guaranteed_copy_elision 201606L
 #define __cpp_hex_float 201603L
 #define __cpp_if_constexpr 201606L
+#define __cpp_impl_destroying_delete 201806L
 #define __cpp_inheriting_constructors 201511L
 #define __cpp_init_captures 201304L
 #define __cpp_initializer_lists 200806L

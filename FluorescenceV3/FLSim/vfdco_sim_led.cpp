@@ -10,8 +10,8 @@
   ******************************************************************************
  **/
 #include <stdio.h>
-#include "../vfdco_config.h"
-#include "../vfdco_led.h"
+#include "../Commons/vfdco_config.h"
+#include "../Commons/vfdco_led.h"
 
 #include <QLabel>
 

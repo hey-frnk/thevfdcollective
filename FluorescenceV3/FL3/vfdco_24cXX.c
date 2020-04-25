@@ -13,7 +13,7 @@
 #include "stm32f0xx_hal.h"
 #include <string.h>
 #include <stdlib.h>
-#include "../vfdco_serialization.h"
+#include "../Commons/vfdco_serialization.h"
 
 #ifdef _SERIALIZATION_IMPLEMENTATION
 #error "An implementation of the serialization driver already exists!"

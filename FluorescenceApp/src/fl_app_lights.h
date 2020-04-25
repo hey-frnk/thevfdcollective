@@ -31,7 +31,7 @@ extern "C" {
 
 #include "fl_app_time.h"
 #include "fl_app_colors.h"
-#include "../FluorescenceV3/vfdco_config.h"
+#include "../FluorescenceV3/Commons/vfdco_config.h"
 #include <stdint.h>
 
 /** Begin of:

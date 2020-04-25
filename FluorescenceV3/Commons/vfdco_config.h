@@ -1,3 +1,26 @@
+/*MIT License
+
+Copyright (c) The VFD Collective, Frank from The VFD Collective (Fu Zheng)
+Date: 04/25/2020
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
 /**
   ******************************************************************************
   * @file     vfdco_config.h
@@ -145,11 +168,11 @@ __attribute__((unused)) static uint8_t vfdco_util_random(uint8_t bits) {
 #error "Multiple or no configuration headers! Please specify the platform by only including one configuration header!"
 #endif
 
-#if defined(_VFDCO_CONFIG_CLASSIC_H)
+#ifdef _VFDCO_CONFIG_CLASSIC_H
 #define VFDCO_CONFIG_STM_CLASSIC
 #endif
 
-#if defined(_VFDCO_CONFIG_DAINTY_H)
+#ifdef _VFDCO_CONFIG_DAINTY_H
 #define VFDCO_CONFIG_STM_DAINTY
 #endif
 

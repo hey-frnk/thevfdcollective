@@ -1,7 +1,7 @@
 #include "stm32f0xx_hal.h"
-#include "../vfdco_hid.h"
-#include "../vfdco_time.h"
-#include "../vfdco_config.h"
+#include "../Commons/vfdco_hid.h"
+#include "../Commons/vfdco_time.h"
+#include "../Commons/vfdco_config.h"
 
 #ifdef _HID_IMPLEMENTATION
 #error "An implementation of the HID driver already exists!"

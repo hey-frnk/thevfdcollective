@@ -259,7 +259,7 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -5944,8 +5944,8 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_lsettings</zorder>
    <zorder>panel_timesync</zorder>
    <zorder>panel_welcome</zorder>
-   <zorder>panel_presets</zorder>
    <zorder>panel_settings</zorder>
+   <zorder>panel_presets</zorder>
   </widget>
  </widget>
  <customwidgets>

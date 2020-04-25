@@ -11,7 +11,7 @@
  **/
 
 #include "stm32f0xx_hal.h"
-#include "../vfdco_time.h"
+#include "../Commons/vfdco_time.h"
 
 #ifdef _TIME_IMPLEMENTATION
 #error "An implementation of the time driver already exists!"
@@ -46,7 +46,7 @@ void vfdco_get_date_time(vfdco_date_t *date, vfdco_time_t *time) {
   date->y = _vfdco_bcd2dec(_i2cReadIn[6]);
 }
 
-void vfdco_set_date_time(vfdco_date_t *date, vfdco_time_t *time) {
+void vfdco_set_date_time(const vfdco_date_t *date, const vfdco_time_t *time) {
   uint8_t _i2cWrite[7];
   _i2cWrite[0] = _vfdco_dec2bcd(time->s);
   _i2cWrite[1] = _vfdco_dec2bcd(time->m);

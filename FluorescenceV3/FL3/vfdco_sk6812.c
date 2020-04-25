@@ -13,8 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "stm32f0xx_hal.h"
-#include "../vfdco_config.h"
-#include "../vfdco_led.h"
+#include "../Commons/vfdco_config.h"
+#include "../Commons/vfdco_led.h"
 
 #if CONFIG_USE_RGBW == 0
 #error "Wrong driver linked. This driver only works for CONFIG_USE_RGBW == 1 (SK6812). Fix: Set CONFIG_USE_RGBW to 1 or use WS2812B driver."
@@ -134,7 +134,6 @@ void vfdco_clr_minimize_difference(uint8_t *target_arr) {
     else if(rgb_arr[i] > target_arr[i]) rgb_arr[i]--;
     else ++dt;
   }
-  // if(dt != CONFIG_NUM_BYTES) vfdco_clr_render();
 }
 
 void vfdco_clr_render() {
@@ -152,27 +151,29 @@ void vfdco_clr_render() {
 }
 
 void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
-  // DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
-  if(write_buf_pos < CONFIG_NUM_PIXELS) {
-    // We're in. Let's fill the mem
-    for(uint_fast8_t i = 0; i < 8; ++i) {
-      write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4    ] >> _led_dim_factor) << i) & 0x80) > 0);
-      write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 1] >> _led_dim_factor) << i) & 0x80) > 0);
-      write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 2] >> _led_dim_factor) << i) & 0x80) > 0);
-      write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 3] >> _led_dim_factor) << i) & 0x80) > 0);
-    }
-    write_buf_pos++;
-  } else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {
-    // Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
-    memset(write_buf, 0x00, WRITE_BUF_LENGTH);
-    write_buf_pos++;
+	if(htim->Instance == TIM2) {
+		// DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
+		if(write_buf_pos < CONFIG_NUM_PIXELS) {
+			// We're in. Let's fill the mem
+			for(uint_fast8_t i = 0; i < 8; ++i) {
+				write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4    ] >> _led_dim_factor) << i) & 0x80) > 0);
+				write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 1] >> _led_dim_factor) << i) & 0x80) > 0);
+				write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 2] >> _led_dim_factor) << i) & 0x80) > 0);
+				write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 3] >> _led_dim_factor) << i) & 0x80) > 0);
+			}
+			write_buf_pos++;
+		} else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {
+			// Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
+			memset(write_buf, 0x00, WRITE_BUF_LENGTH);
+			write_buf_pos++;
 
-    if(write_buf_pos >= CONFIG_NUM_PIXELS + 2) {
-      // Stop transfer, we're done for now until someone needs us again
-      write_buf_pos = 0;
-      HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
-    }
-  } else { // heart clap, we skip a beat
-    write_buf_pos++;
-  }
+			if(write_buf_pos >= CONFIG_NUM_PIXELS + 2) {
+				// Stop transfer, we're done for now until someone needs us again
+				write_buf_pos = 0;
+				HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
+			}
+		} else { // heart clap, we skip a beat
+			write_buf_pos++;
+		}
+	}
 }

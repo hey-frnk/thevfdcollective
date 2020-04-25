@@ -33,15 +33,15 @@ HEADERS += \
     ../Commons/vfdco_clock_routines.h \
     ../Commons/vfdco_gui.h \
     ../Commons/vfdco_lights.h \
-    ../vfdco_com.h \
-    ../vfdco_config.h \
-    ../vfdco_config_sim.h \
-    ../vfdco_display.h \
-    ../vfdco_hid.h \
-    ../vfdco_led.h \
-    ../vfdco_mic.h \
-    ../vfdco_serialization.h \
-    ../vfdco_time.h \
+    ../Commons/vfdco_com.h \
+    ../Commons/vfdco_config.h \
+    ../Commons/vfdco_config_sim.h \
+    ../Commons/vfdco_display.h \
+    ../Commons/vfdco_hid.h \
+    ../Commons/vfdco_led.h \
+    ../Commons/vfdco_mic.h \
+    ../Commons/vfdco_serialization.h \
+    ../Commons/vfdco_time.h \
     fluorescencesimulator.h \
     magic_enum.hpp
 

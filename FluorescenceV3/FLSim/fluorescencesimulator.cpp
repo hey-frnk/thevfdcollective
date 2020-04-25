@@ -7,10 +7,10 @@
 #include <QTextStream>
 #include <QDebug>
 
-#include "../vfdco_config.h"
-#include "../vfdco_com.h"
-#include "../vfdco_hid.h"
-#include "../vfdco_time.h"
+#include "../Commons/vfdco_config.h"
+#include "../Commons/vfdco_com.h"
+#include "../Commons/vfdco_hid.h"
+#include "../Commons/vfdco_time.h"
 #include "../Commons/vfdco_lights.h"
 #include "../Commons/vfdco_gui.h"
 #include "../Commons/vfdco_clock_routines.h"

@@ -1,7 +1,7 @@
 # Run this script to fetch all headers from parent directory and source code files from  ../Commons, /Src for Arduino compilation
 
 # All headers
-cp -fr ../*.h ${PWD}
+# cp -fr ../*.h ${PWD}
 
 # Common source code & header files
 cp -fr ../Commons/*.c ${PWD}

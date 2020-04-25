@@ -18,7 +18,7 @@ extern "C" {
 #define _VFDCO_LED_DRIVER
 
 #include <stdint.h>
-#include "../FluorescenceV3/vfdco_config.h"
+#include "../FluorescenceV3/Commons/vfdco_config.h"
 
          // Array of color values of size n um_bytes to be written in the next write cycle
          // to the physical WS2812B/SK6812 LEDs
