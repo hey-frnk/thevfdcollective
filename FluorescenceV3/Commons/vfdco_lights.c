@@ -340,7 +340,7 @@ static void _Light_Pattern_Static_Update(Light_Pattern *unsafe_self) {
   }
 }
 
-static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) {
+static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self, uint8_t reverse) {
   if(self->position >= NUM_STATIC_T4) self->position = 0;
 
   if(self->position < NUM_STATIC_T1) {
@@ -365,7 +365,13 @@ static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) 
     // Multicolor, just use legacy colors, they are hand crafted and look better
     uint8_t t_pos = self->position - NUM_STATIC_T2;
     for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
-      vfdco_clr_target_RGB(self->target_arr + 4 * i, Static_Color_Rainbows[t_pos][3 * i + 1], Static_Color_Rainbows[t_pos][3 * i], Static_Color_Rainbows[t_pos][3 * i + 2]);
+      uint32_t access_index = reverse ? 4 * (CONFIG_NUM_PIXELS - i - 1) : 4 * i;
+      vfdco_clr_target_RGB(
+        self->target_arr + access_index/*4 * i*/, 
+        Static_Color_Rainbows[t_pos][3 * i + 1], 
+        Static_Color_Rainbows[t_pos][3 * i], 
+        Static_Color_Rainbows[t_pos][3 * i + 2]
+      );
     }
   }
 }
@@ -376,11 +382,24 @@ static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self) 
 static void _Light_Pattern_Static_F3(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
   self->position++;
-  _Light_Pattern_Static_Next_Color(self);
+  _Light_Pattern_Static_Next_Color(self, 0);
 
   char k[CONFIG_NUM_DIGITS] = {'C', ' '};
   for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Static[self->position][i];
   vfdco_display_render_message(k, 0, CONFIG_MESSAGE_SHORT);
+}
+
+/**
+  * @brief  Implementation of virtual function Light_Pattern_Static::F3Var (static void _Light_Pattern_Static_F3Var)
+ **/
+static void _Light_Pattern_Static_F3Var(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
+  if(self->position >= NUM_STATIC_T2) {
+    _Light_Pattern_Static_Next_Color(self, 1);
+
+    char k[CONFIG_NUM_DIGITS] = {'R', 'E', 'V', 'E', 'R', 'S'};
+    vfdco_display_render_message(k, 0, CONFIG_MESSAGE_SHORT);
+  }
 }
 
 /**
@@ -408,13 +427,13 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *setti
   /* if(settings[LIGHT_PATTERN_SETTING_STATIC_position] >= NUM_STATIC_T4) Light_Pattern_Static_Default(settings); */
   self->position = settings[LIGHT_PATTERN_SETTING_STATIC_position];
   // Fill target array
-  _Light_Pattern_Static_Next_Color(self);
+  _Light_Pattern_Static_Next_Color(self, 0);
 
   self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
   self->settings = settings;
 
   Light_Pattern_F3 = _Light_Pattern_Static_F3;
-  Light_Pattern_F3Var = NULL;
+  Light_Pattern_F3Var = _Light_Pattern_Static_F3Var;
   Light_Pattern_Update = _Light_Pattern_Static_Update;
   Light_Pattern_Hello = _Light_Pattern_Static_Hello;
   Light_Pattern_Save = _Light_Pattern_Static_Save;

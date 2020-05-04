@@ -49,8 +49,8 @@ extern "C" {
  *        for the platform is used. Only uncomment one header and leave the rest commented
  */
 // #include "vfdco_config_hw2.h" // Arduino/AVR (HW Version < 3.0)
-// #include "vfdco_config_classic.h" // STM32F042K6 (HW Version >= 3.0), FL Classic
-#include "vfdco_config_dainty.h" // STM32F042K6 (HW Version >= 3.0), FL Classic
+#include "vfdco_config_classic.h" // STM32F042K6 (HW Version >= 3.0), FL Classic
+// #include "vfdco_config_dainty.h" // STM32F042K6 (HW Version >= 3.0), FL Classic
 // #include "vfdco_config_sim.h" // Simulation platform
 
 
