@@ -1,4 +1,5 @@
 #include "../Commons/vfdco_mic.h"
+#include "../Commons/vfdco_util.h"
 
 #ifdef _MIC_IMPLEMENTATION
 #error "An implementation of the microphone driver already exists!"

@@ -34,6 +34,12 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define USB_DEF_L 310
+#define USB_DEF_H 757
+#define USB_1A5_L 868
+#define USB_1A5_H 1440
+#define USB_3A0_L 1625
+#define USB_3A0_H 2531
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,6 +48,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc;
+
 I2C_HandleTypeDef hi2c1;
 
 SPI_HandleTypeDef hspi1;
@@ -51,7 +59,21 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim16;
 DMA_HandleTypeDef hdma_tim2_ch1;
 
+UART_HandleTypeDef huart2;
+
 /* USER CODE BEGIN PV */
+
+// Switch variable between two ADC channels for CC1 and CC2 of USB Type C input
+uint32_t adc_channel = ADC_CHANNEL_1;
+// Stores ADC readout values for CH1 and CH2
+volatile uint32_t ch1_in = 0, ch2_in = 0;
+
+typedef enum {
+  USB_CC_VOLTAGE_OUT_OF_RANGE,
+  USB_CC_VOLTAGE_DEFAULT,
+  USB_CC_VOLTAGE_1A5,
+  USB_CC_VOLTAGE_3A0
+} USB_CC_VOLTAGE_t;
 
 /* USER CODE END PV */
 
@@ -63,7 +85,11 @@ static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_ADC_Init(void);
+static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
+
+static USB_CC_VOLTAGE_t check_usb_cc(uint_fast16_t cc_voltage);
 
 /* USER CODE END PFP */
 
@@ -81,7 +107,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -107,10 +132,26 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM16_Init();
   MX_USB_DEVICE_Init();
+  MX_ADC_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  // Initialize clock
-  vfdco_clock_initializer();
+  // Start CC read in
+	HAL_ADC_Start_IT(&hadc);
+  HAL_Delay(10);
+  USB_CC_VOLTAGE_t cc_status_setup = check_usb_cc((ch1_in > ch2_in) ? ch1_in : ch2_in);
+
+  // Boot!
+  if(cc_status_setup == USB_CC_VOLTAGE_OUT_OF_RANGE || cc_status_setup == USB_CC_VOLTAGE_DEFAULT) {
+    // At startup, do not turn on if weak power source is present. Instead welcome with low power lights
+    HAL_GPIO_WritePin(HV_SW_GPIO_Port, HV_SW_Pin, GPIO_PIN_RESET);
+    // Initialize clock
+    vfdco_clock_initializer(0x00440000); // Green progress bar as welcome message!
+  } else /*if(cc_status_setup == USB_CC_VOLTAGE_1A5 || cc_status_setup == USB_CC_VOLTAGE_3A0)*/ {
+    HAL_GPIO_WritePin(HV_SW_GPIO_Port, HV_SW_Pin, GPIO_PIN_SET);
+    // Initialize clock
+    vfdco_clock_initializer(0x00000000); // No progress
+  }
 
   /* USER CODE END 2 */
 
@@ -122,10 +163,18 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-  	// WoHOo hOw FuN iS tHhIis??
-  	vfdco_clock_routine();
-  	// vfdco_clock_com_routine();
+    // Monitor CC voltage
+    USB_CC_VOLTAGE_t cc_status_loop = check_usb_cc((ch1_in > ch2_in) ? ch1_in : ch2_in);
+    switch(cc_status_loop) {
+      case USB_CC_VOLTAGE_OUT_OF_RANGE: HAL_GPIO_WritePin(HV_SW_GPIO_Port, HV_SW_Pin, GPIO_PIN_RESET); break;
+      // At runtime, turn on despite weak source, and pray for the port to supply up to 0.9A lol which is no problem 99% of the time
+      case USB_CC_VOLTAGE_DEFAULT:      HAL_GPIO_WritePin(HV_SW_GPIO_Port, HV_SW_Pin, GPIO_PIN_SET); break;
+      case USB_CC_VOLTAGE_1A5:          HAL_GPIO_WritePin(HV_SW_GPIO_Port, HV_SW_Pin, GPIO_PIN_SET); break;
+      case USB_CC_VOLTAGE_3A0:          HAL_GPIO_WritePin(HV_SW_GPIO_Port, HV_SW_Pin, GPIO_PIN_SET); break;
+    }
 
+  	// WoHOo hOw FuN iS tHhIis??
+  	vfdco_clock_routine();    
   }
   /* USER CODE END 3 */
 }
@@ -171,6 +220,65 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief ADC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC_Init(void)
+{
+
+  /* USER CODE BEGIN ADC_Init 0 */
+
+  /* USER CODE END ADC_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC_Init 1 */
+
+  /* USER CODE END ADC_Init 1 */
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+  */
+  hadc.Instance = ADC1;
+  hadc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc.Init.ScanConvMode = ADC_SCAN_DIRECTION_FORWARD;
+  hadc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc.Init.LowPowerAutoWait = DISABLE;
+  hadc.Init.LowPowerAutoPowerOff = DISABLE;
+  hadc.Init.ContinuousConvMode = ENABLE;
+  hadc.Init.DiscontinuousConvMode = DISABLE;
+  hadc.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc.Init.DMAContinuousRequests = DISABLE;
+  hadc.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  if (HAL_ADC_Init(&hadc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure for the selected ADC regular channel to be converted. 
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
+  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure for the selected ADC regular channel to be converted. 
+  */
+  sConfig.Channel = ADC_CHANNEL_6;
+  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC_Init 2 */
+
+  /* USER CODE END ADC_Init 2 */
+
 }
 
 /**
@@ -350,6 +458,41 @@ static void MX_TIM16_Init(void)
 
 }
 
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 38400;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
 /** 
   * Enable DMA controller clock
   */
@@ -386,13 +529,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PA1 PA2 PA3 PA6 
-                           PA8 PA9 PA10 PA15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_6 
-                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_15;
-  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(HV_SW_GPIO_Port, HV_SW_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : SPI1_NSS_Pin */
   GPIO_InitStruct.Pin = SPI1_NSS_Pin;
@@ -401,11 +539,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SPI1_NSS_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PB0 PB1 PB3 PB4 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_4;
+  /*Configure GPIO pin : HV_SW_Pin */
+  GPIO_InitStruct.Pin = HV_SW_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(HV_SW_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB1 PB3 PB4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_3|GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PA8 PA9 PA10 PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : F1_Pin F2_Pin F3_Pin F4_Pin */
   GPIO_InitStruct.Pin = F1_Pin|F2_Pin|F3_Pin|F4_Pin;
@@ -416,8 +567,54 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * @brief This function detects the USB Type C CC pin voltage and switches on the HV parts depending on the maximum power
+ * offered by the upstream source (or cable, if USB 2.0/3.0 legacy). It is implemented according to
+ * Table 4-36 'Voltage on Sink CC pins (Multiple Source Current Advertisements)' in USB Type-C Specification R2.0 - August 2019
+ * @param cc_voltage CC voltage analog input value from ADC channels
+ * @return USB CC detected, according to USB_CC_VOLTAGE_t
+ */
+static USB_CC_VOLTAGE_t check_usb_cc(uint_fast16_t cc_voltage) {
+	if(cc_voltage >= USB_DEF_L && cc_voltage <= USB_DEF_H) {
+    return USB_CC_VOLTAGE_DEFAULT;
+	} else if(cc_voltage >= USB_1A5_L && cc_voltage <= USB_1A5_H) {
+    return USB_CC_VOLTAGE_1A5;
+	} else if(cc_voltage >= USB_3A0_L && cc_voltage <= USB_3A0_H) {
+    return USB_CC_VOLTAGE_3A0;
+	} else {
+    return USB_CC_VOLTAGE_OUT_OF_RANGE;
+	}
+}
+
+/**
+ * @brief ADC conversion complete callback. If the ADC read in has completed
+ * @param hadc 
+ */
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
+	ADC_ChannelConfTypeDef sConfig;
+	if(adc_channel == ADC_CHANNEL_1) {
+		ch1_in = HAL_ADC_GetValue(hadc);
+		sConfig.Rank = ADC_RANK_NONE;
+		sConfig.Channel = ADC_CHANNEL_6;
+		HAL_ADC_ConfigChannel(hadc, &sConfig);
+		adc_channel = ADC_CHANNEL_6;
+	} else {
+		ch2_in = HAL_ADC_GetValue(hadc);
+		sConfig.Rank = ADC_RANK_NONE;
+		sConfig.Channel = ADC_CHANNEL_1;
+		HAL_ADC_ConfigChannel(hadc, &sConfig);
+		adc_channel = ADC_CHANNEL_1;
+	}
+	HAL_ADC_Start_IT(hadc);
+}
+
+
 volatile uint32_t _bootloader_flag = 0xABCDEF;
 
+/**
+ * @brief Write dirty bit and go into DFU mode bootloader
+ * @param bootloader_status 
+ */
 void activate_bootloader(uint32_t bootloader_status) {
 	if(bootloader_status == 1) {
 		// Write DFU message
@@ -461,7 +658,7 @@ void Error_Handler(void)
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(char *file, uint32_t line)
+void assert_failed(uint8_t *file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,

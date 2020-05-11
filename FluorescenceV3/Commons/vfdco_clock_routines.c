@@ -57,6 +57,7 @@ SOFTWARE.*/
 // Application specific libraries
 #include "vfdco_lights.h"          // Library of light patterns
 #include "vfdco_gui.h"             // Library of different user interfaces
+#include "vfdco_util.h"            // Library of platform independent utilities
 // Clock routine scheduler
 #include "vfdco_clock_routines.h"  // Clock routine
 
@@ -121,7 +122,7 @@ static const char Messages_Routine_Shift[CONFIG_NUM_DIGITS]      = {' ', 'S', 'H
   * @tableofcontents SECTION_SUPPORTING_FUNCTIONS
   * @brief Prototypes. Implementation see very end
  **/
-static void vfdco_welcome(char *message);
+static void vfdco_welcome(char *message, uint32_t color);
 static void set_next_gui_instance_timeset(uint8_t set_mode); // Fancy special case
 static void set_next_gui_instance(gui_instance_t next_instance);
 static void find_next_lights_instance();
@@ -133,7 +134,7 @@ static void com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(const 
 /** Begin of:
   * @tableofcontents SECTION_GLOBAL_INITIALIZER
  **/
-void vfdco_clock_initializer() {
+void vfdco_clock_initializer(uint32_t welcome_color) {
   global_time_updater = Time_Event_Init(CONFIG_RTC_UPDATE_INTERVAL);
   display_updater = Time_Event_Init(CONFIG_DISPLAY_UPDATE_INTERVAL);
 
@@ -148,7 +149,7 @@ void vfdco_clock_initializer() {
   vfdco_clock_mic_initializer();
   
   // All good? All good! Fluorescence, say hello!
-  vfdco_welcome((char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome);
+  vfdco_welcome((char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, welcome_color);
 
   // Random seed
   for(uint8_t i = 0; i < 7; ++i) vfdco_util_random(i);
@@ -474,7 +475,7 @@ void vfdco_clock_settings_save(uint8_t silent) {
   * @tableofcontents SECTION_SUPPORTING_FUNCTIONS
   * @brief Prototypes. Implementation see very end
  **/
-static inline void vfdco_welcome(char *message) {
+static inline void vfdco_welcome(char *message, uint32_t color) {
   uint8_t spaces = 0; // Empty spaces
   for(uint_fast8_t i = 0; i < CONFIG_NUM_DIGITS; i++) if(message[i] == ' ') spaces++; // Count all spaces
 
@@ -487,21 +488,35 @@ static inline void vfdco_welcome(char *message) {
     {255, 0,    0,   0,   0,   0}
   };
 
+  uint8_t welcome_r = (color >> 8) & 0xFF, welcome_g = (color >> 16) & 0xFF, welcome_b = color & 0xFF;
+  vfdco_clr_set_all_RGB(0, 0, 0);                                 // Clear color array
   for(uint8_t k = 0; k < (CONFIG_NUM_DIGITS - spaces); k++) {     // k-th letter of message
     for(uint8_t i = 0; i < (CONFIG_NUM_DIGITS - k); i++) {        // Let the letter slide in from the right to the next available position
       char delay_pattern[CONFIG_NUM_DIGITS];                      // Define empty pattern
       for(uint8_t j = 0; j < CONFIG_NUM_DIGITS; j++) {
-        if(j >= k) delay_pattern[j] = ' ';                        // All j's larger than current k will be filled with empty spaces
-        else delay_pattern[j] = message[j];                       // If k has increased, fill letters already slided in in advance
+        if(j >= k) {
+          delay_pattern[j] = ' ';                                 // All j's larger than current k will be filled with empty spaces
+          vfdco_clr_set_RGB(CONFIG_NUM_PIXELS - j - 1, 0, 0, 0);  // Fill up the progress with black!
+        } else {
+          delay_pattern[j] = message[j];                          // If k has increased, fill letters already slided in in advance
+          vfdco_clr_set_RGB(CONFIG_NUM_PIXELS - j - 1, welcome_r, welcome_g, welcome_b); // Fill up the progress with color!
+        }  
       }
       delay_pattern[5 - i] = message[k];                          // Manipulate i-th filled empty pattern element with k-th letter of message
-      vfdco_display_render_message(delay_pattern, 0, delayMatrix[k][i]);   // Render the message with delay information
-    }
+      vfdco_clr_render();                                         // Render LED colors
+      vfdco_display_render_message(delay_pattern, 0, delayMatrix[k][i]); // Render the message with delay information
+    }                                                             
   }
 
+  vfdco_clr_set_all_RGB(0, 0, 0);
+  vfdco_clr_render();
   char empty[] = {' ', ' ', ' ', ' ', ' ', ' '};
   vfdco_display_render_message(empty,   0, CONFIG_MESSAGE_SHORT);
+
+  vfdco_clr_set_all_RGB(welcome_r, welcome_g, welcome_b);
+  vfdco_clr_render();
   vfdco_display_render_message(message, 0, CONFIG_MESSAGE_LONG );
+  
 }
 
 static void set_next_gui_instance_timeset(uint8_t set_mode) {
@@ -645,7 +660,7 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
 }
 
 static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct COM_Data *)) {
-  if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
+  /*if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
     const uint8_t command_byte = input_buffer[COM_PROTOCOL_COMMAND_OFFSET];
 
     // LED set
@@ -722,7 +737,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
 
     // If time set command is detected
     else if(command_byte == 0x20) {
-      if(input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_FLAG] == 0x23 /* Make sure flag */) {
+      if(input_buffer[COM_PROTOCOL_TIMEDATE_SET_OFFSET_FLAG] == 0x23) { // Make sure flag
         // Send to RTC
         global_time.s = input_buffer[COM_PROTOCOL_DATA_OFFSET + 0];
         global_time.m = input_buffer[COM_PROTOCOL_DATA_OFFSET + 1];
@@ -833,7 +848,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
     }
   }
   // Bad command or bit error :( Some random return otherwise. You should never ever get to this point.
-  else {}
+  else {}*/
 }
 
 // ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE, only change in designated section in vfdco_clock_routines.h! ########

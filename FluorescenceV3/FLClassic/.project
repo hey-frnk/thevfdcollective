@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>FLClassic</name>
-	<comment></comment>
+	<comment />
 	<projects>
 	</projects>
 	<buildSpec>
@@ -33,7 +33,7 @@
 		<link>
 			<name>FL3</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/FL3</locationURI>
+			<location>PARENT-1-PROJECT_LOC/FL3</location>
 		</link>
 	</linkedResources>
 </projectDescription>

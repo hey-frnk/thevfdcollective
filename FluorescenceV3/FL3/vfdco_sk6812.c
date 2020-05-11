@@ -27,13 +27,13 @@
 
 #define WRITE_BUF_LENGTH (CONFIG_NUM_BPP * 8)
 
-uint8_t  write_buf[WRITE_BUF_LENGTH] = {0};
-uint8_t	 rgb_arr[CONFIG_NUM_BYTES] = {0};
+volatile uint8_t  write_buf[WRITE_BUF_LENGTH] = {0};
+volatile uint8_t	 rgb_arr[CONFIG_NUM_BYTES] = {0};
 // Write buffer with two
-uint8_t write_buf_pos;
+volatile uint_fast8_t write_buf_pos;
 
 // Dimming
-uint8_t _led_dim_factor = 0;
+volatile uint8_t _led_dim_factor = 0;
 
 extern TIM_HandleTypeDef htim2;
 
@@ -136,8 +136,9 @@ void vfdco_clr_minimize_difference(uint8_t *target_arr) {
   }
 }
 
-void vfdco_clr_render() {
+volatile void vfdco_clr_render() {
   // Ooh boi the first data buffer!!
+  // __disable_irq();
   write_buf_pos = 0;
   for(uint_fast8_t i = 0; i < 8; ++i) {
     write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[0] >> _led_dim_factor) << i) & 0x80) > 0);
@@ -148,11 +149,13 @@ void vfdco_clr_render() {
 
   write_buf_pos++; // Since we're ready for the next buffer
   HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
+  // __enable_irq();
 }
 
 void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
-	if(htim->Instance == TIM2) {
+	// if(htim->Instance == TIM2) {
 		// DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
+    // __disable_irq();
 		if(write_buf_pos < CONFIG_NUM_PIXELS) {
 			// We're in. Let's fill the mem
 			for(uint_fast8_t i = 0; i < 8; ++i) {
@@ -164,7 +167,8 @@ void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
 			write_buf_pos++;
 		} else if (write_buf_pos >= CONFIG_NUM_PIXELS + 1) {
 			// Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
-			memset(write_buf, 0x00, WRITE_BUF_LENGTH);
+			// for(uint8_t i = 0; i < WRITE_BUF_LENGTH; ++i) write_buf[i] = 0;
+      memset(write_buf, 0x00, WRITE_BUF_LENGTH);
 			write_buf_pos++;
 
 			if(write_buf_pos >= CONFIG_NUM_PIXELS + 2) {
@@ -175,5 +179,6 @@ void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
 		} else { // heart clap, we skip a beat
 			write_buf_pos++;
 		}
-	}
+    // __enable_irq();
+	// }
 }

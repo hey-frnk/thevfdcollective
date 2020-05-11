@@ -223,21 +223,21 @@ g_pfnVectors:
 * this definition.
 *
 *******************************************************************************/
+// https://stackoverflow.com/questions/51946333/arm-none-eabi-g-does-not-correctly-handle-weak-alias-with-flto
+  /*.weak      NMI_Handler
+  .thumb_set NMI_Handler,Default_Handler*/
 
-  .weak      NMI_Handler
-  .thumb_set NMI_Handler,Default_Handler
+  /*.weak      HardFault_Handler
+  .thumb_set HardFault_Handler,Default_Handler*/
 
-  .weak      HardFault_Handler
-  .thumb_set HardFault_Handler,Default_Handler
+  /*.weak      SVC_Handler
+  .thumb_set SVC_Handler,Default_Handler*/
 
-  .weak      SVC_Handler
-  .thumb_set SVC_Handler,Default_Handler
+  /*.weak      PendSV_Handler
+  .thumb_set PendSV_Handler,Default_Handler*/
 
-  .weak      PendSV_Handler
-  .thumb_set PendSV_Handler,Default_Handler
-
-  .weak      SysTick_Handler
-  .thumb_set SysTick_Handler,Default_Handler
+  /*weak      SysTick_Handler
+  .thumb_set SysTick_Handler,Default_Handler*/
 
   .weak      WWDG_IRQHandler
   .thumb_set WWDG_IRQHandler,Default_Handler
@@ -269,14 +269,14 @@ g_pfnVectors:
   .weak      DMA1_Channel1_IRQHandler
   .thumb_set DMA1_Channel1_IRQHandler,Default_Handler
 
-  .weak      DMA1_Channel2_3_IRQHandler
-  .thumb_set DMA1_Channel2_3_IRQHandler,Default_Handler
+  /*.weak      DMA1_Channel2_3_IRQHandler
+  .thumb_set DMA1_Channel2_3_IRQHandler,Default_Handler*/
 
-  .weak      DMA1_Channel4_5_IRQHandler
-  .thumb_set DMA1_Channel4_5_IRQHandler,Default_Handler
+  /*.weak      DMA1_Channel4_5_IRQHandler
+  .thumb_set DMA1_Channel4_5_IRQHandler,Default_Handler*/
 
-  .weak      ADC1_IRQHandler
-  .thumb_set ADC1_IRQHandler,Default_Handler
+  /*.weak      ADC1_IRQHandler
+  .thumb_set ADC1_IRQHandler,Default_Handler*/
 
   .weak      TIM1_BRK_UP_TRG_COM_IRQHandler
   .thumb_set TIM1_BRK_UP_TRG_COM_IRQHandler,Default_Handler
@@ -293,8 +293,8 @@ g_pfnVectors:
   .weak      TIM14_IRQHandler
   .thumb_set TIM14_IRQHandler,Default_Handler
 
-  .weak      TIM16_IRQHandler
-  .thumb_set TIM16_IRQHandler,Default_Handler
+  /*.weak      TIM16_IRQHandler
+  .thumb_set TIM16_IRQHandler,Default_Handler*/
 
   .weak      TIM17_IRQHandler
   .thumb_set TIM17_IRQHandler,Default_Handler
@@ -317,8 +317,8 @@ g_pfnVectors:
   .weak      CEC_CAN_IRQHandler
   .thumb_set CEC_CAN_IRQHandler,Default_Handler
 
-  .weak      USB_IRQHandler
-  .thumb_set USB_IRQHandler,Default_Handler
+  /*.weak      USB_IRQHandler
+  .thumb_set USB_IRQHandler,Default_Handler*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

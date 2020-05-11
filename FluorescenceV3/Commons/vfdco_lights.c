@@ -54,6 +54,7 @@ SOFTWARE.*/
 #include "vfdco_display.h"
 #include "vfdco_mic.h"
 #include "vfdco_lights.h"
+#include "vfdco_util.h"
 
 // #include <stdlib.h>
 #include <string.h>
@@ -122,18 +123,18 @@ static LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_Fader *s
       target =  &self->color_1;
     }
     // Linearly transition HSL from curr -> target
-    /*
-      i_h = (((target->h - (int_fast16_t)current->h) * (int_fast32_t)t) >> LED_COLOR_FADER_TIME_BITS) + current->h;
-      is suboptimal, as e.g. going from 250 (magenta red) to 30 (orange) is traveled through the whole spectrum instead of just overflowing
-      A workaround for this issue is proposed by the LerpHSL function.
-      LerpHSL does a linear interpolation of the Hue component and chooses the shortest distance in a cyclic way
-      The idea is visualized by Alan Zucconi https://www.alanzucconi.com/2016/01/06/colour-interpolation/
-      The code is largely based on https://github.com/yuichiroharai/glsl-y-hsv/blob/master/lerpHSV.glsl, rewritten for fixed point arithmetics
-      For an 8 bit interpolation state t [0 .. 255] and the 8 bit Hue values H1 and H2 of a color, the code simplifies to:
-      H_NEW = (((((int16_t)(383 + H2 - H1) % 255) - 127) * t) >> 8) + H1;
-      or any norm factor 1/k H_NEW = (((1.5k + H2 - H1) % k) - 0.5k) * t + H1 for t [0..1]
-      The i_h below is adapted to
-    */
+    
+    // i_h = (((target->h - (int_fast16_t)current->h) * (int_fast32_t)t) >> LED_COLOR_FADER_TIME_BITS) + current->h;
+    // is suboptimal, as e.g. going from 250 (magenta red) to 30 (orange) is traveled through the whole spectrum instead of just overflowing
+    // A workaround for this issue is proposed by the LerpHSL function.
+    // LerpHSL does a linear interpolation of the Hue component and chooses the shortest distance in a cyclic way
+    // The idea is visualized by Alan Zucconi https://www.alanzucconi.com/2016/01/06/colour-interpolation/
+    // The code is largely based on https://github.com/yuichiroharai/glsl-y-hsv/blob/master/lerpHSV.glsl, rewritten for fixed point arithmetics
+    // For an 8 bit interpolation state t [0 .. 255] and the 8 bit Hue values H1 and H2 of a color, the code simplifies to:
+    // H_NEW = (((((int16_t)(383 + H2 - H1) % 255) - 127) * t) >> 8) + H1;
+    // or any norm factor 1/k H_NEW = (((1.5k + H2 - H1) % k) - 0.5k) * t + H1 for t [0..1]
+    // The i_h below is adapted to
+    
     i_h = (((((uint16_t)(384 + target->h - current->h) % 255) - 127) * self->fade_pos) >> 8) + current->h;  // what the actual fuck?!
     i_s = (((target->s - (int16_t)current->s) * (int16_t)self->fade_pos) >> 8) + current->s;
     i_l = (((target->l - (int16_t)current->l) * (int16_t)self->fade_pos) >> 8) + current->l;

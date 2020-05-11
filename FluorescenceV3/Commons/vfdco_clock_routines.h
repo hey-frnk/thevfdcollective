@@ -49,7 +49,7 @@ extern "C" {
 #include "vfdco_clock_routine_defines.h"
 
 // Initialize function. Run first.
-void    vfdco_clock_initializer();
+void    vfdco_clock_initializer(uint32_t welcome_color);
 void    vfdco_clock_routine();
 
 // Serialization initializer
