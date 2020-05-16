@@ -660,7 +660,7 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
 }
 
 static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct COM_Data *)) {
-  /*if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
+  if((input_buffer[0] == 0x24) && (input_buffer[26] == 0x25)) {
     const uint8_t command_byte = input_buffer[COM_PROTOCOL_COMMAND_OFFSET];
 
     // LED set
@@ -848,7 +848,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
     }
   }
   // Bad command or bit error :( Some random return otherwise. You should never ever get to this point.
-  else {}*/
+  else {}
 }
 
 // ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE, only change in designated section in vfdco_clock_routines.h! ########

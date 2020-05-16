@@ -448,7 +448,7 @@ static void _Light_Pattern_Serial0_Update(Light_Pattern *unsafe_self) {
   if(Time_Event_Update(&self->t)) {
     // Repeated write
     uint8_t *clr_arr = self->settings;
-    for(uint8_t i = 0; i < CONFIG_NUM_PIXELS; ++i)
+    for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i)
       vfdco_clr_set_RGBW(i, clr_arr[4 * i], clr_arr[4 * i + 1], clr_arr[4 * i + 2], clr_arr[4 * i + 3]);
     vfdco_clr_render();
   }

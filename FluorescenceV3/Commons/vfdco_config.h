@@ -49,8 +49,7 @@ extern "C" {
  *        for the platform is used. Only uncomment one header and leave the rest commented
  */
 // #include "vfdco_config_hw2.h" // Arduino/AVR (HW Version < 3.0)
-#include "vfdco_config_classic.h" // STM32F042K6 (HW Version >= 3.0), FL Classic
-// #include "vfdco_config_dainty.h" // STM32F042K6 (HW Version >= 3.0), FL Classic
+#include "vfdco_config_hw3.h" // STM32FL421KB (HW Version >= 3.0), FL Classic or FL Dainty
 // #include "vfdco_config_sim.h" // Simulation platform
 
 
@@ -140,14 +139,6 @@ extern "C" {
 // Platform validation 
 #if (defined(_VFDCO_CONFIG_CLASSIC_H) + defined(_VFDCO_CONFIG_DAINTY_H) + defined(_VFDCO_CONFIG_HW2_H) + defined(_VFDCO_CONFIG_SIM_H)) != 1
 #error "Multiple or no configuration headers! Please specify the platform by only including one configuration header!"
-#endif
-
-#ifdef _VFDCO_CONFIG_CLASSIC_H
-#define VFDCO_CONFIG_STM_CLASSIC
-#endif
-
-#ifdef _VFDCO_CONFIG_DAINTY_H
-#define VFDCO_CONFIG_STM_DAINTY
 #endif
 
 // Color/gamma correction should not be enabled both

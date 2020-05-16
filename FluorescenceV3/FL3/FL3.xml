@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE targetDefinitions [
+<!ELEMENT targetDefinitions (board)>
+<!ELEMENT board (name,dbgIF+,dbgDEV,mcuId)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT dbgIF (#PCDATA)>
+<!ELEMENT dbgDEV (#PCDATA)>
+<!ELEMENT mcuId (#PCDATA)>
+<!ATTLIST board id CDATA #REQUIRED>
+]>
+<targetDefinitions>
+  <board id="FL3">
+    <name>FL3</name>
+    <dbgIF>SWD</dbgIF>
+    <dbgDEV>ST-Link</dbgDEV>
+    <mcuId>stm32l412kbtx</mcuId>
+  </board>
+</targetDefinitions>

@@ -264,7 +264,7 @@ void GUI_Format_Date_Init(struct GUI_Format_Date *self, vfdco_date_t *date_insta
   * @tableofcontents SECTION_GUI_FORMAT_TIME_DATE_SET
  **/
 static void _GUI_Format_Time_Date_Setter_Update(GUI_Format *unsafe_self) {
-  /*struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
+  struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
 
   if(Time_Event_Update(&self->blank_timer)) self->blank_active = !self->blank_active;
   uint8_t _c1, _c2, _c3;
@@ -297,7 +297,7 @@ static void _GUI_Format_Time_Date_Setter_Update(GUI_Format *unsafe_self) {
       self->blank_alt_message[5] = ' ';
     }
   }
-  vfdco_display_render_message(self->blank_alt_message, 0, 0); */
+  vfdco_display_render_message(self->blank_alt_message, 0, 0);
 }
 
 static void _GUI_Format_Time_Date_Setter_F2(GUI_Format *unsafe_self) {
@@ -308,7 +308,7 @@ static void _GUI_Format_Time_Date_Setter_F2(GUI_Format *unsafe_self) {
 }
 
 static void _GUI_Format_Time_Date_Setter_F3(GUI_Format *unsafe_self) {
-  /*struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
+  struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
   // Short press on F3 decreases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
     if      (self->active_digit == 0) { // Set hour
@@ -341,11 +341,11 @@ static void _GUI_Format_Time_Date_Setter_F3(GUI_Format *unsafe_self) {
       if       (self->new_date.y  > 0)    self->new_date.y--;
       else if  (self->new_date.y == 0)    self->new_date.y = 40;
     }
-  }*/
+  }
 }
 
 static void _GUI_Format_Time_Date_Setter_F4(GUI_Format *unsafe_self) {
-  /*struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
+  struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter *)unsafe_self;
   // Short press on F4 increases the active parameter (h/m/s)
   if(self->set_mode == 0) { // Time Set
     if      (self->active_digit == 0) { // Set hour
@@ -378,7 +378,7 @@ static void _GUI_Format_Time_Date_Setter_F4(GUI_Format *unsafe_self) {
       if       (self->new_date.y  < 40)    self->new_date.y++;
       else if  (self->new_date.y == 40)    self->new_date.y = 0;
     }
-  }*/
+  }
 }
 
 void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, vfdco_time_t *time_instance, vfdco_date_t *date_instance, uint_fast8_t set_mode) {
@@ -406,7 +406,7 @@ void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, 
   * @tableofcontents SECTION_GUI_FORMAT_STOPWATCH
  **/
 static void _GUI_Format_Stopwatch_Update(GUI_Format *unsafe_self) {
-  /*struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
+  struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
     char zeros[CONFIG_NUM_DIGITS] = {0};
     vfdco_display_render_message(zeros, 0b000010100, 0);
@@ -461,11 +461,11 @@ static void _GUI_Format_Stopwatch_Update(GUI_Format *unsafe_self) {
       digits[5] = running_millis % 10;
       vfdco_display_render_message(digits, 0, 0);
     }
-  }*/
+  }
 }
 
 static void _GUI_Format_Stopwatch_F2(GUI_Format *unsafe_self) {
-  /* struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
+  struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
   // Initialize
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_INITIALIZED) {
     if(!self->not_initial) {
@@ -488,11 +488,11 @@ static void _GUI_Format_Stopwatch_F2(GUI_Format *unsafe_self) {
     self->initial_milliseconds = 0;
     self->elapsed_milliseconds = 0;
     self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_INITIALIZED;
-  } */
+  }
 }
 
 static void _GUI_Format_Stopwatch_F3(GUI_Format *unsafe_self) {
-  /* struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
+  struct GUI_Format_Stopwatch *self = (struct GUI_Format_Stopwatch *)unsafe_self;
   // Pause
   if(self->stopwatch_state == GUI_FORMAT_STOPWATCH_STATE_RUNNING) {
     // Save seconds
@@ -514,7 +514,7 @@ static void _GUI_Format_Stopwatch_F3(GUI_Format *unsafe_self) {
     self->initial_milliseconds = vfdco_time_get_milliseconds();
     #endif
     self->stopwatch_state = GUI_FORMAT_STOPWATCH_STATE_RUNNING;
-  } */
+  }
 }
 
 void GUI_Format_Stopwatch_Init(struct GUI_Format_Stopwatch *self, vfdco_time_t *time_instance) {
