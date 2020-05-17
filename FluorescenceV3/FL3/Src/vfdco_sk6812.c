@@ -136,15 +136,15 @@ void vfdco_clr_minimize_difference(uint8_t *target_arr) {
 }
 
 void vfdco_clr_render() {
-	__disable_irq();
-	if(write_buf_pos != 0 || hdma_tim2_ch1.State != HAL_DMA_STATE_READY) {
+  __disable_irq();
+  if(write_buf_pos != 0 || hdma_tim2_ch1.State != HAL_DMA_STATE_READY) {
     // Ongoing transfer, cancel!
     for(uint8_t i = 0; i < WRITE_BUF_LENGTH; ++i) write_buf[i] = 0;
-		write_buf_pos = 0;
-		HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
-		__enable_irq();
-		return;
-	}
+    write_buf_pos = 0;
+    HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
+    __enable_irq();
+    return;
+  }
   // Ooh boi the first data buffer half (and the second!)
   for(uint_fast8_t i = 0; i < 8; ++i) {
     write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[0] >> _led_dim_factor) << i) & 0x80) > 0);
@@ -159,51 +159,51 @@ void vfdco_clr_render() {
 
   HAL_TIM_PWM_Start_DMA(&htim2, TIM_CHANNEL_1, (uint32_t *)write_buf, WRITE_BUF_LENGTH);
   write_buf_pos = 2; // Since we're ready for the next buffer
-	__enable_irq();
+  __enable_irq();
 }
 
 void HAL_TIM_PWM_PulseFinishedHalfCpltCallback(TIM_HandleTypeDef *htim) {
-	__disable_irq();
-	if(htim->Instance == TIM2) {
-		// DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
-		if(write_buf_pos < CONFIG_NUM_PIXELS) {
-			// We're in. Fill the even buffer
-			for(uint_fast8_t i = 0; i < 8; ++i) {
+  __disable_irq();
+  if(htim->Instance == TIM2) {
+    // DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
+    if(write_buf_pos < CONFIG_NUM_PIXELS) {
+      // We're in. Fill the even buffer
+      for(uint_fast8_t i = 0; i < 8; ++i) {
         write_buf[i     ] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4    ] >> _led_dim_factor) << i) & 0x80) > 0);
         write_buf[i +  8] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 1] >> _led_dim_factor) << i) & 0x80) > 0);
         write_buf[i + 16] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 2] >> _led_dim_factor) << i) & 0x80) > 0);
         write_buf[i + 24] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 3] >> _led_dim_factor) << i) & 0x80) > 0);
-			}
-			write_buf_pos++;
-		} else if (write_buf_pos < CONFIG_NUM_PIXELS + 2) {
-			// Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
-			for(uint8_t i = 0; i < WRITE_BUF_LENGTH / 2; ++i) write_buf[i] = 0;
-			write_buf_pos++;
-		}
-	}
-	__enable_irq();
+      }
+      write_buf_pos++;
+    } else if (write_buf_pos < CONFIG_NUM_PIXELS + 2) {
+      // Last two transfers are resets. 64 * 1.25 us = 80 us = good enough reset
+      for(uint8_t i = 0; i < WRITE_BUF_LENGTH / 2; ++i) write_buf[i] = 0;
+      write_buf_pos++;
+    }
+  }
+  __enable_irq();
 }
 
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) {
-	__disable_irq();
-	if(htim->Instance == TIM2) {
-		// DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
-		if(write_buf_pos < CONFIG_NUM_PIXELS) {
-			// We're in. Fill the odd buffer
+  __disable_irq();
+  if(htim->Instance == TIM2) {
+    // DMA buffer set from LED(write_buf_pos) to LED(write_buf_pos + 1)
+    if(write_buf_pos < CONFIG_NUM_PIXELS) {
+      // We're in. Fill the odd buffer
       for(uint_fast8_t i = 0; i < 8; ++i) {
         write_buf[i + 32] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4    ] >> _led_dim_factor) << i) & 0x80) > 0);
         write_buf[i + 40] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 1] >> _led_dim_factor) << i) & 0x80) > 0);
         write_buf[i + 48] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 2] >> _led_dim_factor) << i) & 0x80) > 0);
         write_buf[i + 56] = SK6812_PWM_DUTY_LO << ((((rgb_arr[write_buf_pos * 4 + 3] >> _led_dim_factor) << i) & 0x80) > 0);
       }
-			write_buf_pos++;
-		} else if (write_buf_pos < CONFIG_NUM_PIXELS + 2) {
+      write_buf_pos++;
+    } else if (write_buf_pos < CONFIG_NUM_PIXELS + 2) {
       for(uint8_t i = WRITE_BUF_LENGTH / 2; i < WRITE_BUF_LENGTH; ++i) write_buf[i] = 0;
       ++write_buf_pos;
-		} else {
-			write_buf_pos = 0;
-			HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
-		}
-	}
-	__enable_irq();
+    } else {
+      write_buf_pos = 0;
+      HAL_TIM_PWM_Stop_DMA(&htim2, TIM_CHANNEL_1);
+    }
+  }
+  __enable_irq();
 }
