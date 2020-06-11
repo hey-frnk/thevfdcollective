@@ -49,6 +49,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 
 I2C_HandleTypeDef hi2c1;
 
@@ -67,6 +68,7 @@ UART_HandleTypeDef huart2;
 uint32_t adc_channel = ADC_CHANNEL_1;
 // Stores ADC readout values for CH1 and CH2
 volatile uint32_t ch1_in = 0, ch2_in = 0;
+uint32_t adc_ch[2];
 
 typedef enum {
   USB_CC_VOLTAGE_OUT_OF_RANGE,
@@ -137,7 +139,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // Start CC read in
-	HAL_ADC_Start_IT(&hadc1);
+  HAL_ADC_Start_DMA(&hadc1, adc_ch, 2);
   HAL_Delay(10);
   USB_CC_VOLTAGE_t cc_status_setup = check_usb_cc((ch1_in > ch2_in) ? ch1_in : ch2_in);
 
@@ -254,16 +256,16 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 2;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.NbrOfDiscConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.DMAContinuousRequests = ENABLE;
   hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc1.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -285,6 +287,14 @@ static void MX_ADC1_Init(void)
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Regular Channel 
+  */
+  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -517,6 +527,9 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA1_CLK_ENABLE();
 
   /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
   /* DMA1_Channel3_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
@@ -618,7 +631,7 @@ static USB_CC_VOLTAGE_t check_usb_cc(uint_fast16_t cc_voltage) {
  * @param hadc 
  */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
-	ADC_ChannelConfTypeDef sConfig;
+	/*ADC_ChannelConfTypeDef sConfig;
 	if(adc_channel == ADC_CHANNEL_10) {
 		ch1_in = HAL_ADC_GetValue(hadc);
 		sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -632,7 +645,9 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc) {
 		HAL_ADC_ConfigChannel(hadc, &sConfig);
 		adc_channel = ADC_CHANNEL_10;
 	}
-	HAL_ADC_Start_IT(hadc);
+	HAL_ADC_Start_IT(hadc);*/
+	ch1_in = adc_ch[0];
+	ch2_in = adc_ch[1];
 }
 
 

@@ -109,7 +109,7 @@ LoopForever:
     b LoopForever
     
 Reboot_Loader:
-	ldr r0, =0x1FFFC400 // Load bootloader address
+	ldr r0, =0x1FFF0000 // Load bootloader address
 	ldr r1, [r0, #0] // Load default stack pointer
 	mov sp, r1 // Set stack pointer to default
 	ldr r0, [r0, #4] // Load bootloader +4
