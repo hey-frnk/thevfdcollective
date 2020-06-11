@@ -1,3 +1,10 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef _VFDCO_UTIL
+#define _VFDCO_UTIL
+
 #include <stdint.h>
 
 /**
@@ -7,3 +14,8 @@
  */
 uint8_t vfdco_util_random(uint8_t bits);
 
+#endif
+
+#ifdef __cplusplus
+}
+#endif

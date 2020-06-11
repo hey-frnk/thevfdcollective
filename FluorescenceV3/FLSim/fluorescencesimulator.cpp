@@ -389,7 +389,7 @@ void FluorescenceSimulator::on_sim_start_clicked()
 
         if(!init_once_flag) {
             clk_div = ui->sim_clk_div->value();
-            vfdco_clock_initializer();
+            vfdco_clock_initializer(0);
             fill_settings_tree();
             fill_com_table();
             init_once_flag = true;

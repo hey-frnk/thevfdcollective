@@ -35,7 +35,7 @@ SOFTWARE.*/
 
 void setup() {
   // Code is run at startup to initialize all clock parameters and drivers
-  vfdco_clock_initializer();
+  vfdco_clock_initializer(0);
 }
 
 void loop() {

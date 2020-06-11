@@ -19,6 +19,7 @@ SOURCES += \
     ../Commons/vfdco_clock_routines.c \
     ../Commons/vfdco_gui.c \
     ../Commons/vfdco_lights.c \
+    ../Commons/vfdco_util.c \
     main.cpp \
     fluorescencesimulator.cpp \
     vfdco_sim_com.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     ../Commons/vfdco_mic.h \
     ../Commons/vfdco_serialization.h \
     ../Commons/vfdco_time.h \
+    ../Commons/vfdco_util.h \
     fluorescencesimulator.h \
     magic_enum.hpp
 
