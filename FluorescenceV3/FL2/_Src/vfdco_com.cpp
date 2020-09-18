@@ -52,12 +52,14 @@ void serialEvent() {
     if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_IDLE) {
       global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_USB_BUSY;
     }
+
+    // Discard the rest
+    uint8_t flushBuffer[Serial.available()];
+    Serial.readBytes(flushBuffer, Serial.available());
+    Serial.flush();
   }
 
-  // Discard the rest
-  uint8_t flushBuffer[Serial.available()];
-  Serial.readBytes(flushBuffer, Serial.available());
-  Serial.flush();
+  
 }
 
 void COM_Handler_BT_Serial_Receive() {
@@ -72,12 +74,11 @@ void COM_Handler_BT_Serial_Receive() {
     TIMSK1 |= (1 << OCIE1A);
 
     if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_IDLE) {
-      global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_USB_BUSY;
+      global_com_data.rx_buffer_data_present = RX_BUFFER_DATA_BT_BUSY;
     }
+    // Discard buffer
+    uint8_t flushBuffer[BTSerial.available()];
+    BTSerial.readBytes(flushBuffer, BTSerial.available());
+    BTSerial.flush();
   }
-
-  // Discard buffer
-  uint8_t flushBuffer[BTSerial.available()];
-  BTSerial.readBytes(flushBuffer, BTSerial.available());
-  BTSerial.flush();
 }

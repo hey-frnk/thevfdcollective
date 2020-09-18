@@ -59,6 +59,7 @@ public:
 
 signals:
     void app_com_connected();
+    void bt_incoming_data();
 
 private slots:
     // Bluetooth Discovery
@@ -80,7 +81,10 @@ private:
     bool is_legacy_protocol, is_bluetooth_communication;
     uint8_t *buf_rx;
     uint8_t *buf_tx;
-    QByteArray *incoming_characteristic;
+
+    QByteArray incoming_characteristic;
+    bool incoming_characteristic_present;
+
     QSerialPort serial_port;
 
     void determine_legacy();

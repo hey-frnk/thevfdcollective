@@ -8,7 +8,7 @@
 
 fl_app_com::fl_app_com() :
     is_bluetooth_communication(true),
-    incoming_characteristic(nullptr),
+    incoming_characteristic_present(false),
     controller(nullptr),
     localDevice(new QBluetoothLocalDevice),
     discoveryAgent(nullptr),
@@ -50,7 +50,7 @@ fl_app_com::fl_app_com() :
 
 fl_app_com::fl_app_com(const QString portname) :
     is_bluetooth_communication(false),
-    incoming_characteristic(nullptr),
+    incoming_characteristic_present(false),
     controller(nullptr),
     localDevice(nullptr),
     discoveryAgent(nullptr),
@@ -419,11 +419,17 @@ void fl_app_com::bt_connect_services_details_discovered(QLowEnergyService::Servi
 }
 
 void fl_app_com::characteristicChanged(QLowEnergyCharacteristic ch, QByteArray arr) {
-    qDebug() << "Incoming: " << arr;
     if(arr.length() > 0) {
-        if(incoming_characteristic) delete incoming_characteristic;
-        incoming_characteristic = new QByteArray(arr);
+        QString _debug_str = "Incoming: [";
+        for(int i = 0; i < arr.length(); ++i) _debug_str += QString("%1 ").arg((uint8_t)arr.at(i), 2, 16, QChar('0')).toUpper();
+        qDebug() << _debug_str + "]";
+
+        incoming_characteristic = QByteArray(arr);
+        incoming_characteristic_present = true;
+
+        emit bt_incoming_data();
     }
+
     Q_UNUSED(ch);
 }
 
@@ -503,6 +509,7 @@ void fl_app_com::regular_transfer()
     buf_tx[0] = 0x24;
     buf_tx[BUF_TX_SIZE - 1] = 0x25;
     if(is_bluetooth_communication) {
+        QThread::msleep(250); // A little wait
         if(currentService->state() == QLowEnergyService::ServiceDiscovered){
             // Send
             currentService->writeCharacteristic(
@@ -518,8 +525,9 @@ void fl_app_com::regular_transfer()
         serial_port.waitForBytesWritten(10);
     }
 
-    for(int i = 0; i < BUF_TX_SIZE; ++i) qDebug() << buf_tx[i];
-    qDebug() << "";
+    QString _debug_str = "[";
+    for(int i = 0; i < BUF_TX_SIZE; ++i) _debug_str += QString("%1 ").arg((uint8_t)buf_tx[i], 2, 16, QChar('0')).toUpper();
+    qDebug() << _debug_str + "]";
 }
 
 void fl_app_com::legacy_transfer()
@@ -528,6 +536,7 @@ void fl_app_com::legacy_transfer()
     buf_tx[BUF_TX_SIZE - 1] = 0x24;
 
     if(is_bluetooth_communication) {
+        QThread::msleep(250); // A little wait
         if(currentService->state() == QLowEnergyService::ServiceDiscovered){
             // Send
             currentService->writeCharacteristic(
@@ -543,21 +552,45 @@ void fl_app_com::legacy_transfer()
         serial_port.waitForBytesWritten(10);
     }
 
-    for(int i = 0; i < BUF_TX_SIZE; ++i) qDebug() << buf_tx[i];
-    qDebug() << "";
+    QString _debug_str = "[";
+    for(int i = 0; i < BUF_TX_SIZE_LEGACY; ++i) _debug_str += QString("%1 ").arg((uint8_t)buf_tx[i], 2, 16, QChar('0')).toUpper();
+    qDebug() << _debug_str + "]";
 }
 
 QString fl_app_com::receive_and_extract_data(int wait_timeout)
 {
     QByteArray byte_arr;
     if(is_bluetooth_communication) {
-        QThread::msleep(500);
-        if(incoming_characteristic) {
-            byte_arr = QByteArray(*incoming_characteristic);
-            incoming_characteristic = nullptr;
+        QTimer timer;
+        timer.setSingleShot(true);
+
+        QEventLoop loop;
+        connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+        connect(this, &fl_app_com::bt_incoming_data, &loop, &QEventLoop::quit);
+        timer.start(3000);  // use miliseconds
+        loop.exec();
+
+        if(timer.isActive()) {
+            timer.stop();
+            if(incoming_characteristic_present){
+                byte_arr = QByteArray(incoming_characteristic);
+                QString _debug_str = "Incoming received in function: [";
+                for(int i = 0; i < byte_arr.length(); ++i) _debug_str += QString("%1 ").arg((uint8_t)byte_arr.at(i), 2, 16, QChar('0')).toUpper();
+                qDebug() << _debug_str + "]";
+            }
+            else {
+                byte_arr = QByteArray("");
+                qDebug() << "Incoming NOT received in function";
+            }
+
+            incoming_characteristic.clear();
+            incoming_characteristic_present = false;
         } else {
             byte_arr = QByteArray("");
-            incoming_characteristic = nullptr;
+            qDebug() << "No incoming timeout: Bluetooth did not respond in time!";
+
+            incoming_characteristic.clear();
+            incoming_characteristic_present = false;
         }
     } else {
         byte_arr = receive_raw(wait_timeout);
