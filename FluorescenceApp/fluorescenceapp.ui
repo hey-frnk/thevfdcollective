@@ -126,10 +126,10 @@ color: rgb(255, 255, 255);</string>
     <widget class="QLabel" name="com_label_connect">
      <property name="geometry">
       <rect>
-       <x>162</x>
-       <y>85</y>
-       <width>71</width>
-       <height>16</height>
+       <x>12</x>
+       <y>87</y>
+       <width>221</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="font">
@@ -143,10 +143,10 @@ color: rgb(255, 255, 255);</string>
       <string notr="true">color: rgb(128, 0, 128)</string>
      </property>
      <property name="text">
-      <string>Connect</string>
+      <string>Click to connect</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>

@@ -1,6 +1,7 @@
 QT       += core gui \
             serialport \
-            widgets
+            widgets \
+            bluetooth
             # uiplugin
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
@@ -51,6 +52,7 @@ SOURCES += \
     fluorescenceapp.cpp \
     src/fl_app_colors.cpp \
     src/fl_app_lights.c \
+    src/fl_app_util.c \
     src/fl_app_time.c
 
 HEADERS += \

@@ -7,6 +7,10 @@
 #include <QObject>
 #include <QtSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+#include <QBluetoothSocket>
+#include <QBluetoothLocalDevice>
+#include <QBluetoothDeviceDiscoveryAgent>
+#include <QLowEnergyController>
 
 #define BUF_RX_SIZE 10
 #define BUF_TX_SIZE_LEGACY 24
@@ -17,10 +21,15 @@ typedef enum {
     FL_APP_COM_STATUS_CONNECTION_FAILED
 } fl_app_status_t;
 
-class fl_app_com
+const QString bt_device_name("FLUORESCENCE");
+
+class fl_app_com : public QObject
 {
+    Q_OBJECT
+
 public:
-    fl_app_com(const QString portname);
+    fl_app_com();                          // Bluetooth constructor
+    fl_app_com(const QString portname);    // UART (USB) constructor
     ~fl_app_com();
 
     void transfer_serial0(uint8_t *clr_arr); // Legacy: No warm white LED
@@ -47,13 +56,34 @@ public:
 
     bool legacy_protocol();
     fl_app_status_t getStatus();
+
+signals:
+    void app_com_connected();
+
+private slots:
+    // Bluetooth Discovery
+    void bt_discovery_finished();
+
+    // Bluetooth device connection & service
+    void bt_connect_device_connected();
+    void bt_connect_device_error(QLowEnergyController::Error /*error*/);
+    void bt_connect_device_disconnected();
+    void bt_connect_services_add(const QBluetoothUuid &serviceUuid);
+    void bt_connect_services_scan_complete();
+    void bt_connect_services_details_discovered(QLowEnergyService::ServiceState);
+
+    // Incoming data
+    void characteristicChanged(QLowEnergyCharacteristic, QByteArray);
 private:
     fl_app_status_t status;
 
-    bool is_legacy_protocol;
+    bool is_legacy_protocol, is_bluetooth_communication;
     uint8_t *buf_rx;
     uint8_t *buf_tx;
+    QByteArray *incoming_characteristic;
     QSerialPort serial_port;
+
+    void determine_legacy();
 
     void clear_buffer(void);
     void set_command_byte(uint8_t value);
@@ -66,6 +96,18 @@ private:
     void legacy_transfer(void);
     QString receive_and_extract_data(int wait_timeout);
     QByteArray receive_raw(int wait_timeout);
+
+    QLowEnergyController *controller;
+    QBluetoothLocalDevice *localDevice;
+    QBluetoothDeviceDiscoveryAgent *discoveryAgent;
+
+    // Keep a record of all devices:
+    QList<QBluetoothDeviceInfo> deviceList;
+    QList<QLowEnergyService *> serviceList;
+
+    QBluetoothDeviceInfo *currentDevice;
+    QLowEnergyService *currentService;
+    QLowEnergyCharacteristic *currentCharacteristic;
 };
 
 #endif // FL_APP_COM_H

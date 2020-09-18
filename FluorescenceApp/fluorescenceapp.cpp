@@ -80,6 +80,7 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
     for(QSerialPortInfo available_ports : QSerialPortInfo::availablePorts()) {
         ui->com_select->addItem(available_ports.portName());
     }
+    ui->com_select->addItem("Bluetooth");
     hide_all_panels();
     ui->panel_welcome->show();
 
@@ -242,6 +243,28 @@ void FluorescenceApp::update(){
     }
 }
 
+void FluorescenceApp::app_com_connected_callback()
+{
+    // Request FW version
+    QString fw_version = global_com_instance->transfer_clock_control(COM_PROTOCOL_FW_VERSION_REQ);
+    if(global_com_instance->legacy_protocol()) {
+        // Set legacy
+        global_is_fw2 = true;
+        ui->lsettings_info_fw->setText(fw_version);
+    } else {
+        // Set regular
+        global_is_fw2 = false;
+        ui->settings_info_fw->setText(fw_version.mid(0, 6));
+        // Additional hardware version
+        QString hw_version = global_com_instance->transfer_clock_control(COM_PROTOCOL_HW_VERSION_REQ);
+        ui->settings_info_hw->setText(hw_version.mid(0, 4));
+    }
+
+    ui->panel_main_control->setEnabled(true);
+    ui->com_label_connect->setText("Click to disconnect");
+    ui->com_connect->setText("◼");
+}
+
 void FluorescenceApp::hide_all_panels() {
     ui->panel_welcome->hide();
     ui->panel_custom_colors->hide();
@@ -254,7 +277,7 @@ void FluorescenceApp::hide_all_panels() {
 
 void FluorescenceApp::on_com_connect_clicked()
 {
-    if(ui->com_label_connect->text() == "Connect") {
+    if(ui->com_label_connect->text() == "Click to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
         // Check for no selection
         if(!QString::compare(ui->com_select->currentText(), "")) {
             error_message("Please select a device from the list", QMessageBox::Critical);
@@ -262,42 +285,39 @@ void FluorescenceApp::on_com_connect_clicked()
         }
 
         // Initialize COM instance & try to connect
-        global_com_instance = new fl_app_com(ui->com_select->currentText());
+        if(ui->com_select->currentText() == "Bluetooth") {
+            global_com_instance = new fl_app_com();
+            QObject::connect(global_com_instance, &fl_app_com::app_com_connected, this, &FluorescenceApp::app_com_connected_callback);
+        }
+        else {
+            global_com_instance = new fl_app_com(ui->com_select->currentText());
+            app_com_connected_callback();
+        }
 
         if(global_com_instance->getStatus() == FL_APP_COM_STATUS_CONNECTION_FAILED) {
             error_message("Oh deer 🦌, seems like we couldn't connect to Fluorescence. Please make sure you have connected Fluorescence correctly and try again!", QMessageBox::Critical);
             return;
         }
-
-        // Request FW version
-        QString fw_version = global_com_instance->transfer_clock_control(COM_PROTOCOL_FW_VERSION_REQ);
-        if(global_com_instance->legacy_protocol()) {
-            // Set legacy
-            global_is_fw2 = true;
-            ui->lsettings_info_fw->setText(fw_version);
-        } else {
-            // Set regular
-            global_is_fw2 = false;
-            ui->settings_info_fw->setText(fw_version.mid(0, 6));
-            // Additional hardware version
-            QString hw_version = global_com_instance->transfer_clock_control(COM_PROTOCOL_HW_VERSION_REQ);
-            ui->settings_info_hw->setText(hw_version.mid(0, 4));
-        }
-
-        ui->panel_main_control->setEnabled(true);
-        ui->com_label_connect->setText("Disconnect");
-        ui->com_connect->setText("◼");
-    } else if(ui->com_label_connect->text() == "Disconnect") {
+    } else if(ui->com_label_connect->text() == "Click to disconnect") {
         delete global_com_instance;
         global_com_instance = nullptr;
 
         ui->com_select->setCurrentIndex(0); // Empty
-        ui->com_label_connect->setText("Connect");
+        ui->com_label_connect->setText("Click to connect");
         ui->com_connect->setText("►");
         ui->panel_main_control->setEnabled(false);
 
         hide_all_panels();
         ui->panel_welcome->show();
+    }
+}
+
+void FluorescenceApp::on_com_select_currentTextChanged(const QString &arg1)
+{
+    if(arg1.compare("Bluetooth") == 0) {
+        ui->com_label_connect->setText("Click to find Fluorescence and pair");
+    } else {
+        ui->com_label_connect->setText("Click to connect");
     }
 }
 

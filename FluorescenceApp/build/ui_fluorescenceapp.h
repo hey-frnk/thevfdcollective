@@ -353,10 +353,10 @@ public:
         com_text->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         com_label_connect = new QLabel(com_group);
         com_label_connect->setObjectName(QString::fromUtf8("com_label_connect"));
-        com_label_connect->setGeometry(QRect(162, 85, 71, 16));
+        com_label_connect->setGeometry(QRect(12, 87, 221, 20));
         com_label_connect->setFont(font1);
         com_label_connect->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128)"));
-        com_label_connect->setAlignment(Qt::AlignCenter);
+        com_label_connect->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         panel_welcome = new QWidget(centralwidget);
         panel_welcome->setObjectName(QString::fromUtf8("panel_welcome"));
         panel_welcome->setEnabled(true);
@@ -1836,7 +1836,7 @@ public:
         com_group->setTitle(QCoreApplication::translate("FluorescenceApp", "Connect to Fluorescence", nullptr));
         com_connect->setText(QString());
         com_text->setText(QCoreApplication::translate("FluorescenceApp", "Where's Fluorescence?", nullptr));
-        com_label_connect->setText(QCoreApplication::translate("FluorescenceApp", "Connect", nullptr));
+        com_label_connect->setText(QCoreApplication::translate("FluorescenceApp", "Click to connect", nullptr));
         welcome_click2begin->setText(QCoreApplication::translate("FluorescenceApp", "READY", nullptr));
         welcome_text->setText(QCoreApplication::translate("FluorescenceApp", "to connect. use the controls above to connect fluorescence & get started", nullptr));
         static_intro->setText(QCoreApplication::translate("FluorescenceApp", "Some hand crafted presets that look fantastic on Fluorescence.", nullptr));

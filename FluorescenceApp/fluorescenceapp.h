@@ -23,6 +23,9 @@ public:
     ~FluorescenceApp();
     void update();
 
+public slots:
+    void app_com_connected_callback();
+
 private slots:
 
     void on_com_connect_clicked();
@@ -172,6 +175,8 @@ private slots:
     void on_dynamic_music_clicked();
 
     void on_settings_info_update_clicked();
+
+    void on_com_select_currentTextChanged(const QString &arg1);
 
 public:
     Ui::FluorescenceApp *ui;

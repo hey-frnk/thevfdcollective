@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = /Library/Developer/CommandLineTools/usr/bin/clang
 CXX           = /Library/Developer/CommandLineTools/usr/bin/clang++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SERIALPORT_LIB -DQT_BLUETOOTH_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.13 -Wall -Wextra -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.13 -Wall -Wextra -fPIC $(DEFINES)
-INCPATH       = -I../../FluorescenceApp -I. -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -F/Applications/Qt/5.14.1/clang_64/lib
+INCPATH       = -I../../FluorescenceApp -I. -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I. -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -F/Applications/Qt/5.14.1/clang_64/lib
 QMAKE         = /Applications/Qt/5.14.1/clang_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = FluorescenceApp1.0.0
 DISTDIR = /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/.tmp/FluorescenceApp1.0.0
 LINK          = /Library/Developer/CommandLineTools/usr/bin/clang++
 LFLAGS        = -stdlib=libc++ -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -Wl,-syslibroot,/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.13 -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/Applications/Qt/5.14.1/clang_64/lib
-LIBS          = $(SUBLIBS) -F/Applications/Qt/5.14.1/clang_64/lib -framework QtWidgets -framework QtGui -framework AppKit -framework Metal -framework QtSerialPort -framework QtCore -framework DiskArbitration -framework IOKit -framework OpenGL -framework AGL   
+LIBS          = $(SUBLIBS) -F/Applications/Qt/5.14.1/clang_64/lib -framework QtWidgets -framework QtGui -framework AppKit -framework Metal -framework QtSerialPort -framework QtBluetooth -framework QtCore -framework DiskArbitration -framework IOKit -framework OpenGL -framework AGL   
 AR            = /Library/Developer/CommandLineTools/usr/bin/ar cq
 RANLIB        = /Library/Developer/CommandLineTools/usr/bin/ranlib -s
 SED           = sed
@@ -78,6 +78,7 @@ SOURCES       = ../QtColorWidgets/abstract_widget_list.cpp \
 		../fluorescenceapp.cpp \
 		../src/fl_app_colors.cpp \
 		../src/fl_app_lights.c \
+		../src/fl_app_util.c \
 		../src/fl_app_time.c qrc_color_widgets.cpp \
 		qrc_qmake_qmake_immediate.cpp \
 		moc_abstract_widget_list.cpp \
@@ -98,6 +99,7 @@ SOURCES       = ../QtColorWidgets/abstract_widget_list.cpp \
 		moc_hue_slider.cpp \
 		moc_swatch.cpp \
 		moc_clickablelabel.cpp \
+		moc_fl_app_com.cpp \
 		moc_fluorescenceapp.cpp \
 		moc_fwupdatestm.cpp
 OBJECTS       = abstract_widget_list.o \
@@ -126,6 +128,7 @@ OBJECTS       = abstract_widget_list.o \
 		fluorescenceapp.o \
 		fl_app_colors.o \
 		fl_app_lights.o \
+		fl_app_util.o \
 		fl_app_time.o \
 		qrc_color_widgets.o \
 		qrc_qmake_qmake_immediate.o \
@@ -147,6 +150,7 @@ OBJECTS       = abstract_widget_list.o \
 		moc_hue_slider.o \
 		moc_swatch.o \
 		moc_clickablelabel.o \
+		moc_fl_app_com.o \
 		moc_fluorescenceapp.o \
 		moc_fwupdatestm.o
 DIST          = /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf \
@@ -398,6 +402,7 @@ DIST          = /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf \
 		../fluorescenceapp.cpp \
 		../src/fl_app_colors.cpp \
 		../src/fl_app_lights.c \
+		../src/fl_app_util.c \
 		../src/fl_app_time.c
 QMAKE_TARGET  = FluorescenceApp
 DESTDIR       = 
@@ -608,6 +613,7 @@ Makefile: ../FluorescenceApp.pro /Applications/Qt/5.14.1/clang_64/mkspecs/macx-c
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Resources/QtWidgets.prl \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Resources/QtGui.prl \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Resources/QtSerialPort.prl \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Resources/QtBluetooth.prl \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Resources/QtCore.prl
 	$(QMAKE) -o Makefile ../FluorescenceApp.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug
 /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf:
@@ -797,6 +803,7 @@ qmake_qmake_immediate.qrc:
 /Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Resources/QtWidgets.prl:
 /Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Resources/QtGui.prl:
 /Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Resources/QtSerialPort.prl:
+/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Resources/QtBluetooth.prl:
 /Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Resources/QtCore.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../FluorescenceApp.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug
@@ -830,7 +837,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../QtColorWidgets/color_widgets.qrc qmake_qmake_immediate.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h ../../FluorescenceV3/Commons/vfdco_config.h ../QtColorWidgets/AbstractWidgetList ../QtColorWidgets/BoundColorSelector ../QtColorWidgets/ColorDelegate ../QtColorWidgets/ColorDialog ../QtColorWidgets/ColorListWidget ../QtColorWidgets/ColorPreview ../QtColorWidgets/ColorSelector ../QtColorWidgets/ColorWheel ../QtColorWidgets/GradientEditor ../QtColorWidgets/GradientSlider ../QtColorWidgets/HueSlider ../QtColorWidgets/abstract_widget_list.hpp ../QtColorWidgets/bound_color_selector.hpp ../QtColorWidgets/color_2d_slider.hpp ../QtColorWidgets/color_delegate.hpp ../QtColorWidgets/color_dialog.hpp ../QtColorWidgets/color_line_edit.hpp ../QtColorWidgets/color_list_widget.hpp ../QtColorWidgets/color_names.hpp ../QtColorWidgets/color_palette.hpp ../QtColorWidgets/color_palette_model.hpp ../QtColorWidgets/color_palette_widget.hpp ../QtColorWidgets/color_preview.hpp ../QtColorWidgets/color_selector.hpp ../QtColorWidgets/color_utils.hpp ../QtColorWidgets/color_wheel.hpp ../QtColorWidgets/colorwidgets_global.hpp ../QtColorWidgets/gradient_editor.hpp ../QtColorWidgets/gradient_helper.hpp ../QtColorWidgets/gradient_slider.hpp ../QtColorWidgets/hue_slider.hpp ../QtColorWidgets/swatch.hpp ../QtColorWidgets/ui_color_dialog.h ../QtColorWidgets/ui_color_palette_widget.h ../clickablelabel.h ../fl_app_com.h ../fluorescenceapp.h ../fwupdatestm.h ../src/fl_app_colors.h ../src/fl_app_lights.h ../src/fl_app_time.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtColorWidgets/abstract_widget_list.cpp ../QtColorWidgets/bound_color_selector.cpp ../QtColorWidgets/color_2d_slider.cpp ../QtColorWidgets/color_delegate.cpp ../QtColorWidgets/color_dialog.cpp ../QtColorWidgets/color_line_edit.cpp ../QtColorWidgets/color_list_widget.cpp ../QtColorWidgets/color_names.cpp ../QtColorWidgets/color_palette.cpp ../QtColorWidgets/color_palette_model.cpp ../QtColorWidgets/color_palette_widget.cpp ../QtColorWidgets/color_preview.cpp ../QtColorWidgets/color_selector.cpp ../QtColorWidgets/color_utils.cpp ../QtColorWidgets/color_wheel.cpp ../QtColorWidgets/gradient_editor.cpp ../QtColorWidgets/gradient_slider.cpp ../QtColorWidgets/hue_slider.cpp ../QtColorWidgets/swatch.cpp ../clickablelabel.cpp ../fl_app_com.cpp ../fwupdatestm.cpp ../main.cpp ../fluorescenceapp.cpp ../src/fl_app_colors.cpp ../src/fl_app_lights.c ../src/fl_app_time.c $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtColorWidgets/abstract_widget_list.cpp ../QtColorWidgets/bound_color_selector.cpp ../QtColorWidgets/color_2d_slider.cpp ../QtColorWidgets/color_delegate.cpp ../QtColorWidgets/color_dialog.cpp ../QtColorWidgets/color_line_edit.cpp ../QtColorWidgets/color_list_widget.cpp ../QtColorWidgets/color_names.cpp ../QtColorWidgets/color_palette.cpp ../QtColorWidgets/color_palette_model.cpp ../QtColorWidgets/color_palette_widget.cpp ../QtColorWidgets/color_preview.cpp ../QtColorWidgets/color_selector.cpp ../QtColorWidgets/color_utils.cpp ../QtColorWidgets/color_wheel.cpp ../QtColorWidgets/gradient_editor.cpp ../QtColorWidgets/gradient_slider.cpp ../QtColorWidgets/hue_slider.cpp ../QtColorWidgets/swatch.cpp ../clickablelabel.cpp ../fl_app_com.cpp ../fwupdatestm.cpp ../main.cpp ../fluorescenceapp.cpp ../src/fl_app_colors.cpp ../src/fl_app_lights.c ../src/fl_app_util.c ../src/fl_app_time.c $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtColorWidgets/color_dialog.ui ../QtColorWidgets/color_palette_widget.ui ../fluorescenceapp.ui ../fwupdatestm.ui $(DISTDIR)/
 	$(COPY_FILE) --parents FluorescenceApp_en_US.ts $(DISTDIR)/
 
@@ -888,9 +895,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp
 	/Library/Developer/CommandLineTools/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.13 -Wall -Wextra -dM -E -o moc_predefs.h /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_abstract_widget_list.cpp moc_bound_color_selector.cpp moc_color_2d_slider.cpp moc_color_delegate.cpp moc_color_dialog.cpp moc_color_line_edit.cpp moc_color_list_widget.cpp moc_color_palette.cpp moc_color_palette_model.cpp moc_color_palette_widget.cpp moc_color_preview.cpp moc_color_selector.cpp moc_color_wheel.cpp moc_gradient_editor.cpp moc_gradient_slider.cpp moc_hue_slider.cpp moc_swatch.cpp moc_clickablelabel.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp
+compiler_moc_header_make_all: moc_abstract_widget_list.cpp moc_bound_color_selector.cpp moc_color_2d_slider.cpp moc_color_delegate.cpp moc_color_dialog.cpp moc_color_line_edit.cpp moc_color_list_widget.cpp moc_color_palette.cpp moc_color_palette_model.cpp moc_color_palette_widget.cpp moc_color_preview.cpp moc_color_selector.cpp moc_color_wheel.cpp moc_gradient_editor.cpp moc_gradient_slider.cpp moc_hue_slider.cpp moc_swatch.cpp moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_abstract_widget_list.cpp moc_bound_color_selector.cpp moc_color_2d_slider.cpp moc_color_delegate.cpp moc_color_dialog.cpp moc_color_line_edit.cpp moc_color_list_widget.cpp moc_color_palette.cpp moc_color_palette_model.cpp moc_color_palette_widget.cpp moc_color_preview.cpp moc_color_selector.cpp moc_color_wheel.cpp moc_gradient_editor.cpp moc_gradient_slider.cpp moc_hue_slider.cpp moc_swatch.cpp moc_clickablelabel.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp
+	-$(DEL_FILE) moc_abstract_widget_list.cpp moc_bound_color_selector.cpp moc_color_2d_slider.cpp moc_color_delegate.cpp moc_color_dialog.cpp moc_color_line_edit.cpp moc_color_list_widget.cpp moc_color_palette.cpp moc_color_palette_model.cpp moc_color_palette_widget.cpp moc_color_preview.cpp moc_color_selector.cpp moc_color_wheel.cpp moc_gradient_editor.cpp moc_gradient_slider.cpp moc_hue_slider.cpp moc_swatch.cpp moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp
 moc_abstract_widget_list.cpp: ../QtColorWidgets/abstract_widget_list.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QSignalMapper \
@@ -899,7 +906,7 @@ moc_abstract_widget_list.cpp: ../QtColorWidgets/abstract_widget_list.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/abstract_widget_list.hpp -o moc_abstract_widget_list.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/abstract_widget_list.hpp -o moc_abstract_widget_list.cpp
 
 moc_bound_color_selector.cpp: ../QtColorWidgets/bound_color_selector.hpp \
 		../QtColorWidgets/color_selector.hpp \
@@ -910,7 +917,7 @@ moc_bound_color_selector.cpp: ../QtColorWidgets/bound_color_selector.hpp \
 		../QtColorWidgets/color_wheel.hpp \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/bound_color_selector.hpp -o moc_bound_color_selector.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/bound_color_selector.hpp -o moc_bound_color_selector.cpp
 
 moc_color_2d_slider.cpp: ../QtColorWidgets/color_2d_slider.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -918,7 +925,7 @@ moc_color_2d_slider.cpp: ../QtColorWidgets/color_2d_slider.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_2d_slider.hpp -o moc_color_2d_slider.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_2d_slider.hpp -o moc_color_2d_slider.cpp
 
 moc_color_delegate.cpp: ../QtColorWidgets/color_delegate.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -926,7 +933,7 @@ moc_color_delegate.cpp: ../QtColorWidgets/color_delegate.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qabstractitemdelegate.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_delegate.hpp -o moc_color_delegate.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_delegate.hpp -o moc_color_delegate.cpp
 
 moc_color_dialog.cpp: ../QtColorWidgets/color_dialog.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -938,7 +945,7 @@ moc_color_dialog.cpp: ../QtColorWidgets/color_dialog.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_dialog.hpp -o moc_color_dialog.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_dialog.hpp -o moc_color_dialog.cpp
 
 moc_color_line_edit.cpp: ../QtColorWidgets/color_line_edit.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -948,7 +955,7 @@ moc_color_line_edit.cpp: ../QtColorWidgets/color_line_edit.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_line_edit.hpp -o moc_color_line_edit.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_line_edit.hpp -o moc_color_line_edit.cpp
 
 moc_color_list_widget.cpp: ../QtColorWidgets/color_list_widget.hpp \
 		../QtColorWidgets/abstract_widget_list.hpp \
@@ -962,7 +969,7 @@ moc_color_list_widget.cpp: ../QtColorWidgets/color_list_widget.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_list_widget.hpp -o moc_color_list_widget.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_list_widget.hpp -o moc_color_list_widget.cpp
 
 moc_color_palette.cpp: ../QtColorWidgets/color_palette.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
@@ -980,7 +987,7 @@ moc_color_palette.cpp: ../QtColorWidgets/color_palette.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette.hpp -o moc_color_palette.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette.hpp -o moc_color_palette.cpp
 
 moc_color_palette_model.cpp: ../QtColorWidgets/color_palette_model.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QAbstractListModel \
@@ -1001,7 +1008,7 @@ moc_color_palette_model.cpp: ../QtColorWidgets/color_palette_model.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette_model.hpp -o moc_color_palette_model.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette_model.hpp -o moc_color_palette_model.cpp
 
 moc_color_palette_widget.cpp: ../QtColorWidgets/color_palette_widget.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
@@ -1028,7 +1035,7 @@ moc_color_palette_widget.cpp: ../QtColorWidgets/color_palette_widget.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette_widget.hpp -o moc_color_palette_widget.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette_widget.hpp -o moc_color_palette_widget.cpp
 
 moc_color_preview.cpp: ../QtColorWidgets/color_preview.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1036,7 +1043,7 @@ moc_color_preview.cpp: ../QtColorWidgets/color_preview.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_preview.hpp -o moc_color_preview.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_preview.hpp -o moc_color_preview.cpp
 
 moc_color_selector.cpp: ../QtColorWidgets/color_selector.hpp \
 		../QtColorWidgets/color_preview.hpp \
@@ -1046,7 +1053,7 @@ moc_color_selector.cpp: ../QtColorWidgets/color_selector.hpp \
 		../QtColorWidgets/color_wheel.hpp \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_selector.hpp -o moc_color_selector.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_selector.hpp -o moc_color_selector.cpp
 
 moc_color_wheel.cpp: ../QtColorWidgets/color_wheel.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1054,7 +1061,7 @@ moc_color_wheel.cpp: ../QtColorWidgets/color_wheel.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_wheel.hpp -o moc_color_wheel.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_wheel.hpp -o moc_color_wheel.cpp
 
 moc_gradient_editor.cpp: ../QtColorWidgets/gradient_editor.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1064,7 +1071,7 @@ moc_gradient_editor.cpp: ../QtColorWidgets/gradient_editor.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/gradient_editor.hpp -o moc_gradient_editor.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/gradient_editor.hpp -o moc_gradient_editor.cpp
 
 moc_gradient_slider.cpp: ../QtColorWidgets/gradient_slider.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1074,7 +1081,7 @@ moc_gradient_slider.cpp: ../QtColorWidgets/gradient_slider.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/gradient_slider.hpp -o moc_gradient_slider.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/gradient_slider.hpp -o moc_gradient_slider.cpp
 
 moc_hue_slider.cpp: ../QtColorWidgets/hue_slider.hpp \
 		../QtColorWidgets/gradient_slider.hpp \
@@ -1085,7 +1092,7 @@ moc_hue_slider.cpp: ../QtColorWidgets/hue_slider.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/hue_slider.hpp -o moc_hue_slider.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/hue_slider.hpp -o moc_hue_slider.cpp
 
 moc_swatch.cpp: ../QtColorWidgets/swatch.hpp \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
@@ -1108,7 +1115,7 @@ moc_swatch.cpp: ../QtColorWidgets/swatch.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/swatch.hpp -o moc_swatch.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/swatch.hpp -o moc_swatch.cpp
 
 moc_clickablelabel.cpp: ../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
@@ -1119,7 +1126,29 @@ moc_clickablelabel.cpp: ../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../clickablelabel.h -o moc_clickablelabel.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../clickablelabel.h -o moc_clickablelabel.cpp
+
+moc_fl_app_com.cpp: ../fl_app_com.h \
+		../src/fl_app_time.h \
+		../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/QtSerialPort \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportglobal.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothSocket \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothsocket.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothLocalDevice \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothlocaldevice.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothDeviceDiscoveryAgent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
+		moc_predefs.h \
+		/Applications/Qt/5.14.1/clang_64/bin/moc
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fl_app_com.h -o moc_fl_app_com.cpp
 
 moc_fluorescenceapp.cpp: ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
@@ -1136,18 +1165,29 @@ moc_fluorescenceapp.cpp: ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothSocket \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothsocket.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothLocalDevice \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothlocaldevice.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothDeviceDiscoveryAgent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
+		../../FluorescenceV3/Commons/vfdco_util.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fluorescenceapp.h -o moc_fluorescenceapp.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fluorescenceapp.h -o moc_fluorescenceapp.cpp
 
 moc_fwupdatestm.cpp: ../fwupdatestm.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fwupdatestm.h -o moc_fwupdatestm.cpp
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fwupdatestm.h -o moc_fwupdatestm.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1660,10 +1700,19 @@ fl_app_com.o: ../fl_app_com.cpp ../fl_app_com.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothSocket \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothsocket.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothLocalDevice \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothlocaldevice.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothDeviceDiscoveryAgent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
+		../../FluorescenceV3/Commons/vfdco_util.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QTranslator \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qtranslator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fl_app_com.o ../fl_app_com.cpp
@@ -1683,8 +1732,19 @@ fwupdatestm.o: ../fwupdatestm.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothSocket \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothsocket.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothLocalDevice \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothlocaldevice.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothDeviceDiscoveryAgent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
+		../../FluorescenceV3/Commons/vfdco_util.h \
 		ui_fluorescenceapp.h \
 		../QtColorWidgets/color_line_edit.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1732,8 +1792,19 @@ main.o: ../main.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothSocket \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothsocket.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothLocalDevice \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothlocaldevice.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothDeviceDiscoveryAgent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
+		../../FluorescenceV3/Commons/vfdco_util.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
@@ -1753,8 +1824,19 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothSocket \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothsocket.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothLocalDevice \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothlocaldevice.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothDeviceDiscoveryAgent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
+		../../FluorescenceV3/Commons/vfdco_util.h \
 		ui_fluorescenceapp.h \
 		../QtColorWidgets/color_line_edit.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1791,6 +1873,8 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fluorescenceapp.o ../fluorescenceapp.cpp
 
 fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
 		../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -1806,7 +1890,16 @@ fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialport.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qserialportinfo.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers/qtserialportversion.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothSocket \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothsocket.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothLocalDevice \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothlocaldevice.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QBluetoothDeviceDiscoveryAgent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
+		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
 		../src/fl_app_lights.h \
+		../../FluorescenceV3/Commons/vfdco_util.h \
 		ui_fluorescenceapp.h \
 		../QtColorWidgets/color_line_edit.hpp \
 		../QtColorWidgets/colorwidgets_global.hpp \
@@ -1833,8 +1926,14 @@ fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
 
 fl_app_lights.o: ../src/fl_app_lights.c ../src/fl_app_lights.h \
 		../src/fl_app_time.h \
-		../src/fl_app_colors.h
+		../src/fl_app_colors.h \
+		../../FluorescenceV3/Commons/vfdco_config.h \
+		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
+		../../FluorescenceV3/Commons/vfdco_util.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o fl_app_lights.o ../src/fl_app_lights.c
+
+fl_app_util.o: ../src/fl_app_util.c ../../FluorescenceV3/Commons/vfdco_util.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o fl_app_util.o ../src/fl_app_util.c
 
 fl_app_time.o: ../src/fl_app_time.c ../src/fl_app_time.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o fl_app_time.o ../src/fl_app_time.c
@@ -1898,6 +1997,9 @@ moc_swatch.o: moc_swatch.cpp
 
 moc_clickablelabel.o: moc_clickablelabel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_clickablelabel.o moc_clickablelabel.cpp
+
+moc_fl_app_com.o: moc_fl_app_com.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_fl_app_com.o moc_fl_app_com.cpp
 
 moc_fluorescenceapp.o: moc_fluorescenceapp.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_fluorescenceapp.o moc_fluorescenceapp.cpp
