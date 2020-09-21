@@ -1,6 +1,6 @@
 [PreviousGenFiles]
 HeaderPath=/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceV3/FL3/Inc
-HeaderFiles=usb_device.h;usbd_conf.h;usbd_desc.h;usbd_cdc_if.h;stm32l4xx_it.h;stm32l4xx_hal_conf.h;main.h;
+HeaderFiles=usb_device.h;usbd_conf.h;usbd_desc.h;usbd_cdc_if.h;stm32l4xx_it.h;stm32l4xx_hal_conf.h;main.h;stm32_assert.h;
 SourcePath=/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceV3/FL3/Src
 SourceFiles=usb_device.c;usbd_conf.c;usbd_desc.c;usbd_cdc_if.c;stm32l4xx_it.c;stm32l4xx_hal_msp.c;main.c;
 
