@@ -259,7 +259,7 @@ color: rgb(255, 255, 255);</string>
       </font>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -2692,7 +2692,7 @@ screen.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>120</y>
          <width>71</width>
          <height>20</height>
@@ -2718,7 +2718,7 @@ screen.</string>
       <widget class="QCheckBox" name="shuffle_en_music">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>240</y>
          <width>141</width>
          <height>20</height>
@@ -2741,7 +2741,7 @@ screen.</string>
       <widget class="QCheckBox" name="shuffle_en_cop">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>260</y>
          <width>141</width>
          <height>20</height>
@@ -2764,7 +2764,7 @@ screen.</string>
       <widget class="QCheckBox" name="shuffle_en_chase">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>200</y>
          <width>141</width>
          <height>20</height>
@@ -2790,7 +2790,7 @@ screen.</string>
       <widget class="QCheckBox" name="shuffle_en_spectrum">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>160</y>
          <width>121</width>
          <height>20</height>
@@ -2816,7 +2816,7 @@ screen.</string>
       <widget class="QCheckBox" name="shuffle_en_rnb">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>180</y>
          <width>121</width>
          <height>20</height>
@@ -2842,7 +2842,7 @@ screen.</string>
       <widget class="QCheckBox" name="shuffle_en_bliss">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>140</y>
          <width>141</width>
          <height>20</height>
@@ -2868,7 +2868,7 @@ screen.</string>
       <widget class="QCheckBox" name="shuffle_en_tcode">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>220</y>
          <width>141</width>
          <height>20</height>
@@ -2894,7 +2894,7 @@ screen.</string>
       <widget class="QComboBox" name="shuffle_speed">
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>340</x>
          <y>140</y>
          <width>281</width>
          <height>51</height>
@@ -2940,7 +2940,7 @@ screen.</string>
       <widget class="QPushButton" name="shuffle_set">
        <property name="geometry">
         <rect>
-         <x>370</x>
+         <x>340</x>
          <y>210</y>
          <width>281</width>
          <height>61</height>
@@ -2965,7 +2965,7 @@ color: rgb(255, 255, 255);</string>
       <widget class="QLabel" name="shuffle_intro1">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>30</y>
          <width>291</width>
          <height>31</height>
@@ -2989,7 +2989,7 @@ color: rgb(255, 255, 255);</string>
       <widget class="QLabel" name="shuffle_intro2">
        <property name="geometry">
         <rect>
-         <x>300</x>
+         <x>350</x>
          <y>110</y>
          <width>351</width>
          <height>31</height>
@@ -3013,9 +3013,9 @@ color: rgb(255, 255, 255);</string>
       <widget class="QLabel" name="shuffle_intro3">
        <property name="geometry">
         <rect>
-         <x>90</x>
+         <x>60</x>
          <y>60</y>
-         <width>191</width>
+         <width>551</width>
          <height>51</height>
         </rect>
        </property>
@@ -3030,9 +3030,8 @@ color: rgb(255, 255, 255);</string>
         <string notr="true">color: rgb(128, 0, 128);</string>
        </property>
        <property name="text">
-        <string>Not a problem! Shuffle to let 
-Fluorescence pick 
-a pattern randomly out of:</string>
+        <string>Not a problem! Shuffle to let Fluorescence pick a pattern,
+randomly out of:</string>
        </property>
       </widget>
      </widget>
@@ -5942,10 +5941,10 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_message</zorder>
    <zorder>panel_custom_colors</zorder>
    <zorder>panel_lsettings</zorder>
-   <zorder>panel_timesync</zorder>
    <zorder>panel_welcome</zorder>
    <zorder>panel_settings</zorder>
    <zorder>panel_presets</zorder>
+   <zorder>panel_timesync</zorder>
   </widget>
  </widget>
  <customwidgets>

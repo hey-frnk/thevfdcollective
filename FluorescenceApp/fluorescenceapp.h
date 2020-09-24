@@ -25,6 +25,7 @@ public:
 
 public slots:
     void app_com_connected_callback();
+    void app_com_status_callback(QString status);
 
 private slots:
 

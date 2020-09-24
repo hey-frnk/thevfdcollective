@@ -22,6 +22,7 @@ fl_app_com::fl_app_com() :
     if (localDevice->isValid()) {
 
         qDebug() << "Bluetooth is available on this device";
+        emit bt_status_changed("Bluetooth available");
 
         //Turn BT on, make it visible to others
         localDevice->powerOn();
@@ -39,10 +40,12 @@ fl_app_com::fl_app_com() :
         discoveryAgent->setLowEnergyDiscoveryTimeout(5000);
         discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
         qDebug() << "Device discover started";
+        emit bt_status_changed("Looking for Fluorescence...");
     }
     else
     {
         qDebug() << "Bluetooth is not available on this device";
+        emit bt_status_changed("Click to find Fluorescence and pair");
     }
 
     // Callback will determine legacy
@@ -285,7 +288,6 @@ fl_app_status_t fl_app_com::getStatus()
 
 void fl_app_com::bt_discovery_finished() {
     qDebug() << "Device discovery finished";
-
     const QList<QBluetoothDeviceInfo> foundDevices = discoveryAgent->discoveredDevices();
     for (auto nextDevice : foundDevices) {
         if (nextDevice.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) {
@@ -293,12 +295,15 @@ void fl_app_com::bt_discovery_finished() {
             if(!nextDevice.name().isEmpty()) deviceList.append(nextDevice);
             if(nextDevice.name().compare(bt_device_name) == 0) {
                 qDebug() << "Fluorescence Found!";
+                emit bt_status_changed("Fluorescence Found...");
                 break;
             }
         }
     }
     if(deviceList.isEmpty()) {
         qDebug() << "No device matching Fluorescence!";
+        emit bt_status_changed("Error connecting to Fluorescence: Make sure Fluorescence is within reach, and try again!");
+        emit bt_status_changed("Click to find Fluorescence and pair");
         return;
     }
 
@@ -311,7 +316,10 @@ void fl_app_com::bt_discovery_finished() {
         int vec_idx = selectedDeviceIterator - deviceList.begin();
         auto selectedDevice = new QBluetoothDeviceInfo(deviceList.at(vec_idx));
 
-        if(!selectedDevice->isValid()) qDebug() << "Device is not valid!!";
+        if(!selectedDevice->isValid()) {
+            qDebug() << "Device is not valid!";
+            emit bt_status_changed("Error connecting to Fluorescence: Device is not valid!");
+        }
 
         if(controller) delete controller;
         controller = nullptr;
@@ -354,6 +362,7 @@ void fl_app_com::bt_connect_services_add(const QBluetoothUuid &serviceUuid) {
     QLowEnergyService *service = controller->createServiceObject(serviceUuid);
     if(!service) {
         qWarning() << "Cannot create service for uuid";
+        emit bt_status_changed("Error connecting to Fluorescence: We have connected to Fluorescence, but could not establish a connection to its Bluetooth service. Please try again.");
         return;
     }
     serviceList.append(service);
@@ -363,6 +372,7 @@ void fl_app_com::bt_connect_services_add(const QBluetoothUuid &serviceUuid) {
 void fl_app_com::bt_connect_services_scan_complete() {
     if(serviceList.isEmpty()) return;
     qDebug() << "Service scan done. Listing services found (" << serviceList.size() << "): ";
+    emit bt_status_changed("Connecting to Fluorescence...");
 
     QLowEnergyService *service = serviceList.first();
 
@@ -398,7 +408,10 @@ void fl_app_com::bt_connect_services_details_discovered(QLowEnergyService::Servi
 
     // Setup Notification: Descriptor
     QLowEnergyDescriptor notification = link->descriptor(QBluetoothUuid::ClientCharacteristicConfiguration);
-    if (!notification.isValid()) qDebug() << "The notification descriptor is invalid";
+    if (!notification.isValid()) {
+        qDebug() << "The notification descriptor is invalid";
+        emit bt_status_changed("Invalid device");
+    }
     currentService->writeDescriptor(notification, QByteArray::fromHex("0x1"));
 
     // Connect notification
@@ -414,6 +427,7 @@ void fl_app_com::bt_connect_services_details_discovered(QLowEnergyService::Servi
     // Try if port is legacy
     buf_tx = new uint8_t[BUF_TX_SIZE_LEGACY];
 
+    emit bt_status_changed("Connected. Reading device data...");
     determine_legacy();
     emit app_com_connected();
 }

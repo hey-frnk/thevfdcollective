@@ -265,6 +265,13 @@ void FluorescenceApp::app_com_connected_callback()
     ui->com_connect->setText("◼");
 }
 
+void FluorescenceApp::app_com_status_callback(QString status) {
+    if(status.contains(QStringLiteral("Error connecting to Fluorescence"))) {
+        error_message(status, QMessageBox::Icon::Critical);
+    }
+    ui->com_label_connect->setText(status);
+}
+
 void FluorescenceApp::hide_all_panels() {
     ui->panel_welcome->hide();
     ui->panel_custom_colors->hide();
@@ -287,7 +294,8 @@ void FluorescenceApp::on_com_connect_clicked()
         // Initialize COM instance & try to connect
         if(ui->com_select->currentText() == "Bluetooth") {
             global_com_instance = new fl_app_com();
-            QObject::connect(global_com_instance, &fl_app_com::app_com_connected, this, &FluorescenceApp::app_com_connected_callback);
+            QObject::connect(global_com_instance, &fl_app_com::app_com_connected, this, &FluorescenceApp::app_com_connected_callback);        
+            QObject::connect(global_com_instance, &fl_app_com::bt_status_changed, this, &FluorescenceApp::app_com_status_callback);
         }
         else {
             global_com_instance = new fl_app_com(ui->com_select->currentText());
@@ -729,7 +737,8 @@ void FluorescenceApp::on_timesync_button_clicked()
         .m = (uint8_t)cd.month(),
         .d = (uint8_t)cd.day()
     };
-    global_com_instance->transfer_time_date(v_time, v_date);
+    QString resp = global_com_instance->transfer_time_date(v_time, v_date);
+    if(resp.contains(QStringLiteral("Time Sy"))) ui->timesync_intro_2->setText("Sync successful.");
 }
 
 void FluorescenceApp::on_static_off_clicked() {         global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 0, 0); }

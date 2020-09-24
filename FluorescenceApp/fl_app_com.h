@@ -60,6 +60,7 @@ public:
 signals:
     void app_com_connected();
     void bt_incoming_data();
+    void bt_status_changed(QString message);
 
 private slots:
     // Bluetooth Discovery

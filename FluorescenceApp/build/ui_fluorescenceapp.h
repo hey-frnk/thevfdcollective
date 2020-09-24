@@ -1020,47 +1020,47 @@ public:
         shuffle_en_static = new QCheckBox(tab_shuffle);
         shuffle_en_static->setObjectName(QString::fromUtf8("shuffle_en_static"));
         shuffle_en_static->setEnabled(false);
-        shuffle_en_static->setGeometry(QRect(90, 120, 71, 20));
+        shuffle_en_static->setGeometry(QRect(60, 120, 71, 20));
         shuffle_en_static->setFont(font1);
         shuffle_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_static->setChecked(true);
         shuffle_en_music = new QCheckBox(tab_shuffle);
         shuffle_en_music->setObjectName(QString::fromUtf8("shuffle_en_music"));
-        shuffle_en_music->setGeometry(QRect(90, 240, 141, 20));
+        shuffle_en_music->setGeometry(QRect(60, 240, 141, 20));
         shuffle_en_music->setFont(font1);
         shuffle_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_cop = new QCheckBox(tab_shuffle);
         shuffle_en_cop->setObjectName(QString::fromUtf8("shuffle_en_cop"));
-        shuffle_en_cop->setGeometry(QRect(90, 260, 141, 20));
+        shuffle_en_cop->setGeometry(QRect(60, 260, 141, 20));
         shuffle_en_cop->setFont(font1);
         shuffle_en_cop->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_chase = new QCheckBox(tab_shuffle);
         shuffle_en_chase->setObjectName(QString::fromUtf8("shuffle_en_chase"));
-        shuffle_en_chase->setGeometry(QRect(90, 200, 141, 20));
+        shuffle_en_chase->setGeometry(QRect(60, 200, 141, 20));
         shuffle_en_chase->setFont(font1);
         shuffle_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_chase->setChecked(true);
         shuffle_en_spectrum = new QCheckBox(tab_shuffle);
         shuffle_en_spectrum->setObjectName(QString::fromUtf8("shuffle_en_spectrum"));
-        shuffle_en_spectrum->setGeometry(QRect(90, 160, 121, 20));
+        shuffle_en_spectrum->setGeometry(QRect(60, 160, 121, 20));
         shuffle_en_spectrum->setFont(font1);
         shuffle_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_spectrum->setChecked(true);
         shuffle_en_rnb = new QCheckBox(tab_shuffle);
         shuffle_en_rnb->setObjectName(QString::fromUtf8("shuffle_en_rnb"));
-        shuffle_en_rnb->setGeometry(QRect(90, 180, 121, 20));
+        shuffle_en_rnb->setGeometry(QRect(60, 180, 121, 20));
         shuffle_en_rnb->setFont(font1);
         shuffle_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_rnb->setChecked(true);
         shuffle_en_bliss = new QCheckBox(tab_shuffle);
         shuffle_en_bliss->setObjectName(QString::fromUtf8("shuffle_en_bliss"));
-        shuffle_en_bliss->setGeometry(QRect(90, 140, 141, 20));
+        shuffle_en_bliss->setGeometry(QRect(60, 140, 141, 20));
         shuffle_en_bliss->setFont(font1);
         shuffle_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_bliss->setChecked(true);
         shuffle_en_tcode = new QCheckBox(tab_shuffle);
         shuffle_en_tcode->setObjectName(QString::fromUtf8("shuffle_en_tcode"));
-        shuffle_en_tcode->setGeometry(QRect(90, 220, 141, 20));
+        shuffle_en_tcode->setGeometry(QRect(60, 220, 141, 20));
         shuffle_en_tcode->setFont(font1);
         shuffle_en_tcode->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         shuffle_en_tcode->setChecked(false);
@@ -1071,28 +1071,28 @@ public:
         shuffle_speed->addItem(QString());
         shuffle_speed->addItem(QString());
         shuffle_speed->setObjectName(QString::fromUtf8("shuffle_speed"));
-        shuffle_speed->setGeometry(QRect(370, 140, 281, 51));
+        shuffle_speed->setGeometry(QRect(340, 140, 281, 51));
         shuffle_speed->setFont(font8);
         shuffle_speed->setFrame(false);
         shuffle_set = new QPushButton(tab_shuffle);
         shuffle_set->setObjectName(QString::fromUtf8("shuffle_set"));
-        shuffle_set->setGeometry(QRect(370, 210, 281, 61));
+        shuffle_set->setGeometry(QRect(340, 210, 281, 61));
         shuffle_set->setFont(font7);
         shuffle_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         shuffle_intro1 = new QLabel(tab_shuffle);
         shuffle_intro1->setObjectName(QString::fromUtf8("shuffle_intro1"));
-        shuffle_intro1->setGeometry(QRect(90, 30, 291, 31));
+        shuffle_intro1->setGeometry(QRect(60, 30, 291, 31));
         shuffle_intro1->setFont(font7);
         shuffle_intro1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         shuffle_intro2 = new QLabel(tab_shuffle);
         shuffle_intro2->setObjectName(QString::fromUtf8("shuffle_intro2"));
-        shuffle_intro2->setGeometry(QRect(300, 110, 351, 31));
+        shuffle_intro2->setGeometry(QRect(350, 110, 351, 31));
         shuffle_intro2->setFont(font7);
         shuffle_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         shuffle_intro3 = new QLabel(tab_shuffle);
         shuffle_intro3->setObjectName(QString::fromUtf8("shuffle_intro3"));
-        shuffle_intro3->setGeometry(QRect(90, 60, 191, 51));
+        shuffle_intro3->setGeometry(QRect(60, 60, 551, 51));
         shuffle_intro3->setFont(font1);
         shuffle_intro3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         tab_presets_container->addTab(tab_shuffle, QString());
@@ -1817,14 +1817,14 @@ public:
         panel_message->raise();
         panel_custom_colors->raise();
         panel_lsettings->raise();
-        panel_timesync->raise();
         panel_welcome->raise();
         panel_settings->raise();
         panel_presets->raise();
+        panel_timesync->raise();
 
         retranslateUi(FluorescenceApp);
 
-        tab_presets_container->setCurrentIndex(2);
+        tab_presets_container->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(FluorescenceApp);
@@ -1956,9 +1956,8 @@ public:
         shuffle_set->setText(QCoreApplication::translate("FluorescenceApp", "Looks good, go!", nullptr));
         shuffle_intro1->setText(QCoreApplication::translate("FluorescenceApp", "Not in the mood to pick?", nullptr));
         shuffle_intro2->setText(QCoreApplication::translate("FluorescenceApp", "and pick another one every...", nullptr));
-        shuffle_intro3->setText(QCoreApplication::translate("FluorescenceApp", "Not a problem! Shuffle to let \n"
-"Fluorescence pick \n"
-"a pattern randomly out of:", nullptr));
+        shuffle_intro3->setText(QCoreApplication::translate("FluorescenceApp", "Not a problem! Shuffle to let Fluorescence pick a pattern,\n"
+"randomly out of:", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_shuffle), QCoreApplication::translate("FluorescenceApp", "Shuffle", nullptr));
         custom_label_r->setText(QCoreApplication::translate("FluorescenceApp", "R:", nullptr));
         custom_label_g->setText(QCoreApplication::translate("FluorescenceApp", "G:", nullptr));

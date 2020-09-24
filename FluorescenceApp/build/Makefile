@@ -1708,6 +1708,11 @@ fl_app_com.o: ../fl_app_com.cpp ../fl_app_com.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qbluetoothdevicediscoveryagent.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/QLowEnergyController \
 		/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers/qlowenergycontroller.h \
+		../fluorescenceapp.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
