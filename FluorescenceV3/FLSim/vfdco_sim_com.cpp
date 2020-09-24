@@ -10,6 +10,10 @@ void COM_Handler_USB_Init() {
   return;
 }
 
+void COM_Handler_BT_Serial_Init() {
+  return;
+}
+
 void COM_Handler_USB_Transfer(const struct COM_Data *self) {
   if(!self->tx_buffer) {
     printf("Error, transfer buffer NULL\n");
@@ -20,4 +24,12 @@ void COM_Handler_USB_Transfer(const struct COM_Data *self) {
     printf("Dec: %hhu, Hex: %hhx, ASCII: %c\n", self->tx_buffer[i], self->tx_buffer[i], self->tx_buffer[i]);
 
   memcpy(virtual_transfer_buffer, self->tx_buffer, self->tx_buffer_length);
+}
+
+void COM_Handler_BT_Serial_Transfer(const struct COM_Data *self) {
+  COM_Handler_USB_Transfer(self);
+}
+
+void COM_Handler_BT_Serial_Receive() {
+  return;
 }
