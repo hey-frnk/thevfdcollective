@@ -14,10 +14,13 @@ public:
 
 signals:
     void clicked();
+    void mousePressed(const QPoint&);
 
 protected:
     void mousePressEvent(QMouseEvent* event);
 
+private:
+    QPoint offset;
 };
 
 #endif // CLICKABLELABEL_H

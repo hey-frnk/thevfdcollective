@@ -13,7 +13,6 @@
 #include "fl_app_colors.h"
 #include "fluorescenceapp.h"
 #include "ui_fluorescenceapp.h"
-#include "QtColorWidgets/colorwidgets_global.hpp"
 
 #ifdef _LED_IMPLEMENTATION
 #error "An implementation of the LED driver already exists!"
@@ -21,7 +20,7 @@
 #define _LED_IMPLEMENTATION
 
 uint8_t rgb_arr[4 * CONFIG_NUM_PIXELS] = {0};
-extern color_widgets::ColorPreview *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
+extern QLabel *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
 
 void vfdco_clr_init(uint8_t initial_dim_factor) { (void)initial_dim_factor; }
 void vfdco_clr_set_dim_factor(uint8_t dim_factor) { (void)dim_factor; }
@@ -72,8 +71,9 @@ void vfdco_clr_minimize_difference(uint8_t *target_arr) {
 
 void vfdco_clr_render() {
     for(uint_fast8_t i = 0; i < NUM_PRESET_DYNAMIC_COLORS; ++i) {
-        preset_dynamic_colors[CONFIG_NUM_PIXELS - i - 1]->setColor(
-            QColor::fromRgb(rgb_arr[4 * i + 1], rgb_arr[4 * i], rgb_arr[4 * i + 2])
+        preset_dynamic_colors[CONFIG_NUM_PIXELS - i - 1]->setStyleSheet(
+            "background-color:" +
+            QColor::fromRgb(rgb_arr[4 * i + 1], rgb_arr[4 * i], rgb_arr[4 * i + 2]).name()
         );
     }
 }

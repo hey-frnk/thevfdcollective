@@ -17,17 +17,10 @@
 #include <QMessageBox>
 #include <QScreen>
 
-#include "QtColorWidgets/colorwidgets_global.hpp"
-
-// #include <opencv2/opencv.hpp>
-// #include "asmOpenCV.h"
-
-using namespace color_widgets;
-
 // Global dynamic colors
-color_widgets::ColorPreview *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
-color_widgets::ColorPreview *preset_dynamic_time[NUM_PRESET_DYNAMIC_TIME];
-color_widgets::ColorPreview *preset_dynamic_lisync[NUM_PRESET_LIGHT_SYNC];
+QLabel *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
+QLabel *preset_dynamic_time[NUM_PRESET_DYNAMIC_TIME];
+QLabel *preset_dynamic_lisync[NUM_PRESET_LIGHT_SYNC];
 
 #define GLOBAL_UPDATE_TIMER_INTERVAL 50
 #define NUM_AMBIENT_LIGHT_SAMPLES 3
@@ -90,29 +83,25 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
     global_timer->start(GLOBAL_UPDATE_TIMER_INTERVAL);
 
     // Init custom color wheel & white
-    ui->custom_color_wheel->setDisplayFlag(ColorWheel::COLOR_FLAGS, ColorWheel::COLOR_HSL);
     this->custom_global_color.setHsl(0, 255, 127);
     this->custom_global_color_white = 0;
-
     ui->custom_slider_w->setValue(custom_global_color_white);
-    ui->custom_slider_w->setFirstColor(QColor(0, 0, 0, 0));
-    ui->custom_slider_w->setLastColor(QColor(254, 204, 102, 255));
 
     custom_color_update_all_sliders(0);
 
     // Init dynamic colors & time
-    color_widgets::ColorPreview *tmp_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS] = {ui->dynamic_c1, ui->dynamic_c2, ui->dynamic_c3, ui->dynamic_c4, ui->dynamic_c5, ui->dynamic_c6};
-    color_widgets::ColorPreview *tmp_dynamic_time[NUM_PRESET_DYNAMIC_TIME] = {
+    QLabel *tmp_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS] = {ui->dynamic_c1, ui->dynamic_c2, ui->dynamic_c3, ui->dynamic_c4, ui->dynamic_c5, ui->dynamic_c6};
+    QLabel *tmp_dynamic_time[NUM_PRESET_DYNAMIC_TIME] = {
         ui->dynamic_t_1, ui->dynamic_t_2, ui->dynamic_t_3, ui->dynamic_t_4, ui->dynamic_t_5, ui->dynamic_t_6, ui->dynamic_t_7,
         ui->dynamic_t_8, ui->dynamic_t_9, ui->dynamic_t_10, ui->dynamic_t_11, ui->dynamic_t_12, ui->dynamic_t_13, ui->dynamic_t_14,
         ui->dynamic_t_15, ui->dynamic_t_16, ui->dynamic_t_17, ui->dynamic_t_18, ui->dynamic_t_19, ui->dynamic_t_20, ui->dynamic_t_21
     };
-    color_widgets::ColorPreview *tmp_dynamic_lisync[NUM_PRESET_LIGHT_SYNC] = {
+    QLabel *tmp_dynamic_lisync[NUM_PRESET_LIGHT_SYNC] = {
         ui->lisync_c1, ui->lisync_c2, ui->lisync_c3, ui->lisync_c4, ui->lisync_c5, ui->lisync_c6
     };
-    memcpy(preset_dynamic_colors, tmp_dynamic_colors, NUM_PRESET_DYNAMIC_COLORS * sizeof(color_widgets::ColorPreview *));
-    memcpy(preset_dynamic_time, tmp_dynamic_time, NUM_PRESET_DYNAMIC_TIME * sizeof(color_widgets::ColorPreview *));
-    memcpy(preset_dynamic_lisync, tmp_dynamic_lisync, NUM_PRESET_LIGHT_SYNC * sizeof(color_widgets::ColorPreview *));
+    memcpy(preset_dynamic_colors, tmp_dynamic_colors, NUM_PRESET_DYNAMIC_COLORS * sizeof(QLabel *));
+    memcpy(preset_dynamic_time, tmp_dynamic_time, NUM_PRESET_DYNAMIC_TIME * sizeof(QLabel *));
+    memcpy(preset_dynamic_lisync, tmp_dynamic_lisync, NUM_PRESET_LIGHT_SYNC * sizeof(QLabel *));
     hide_all_dynamic_control_panels();
     clear_lights_instance();
     Light_Pattern_Spectrum_Init((struct Light_Pattern_Spectrum *)&global_lights_instance, NULL);
@@ -211,7 +200,7 @@ void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
         if(global_com_instance) global_com_instance->transfer_serial1(color_arr);
     } else {
         ui->lisync_sample->setPixmap(QPixmap::fromImage(QImage(ambient_light_sample_paths[counter])));
-        for(int i = 0; i < 6; ++i) preset_dynamic_lisync[i]->setColor(ambient_light_colors[counter][i]);
+        for(int i = 0; i < 6; ++i) preset_dynamic_lisync[i]->setStyleSheet("background-color:" + ambient_light_colors[counter][i].name());
     }
 }
 
@@ -229,8 +218,8 @@ void FluorescenceApp::update(){
     ++preset_dynamic_timer;
     for(uint_fast8_t i = 0; i < NUM_PRESET_DYNAMIC_TIME; ++i) {
         uint_fast8_t hpdt = preset_dynamic_timer / 8;
-        if(i < hpdt) preset_dynamic_time[i]->setColor(QColor::fromRgb(16, 128, 128));
-        else preset_dynamic_time[i]->setColor(QColor::fromRgb(196, 196, 196));
+        if(i < hpdt) preset_dynamic_time[i]->setStyleSheet("background-color:" + QColor::fromRgb(16, 128, 128).name());
+        else preset_dynamic_time[i]->setStatusTip("background-color:" + QColor::fromRgb(196, 196, 196).name());
     }
     if(preset_dynamic_timer == (NUM_PRESET_DYNAMIC_TIME * 8)) preset_dynamic_timer = 0;
 
@@ -373,7 +362,10 @@ void FluorescenceApp::custom_color_update_all_sliders(bool block_color_wheel) {
         w->blockSignals(true);
 
     // Sync elements
-    if(!block_color_wheel) ui->custom_color_wheel->setColor(custom_global_color);
+    if(!block_color_wheel) {
+        QPoint move_point = map_hue(custom_global_color.hueF() * 359.0f);
+        ui->custom_color_wheel_cursor->move(move_point);
+    }
 
     ui->custom_value_h->setValue((double)custom_global_color.hueF() * 359.0f);
     ui->custom_value_s->setValue(custom_global_color.hslSaturationF() * 255.0f);
@@ -382,25 +374,15 @@ void FluorescenceApp::custom_color_update_all_sliders(bool block_color_wheel) {
     ui->custom_value_g->setValue(custom_global_color.green());
     ui->custom_value_b->setValue(custom_global_color.blue());
 
-    ui->custom_slider_h->setColorHue(custom_global_color.hslHueF());
+    ui->custom_slider_h->setValue(custom_global_color.hslHueF() * 359.0f);
     ui->custom_slider_s->setValue(custom_global_color.hslSaturationF() * 255.0f);
-    ui->custom_slider_s->setFirstColor(QColor::fromHslF(custom_global_color.hueF(), 0, custom_global_color.lightnessF()));
-    ui->custom_slider_s->setLastColor(QColor::fromHslF(custom_global_color.hueF(), 1, custom_global_color.lightnessF()));
     ui->custom_slider_l->setValue(custom_global_color.lightnessF() * 255.0f);
-    ui->custom_slider_l->setFirstColor(QColor::fromHsvF(custom_global_color.hueF(), custom_global_color.saturationF(), 0));
-    ui->custom_slider_l->setLastColor(QColor::fromHsvF(custom_global_color.hueF(), custom_global_color.saturationF(), 1));
 
     ui->custom_slider_r->setValue(custom_global_color.red());
-    ui->custom_slider_r->setFirstColor(QColor(0, custom_global_color.green(), custom_global_color.blue()));
-    ui->custom_slider_r->setLastColor(QColor(255, custom_global_color.green(), custom_global_color.blue()));
     ui->custom_slider_g->setValue(custom_global_color.green());
-    ui->custom_slider_g->setFirstColor(QColor(custom_global_color.red(), 0, custom_global_color.blue()));
-    ui->custom_slider_g->setLastColor(QColor(custom_global_color.red(), 255, custom_global_color.blue()));
     ui->custom_slider_b->setValue(custom_global_color.blue());
-    ui->custom_slider_b->setFirstColor(QColor(custom_global_color.red(), custom_global_color.green(), 0));
-    ui->custom_slider_b->setLastColor(QColor(custom_global_color.red(), custom_global_color.green(), 255));
 
-    ui->custom_value_hex->setColor(custom_global_color);
+    ui->custom_value_hex->setPlainText(custom_global_color.name().toUpper());
 
     ui->custom_value_w->setValue(custom_global_color_white);
     ui->custom_slider_w->setValue(custom_global_color_white);
@@ -438,35 +420,35 @@ void FluorescenceApp::error_message(QString message, QMessageBox::Icon i)
     err.exec();
 }
 
-void FluorescenceApp::on_custom_slider_r_sliderMoved(int position)
+void FluorescenceApp::on_custom_slider_r_valueChanged(int position)
 {
     if (!signalsBlocked()) {
         custom_global_color.setRed(position);
         custom_color_update_all_sliders(0);
     }
 }
-void FluorescenceApp::on_custom_slider_g_sliderMoved(int position)
+void FluorescenceApp::on_custom_slider_g_valueChanged(int position)
 {
     if (!signalsBlocked()) {
         custom_global_color.setGreen(position);
         custom_color_update_all_sliders(0);
     }
 }
-void FluorescenceApp::on_custom_slider_b_sliderMoved(int position)
+void FluorescenceApp::on_custom_slider_b_valueChanged(int position)
 {
     if (!signalsBlocked()) {
         custom_global_color.setBlue(position);
         custom_color_update_all_sliders(0);
     }
 }
-void FluorescenceApp::on_custom_slider_w_sliderMoved(int position)
+void FluorescenceApp::on_custom_slider_w_valueChanged(int position)
 {
     if (!signalsBlocked()) {
         custom_global_color_white = position;
         custom_color_update_all_sliders(0);
     }
 }
-void FluorescenceApp::on_custom_slider_h_sliderMoved(int position)
+void FluorescenceApp::on_custom_slider_h_valueChanged(int position)
 {
     if (!signalsBlocked()) {
         QColor new_color;
@@ -475,7 +457,7 @@ void FluorescenceApp::on_custom_slider_h_sliderMoved(int position)
         custom_color_update_all_sliders(0);
     }
 }
-void FluorescenceApp::on_custom_slider_s_sliderMoved(int position)
+void FluorescenceApp::on_custom_slider_s_valueChanged(int position)
 {
     if (!signalsBlocked()) {
         QColor new_color;
@@ -484,7 +466,7 @@ void FluorescenceApp::on_custom_slider_s_sliderMoved(int position)
         custom_color_update_all_sliders(0);
     }
 }
-void FluorescenceApp::on_custom_slider_l_sliderMoved(int position)
+void FluorescenceApp::on_custom_slider_l_valueChanged(int position)
 {
     if (!signalsBlocked()) {
         QColor new_color;
@@ -493,30 +475,14 @@ void FluorescenceApp::on_custom_slider_l_sliderMoved(int position)
         custom_color_update_all_sliders(0);
     }
 }
-void FluorescenceApp::on_custom_value_hex_colorEditingFinished(const QColor &color)
-{
-    if (!signalsBlocked()) {
-        custom_global_color = color;
-        custom_color_update_all_sliders(0);
-    }
-}
 
-
-void FluorescenceApp::on_custom_value_r_valueChanged(int arg1) { on_custom_slider_r_sliderMoved(arg1); }
-void FluorescenceApp::on_custom_value_g_valueChanged(int arg1) { on_custom_slider_g_sliderMoved(arg1); }
-void FluorescenceApp::on_custom_value_b_valueChanged(int arg1) { on_custom_slider_b_sliderMoved(arg1); }
-void FluorescenceApp::on_custom_value_w_valueChanged(int arg1) { on_custom_slider_w_sliderMoved(arg1); }
-void FluorescenceApp::on_custom_value_h_valueChanged(int arg1) { on_custom_slider_h_sliderMoved(arg1); }
-void FluorescenceApp::on_custom_value_s_valueChanged(int arg1) { on_custom_slider_s_sliderMoved(arg1); }
-void FluorescenceApp::on_custom_value_l_valueChanged(int arg1) { on_custom_slider_l_sliderMoved(arg1); }
-
-void FluorescenceApp::on_custom_color_wheel_colorSelected(const QColor &arg1)
-{
-    if (!signalsBlocked()) {
-        custom_global_color = arg1;
-        custom_color_update_all_sliders(1);
-    }
-}
+void FluorescenceApp::on_custom_value_r_valueChanged(int arg1) { on_custom_slider_r_valueChanged(arg1); }
+void FluorescenceApp::on_custom_value_g_valueChanged(int arg1) { on_custom_slider_g_valueChanged(arg1); }
+void FluorescenceApp::on_custom_value_b_valueChanged(int arg1) { on_custom_slider_b_valueChanged(arg1); }
+void FluorescenceApp::on_custom_value_w_valueChanged(int arg1) { on_custom_slider_w_valueChanged(arg1); }
+void FluorescenceApp::on_custom_value_h_valueChanged(int arg1) { on_custom_slider_h_valueChanged(arg1); }
+void FluorescenceApp::on_custom_value_s_valueChanged(int arg1) { on_custom_slider_s_valueChanged(arg1); }
+void FluorescenceApp::on_custom_value_l_valueChanged(int arg1) { on_custom_slider_l_valueChanged(arg1); }
 
 void FluorescenceApp::clear_lights_instance() {
     Container_Light_Pattern_Clear(&global_lights_instance);
@@ -891,4 +857,40 @@ void FluorescenceApp::on_settings_info_update_clicked()
     fw_update_dialog.setWindowTitle("Fluorescence Updater");
     fw_update_dialog.exec(); */
     global_com_instance->transfer_dfu_request();
+}
+
+float FluorescenceApp::capture_hue(const QPoint &pt) {
+    // Check if in wheel
+    auto posx = pt.x() - ui->custom_color_wheel->height() / 2,
+         posy = pt.y() - ui->custom_color_wheel->width() / 2;
+
+    // Into angle and magnitude
+    float pos_angle = std::atan2f((float)posx, (float)-posy) / M_PI * 180.0;
+    if(pos_angle < 0.0f) pos_angle = 360.0 + pos_angle;
+    return pos_angle;
+}
+
+QPoint FluorescenceApp::map_hue(float angle) {
+    constexpr float radius = 127.0f;
+    float angle_rad = angle / 180.0f * M_PI;
+    return QPoint(radius + radius * std::cosf(angle_rad), radius + radius * std::sinf(angle_rad)) - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2);
+};
+
+void FluorescenceApp::on_custom_color_wheel_mousePressed(const QPoint &pt)
+{
+    if (!signalsBlocked()) {
+        on_custom_color_wheel_cursor_mouseMoved(pt);
+        ui->custom_color_wheel_cursor->move(pt - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2));
+    }
+}
+
+void FluorescenceApp::on_custom_color_wheel_cursor_mouseMoved(const QPoint &pt)
+{
+    if (!signalsBlocked()) {
+        float position = capture_hue(pt);
+        QColor new_color;
+        new_color.setHslF((double)position / 360.0f, custom_global_color.hslSaturationF(), custom_global_color.lightnessF());
+        custom_global_color = new_color;
+        custom_color_update_all_sliders(1);
+    }
 }

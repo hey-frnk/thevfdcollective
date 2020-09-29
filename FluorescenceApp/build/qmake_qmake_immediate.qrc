@@ -11,5 +11,7 @@
 <file alias="Resources/res2.jpg">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/res2.jpg</file>
 <file alias="Resources/res3.jpg">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/res3.jpg</file>
 <file alias="Resources/HXP_TN.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/HXP_TN.png</file>
+<file alias="Resources/hsl_wheel.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/hsl_wheel.png</file>
+<file alias="Resources/cursor.png">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/Resources/cursor.png</file>
 </qresource>
 </RCC>

@@ -1,5 +1,5 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'clickablelabel.h'
+** Meta object code from reading C++ file 'movablelabel.h'
 **
 ** Created by: The Qt Meta Object Compiler version 67 (Qt 5.14.1)
 **
@@ -7,11 +7,11 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../clickablelabel.h"
+#include "../movablelabel.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'clickablelabel.h' doesn't include <QObject>."
+#error "The header file 'movablelabel.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
 #error "This file was generated using the moc from 5.14.1. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -21,28 +21,28 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_ClickableLabel_t {
+struct qt_meta_stringdata_MovableLabel_t {
     QByteArrayData data[4];
-    char stringdata0[37];
+    char stringdata0[33];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_ClickableLabel_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_MovableLabel_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_ClickableLabel_t qt_meta_stringdata_ClickableLabel = {
+static const qt_meta_stringdata_MovableLabel_t qt_meta_stringdata_MovableLabel = {
     {
-QT_MOC_LITERAL(0, 0, 14), // "ClickableLabel"
-QT_MOC_LITERAL(1, 15, 7), // "clicked"
-QT_MOC_LITERAL(2, 23, 0), // ""
-QT_MOC_LITERAL(3, 24, 12) // "mousePressed"
+QT_MOC_LITERAL(0, 0, 12), // "MovableLabel"
+QT_MOC_LITERAL(1, 13, 7), // "clicked"
+QT_MOC_LITERAL(2, 21, 0), // ""
+QT_MOC_LITERAL(3, 22, 10) // "mouseMoved"
 
     },
-    "ClickableLabel\0clicked\0\0mousePressed"
+    "MovableLabel\0clicked\0\0mouseMoved"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_ClickableLabel[] = {
+static const uint qt_meta_data_MovableLabel[] = {
 
  // content:
        8,       // revision
@@ -66,28 +66,28 @@ static const uint qt_meta_data_ClickableLabel[] = {
        0        // eod
 };
 
-void ClickableLabel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void MovableLabel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        auto *_t = static_cast<ClickableLabel *>(_o);
+        auto *_t = static_cast<MovableLabel *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->clicked(); break;
-        case 1: _t->mousePressed((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 1: _t->mouseMoved((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            using _t = void (ClickableLabel::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ClickableLabel::clicked)) {
+            using _t = void (MovableLabel::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MovableLabel::clicked)) {
                 *result = 0;
                 return;
             }
         }
         {
-            using _t = void (ClickableLabel::*)(const QPoint & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&ClickableLabel::mousePressed)) {
+            using _t = void (MovableLabel::*)(const QPoint & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MovableLabel::mouseMoved)) {
                 *result = 1;
                 return;
             }
@@ -95,30 +95,30 @@ void ClickableLabel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject ClickableLabel::staticMetaObject = { {
+QT_INIT_METAOBJECT const QMetaObject MovableLabel::staticMetaObject = { {
     QMetaObject::SuperData::link<QLabel::staticMetaObject>(),
-    qt_meta_stringdata_ClickableLabel.data,
-    qt_meta_data_ClickableLabel,
+    qt_meta_stringdata_MovableLabel.data,
+    qt_meta_data_MovableLabel,
     qt_static_metacall,
     nullptr,
     nullptr
 } };
 
 
-const QMetaObject *ClickableLabel::metaObject() const
+const QMetaObject *MovableLabel::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *ClickableLabel::qt_metacast(const char *_clname)
+void *MovableLabel::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_ClickableLabel.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_MovableLabel.stringdata0))
         return static_cast<void*>(this);
     return QLabel::qt_metacast(_clname);
 }
 
-int ClickableLabel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int MovableLabel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QLabel::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -136,13 +136,13 @@ int ClickableLabel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void ClickableLabel::clicked()
+void MovableLabel::clicked()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 
 // SIGNAL 1
-void ClickableLabel::mousePressed(const QPoint & _t1)
+void MovableLabel::mouseMoved(const QPoint & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);

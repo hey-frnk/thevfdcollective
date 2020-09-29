@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_FluorescenceApp_t {
-    QByteArrayData data[84];
-    char stringdata0[2353];
+    QByteArrayData data[83];
+    char stringdata0[2352];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -42,80 +42,79 @@ QT_MOC_LITERAL(6, 98, 25), // "on_static_rainbow_clicked"
 QT_MOC_LITERAL(7, 124, 31), // "on_static_pastelrainbow_clicked"
 QT_MOC_LITERAL(8, 156, 22), // "on_main_preset_clicked"
 QT_MOC_LITERAL(9, 179, 22), // "on_main_custom_clicked"
-QT_MOC_LITERAL(10, 202, 30), // "on_custom_slider_r_sliderMoved"
-QT_MOC_LITERAL(11, 233, 8), // "position"
-QT_MOC_LITERAL(12, 242, 30), // "on_custom_slider_g_sliderMoved"
-QT_MOC_LITERAL(13, 273, 30), // "on_custom_slider_b_sliderMoved"
-QT_MOC_LITERAL(14, 304, 30), // "on_custom_value_r_valueChanged"
-QT_MOC_LITERAL(15, 335, 4), // "arg1"
-QT_MOC_LITERAL(16, 340, 30), // "on_custom_value_g_valueChanged"
-QT_MOC_LITERAL(17, 371, 30), // "on_custom_value_b_valueChanged"
-QT_MOC_LITERAL(18, 402, 30), // "on_custom_value_w_valueChanged"
-QT_MOC_LITERAL(19, 433, 30), // "on_custom_value_h_valueChanged"
-QT_MOC_LITERAL(20, 464, 30), // "on_custom_value_s_valueChanged"
-QT_MOC_LITERAL(21, 495, 30), // "on_custom_value_l_valueChanged"
-QT_MOC_LITERAL(22, 526, 30), // "on_custom_slider_h_sliderMoved"
-QT_MOC_LITERAL(23, 557, 30), // "on_custom_slider_s_sliderMoved"
-QT_MOC_LITERAL(24, 588, 30), // "on_custom_slider_l_sliderMoved"
-QT_MOC_LITERAL(25, 619, 30), // "on_custom_slider_w_sliderMoved"
-QT_MOC_LITERAL(26, 650, 40), // "on_custom_value_hex_colorEdit..."
-QT_MOC_LITERAL(27, 691, 5), // "color"
-QT_MOC_LITERAL(28, 697, 24), // "on_main_timesync_clicked"
-QT_MOC_LITERAL(29, 722, 23), // "on_main_message_clicked"
-QT_MOC_LITERAL(30, 746, 35), // "on_custom_color_wheel_colorSe..."
-QT_MOC_LITERAL(31, 782, 27), // "on_dynamic_spectrum_clicked"
-QT_MOC_LITERAL(32, 810, 28), // "on_dynamic_bliss_dnc_clicked"
-QT_MOC_LITERAL(33, 839, 26), // "on_dynamic_rainbow_clicked"
-QT_MOC_LITERAL(34, 866, 24), // "on_dynamic_chase_clicked"
-QT_MOC_LITERAL(35, 891, 27), // "on_dynamic_timecode_clicked"
-QT_MOC_LITERAL(36, 919, 25), // "on_dynamic_police_clicked"
-QT_MOC_LITERAL(37, 945, 44), // "on_panel_dyn_bliss_param_curr..."
-QT_MOC_LITERAL(38, 990, 5), // "index"
-QT_MOC_LITERAL(39, 996, 24), // "on_main_settings_clicked"
-QT_MOC_LITERAL(40, 1021, 26), // "on_settings_td_set_clicked"
-QT_MOC_LITERAL(41, 1048, 27), // "on_settings_bri_set_clicked"
-QT_MOC_LITERAL(42, 1076, 35), // "on_settings_nsh_enable_stateC..."
-QT_MOC_LITERAL(43, 1112, 27), // "on_settings_nsh_set_clicked"
-QT_MOC_LITERAL(44, 1140, 36), // "on_settings_settings_default_..."
-QT_MOC_LITERAL(45, 1177, 33), // "on_settings_settings_save_cli..."
-QT_MOC_LITERAL(46, 1211, 33), // "on_settings_info_download_cli..."
-QT_MOC_LITERAL(47, 1245, 40), // "on_lsettings_td_12hr_enable_s..."
-QT_MOC_LITERAL(48, 1286, 38), // "on_lsettings_td_l0_enable_sta..."
-QT_MOC_LITERAL(49, 1325, 44), // "on_lsettings_td_intldate_enab..."
-QT_MOC_LITERAL(50, 1370, 36), // "on_lsettings_nsh_enable_state..."
-QT_MOC_LITERAL(51, 1407, 46), // "on_lsettings_nsh_scheduled_en..."
-QT_MOC_LITERAL(52, 1454, 37), // "on_lsettings_settings_default..."
-QT_MOC_LITERAL(53, 1492, 34), // "on_lsettings_settings_save_cl..."
-QT_MOC_LITERAL(54, 1527, 34), // "on_lsettings_info_download_cl..."
-QT_MOC_LITERAL(55, 1562, 26), // "on_timesync_button_clicked"
-QT_MOC_LITERAL(56, 1589, 21), // "on_static_off_clicked"
-QT_MOC_LITERAL(57, 1611, 23), // "on_static_white_clicked"
-QT_MOC_LITERAL(58, 1635, 21), // "on_static_red_clicked"
-QT_MOC_LITERAL(59, 1657, 27), // "on_static_warmwhite_clicked"
-QT_MOC_LITERAL(60, 1685, 23), // "on_static_green_clicked"
-QT_MOC_LITERAL(61, 1709, 22), // "on_static_blue_clicked"
-QT_MOC_LITERAL(62, 1732, 24), // "on_static_yellow_clicked"
-QT_MOC_LITERAL(63, 1757, 24), // "on_static_orange_clicked"
-QT_MOC_LITERAL(64, 1782, 22), // "on_static_cyan_clicked"
-QT_MOC_LITERAL(65, 1805, 25), // "on_static_magenta_clicked"
-QT_MOC_LITERAL(66, 1831, 24), // "on_static_violet_clicked"
-QT_MOC_LITERAL(67, 1856, 28), // "on_static_green2blue_clicked"
-QT_MOC_LITERAL(68, 1885, 26), // "on_static_red2blue_clicked"
-QT_MOC_LITERAL(69, 1912, 27), // "on_static_red2green_clicked"
-QT_MOC_LITERAL(70, 1940, 33), // "on_panel_dyn_spectrum_set_cli..."
-QT_MOC_LITERAL(71, 1974, 30), // "on_panel_dyn_bliss_set_clicked"
-QT_MOC_LITERAL(72, 2005, 28), // "on_panel_dyn_rnb_set_clicked"
-QT_MOC_LITERAL(73, 2034, 30), // "on_panel_dyn_chase_set_clicked"
-QT_MOC_LITERAL(74, 2065, 30), // "on_panel_dyn_tcode_set_clicked"
-QT_MOC_LITERAL(75, 2096, 28), // "on_panel_dyn_cop_set_clicked"
-QT_MOC_LITERAL(76, 2125, 30), // "on_panel_dyn_music_set_clicked"
-QT_MOC_LITERAL(77, 2156, 23), // "on_message_send_clicked"
-QT_MOC_LITERAL(78, 2180, 24), // "on_lisync_sample_clicked"
-QT_MOC_LITERAL(79, 2205, 34), // "on_settings_presets_en_set_cl..."
-QT_MOC_LITERAL(80, 2240, 22), // "on_shuffle_set_clicked"
-QT_MOC_LITERAL(81, 2263, 24), // "on_dynamic_music_clicked"
-QT_MOC_LITERAL(82, 2288, 31), // "on_settings_info_update_clicked"
-QT_MOC_LITERAL(83, 2320, 32) // "on_com_select_currentTextChanged"
+QT_MOC_LITERAL(10, 202, 31), // "on_custom_slider_r_valueChanged"
+QT_MOC_LITERAL(11, 234, 8), // "position"
+QT_MOC_LITERAL(12, 243, 31), // "on_custom_slider_g_valueChanged"
+QT_MOC_LITERAL(13, 275, 31), // "on_custom_slider_b_valueChanged"
+QT_MOC_LITERAL(14, 307, 30), // "on_custom_value_r_valueChanged"
+QT_MOC_LITERAL(15, 338, 4), // "arg1"
+QT_MOC_LITERAL(16, 343, 30), // "on_custom_value_g_valueChanged"
+QT_MOC_LITERAL(17, 374, 30), // "on_custom_value_b_valueChanged"
+QT_MOC_LITERAL(18, 405, 30), // "on_custom_value_w_valueChanged"
+QT_MOC_LITERAL(19, 436, 30), // "on_custom_value_h_valueChanged"
+QT_MOC_LITERAL(20, 467, 30), // "on_custom_value_s_valueChanged"
+QT_MOC_LITERAL(21, 498, 30), // "on_custom_value_l_valueChanged"
+QT_MOC_LITERAL(22, 529, 31), // "on_custom_slider_h_valueChanged"
+QT_MOC_LITERAL(23, 561, 31), // "on_custom_slider_s_valueChanged"
+QT_MOC_LITERAL(24, 593, 31), // "on_custom_slider_l_valueChanged"
+QT_MOC_LITERAL(25, 625, 31), // "on_custom_slider_w_valueChanged"
+QT_MOC_LITERAL(26, 657, 24), // "on_main_timesync_clicked"
+QT_MOC_LITERAL(27, 682, 23), // "on_main_message_clicked"
+QT_MOC_LITERAL(28, 706, 27), // "on_dynamic_spectrum_clicked"
+QT_MOC_LITERAL(29, 734, 28), // "on_dynamic_bliss_dnc_clicked"
+QT_MOC_LITERAL(30, 763, 26), // "on_dynamic_rainbow_clicked"
+QT_MOC_LITERAL(31, 790, 24), // "on_dynamic_chase_clicked"
+QT_MOC_LITERAL(32, 815, 27), // "on_dynamic_timecode_clicked"
+QT_MOC_LITERAL(33, 843, 25), // "on_dynamic_police_clicked"
+QT_MOC_LITERAL(34, 869, 44), // "on_panel_dyn_bliss_param_curr..."
+QT_MOC_LITERAL(35, 914, 5), // "index"
+QT_MOC_LITERAL(36, 920, 24), // "on_main_settings_clicked"
+QT_MOC_LITERAL(37, 945, 26), // "on_settings_td_set_clicked"
+QT_MOC_LITERAL(38, 972, 27), // "on_settings_bri_set_clicked"
+QT_MOC_LITERAL(39, 1000, 35), // "on_settings_nsh_enable_stateC..."
+QT_MOC_LITERAL(40, 1036, 27), // "on_settings_nsh_set_clicked"
+QT_MOC_LITERAL(41, 1064, 36), // "on_settings_settings_default_..."
+QT_MOC_LITERAL(42, 1101, 33), // "on_settings_settings_save_cli..."
+QT_MOC_LITERAL(43, 1135, 33), // "on_settings_info_download_cli..."
+QT_MOC_LITERAL(44, 1169, 40), // "on_lsettings_td_12hr_enable_s..."
+QT_MOC_LITERAL(45, 1210, 38), // "on_lsettings_td_l0_enable_sta..."
+QT_MOC_LITERAL(46, 1249, 44), // "on_lsettings_td_intldate_enab..."
+QT_MOC_LITERAL(47, 1294, 36), // "on_lsettings_nsh_enable_state..."
+QT_MOC_LITERAL(48, 1331, 46), // "on_lsettings_nsh_scheduled_en..."
+QT_MOC_LITERAL(49, 1378, 37), // "on_lsettings_settings_default..."
+QT_MOC_LITERAL(50, 1416, 34), // "on_lsettings_settings_save_cl..."
+QT_MOC_LITERAL(51, 1451, 34), // "on_lsettings_info_download_cl..."
+QT_MOC_LITERAL(52, 1486, 26), // "on_timesync_button_clicked"
+QT_MOC_LITERAL(53, 1513, 21), // "on_static_off_clicked"
+QT_MOC_LITERAL(54, 1535, 23), // "on_static_white_clicked"
+QT_MOC_LITERAL(55, 1559, 21), // "on_static_red_clicked"
+QT_MOC_LITERAL(56, 1581, 27), // "on_static_warmwhite_clicked"
+QT_MOC_LITERAL(57, 1609, 23), // "on_static_green_clicked"
+QT_MOC_LITERAL(58, 1633, 22), // "on_static_blue_clicked"
+QT_MOC_LITERAL(59, 1656, 24), // "on_static_yellow_clicked"
+QT_MOC_LITERAL(60, 1681, 24), // "on_static_orange_clicked"
+QT_MOC_LITERAL(61, 1706, 22), // "on_static_cyan_clicked"
+QT_MOC_LITERAL(62, 1729, 25), // "on_static_magenta_clicked"
+QT_MOC_LITERAL(63, 1755, 24), // "on_static_violet_clicked"
+QT_MOC_LITERAL(64, 1780, 28), // "on_static_green2blue_clicked"
+QT_MOC_LITERAL(65, 1809, 26), // "on_static_red2blue_clicked"
+QT_MOC_LITERAL(66, 1836, 27), // "on_static_red2green_clicked"
+QT_MOC_LITERAL(67, 1864, 33), // "on_panel_dyn_spectrum_set_cli..."
+QT_MOC_LITERAL(68, 1898, 30), // "on_panel_dyn_bliss_set_clicked"
+QT_MOC_LITERAL(69, 1929, 28), // "on_panel_dyn_rnb_set_clicked"
+QT_MOC_LITERAL(70, 1958, 30), // "on_panel_dyn_chase_set_clicked"
+QT_MOC_LITERAL(71, 1989, 30), // "on_panel_dyn_tcode_set_clicked"
+QT_MOC_LITERAL(72, 2020, 28), // "on_panel_dyn_cop_set_clicked"
+QT_MOC_LITERAL(73, 2049, 30), // "on_panel_dyn_music_set_clicked"
+QT_MOC_LITERAL(74, 2080, 23), // "on_message_send_clicked"
+QT_MOC_LITERAL(75, 2104, 24), // "on_lisync_sample_clicked"
+QT_MOC_LITERAL(76, 2129, 34), // "on_settings_presets_en_set_cl..."
+QT_MOC_LITERAL(77, 2164, 22), // "on_shuffle_set_clicked"
+QT_MOC_LITERAL(78, 2187, 24), // "on_dynamic_music_clicked"
+QT_MOC_LITERAL(79, 2212, 31), // "on_settings_info_update_clicked"
+QT_MOC_LITERAL(80, 2244, 32), // "on_com_select_currentTextChanged"
+QT_MOC_LITERAL(81, 2277, 34), // "on_custom_color_wheel_mousePr..."
+QT_MOC_LITERAL(82, 2312, 39) // "on_custom_color_wheel_cursor_..."
 
     },
     "FluorescenceApp\0app_com_connected_callback\0"
@@ -123,9 +122,9 @@ QT_MOC_LITERAL(83, 2320, 32) // "on_com_select_currentTextChanged"
     "on_com_connect_clicked\0on_static_rainbow_clicked\0"
     "on_static_pastelrainbow_clicked\0"
     "on_main_preset_clicked\0on_main_custom_clicked\0"
-    "on_custom_slider_r_sliderMoved\0position\0"
-    "on_custom_slider_g_sliderMoved\0"
-    "on_custom_slider_b_sliderMoved\0"
+    "on_custom_slider_r_valueChanged\0"
+    "position\0on_custom_slider_g_valueChanged\0"
+    "on_custom_slider_b_valueChanged\0"
     "on_custom_value_r_valueChanged\0arg1\0"
     "on_custom_value_g_valueChanged\0"
     "on_custom_value_b_valueChanged\0"
@@ -133,14 +132,12 @@ QT_MOC_LITERAL(83, 2320, 32) // "on_com_select_currentTextChanged"
     "on_custom_value_h_valueChanged\0"
     "on_custom_value_s_valueChanged\0"
     "on_custom_value_l_valueChanged\0"
-    "on_custom_slider_h_sliderMoved\0"
-    "on_custom_slider_s_sliderMoved\0"
-    "on_custom_slider_l_sliderMoved\0"
-    "on_custom_slider_w_sliderMoved\0"
-    "on_custom_value_hex_colorEditingFinished\0"
-    "color\0on_main_timesync_clicked\0"
+    "on_custom_slider_h_valueChanged\0"
+    "on_custom_slider_s_valueChanged\0"
+    "on_custom_slider_l_valueChanged\0"
+    "on_custom_slider_w_valueChanged\0"
+    "on_main_timesync_clicked\0"
     "on_main_message_clicked\0"
-    "on_custom_color_wheel_colorSelected\0"
     "on_dynamic_spectrum_clicked\0"
     "on_dynamic_bliss_dnc_clicked\0"
     "on_dynamic_rainbow_clicked\0"
@@ -187,7 +184,9 @@ QT_MOC_LITERAL(83, 2320, 32) // "on_com_select_currentTextChanged"
     "on_settings_presets_en_set_clicked\0"
     "on_shuffle_set_clicked\0on_dynamic_music_clicked\0"
     "on_settings_info_update_clicked\0"
-    "on_com_select_currentTextChanged"
+    "on_com_select_currentTextChanged\0"
+    "on_custom_color_wheel_mousePressed\0"
+    "on_custom_color_wheel_cursor_mouseMoved"
 };
 #undef QT_MOC_LITERAL
 
@@ -226,62 +225,62 @@ static const uint qt_meta_data_FluorescenceApp[] = {
       23,    1,  441,    2, 0x08 /* Private */,
       24,    1,  444,    2, 0x08 /* Private */,
       25,    1,  447,    2, 0x08 /* Private */,
-      26,    1,  450,    2, 0x08 /* Private */,
-      28,    0,  453,    2, 0x08 /* Private */,
-      29,    0,  454,    2, 0x08 /* Private */,
-      30,    1,  455,    2, 0x08 /* Private */,
-      31,    0,  458,    2, 0x08 /* Private */,
-      32,    0,  459,    2, 0x08 /* Private */,
-      33,    0,  460,    2, 0x08 /* Private */,
-      34,    0,  461,    2, 0x08 /* Private */,
-      35,    0,  462,    2, 0x08 /* Private */,
-      36,    0,  463,    2, 0x08 /* Private */,
-      37,    1,  464,    2, 0x08 /* Private */,
-      39,    0,  467,    2, 0x08 /* Private */,
-      40,    0,  468,    2, 0x08 /* Private */,
-      41,    0,  469,    2, 0x08 /* Private */,
-      42,    1,  470,    2, 0x08 /* Private */,
-      43,    0,  473,    2, 0x08 /* Private */,
-      44,    0,  474,    2, 0x08 /* Private */,
-      45,    0,  475,    2, 0x08 /* Private */,
-      46,    0,  476,    2, 0x08 /* Private */,
-      47,    1,  477,    2, 0x08 /* Private */,
-      48,    1,  480,    2, 0x08 /* Private */,
-      49,    1,  483,    2, 0x08 /* Private */,
-      50,    1,  486,    2, 0x08 /* Private */,
-      51,    1,  489,    2, 0x08 /* Private */,
-      52,    0,  492,    2, 0x08 /* Private */,
-      53,    0,  493,    2, 0x08 /* Private */,
-      54,    0,  494,    2, 0x08 /* Private */,
-      55,    0,  495,    2, 0x08 /* Private */,
-      56,    0,  496,    2, 0x08 /* Private */,
-      57,    0,  497,    2, 0x08 /* Private */,
-      58,    0,  498,    2, 0x08 /* Private */,
-      59,    0,  499,    2, 0x08 /* Private */,
-      60,    0,  500,    2, 0x08 /* Private */,
-      61,    0,  501,    2, 0x08 /* Private */,
-      62,    0,  502,    2, 0x08 /* Private */,
-      63,    0,  503,    2, 0x08 /* Private */,
-      64,    0,  504,    2, 0x08 /* Private */,
-      65,    0,  505,    2, 0x08 /* Private */,
-      66,    0,  506,    2, 0x08 /* Private */,
-      67,    0,  507,    2, 0x08 /* Private */,
-      68,    0,  508,    2, 0x08 /* Private */,
-      69,    0,  509,    2, 0x08 /* Private */,
-      70,    0,  510,    2, 0x08 /* Private */,
-      71,    0,  511,    2, 0x08 /* Private */,
-      72,    0,  512,    2, 0x08 /* Private */,
-      73,    0,  513,    2, 0x08 /* Private */,
-      74,    0,  514,    2, 0x08 /* Private */,
-      75,    0,  515,    2, 0x08 /* Private */,
-      76,    0,  516,    2, 0x08 /* Private */,
-      77,    0,  517,    2, 0x08 /* Private */,
-      78,    0,  518,    2, 0x08 /* Private */,
-      79,    0,  519,    2, 0x08 /* Private */,
-      80,    0,  520,    2, 0x08 /* Private */,
-      81,    0,  521,    2, 0x08 /* Private */,
-      82,    0,  522,    2, 0x08 /* Private */,
-      83,    1,  523,    2, 0x08 /* Private */,
+      26,    0,  450,    2, 0x08 /* Private */,
+      27,    0,  451,    2, 0x08 /* Private */,
+      28,    0,  452,    2, 0x08 /* Private */,
+      29,    0,  453,    2, 0x08 /* Private */,
+      30,    0,  454,    2, 0x08 /* Private */,
+      31,    0,  455,    2, 0x08 /* Private */,
+      32,    0,  456,    2, 0x08 /* Private */,
+      33,    0,  457,    2, 0x08 /* Private */,
+      34,    1,  458,    2, 0x08 /* Private */,
+      36,    0,  461,    2, 0x08 /* Private */,
+      37,    0,  462,    2, 0x08 /* Private */,
+      38,    0,  463,    2, 0x08 /* Private */,
+      39,    1,  464,    2, 0x08 /* Private */,
+      40,    0,  467,    2, 0x08 /* Private */,
+      41,    0,  468,    2, 0x08 /* Private */,
+      42,    0,  469,    2, 0x08 /* Private */,
+      43,    0,  470,    2, 0x08 /* Private */,
+      44,    1,  471,    2, 0x08 /* Private */,
+      45,    1,  474,    2, 0x08 /* Private */,
+      46,    1,  477,    2, 0x08 /* Private */,
+      47,    1,  480,    2, 0x08 /* Private */,
+      48,    1,  483,    2, 0x08 /* Private */,
+      49,    0,  486,    2, 0x08 /* Private */,
+      50,    0,  487,    2, 0x08 /* Private */,
+      51,    0,  488,    2, 0x08 /* Private */,
+      52,    0,  489,    2, 0x08 /* Private */,
+      53,    0,  490,    2, 0x08 /* Private */,
+      54,    0,  491,    2, 0x08 /* Private */,
+      55,    0,  492,    2, 0x08 /* Private */,
+      56,    0,  493,    2, 0x08 /* Private */,
+      57,    0,  494,    2, 0x08 /* Private */,
+      58,    0,  495,    2, 0x08 /* Private */,
+      59,    0,  496,    2, 0x08 /* Private */,
+      60,    0,  497,    2, 0x08 /* Private */,
+      61,    0,  498,    2, 0x08 /* Private */,
+      62,    0,  499,    2, 0x08 /* Private */,
+      63,    0,  500,    2, 0x08 /* Private */,
+      64,    0,  501,    2, 0x08 /* Private */,
+      65,    0,  502,    2, 0x08 /* Private */,
+      66,    0,  503,    2, 0x08 /* Private */,
+      67,    0,  504,    2, 0x08 /* Private */,
+      68,    0,  505,    2, 0x08 /* Private */,
+      69,    0,  506,    2, 0x08 /* Private */,
+      70,    0,  507,    2, 0x08 /* Private */,
+      71,    0,  508,    2, 0x08 /* Private */,
+      72,    0,  509,    2, 0x08 /* Private */,
+      73,    0,  510,    2, 0x08 /* Private */,
+      74,    0,  511,    2, 0x08 /* Private */,
+      75,    0,  512,    2, 0x08 /* Private */,
+      76,    0,  513,    2, 0x08 /* Private */,
+      77,    0,  514,    2, 0x08 /* Private */,
+      78,    0,  515,    2, 0x08 /* Private */,
+      79,    0,  516,    2, 0x08 /* Private */,
+      80,    1,  517,    2, 0x08 /* Private */,
+      81,    1,  520,    2, 0x08 /* Private */,
+      82,    1,  523,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -305,17 +304,15 @@ static const uint qt_meta_data_FluorescenceApp[] = {
     QMetaType::Void, QMetaType::Int,   11,
     QMetaType::Void, QMetaType::Int,   11,
     QMetaType::Void, QMetaType::Int,   11,
-    QMetaType::Void, QMetaType::QColor,   27,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QColor,   15,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   38,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   35,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -361,6 +358,8 @@ static const uint qt_meta_data_FluorescenceApp[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,   15,
+    QMetaType::Void, QMetaType::QPoint,    2,
+    QMetaType::Void, QMetaType::QPoint,    2,
 
        0        // eod
 };
@@ -378,9 +377,9 @@ void FluorescenceApp::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         case 4: _t->on_static_pastelrainbow_clicked(); break;
         case 5: _t->on_main_preset_clicked(); break;
         case 6: _t->on_main_custom_clicked(); break;
-        case 7: _t->on_custom_slider_r_sliderMoved((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 8: _t->on_custom_slider_g_sliderMoved((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 9: _t->on_custom_slider_b_sliderMoved((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->on_custom_slider_r_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: _t->on_custom_slider_g_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 9: _t->on_custom_slider_b_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 10: _t->on_custom_value_r_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 11: _t->on_custom_value_g_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 12: _t->on_custom_value_b_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -388,66 +387,66 @@ void FluorescenceApp::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         case 14: _t->on_custom_value_h_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 15: _t->on_custom_value_s_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 16: _t->on_custom_value_l_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 17: _t->on_custom_slider_h_sliderMoved((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 18: _t->on_custom_slider_s_sliderMoved((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 19: _t->on_custom_slider_l_sliderMoved((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 20: _t->on_custom_slider_w_sliderMoved((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 21: _t->on_custom_value_hex_colorEditingFinished((*reinterpret_cast< const QColor(*)>(_a[1]))); break;
-        case 22: _t->on_main_timesync_clicked(); break;
-        case 23: _t->on_main_message_clicked(); break;
-        case 24: _t->on_custom_color_wheel_colorSelected((*reinterpret_cast< const QColor(*)>(_a[1]))); break;
-        case 25: _t->on_dynamic_spectrum_clicked(); break;
-        case 26: _t->on_dynamic_bliss_dnc_clicked(); break;
-        case 27: _t->on_dynamic_rainbow_clicked(); break;
-        case 28: _t->on_dynamic_chase_clicked(); break;
-        case 29: _t->on_dynamic_timecode_clicked(); break;
-        case 30: _t->on_dynamic_police_clicked(); break;
-        case 31: _t->on_panel_dyn_bliss_param_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 32: _t->on_main_settings_clicked(); break;
-        case 33: _t->on_settings_td_set_clicked(); break;
-        case 34: _t->on_settings_bri_set_clicked(); break;
-        case 35: _t->on_settings_nsh_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 36: _t->on_settings_nsh_set_clicked(); break;
-        case 37: _t->on_settings_settings_default_clicked(); break;
-        case 38: _t->on_settings_settings_save_clicked(); break;
-        case 39: _t->on_settings_info_download_clicked(); break;
-        case 40: _t->on_lsettings_td_12hr_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 41: _t->on_lsettings_td_l0_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 42: _t->on_lsettings_td_intldate_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 43: _t->on_lsettings_nsh_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 44: _t->on_lsettings_nsh_scheduled_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 45: _t->on_lsettings_settings_default_clicked(); break;
-        case 46: _t->on_lsettings_settings_save_clicked(); break;
-        case 47: _t->on_lsettings_info_download_clicked(); break;
-        case 48: _t->on_timesync_button_clicked(); break;
-        case 49: _t->on_static_off_clicked(); break;
-        case 50: _t->on_static_white_clicked(); break;
-        case 51: _t->on_static_red_clicked(); break;
-        case 52: _t->on_static_warmwhite_clicked(); break;
-        case 53: _t->on_static_green_clicked(); break;
-        case 54: _t->on_static_blue_clicked(); break;
-        case 55: _t->on_static_yellow_clicked(); break;
-        case 56: _t->on_static_orange_clicked(); break;
-        case 57: _t->on_static_cyan_clicked(); break;
-        case 58: _t->on_static_magenta_clicked(); break;
-        case 59: _t->on_static_violet_clicked(); break;
-        case 60: _t->on_static_green2blue_clicked(); break;
-        case 61: _t->on_static_red2blue_clicked(); break;
-        case 62: _t->on_static_red2green_clicked(); break;
-        case 63: _t->on_panel_dyn_spectrum_set_clicked(); break;
-        case 64: _t->on_panel_dyn_bliss_set_clicked(); break;
-        case 65: _t->on_panel_dyn_rnb_set_clicked(); break;
-        case 66: _t->on_panel_dyn_chase_set_clicked(); break;
-        case 67: _t->on_panel_dyn_tcode_set_clicked(); break;
-        case 68: _t->on_panel_dyn_cop_set_clicked(); break;
-        case 69: _t->on_panel_dyn_music_set_clicked(); break;
-        case 70: _t->on_message_send_clicked(); break;
-        case 71: _t->on_lisync_sample_clicked(); break;
-        case 72: _t->on_settings_presets_en_set_clicked(); break;
-        case 73: _t->on_shuffle_set_clicked(); break;
-        case 74: _t->on_dynamic_music_clicked(); break;
-        case 75: _t->on_settings_info_update_clicked(); break;
-        case 76: _t->on_com_select_currentTextChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 17: _t->on_custom_slider_h_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 18: _t->on_custom_slider_s_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 19: _t->on_custom_slider_l_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 20: _t->on_custom_slider_w_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 21: _t->on_main_timesync_clicked(); break;
+        case 22: _t->on_main_message_clicked(); break;
+        case 23: _t->on_dynamic_spectrum_clicked(); break;
+        case 24: _t->on_dynamic_bliss_dnc_clicked(); break;
+        case 25: _t->on_dynamic_rainbow_clicked(); break;
+        case 26: _t->on_dynamic_chase_clicked(); break;
+        case 27: _t->on_dynamic_timecode_clicked(); break;
+        case 28: _t->on_dynamic_police_clicked(); break;
+        case 29: _t->on_panel_dyn_bliss_param_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 30: _t->on_main_settings_clicked(); break;
+        case 31: _t->on_settings_td_set_clicked(); break;
+        case 32: _t->on_settings_bri_set_clicked(); break;
+        case 33: _t->on_settings_nsh_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 34: _t->on_settings_nsh_set_clicked(); break;
+        case 35: _t->on_settings_settings_default_clicked(); break;
+        case 36: _t->on_settings_settings_save_clicked(); break;
+        case 37: _t->on_settings_info_download_clicked(); break;
+        case 38: _t->on_lsettings_td_12hr_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 39: _t->on_lsettings_td_l0_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 40: _t->on_lsettings_td_intldate_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 41: _t->on_lsettings_nsh_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 42: _t->on_lsettings_nsh_scheduled_enable_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 43: _t->on_lsettings_settings_default_clicked(); break;
+        case 44: _t->on_lsettings_settings_save_clicked(); break;
+        case 45: _t->on_lsettings_info_download_clicked(); break;
+        case 46: _t->on_timesync_button_clicked(); break;
+        case 47: _t->on_static_off_clicked(); break;
+        case 48: _t->on_static_white_clicked(); break;
+        case 49: _t->on_static_red_clicked(); break;
+        case 50: _t->on_static_warmwhite_clicked(); break;
+        case 51: _t->on_static_green_clicked(); break;
+        case 52: _t->on_static_blue_clicked(); break;
+        case 53: _t->on_static_yellow_clicked(); break;
+        case 54: _t->on_static_orange_clicked(); break;
+        case 55: _t->on_static_cyan_clicked(); break;
+        case 56: _t->on_static_magenta_clicked(); break;
+        case 57: _t->on_static_violet_clicked(); break;
+        case 58: _t->on_static_green2blue_clicked(); break;
+        case 59: _t->on_static_red2blue_clicked(); break;
+        case 60: _t->on_static_red2green_clicked(); break;
+        case 61: _t->on_panel_dyn_spectrum_set_clicked(); break;
+        case 62: _t->on_panel_dyn_bliss_set_clicked(); break;
+        case 63: _t->on_panel_dyn_rnb_set_clicked(); break;
+        case 64: _t->on_panel_dyn_chase_set_clicked(); break;
+        case 65: _t->on_panel_dyn_tcode_set_clicked(); break;
+        case 66: _t->on_panel_dyn_cop_set_clicked(); break;
+        case 67: _t->on_panel_dyn_music_set_clicked(); break;
+        case 68: _t->on_message_send_clicked(); break;
+        case 69: _t->on_lisync_sample_clicked(); break;
+        case 70: _t->on_settings_presets_en_set_clicked(); break;
+        case 71: _t->on_shuffle_set_clicked(); break;
+        case 72: _t->on_dynamic_music_clicked(); break;
+        case 73: _t->on_settings_info_update_clicked(); break;
+        case 74: _t->on_com_select_currentTextChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 75: _t->on_custom_color_wheel_mousePressed((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 76: _t->on_custom_color_wheel_cursor_mouseMoved((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
         default: ;
         }
     }

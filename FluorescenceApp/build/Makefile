@@ -52,107 +52,37 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../QtColorWidgets/abstract_widget_list.cpp \
-		../QtColorWidgets/bound_color_selector.cpp \
-		../QtColorWidgets/color_2d_slider.cpp \
-		../QtColorWidgets/color_delegate.cpp \
-		../QtColorWidgets/color_dialog.cpp \
-		../QtColorWidgets/color_line_edit.cpp \
-		../QtColorWidgets/color_list_widget.cpp \
-		../QtColorWidgets/color_names.cpp \
-		../QtColorWidgets/color_palette.cpp \
-		../QtColorWidgets/color_palette_model.cpp \
-		../QtColorWidgets/color_palette_widget.cpp \
-		../QtColorWidgets/color_preview.cpp \
-		../QtColorWidgets/color_selector.cpp \
-		../QtColorWidgets/color_utils.cpp \
-		../QtColorWidgets/color_wheel.cpp \
-		../QtColorWidgets/gradient_editor.cpp \
-		../QtColorWidgets/gradient_slider.cpp \
-		../QtColorWidgets/hue_slider.cpp \
-		../QtColorWidgets/swatch.cpp \
-		../clickablelabel.cpp \
+SOURCES       = ../clickablelabel.cpp \
 		../fl_app_com.cpp \
 		../fwupdatestm.cpp \
 		../main.cpp \
 		../fluorescenceapp.cpp \
+		../movablelabel.cpp \
 		../src/fl_app_colors.cpp \
 		../src/fl_app_lights.c \
 		../src/fl_app_util.c \
-		../src/fl_app_time.c qrc_color_widgets.cpp \
-		qrc_qmake_qmake_immediate.cpp \
-		moc_abstract_widget_list.cpp \
-		moc_bound_color_selector.cpp \
-		moc_color_2d_slider.cpp \
-		moc_color_delegate.cpp \
-		moc_color_dialog.cpp \
-		moc_color_line_edit.cpp \
-		moc_color_list_widget.cpp \
-		moc_color_palette.cpp \
-		moc_color_palette_model.cpp \
-		moc_color_palette_widget.cpp \
-		moc_color_preview.cpp \
-		moc_color_selector.cpp \
-		moc_color_wheel.cpp \
-		moc_gradient_editor.cpp \
-		moc_gradient_slider.cpp \
-		moc_hue_slider.cpp \
-		moc_swatch.cpp \
+		../src/fl_app_time.c qrc_qmake_qmake_immediate.cpp \
 		moc_clickablelabel.cpp \
 		moc_fl_app_com.cpp \
 		moc_fluorescenceapp.cpp \
-		moc_fwupdatestm.cpp
-OBJECTS       = abstract_widget_list.o \
-		bound_color_selector.o \
-		color_2d_slider.o \
-		color_delegate.o \
-		color_dialog.o \
-		color_line_edit.o \
-		color_list_widget.o \
-		color_names.o \
-		color_palette.o \
-		color_palette_model.o \
-		color_palette_widget.o \
-		color_preview.o \
-		color_selector.o \
-		color_utils.o \
-		color_wheel.o \
-		gradient_editor.o \
-		gradient_slider.o \
-		hue_slider.o \
-		swatch.o \
-		clickablelabel.o \
+		moc_fwupdatestm.cpp \
+		moc_movablelabel.cpp
+OBJECTS       = clickablelabel.o \
 		fl_app_com.o \
 		fwupdatestm.o \
 		main.o \
 		fluorescenceapp.o \
+		movablelabel.o \
 		fl_app_colors.o \
 		fl_app_lights.o \
 		fl_app_util.o \
 		fl_app_time.o \
-		qrc_color_widgets.o \
 		qrc_qmake_qmake_immediate.o \
-		moc_abstract_widget_list.o \
-		moc_bound_color_selector.o \
-		moc_color_2d_slider.o \
-		moc_color_delegate.o \
-		moc_color_dialog.o \
-		moc_color_line_edit.o \
-		moc_color_list_widget.o \
-		moc_color_palette.o \
-		moc_color_palette_model.o \
-		moc_color_palette_widget.o \
-		moc_color_preview.o \
-		moc_color_selector.o \
-		moc_color_wheel.o \
-		moc_gradient_editor.o \
-		moc_gradient_slider.o \
-		moc_hue_slider.o \
-		moc_swatch.o \
 		moc_clickablelabel.o \
 		moc_fl_app_com.o \
 		moc_fluorescenceapp.o \
-		moc_fwupdatestm.o
+		moc_fwupdatestm.o \
+		moc_movablelabel.o
 DIST          = /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.14.1/clang_64/mkspecs/qdevice.pri \
 		/Applications/Qt/5.14.1/clang_64/mkspecs/features/device_config.prf \
@@ -336,70 +266,19 @@ DIST          = /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.14.1/clang_64/mkspecs/features/lex.prf \
 		../../FluorescenceApp.pro ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
-		../QtColorWidgets/AbstractWidgetList \
-		../QtColorWidgets/BoundColorSelector \
-		../QtColorWidgets/ColorDelegate \
-		../QtColorWidgets/ColorDialog \
-		../QtColorWidgets/ColorListWidget \
-		../QtColorWidgets/ColorPreview \
-		../QtColorWidgets/ColorSelector \
-		../QtColorWidgets/ColorWheel \
-		../QtColorWidgets/GradientEditor \
-		../QtColorWidgets/GradientSlider \
-		../QtColorWidgets/HueSlider \
-		../QtColorWidgets/abstract_widget_list.hpp \
-		../QtColorWidgets/bound_color_selector.hpp \
-		../QtColorWidgets/color_2d_slider.hpp \
-		../QtColorWidgets/color_delegate.hpp \
-		../QtColorWidgets/color_dialog.hpp \
-		../QtColorWidgets/color_line_edit.hpp \
-		../QtColorWidgets/color_list_widget.hpp \
-		../QtColorWidgets/color_names.hpp \
-		../QtColorWidgets/color_palette.hpp \
-		../QtColorWidgets/color_palette_model.hpp \
-		../QtColorWidgets/color_palette_widget.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/color_selector.hpp \
-		../QtColorWidgets/color_utils.hpp \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		../QtColorWidgets/gradient_editor.hpp \
-		../QtColorWidgets/gradient_helper.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/hue_slider.hpp \
-		../QtColorWidgets/swatch.hpp \
-		../QtColorWidgets/ui_color_dialog.h \
-		../QtColorWidgets/ui_color_palette_widget.h \
 		../clickablelabel.h \
 		../fl_app_com.h \
 		../fluorescenceapp.h \
 		../fwupdatestm.h \
+		../movablelabel.h \
 		../src/fl_app_colors.h \
 		../src/fl_app_lights.h \
-		../src/fl_app_time.h ../QtColorWidgets/abstract_widget_list.cpp \
-		../QtColorWidgets/bound_color_selector.cpp \
-		../QtColorWidgets/color_2d_slider.cpp \
-		../QtColorWidgets/color_delegate.cpp \
-		../QtColorWidgets/color_dialog.cpp \
-		../QtColorWidgets/color_line_edit.cpp \
-		../QtColorWidgets/color_list_widget.cpp \
-		../QtColorWidgets/color_names.cpp \
-		../QtColorWidgets/color_palette.cpp \
-		../QtColorWidgets/color_palette_model.cpp \
-		../QtColorWidgets/color_palette_widget.cpp \
-		../QtColorWidgets/color_preview.cpp \
-		../QtColorWidgets/color_selector.cpp \
-		../QtColorWidgets/color_utils.cpp \
-		../QtColorWidgets/color_wheel.cpp \
-		../QtColorWidgets/gradient_editor.cpp \
-		../QtColorWidgets/gradient_slider.cpp \
-		../QtColorWidgets/hue_slider.cpp \
-		../QtColorWidgets/swatch.cpp \
-		../clickablelabel.cpp \
+		../src/fl_app_time.h ../clickablelabel.cpp \
 		../fl_app_com.cpp \
 		../fwupdatestm.cpp \
 		../main.cpp \
 		../fluorescenceapp.cpp \
+		../movablelabel.cpp \
 		../src/fl_app_colors.cpp \
 		../src/fl_app_lights.c \
 		../src/fl_app_util.c \
@@ -422,7 +301,7 @@ include /Applications/Qt/5.14.1/clang_64/mkspecs/features/mac/sdk.mk
 first: all
 ####### Build rules
 
-FluorescenceApp.app/Contents/MacOS/FluorescenceApp: ui_color_dialog.h ui_color_palette_widget.h ui_fluorescenceapp.h ui_fwupdatestm.h $(OBJECTS)  
+FluorescenceApp.app/Contents/MacOS/FluorescenceApp: ui_fluorescenceapp.h ui_fwupdatestm.h $(OBJECTS)  
 	@test -d FluorescenceApp.app/Contents/MacOS/ || mkdir -p FluorescenceApp.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -608,7 +487,6 @@ Makefile: ../FluorescenceApp.pro /Applications/Qt/5.14.1/clang_64/mkspecs/macx-c
 		/Applications/Qt/5.14.1/clang_64/mkspecs/features/yacc.prf \
 		/Applications/Qt/5.14.1/clang_64/mkspecs/features/lex.prf \
 		../FluorescenceApp.pro \
-		../QtColorWidgets/color_widgets.qrc \
 		qmake_qmake_immediate.qrc \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Resources/QtWidgets.prl \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Resources/QtGui.prl \
@@ -798,7 +676,6 @@ Makefile: ../FluorescenceApp.pro /Applications/Qt/5.14.1/clang_64/mkspecs/macx-c
 /Applications/Qt/5.14.1/clang_64/mkspecs/features/yacc.prf:
 /Applications/Qt/5.14.1/clang_64/mkspecs/features/lex.prf:
 ../FluorescenceApp.pro:
-../QtColorWidgets/color_widgets.qrc:
 qmake_qmake_immediate.qrc:
 /Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Resources/QtWidgets.prl:
 /Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Resources/QtGui.prl:
@@ -834,11 +711,11 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtColorWidgets/color_widgets.qrc qmake_qmake_immediate.qrc $(DISTDIR)/
+	$(COPY_FILE) --parents qmake_qmake_immediate.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h ../../FluorescenceV3/Commons/vfdco_config.h ../QtColorWidgets/AbstractWidgetList ../QtColorWidgets/BoundColorSelector ../QtColorWidgets/ColorDelegate ../QtColorWidgets/ColorDialog ../QtColorWidgets/ColorListWidget ../QtColorWidgets/ColorPreview ../QtColorWidgets/ColorSelector ../QtColorWidgets/ColorWheel ../QtColorWidgets/GradientEditor ../QtColorWidgets/GradientSlider ../QtColorWidgets/HueSlider ../QtColorWidgets/abstract_widget_list.hpp ../QtColorWidgets/bound_color_selector.hpp ../QtColorWidgets/color_2d_slider.hpp ../QtColorWidgets/color_delegate.hpp ../QtColorWidgets/color_dialog.hpp ../QtColorWidgets/color_line_edit.hpp ../QtColorWidgets/color_list_widget.hpp ../QtColorWidgets/color_names.hpp ../QtColorWidgets/color_palette.hpp ../QtColorWidgets/color_palette_model.hpp ../QtColorWidgets/color_palette_widget.hpp ../QtColorWidgets/color_preview.hpp ../QtColorWidgets/color_selector.hpp ../QtColorWidgets/color_utils.hpp ../QtColorWidgets/color_wheel.hpp ../QtColorWidgets/colorwidgets_global.hpp ../QtColorWidgets/gradient_editor.hpp ../QtColorWidgets/gradient_helper.hpp ../QtColorWidgets/gradient_slider.hpp ../QtColorWidgets/hue_slider.hpp ../QtColorWidgets/swatch.hpp ../QtColorWidgets/ui_color_dialog.h ../QtColorWidgets/ui_color_palette_widget.h ../clickablelabel.h ../fl_app_com.h ../fluorescenceapp.h ../fwupdatestm.h ../src/fl_app_colors.h ../src/fl_app_lights.h ../src/fl_app_time.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtColorWidgets/abstract_widget_list.cpp ../QtColorWidgets/bound_color_selector.cpp ../QtColorWidgets/color_2d_slider.cpp ../QtColorWidgets/color_delegate.cpp ../QtColorWidgets/color_dialog.cpp ../QtColorWidgets/color_line_edit.cpp ../QtColorWidgets/color_list_widget.cpp ../QtColorWidgets/color_names.cpp ../QtColorWidgets/color_palette.cpp ../QtColorWidgets/color_palette_model.cpp ../QtColorWidgets/color_palette_widget.cpp ../QtColorWidgets/color_preview.cpp ../QtColorWidgets/color_selector.cpp ../QtColorWidgets/color_utils.cpp ../QtColorWidgets/color_wheel.cpp ../QtColorWidgets/gradient_editor.cpp ../QtColorWidgets/gradient_slider.cpp ../QtColorWidgets/hue_slider.cpp ../QtColorWidgets/swatch.cpp ../clickablelabel.cpp ../fl_app_com.cpp ../fwupdatestm.cpp ../main.cpp ../fluorescenceapp.cpp ../src/fl_app_colors.cpp ../src/fl_app_lights.c ../src/fl_app_util.c ../src/fl_app_time.c $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtColorWidgets/color_dialog.ui ../QtColorWidgets/color_palette_widget.ui ../fluorescenceapp.ui ../fwupdatestm.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h ../../FluorescenceV3/Commons/vfdco_config.h ../clickablelabel.h ../fl_app_com.h ../fluorescenceapp.h ../fwupdatestm.h ../movablelabel.h ../src/fl_app_colors.h ../src/fl_app_lights.h ../src/fl_app_time.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../clickablelabel.cpp ../fl_app_com.cpp ../fwupdatestm.cpp ../main.cpp ../fluorescenceapp.cpp ../movablelabel.cpp ../src/fl_app_colors.cpp ../src/fl_app_lights.c ../src/fl_app_util.c ../src/fl_app_time.c $(DISTDIR)/
+	$(COPY_FILE) --parents ../fluorescenceapp.ui ../fwupdatestm.ui $(DISTDIR)/
 	$(COPY_FILE) --parents FluorescenceApp_en_US.ts $(DISTDIR)/
 
 
@@ -866,25 +743,22 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all: qrc_color_widgets.cpp qrc_qmake_qmake_immediate.cpp
+compiler_rcc_make_all: qrc_qmake_qmake_immediate.cpp
 compiler_rcc_clean:
-	-$(DEL_FILE) qrc_color_widgets.cpp qrc_qmake_qmake_immediate.cpp
-qrc_color_widgets.cpp: ../QtColorWidgets/color_widgets.qrc \
-		/Applications/Qt/5.14.1/clang_64/bin/rcc \
-		../QtColorWidgets/alphaback.png
-	/Applications/Qt/5.14.1/clang_64/bin/rcc -name color_widgets ../QtColorWidgets/color_widgets.qrc -o qrc_color_widgets.cpp
-
+	-$(DEL_FILE) qrc_qmake_qmake_immediate.cpp
 qrc_qmake_qmake_immediate.cpp: qmake_qmake_immediate.qrc \
 		/Applications/Qt/5.14.1/clang_64/bin/rcc \
 		../Resources/green2blue.png \
 		../Resources/red2green_alt.png \
 		../Resources/res1.jpg \
 		../Resources/rainbow_alt.png \
+		../Resources/cursor.png \
 		../Resources/red2blue1.png \
 		../Resources/res0.jpg \
 		../Resources/computer.png \
 		../Resources/pastelrainbow.png \
 		../Resources/res3.jpg \
+		../Resources/hsl_wheel.png \
 		../Resources/HXP_TN.png \
 		../Resources/res2.jpg
 	/Applications/Qt/5.14.1/clang_64/bin/rcc -name qmake_qmake_immediate qmake_qmake_immediate.qrc -o qrc_qmake_qmake_immediate.cpp
@@ -895,228 +769,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp
 	/Library/Developer/CommandLineTools/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.13 -Wall -Wextra -dM -E -o moc_predefs.h /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_abstract_widget_list.cpp moc_bound_color_selector.cpp moc_color_2d_slider.cpp moc_color_delegate.cpp moc_color_dialog.cpp moc_color_line_edit.cpp moc_color_list_widget.cpp moc_color_palette.cpp moc_color_palette_model.cpp moc_color_palette_widget.cpp moc_color_preview.cpp moc_color_selector.cpp moc_color_wheel.cpp moc_gradient_editor.cpp moc_gradient_slider.cpp moc_hue_slider.cpp moc_swatch.cpp moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp
+compiler_moc_header_make_all: moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp moc_movablelabel.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_abstract_widget_list.cpp moc_bound_color_selector.cpp moc_color_2d_slider.cpp moc_color_delegate.cpp moc_color_dialog.cpp moc_color_line_edit.cpp moc_color_list_widget.cpp moc_color_palette.cpp moc_color_palette_model.cpp moc_color_palette_widget.cpp moc_color_preview.cpp moc_color_selector.cpp moc_color_wheel.cpp moc_gradient_editor.cpp moc_gradient_slider.cpp moc_hue_slider.cpp moc_swatch.cpp moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp
-moc_abstract_widget_list.cpp: ../QtColorWidgets/abstract_widget_list.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QSignalMapper \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qsignalmapper.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/abstract_widget_list.hpp -o moc_abstract_widget_list.cpp
-
-moc_bound_color_selector.cpp: ../QtColorWidgets/bound_color_selector.hpp \
-		../QtColorWidgets/color_selector.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/bound_color_selector.hpp -o moc_bound_color_selector.cpp
-
-moc_color_2d_slider.cpp: ../QtColorWidgets/color_2d_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_2d_slider.hpp -o moc_color_2d_slider.cpp
-
-moc_color_delegate.cpp: ../QtColorWidgets/color_delegate.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QAbstractItemDelegate \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qabstractitemdelegate.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_delegate.hpp -o moc_color_delegate.cpp
-
-moc_color_dialog.cpp: ../QtColorWidgets/color_dialog.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_dialog.hpp -o moc_color_dialog.cpp
-
-moc_color_line_edit.cpp: ../QtColorWidgets/color_line_edit.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_line_edit.hpp -o moc_color_line_edit.cpp
-
-moc_color_list_widget.cpp: ../QtColorWidgets/color_list_widget.hpp \
-		../QtColorWidgets/abstract_widget_list.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QSignalMapper \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qsignalmapper.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_list_widget.hpp -o moc_color_list_widget.cpp
-
-moc_color_palette.cpp: ../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette.hpp -o moc_color_palette.cpp
-
-moc_color_palette_model.cpp: ../QtColorWidgets/color_palette_model.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QAbstractListModel \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qabstractitemmodel.h \
-		../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette_model.hpp -o moc_color_palette_model.cpp
-
-moc_color_palette_widget.cpp: ../QtColorWidgets/color_palette_widget.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_palette_model.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QAbstractListModel \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qabstractitemmodel.h \
-		../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		../QtColorWidgets/swatch.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPen \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_palette_widget.hpp -o moc_color_palette_widget.cpp
-
-moc_color_preview.cpp: ../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_preview.hpp -o moc_color_preview.cpp
-
-moc_color_selector.cpp: ../QtColorWidgets/color_selector.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_selector.hpp -o moc_color_selector.cpp
-
-moc_color_wheel.cpp: ../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/color_wheel.hpp -o moc_color_wheel.cpp
-
-moc_gradient_editor.cpp: ../QtColorWidgets/gradient_editor.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/gradient_editor.hpp -o moc_gradient_editor.cpp
-
-moc_gradient_slider.cpp: ../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/gradient_slider.hpp -o moc_gradient_slider.cpp
-
-moc_hue_slider.cpp: ../QtColorWidgets/hue_slider.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/hue_slider.hpp -o moc_hue_slider.cpp
-
-moc_swatch.cpp: ../QtColorWidgets/swatch.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPen \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
-		../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		moc_predefs.h \
-		/Applications/Qt/5.14.1/clang_64/bin/moc
-	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../QtColorWidgets/swatch.hpp -o moc_swatch.cpp
-
+	-$(DEL_FILE) moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdatestm.cpp moc_movablelabel.cpp
 moc_clickablelabel.cpp: ../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
@@ -1189,97 +844,34 @@ moc_fwupdatestm.cpp: ../fwupdatestm.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
 	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fwupdatestm.h -o moc_fwupdatestm.cpp
 
+moc_movablelabel.cpp: ../movablelabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
+		moc_predefs.h \
+		/Applications/Qt/5.14.1/clang_64/bin/moc
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../movablelabel.h -o moc_movablelabel.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_color_dialog.h ui_color_palette_widget.h ui_fluorescenceapp.h ui_fwupdatestm.h
+compiler_uic_make_all: ui_fluorescenceapp.h ui_fwupdatestm.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_color_dialog.h ui_color_palette_widget.h ui_fluorescenceapp.h ui_fwupdatestm.h
-ui_color_dialog.h: ../QtColorWidgets/color_dialog.ui \
-		/Applications/Qt/5.14.1/clang_64/bin/uic \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/hue_slider.hpp \
-		../QtColorWidgets/color_line_edit.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h
-	/Applications/Qt/5.14.1/clang_64/bin/uic ../QtColorWidgets/color_dialog.ui -o ui_color_dialog.h
-
-ui_color_palette_widget.h: ../QtColorWidgets/color_palette_widget.ui \
-		/Applications/Qt/5.14.1/clang_64/bin/uic \
-		../QtColorWidgets/swatch.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPen \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
-		../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp
-	/Applications/Qt/5.14.1/clang_64/bin/uic ../QtColorWidgets/color_palette_widget.ui -o ui_color_palette_widget.h
-
+	-$(DEL_FILE) ui_fluorescenceapp.h ui_fwupdatestm.h
 ui_fluorescenceapp.h: ../fluorescenceapp.ui \
 		/Applications/Qt/5.14.1/clang_64/bin/uic \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/hue_slider.hpp \
-		../QtColorWidgets/color_line_edit.hpp \
 		../clickablelabel.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
+		../movablelabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
@@ -1304,384 +896,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-abstract_widget_list.o: ../QtColorWidgets/abstract_widget_list.cpp ../QtColorWidgets/abstract_widget_list.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QSignalMapper \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qsignalmapper.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QToolButton \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qtoolbutton.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o abstract_widget_list.o ../QtColorWidgets/abstract_widget_list.cpp
-
-bound_color_selector.o: ../QtColorWidgets/bound_color_selector.cpp ../QtColorWidgets/bound_color_selector.hpp \
-		../QtColorWidgets/color_selector.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o bound_color_selector.o ../QtColorWidgets/bound_color_selector.cpp
-
-color_2d_slider.o: ../QtColorWidgets/color_2d_slider.cpp ../QtColorWidgets/color_2d_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_utils.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmath.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QImage \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qimage.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
+clickablelabel.o: ../clickablelabel.cpp /Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QResizeEvent
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_2d_slider.o ../QtColorWidgets/color_2d_slider.cpp
-
-color_delegate.o: ../QtColorWidgets/color_delegate.cpp ../QtColorWidgets/color_delegate.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QAbstractItemDelegate \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qabstractitemdelegate.h \
-		../QtColorWidgets/color_selector.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/color_dialog.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_delegate.o ../QtColorWidgets/color_delegate.cpp
-
-color_dialog.o: ../QtColorWidgets/color_dialog.cpp ../QtColorWidgets/color_dialog.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		../QtColorWidgets/ui_color_dialog.h \
-		../QtColorWidgets/color_line_edit.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		../QtColorWidgets/gradient_slider.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/hue_slider.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDropEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDesktopWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdesktopwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QMimeData \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QScreen \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qscreen.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_dialog.o ../QtColorWidgets/color_dialog.cpp
-
-color_line_edit.o: ../QtColorWidgets/color_line_edit.cpp ../QtColorWidgets/color_line_edit.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDropEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QMimeData \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QStyleOptionFrame \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qstyleoption.h \
-		../QtColorWidgets/color_utils.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmath.h \
-		../QtColorWidgets/color_names.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_line_edit.o ../QtColorWidgets/color_line_edit.cpp
-
-color_list_widget.o: ../QtColorWidgets/color_list_widget.cpp ../QtColorWidgets/color_list_widget.hpp \
-		../QtColorWidgets/abstract_widget_list.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QSignalMapper \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qsignalmapper.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_selector.hpp \
-		../QtColorWidgets/color_preview.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_list_widget.o ../QtColorWidgets/color_list_widget.cpp
-
-color_names.o: ../QtColorWidgets/color_names.cpp ../QtColorWidgets/color_names.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QRegularExpression \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qregularexpression.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_names.o ../QtColorWidgets/color_names.cpp
-
-color_palette.o: ../QtColorWidgets/color_palette.cpp ../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QFile \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qfile.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QTextStream \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qtextstream.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QHash \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qhash.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QFileInfo \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qfileinfo.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_palette.o ../QtColorWidgets/color_palette.cpp
-
-color_palette_model.o: ../QtColorWidgets/color_palette_model.cpp ../QtColorWidgets/color_palette_model.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QAbstractListModel \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qabstractitemmodel.h \
-		../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QDir \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qdir.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QList \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qlist.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QRegularExpression \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qregularexpression.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_palette_model.o ../QtColorWidgets/color_palette_model.cpp
-
-color_palette_widget.o: ../QtColorWidgets/color_palette_widget.cpp ../QtColorWidgets/color_palette_widget.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_palette_model.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QAbstractListModel \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qabstractitemmodel.h \
-		../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		../QtColorWidgets/swatch.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPen \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
-		../QtColorWidgets/ui_color_palette_widget.h \
-		../QtColorWidgets/color_dialog.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/color_wheel.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QInputDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qinputdialog.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QImageReader \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qimagereader.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_palette_widget.o ../QtColorWidgets/color_palette_widget.cpp
-
-color_preview.o: ../QtColorWidgets/color_preview.cpp ../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QStylePainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qstylepainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QStyleOptionFrame \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qstyleoption.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDrag \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qdrag.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QMimeData \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmimedata.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_preview.o ../QtColorWidgets/color_preview.cpp
-
-color_selector.o: ../QtColorWidgets/color_selector.cpp ../QtColorWidgets/color_selector.hpp \
-		../QtColorWidgets/color_preview.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/color_dialog.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDropEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QMimeData \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmimedata.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_selector.o ../QtColorWidgets/color_selector.cpp
-
-color_utils.o: ../QtColorWidgets/color_utils.cpp ../QtColorWidgets/color_utils.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmath.h \
-		../QtColorWidgets/colorwidgets_global.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_utils.o ../QtColorWidgets/color_utils.cpp
-
-color_wheel.o: ../QtColorWidgets/color_wheel.cpp ../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_utils.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmath.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QLineF \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qline.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QMimeData \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmimedata.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o color_wheel.o ../QtColorWidgets/color_wheel.cpp
-
-gradient_editor.o: ../QtColorWidgets/gradient_editor.cpp ../QtColorWidgets/gradient_editor.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QStyleOptionSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qstyleoption.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QLinearGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDrag \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qdrag.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QMimeData \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDropEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
-		../QtColorWidgets/gradient_helper.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gradient_editor.o ../QtColorWidgets/gradient_editor.cpp
-
-gradient_slider.o: ../QtColorWidgets/gradient_slider.cpp ../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QStyleOptionSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qstyleoption.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QLinearGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QDebug \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qdebug.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gradient_slider.o ../QtColorWidgets/gradient_slider.cpp
-
-hue_slider.o: ../QtColorWidgets/hue_slider.cpp ../QtColorWidgets/hue_slider.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hue_slider.o ../QtColorWidgets/hue_slider.cpp
-
-swatch.o: ../QtColorWidgets/swatch.cpp ../QtColorWidgets/swatch.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPen \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
-		../QtColorWidgets/color_palette.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QString \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QVector \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qvector.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QObject \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QPair \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qpair.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPixmap \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QPainter \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QKeyEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDrag \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qdrag.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QMimeData \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qmimedata.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDropEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDragEnterEvent \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QStyleOption \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qstyleoption.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QToolTip \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qtooltip.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o swatch.o ../QtColorWidgets/swatch.cpp
-
-clickablelabel.o: ../clickablelabel.cpp ../clickablelabel.h \
+		../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
@@ -1751,25 +968,11 @@ fwupdatestm.o: ../fwupdatestm.cpp ../fluorescenceapp.h \
 		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
 		../../FluorescenceV3/Commons/vfdco_util.h \
 		ui_fluorescenceapp.h \
-		../QtColorWidgets/color_line_edit.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		../QtColorWidgets/color_preview.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/hue_slider.hpp \
 		../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
 		../fwupdatestm.h \
@@ -1843,25 +1046,11 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
 		../../FluorescenceV3/Commons/vfdco_util.h \
 		ui_fluorescenceapp.h \
-		../QtColorWidgets/color_line_edit.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		../QtColorWidgets/color_preview.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/hue_slider.hpp \
 		../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
 		../fwupdatestm.h \
@@ -1876,6 +1065,17 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QScreen \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qscreen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fluorescenceapp.o ../fluorescenceapp.cpp
+
+movablelabel.o: ../movablelabel.cpp /Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		../movablelabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o movablelabel.o ../movablelabel.cpp
 
 fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
@@ -1906,25 +1106,11 @@ fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
 		../src/fl_app_lights.h \
 		../../FluorescenceV3/Commons/vfdco_util.h \
 		ui_fluorescenceapp.h \
-		../QtColorWidgets/color_line_edit.hpp \
-		../QtColorWidgets/colorwidgets_global.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QColor \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
-		../QtColorWidgets/color_preview.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		../QtColorWidgets/color_wheel.hpp \
-		../QtColorWidgets/gradient_slider.hpp \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QSlider \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QGradient \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
-		../QtColorWidgets/hue_slider.hpp \
 		../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fl_app_colors.o ../src/fl_app_colors.cpp
@@ -1943,62 +1129,8 @@ fl_app_util.o: ../src/fl_app_util.c ../../FluorescenceV3/Commons/vfdco_util.h
 fl_app_time.o: ../src/fl_app_time.c ../src/fl_app_time.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o fl_app_time.o ../src/fl_app_time.c
 
-qrc_color_widgets.o: qrc_color_widgets.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_color_widgets.o qrc_color_widgets.cpp
-
 qrc_qmake_qmake_immediate.o: qrc_qmake_qmake_immediate.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qmake_qmake_immediate.o qrc_qmake_qmake_immediate.cpp
-
-moc_abstract_widget_list.o: moc_abstract_widget_list.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_abstract_widget_list.o moc_abstract_widget_list.cpp
-
-moc_bound_color_selector.o: moc_bound_color_selector.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_bound_color_selector.o moc_bound_color_selector.cpp
-
-moc_color_2d_slider.o: moc_color_2d_slider.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_2d_slider.o moc_color_2d_slider.cpp
-
-moc_color_delegate.o: moc_color_delegate.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_delegate.o moc_color_delegate.cpp
-
-moc_color_dialog.o: moc_color_dialog.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_dialog.o moc_color_dialog.cpp
-
-moc_color_line_edit.o: moc_color_line_edit.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_line_edit.o moc_color_line_edit.cpp
-
-moc_color_list_widget.o: moc_color_list_widget.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_list_widget.o moc_color_list_widget.cpp
-
-moc_color_palette.o: moc_color_palette.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_palette.o moc_color_palette.cpp
-
-moc_color_palette_model.o: moc_color_palette_model.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_palette_model.o moc_color_palette_model.cpp
-
-moc_color_palette_widget.o: moc_color_palette_widget.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_palette_widget.o moc_color_palette_widget.cpp
-
-moc_color_preview.o: moc_color_preview.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_preview.o moc_color_preview.cpp
-
-moc_color_selector.o: moc_color_selector.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_selector.o moc_color_selector.cpp
-
-moc_color_wheel.o: moc_color_wheel.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_color_wheel.o moc_color_wheel.cpp
-
-moc_gradient_editor.o: moc_gradient_editor.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gradient_editor.o moc_gradient_editor.cpp
-
-moc_gradient_slider.o: moc_gradient_slider.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gradient_slider.o moc_gradient_slider.cpp
-
-moc_hue_slider.o: moc_hue_slider.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_hue_slider.o moc_hue_slider.cpp
-
-moc_swatch.o: moc_swatch.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_swatch.o moc_swatch.cpp
 
 moc_clickablelabel.o: moc_clickablelabel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_clickablelabel.o moc_clickablelabel.cpp
@@ -2011,6 +1143,9 @@ moc_fluorescenceapp.o: moc_fluorescenceapp.cpp
 
 moc_fwupdatestm.o: moc_fwupdatestm.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_fwupdatestm.o moc_fwupdatestm.cpp
+
+moc_movablelabel.o: moc_movablelabel.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_movablelabel.o moc_movablelabel.cpp
 
 ####### Install
 

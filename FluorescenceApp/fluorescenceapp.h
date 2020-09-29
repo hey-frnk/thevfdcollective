@@ -17,7 +17,6 @@ QT_END_NAMESPACE
 class FluorescenceApp : public QMainWindow
 {
     Q_OBJECT
-
 public:
     FluorescenceApp(QWidget *parent = nullptr);
     ~FluorescenceApp();
@@ -39,11 +38,11 @@ private slots:
 
     void on_main_custom_clicked();
 
-    void on_custom_slider_r_sliderMoved(int position);
+    void on_custom_slider_r_valueChanged(int position);
 
-    void on_custom_slider_g_sliderMoved(int position);
+    void on_custom_slider_g_valueChanged(int position);
 
-    void on_custom_slider_b_sliderMoved(int position);
+    void on_custom_slider_b_valueChanged(int position);
 
     void on_custom_value_r_valueChanged(int arg1);
 
@@ -59,21 +58,21 @@ private slots:
 
     void on_custom_value_l_valueChanged(int arg1);
 
-    void on_custom_slider_h_sliderMoved(int position);
+    void on_custom_slider_h_valueChanged(int position);
 
-    void on_custom_slider_s_sliderMoved(int position);
+    void on_custom_slider_s_valueChanged(int position);
 
-    void on_custom_slider_l_sliderMoved(int position);
+    void on_custom_slider_l_valueChanged(int position);
 
-    void on_custom_slider_w_sliderMoved(int position);
+    void on_custom_slider_w_valueChanged(int position);
 
-    void on_custom_value_hex_colorEditingFinished(const QColor &color);
+    // void on_custom_value_hex_colorEditingFinished(const QColor &color);
 
     void on_main_timesync_clicked();
 
     void on_main_message_clicked();
 
-    void on_custom_color_wheel_colorSelected(const QColor &arg1);
+    // void on_custom_color_wheel_colorSelected(const QColor &arg1);
 
     void on_dynamic_spectrum_clicked();
 
@@ -179,6 +178,10 @@ private slots:
 
     void on_com_select_currentTextChanged(const QString &arg1);
 
+    void on_custom_color_wheel_mousePressed(const QPoint &);
+
+    void on_custom_color_wheel_cursor_mouseMoved(const QPoint &);
+
 public:
     Ui::FluorescenceApp *ui;
 
@@ -209,6 +212,8 @@ public:
     void clear_lights_instance();
     void custom_color_update_all_sliders(bool);
     void error_message(QString message, QMessageBox::Icon i);
+    float capture_hue(const QPoint&);
+    QPoint map_hue(float angle);
 
     void preset_ambient_light_update(uint_fast8_t counter);
 };

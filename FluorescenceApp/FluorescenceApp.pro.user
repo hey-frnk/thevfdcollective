@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.2, 2020-09-24T11:04:42. -->
+<!-- Written by QtCreator 4.11.2, 2020-09-30T00:23:33. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -302,15 +302,16 @@
     </valuelist>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/FluorescenceApp.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/FluorescenceApp.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">FluorescenceApp2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/HARDWARECOP/Documents/CCPP/FluorescenceApp/FluorescenceApp.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/HARDWARECOP/Documents/CCPP/FluorescenceApp/FluorescenceApp.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseDyldImageSuffix">false</value>
-    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">false</value>
+    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
