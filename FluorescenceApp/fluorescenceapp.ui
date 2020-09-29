@@ -301,7 +301,7 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/rainbow_alt.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/rainbow_alt.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_pastelrainbow">
@@ -320,7 +320,7 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/pastelrainbow.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/pastelrainbow.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_red2green">
@@ -339,7 +339,7 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/red2green_alt.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/red2green_alt.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_green2blue">
@@ -358,7 +358,7 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/green2blue.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/green2blue.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_red2blue">
@@ -377,7 +377,7 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_magenta">
@@ -2545,7 +2545,7 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/computer.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/computer.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="lisync_sample">
@@ -2567,7 +2567,7 @@ color: rgb(255, 255, 255);</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/res0.jpg</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/res0.jpg</pixmap>
        </property>
       </widget>
       <widget class="QLabel" name="lisync_intro">
@@ -3618,7 +3618,7 @@ randomly out of:</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/cursor.png</pixmap>
+       <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/cursor.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -3637,7 +3637,7 @@ randomly out of:</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc">:/Resources/hsl_wheel.png</pixmap>
+       <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/hsl_wheel.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -6024,11 +6024,11 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_main_control</zorder>
    <zorder>panel_message</zorder>
    <zorder>panel_lsettings</zorder>
-   <zorder>panel_welcome</zorder>
    <zorder>panel_settings</zorder>
    <zorder>panel_timesync</zorder>
    <zorder>panel_presets</zorder>
    <zorder>panel_custom_colors</zorder>
+   <zorder>panel_welcome</zorder>
   </widget>
  </widget>
  <customwidgets>
@@ -6051,7 +6051,7 @@ color: rgb(255, 255, 255);</string>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../GitHub/thevfdcollective/FluorescenceApp/build/qmake_qmake_immediate.qrc"/>
+  <include location="build/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>

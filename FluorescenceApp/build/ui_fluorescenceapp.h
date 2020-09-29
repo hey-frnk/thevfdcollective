@@ -1835,11 +1835,11 @@ public:
         panel_main_control->raise();
         panel_message->raise();
         panel_lsettings->raise();
-        panel_welcome->raise();
         panel_settings->raise();
         panel_timesync->raise();
         panel_presets->raise();
         panel_custom_colors->raise();
+        panel_welcome->raise();
 
         retranslateUi(FluorescenceApp);
 
