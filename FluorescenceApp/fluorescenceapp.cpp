@@ -615,16 +615,14 @@ void FluorescenceApp::on_settings_nsh_enable_stateChanged(int arg1)
 
 void FluorescenceApp::on_settings_nsh_set_clicked()
 {
-    vfdco_time_t t_start = {
-        .h = (uint8_t)ui->settings_nsh_start->time().hour(),
-        .m = (uint8_t)ui->settings_nsh_start->time().minute(),
-        .s = 0
-    };
-    vfdco_time_t t_stop = {
-        .h = (uint8_t)ui->settings_nsh_stop->time().hour(),
-        .m = (uint8_t)ui->settings_nsh_stop->time().minute(),
-        .s = 0
-    };
+    vfdco_time_t t_start;
+    t_start.h = (uint8_t)ui->settings_nsh_start->time().hour();
+    t_start.m = (uint8_t)ui->settings_nsh_start->time().minute();
+    t_start.s = 0;
+    vfdco_time_t t_stop;
+    t_stop.h = (uint8_t)ui->settings_nsh_stop->time().hour();
+    t_stop.m = (uint8_t)ui->settings_nsh_stop->time().minute();
+    t_stop.s = 0;
     global_com_instance->transfer_night_shift(t_start, t_stop);
 }
 
@@ -671,16 +669,14 @@ void FluorescenceApp::on_lsettings_nsh_enable_stateChanged(int arg1)
 
 void FluorescenceApp::on_lsettings_nsh_scheduled_enable_stateChanged(int arg1)
 {
-    vfdco_time_t t_start = {
-        .h = (uint8_t)ui->settings_nsh_start->time().hour(),
-        .m = (uint8_t)ui->settings_nsh_start->time().minute(),
-        .s = 0
-    };
-    vfdco_time_t t_stop = {
-        .h = (uint8_t)ui->settings_nsh_stop->time().hour(),
-        .m = (uint8_t)ui->settings_nsh_stop->time().minute(),
-        .s = 0
-    };
+    vfdco_time_t t_start;
+    t_start.h = (uint8_t)ui->settings_nsh_start->time().hour();
+    t_start.m = (uint8_t)ui->settings_nsh_start->time().minute();
+    t_start.s = 0;
+    vfdco_time_t t_stop;
+    t_stop.h = (uint8_t)ui->settings_nsh_stop->time().hour();
+    t_stop.m = (uint8_t)ui->settings_nsh_stop->time().minute();
+    t_stop.s = 0;
     if(arg1 == Qt::Checked) global_com_instance->legacy_transfer_night_shift(t_start, t_stop, 1, 42);
     else global_com_instance->legacy_transfer_night_shift(t_start, t_stop, 0, 42);
 }
@@ -693,16 +689,16 @@ void FluorescenceApp::on_timesync_button_clicked()
 {
     QTime ct = QTime::currentTime();
     QDate cd = QDate::currentDate();
-    vfdco_time_t v_time = {
-        .h = (uint8_t)ct.hour(),
-        .m = (uint8_t)ct.minute(),
-        .s = (uint8_t)ct.second()
-    };
-    vfdco_date_t v_date = {
-        .y = (uint8_t)(cd.year() % 100),
-        .m = (uint8_t)cd.month(),
-        .d = (uint8_t)cd.day()
-    };
+    vfdco_time_t v_time;
+    v_time.h = (uint8_t)ct.hour();
+    v_time.m = (uint8_t)ct.minute();
+    v_time.s = (uint8_t)ct.second();
+
+    vfdco_date_t v_date;
+    v_date.y = (uint8_t)(cd.year() % 100);
+    v_date.m = (uint8_t)cd.month();
+    v_date.d = (uint8_t)cd.day();
+
     QString resp = global_com_instance->transfer_time_date(v_time, v_date);
     if(resp.contains(QStringLiteral("Time Sy"))) ui->timesync_intro_2->setText("Sync successful.");
 }
