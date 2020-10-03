@@ -96,6 +96,8 @@ struct LED_Color_Fader {
   hsl_t             color_1, color_2;
   int8_t            chain_hue_diff;   // Constant difference of hue between chained pixels
   uint8_t           fade_pos;         // Fade position (substate)
+  // Shuffle: [0b E777 0666 0555 0444 0333 0222 0111 0000]. 0...9: LED0-LED5 (... LED7). E: Enable
+  uint32_t          shuffle;          // Shuffle position
 };
 /**
  * @brief Constructor of LED_Color_Fader class
@@ -105,9 +107,11 @@ void LED_Color_Fader_Init(
   uint_fast32_t             timer_interval, // Timer interval
   hsl_t                     color_1,        // Color 1
   hsl_t                     color_2,        // Color 2. Set all components to 0 for single color fade
-  int8_t                    chain_hue_diff  // Hue difference between chained pixels
+  int8_t                    chain_hue_diff, // Hue difference between chained pixels
+  uint8_t                   shuffle_enable  // Enable order shuffling
 );
 LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
+void LED_Color_Fader_Shuffle(struct LED_Color_Fader *self);
 
 /** Begin of:
  * @tableofcontents SECTION_LIGHT_PATTERN

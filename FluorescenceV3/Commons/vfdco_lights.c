@@ -97,7 +97,8 @@ static LED_COLOR_STATE_t _LED_Color_Fader_NextColorLinSingle(struct LED_Color_Fa
     for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
       int16_t i_h = i * self->chain_hue_diff;
       uint32_t target_color = _led_color_hsl2rgb(self->color_1.h + i_h, self->color_1.s, self->color_1.l);
-      vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+      if(self->shuffle & (uint32_t)0x80000000) vfdco_clr_set_RGB(self->shuffle >> (i << 2) & 0x0F, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+      else vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
     }
     vfdco_clr_render();
   }
@@ -149,7 +150,8 @@ static LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_Fader *s
     for(int8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
       uint8_t _h = i_h + (i - (CONFIG_NUM_PIXELS >> 1)) * (int8_t)self->chain_hue_diff; // i-th hue difference (delta), intended angle overflow
       uint32_t target_color = _led_color_hsl2rgb(_h, i_s, i_l);  // Get target RGB
-      vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+      if(self->shuffle & (uint32_t)0x80000000) vfdco_clr_set_RGB(self->shuffle >> (i << 2) & 0x0F, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
+      else vfdco_clr_set_RGB(i, (target_color >> 8) & 0xFF, (target_color >> 16) & 0xFF, target_color & 0xFF);
     }
     // Write to LEDs, physically
     vfdco_clr_render();
@@ -158,14 +160,27 @@ static LED_COLOR_STATE_t _LED_Color_Fader_NextColorLin(struct LED_Color_Fader *s
 }
 
 /**
+ * @brief  Implementation of method LED_Color_Fader::Shuffle for multiple peaks
+**/
+void LED_Color_Fader_Shuffle(struct LED_Color_Fader *self) {
+  // Inline shuffle
+  for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS - 1; ++i) {
+    uint_fast8_t j = i + vfdco_util_random(7) / (127 / (CONFIG_NUM_PIXELS - i) + 1); // Randomize 7 bit > NUM_PIXELS
+    uint_fast8_t swap_tmp = self->shuffle >> (j << 2) & 0x0F; // Nibble swapping
+    self->shuffle = (self->shuffle & ~(0xF << (j << 2))) | ((self->shuffle >> (i << 2) & 0x0F) << (j << 2));
+    self->shuffle = (self->shuffle & ~(0xF << (i << 2))) | (swap_tmp << (i << 2));
+  }
+}
+
+/**
  * @brief  Implementation of constructor LED_Color_Fader::LED_Color_Fader
 **/
-void LED_Color_Fader_Init(
-  struct LED_Color_Fader    *f,             // Instance
+void LED_Color_Fader_Init(struct LED_Color_Fader    *f,             // Instance
   uint_fast32_t             timer_interval, // Timer interval
   hsl_t                     color_1,        // Color 1
   hsl_t                     color_2,        // Color 2. Set all components to 0 for single color fade
-  int8_t                    chain_hue_diff  // Hue difference between chained pixels
+  int8_t                    chain_hue_diff, // Hue difference between chained pixels
+  uint8_t                   shuffle_enable  // Enable order shuffling
 ) {
   f->timer = Time_Event_Init(timer_interval);
 
@@ -173,6 +188,9 @@ void LED_Color_Fader_Init(
   f->color_1 = color_1;
   f->color_2 = color_2;
   f->chain_hue_diff = chain_hue_diff;
+
+  // Shuffle set enable bit, which is the MSB, and OR with 4 bit binary count up (magic number)
+  f->shuffle = ((uint32_t)shuffle_enable << 31) | 0x76543210;
 
   // Method mapping
   LED_Color_Fader_Next = (color_2.h == 0 && color_2.s == 0 && color_2.l == 0) ? _LED_Color_Fader_NextColorLinSingle : _LED_Color_Fader_NextColorLin;
@@ -580,7 +598,7 @@ void Light_Pattern_Spectrum_Init(struct Light_Pattern_Spectrum *self, uint8_t *s
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
     HSL_Init(0, settings[LIGHT_PATTERN_SETTING_SPECTRUM_saturation], settings[LIGHT_PATTERN_SETTING_SPECTRUM_lightness]),
     HSL_Init(0, 0, 0),
-    0                            // Hue difference between chained pixels
+    0, 0                         // Hue difference between chained pixels, shuffle 0
   );
 
   self->spectrum_fader.state = FADER_STATE_ACTIVE;
@@ -676,7 +694,8 @@ void Light_Pattern_Rainbow_Init(struct Light_Pattern_Rainbow *self, uint8_t *set
     CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
     HSL_Init(0, settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation], LIGHTNESS_H),
     HSL_Init(0, 0, 0),
-    (int8_t)settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] // Hue difference between chained pixels
+    (int8_t)settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff], // Hue difference between chained pixels
+    0
   );
 
   self->rainbow_fader.state = FADER_STATE_ACTIVE;
@@ -1079,6 +1098,7 @@ static void _Light_Pattern_MomentsOfBliss_Update(Light_Pattern *unsafe_self) {
       }
     }
     if(!base->chain_hue_diff) {
+      LED_Color_Fader_Shuffle(&self->base_fader);
       uint8_t huediff_max = MomentsOfBliss_Colors[self->moment][6] >> 4;
       self->undrift_huediff_max = vfdco_util_random(huediff_max) - ((1 << huediff_max) >> 1) + 1;
     }
@@ -1091,7 +1111,7 @@ static void _Light_Pattern_MomentsOfBliss_Remoment(struct Light_Pattern_MomentsO
     CONFIG_MOMENTSOFBLISS_FADE_SPEED,  // Timer interval
     HSL_Init(MomentsOfBliss_Colors[self->moment][0], MomentsOfBliss_Colors[self->moment][1], MomentsOfBliss_Colors[self->moment][2]),
     HSL_Init(MomentsOfBliss_Colors[self->moment][3], MomentsOfBliss_Colors[self->moment][4], MomentsOfBliss_Colors[self->moment][5]),
-    0
+    0, 1 // Shuffle enable!
   );
 
   self->undrift_max = vfdco_util_random(2) + 2; // some number between 2 and 5 lol
