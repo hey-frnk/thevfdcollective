@@ -202,7 +202,7 @@ public:
 };
 
 namespace Ui {
-    class FWUpdateSTM: public Ui_FWUpdateSTM {};
+    class FWUpdate: public Ui_FWUpdateSTM {};
 } // namespace Ui
 
 QT_END_NAMESPACE

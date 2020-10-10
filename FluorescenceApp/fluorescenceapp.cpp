@@ -1,7 +1,7 @@
 #include "fluorescenceapp.h"
 #include "ui_fluorescenceapp.h"
 
-#include "fwupdatestm.h"
+#include "fwupdate.h"
 
 #include "src/fl_app_time.h"
 #include "src/fl_app_lights.h"
@@ -484,6 +484,42 @@ void FluorescenceApp::on_custom_value_h_valueChanged(int arg1) { on_custom_slide
 void FluorescenceApp::on_custom_value_s_valueChanged(int arg1) { on_custom_slider_s_valueChanged(arg1); }
 void FluorescenceApp::on_custom_value_l_valueChanged(int arg1) { on_custom_slider_l_valueChanged(arg1); }
 
+float FluorescenceApp::capture_hue(const QPoint &pt) {
+    // Check if in wheel
+    auto posx = pt.x() - ui->custom_color_wheel->height() / 2,
+         posy = pt.y() - ui->custom_color_wheel->width() / 2;
+
+    // Into angle and magnitude
+    float pos_angle = std::atan2f((float)posx, (float)-posy) / M_PI * 180.0;
+    if(pos_angle < 0.0f) pos_angle = 360.0 + pos_angle;
+    return pos_angle;
+}
+
+QPoint FluorescenceApp::map_hue(float angle) {
+    constexpr float radius = 127.0f;
+    float angle_rad = angle / 180.0f * M_PI;
+    return QPoint(radius + radius * std::cosf(angle_rad), radius + radius * std::sinf(angle_rad)) - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2);
+}
+
+void FluorescenceApp::on_custom_color_wheel_mousePressed(const QPoint &pt)
+{
+    if (!signalsBlocked()) {
+        on_custom_color_wheel_cursor_mouseMoved(pt);
+        ui->custom_color_wheel_cursor->move(pt - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2));
+    }
+}
+
+void FluorescenceApp::on_custom_color_wheel_cursor_mouseMoved(const QPoint &pt)
+{
+    if (!signalsBlocked()) {
+        float position = capture_hue(pt);
+        QColor new_color;
+        new_color.setHslF((double)position / 360.0f, custom_global_color.hslSaturationF(), custom_global_color.lightnessF());
+        custom_global_color = new_color;
+        custom_color_update_all_sliders(1);
+    }
+}
+
 void FluorescenceApp::clear_lights_instance() {
     Container_Light_Pattern_Clear(&global_lights_instance);
 }
@@ -846,47 +882,18 @@ void FluorescenceApp::on_lisync_sample_clicked()
 
 void FluorescenceApp::on_settings_info_update_clicked()
 {
-    /* FWUpdateSTM fw_update_dialog(this, FIRMWARE_UPDATE_STM);
+    FWUpdate fw_update_dialog(this, ui->settings_info_fw->text(), ui->com_select->currentText());
+    // FWUpdateSTM fw_update_dialog(this, "v3.9222s");
     fw_update_dialog.setModal(true);
     fw_update_dialog.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     fw_update_dialog.setFixedSize(321, fw_update_dialog.height());
     fw_update_dialog.setWindowTitle("Fluorescence Updater");
-    fw_update_dialog.exec(); */
-    global_com_instance->transfer_dfu_request();
+    fw_update_dialog.exec();
+    // global_com_instance->transfer_dfu_request();
 }
 
-float FluorescenceApp::capture_hue(const QPoint &pt) {
-    // Check if in wheel
-    auto posx = pt.x() - ui->custom_color_wheel->height() / 2,
-         posy = pt.y() - ui->custom_color_wheel->width() / 2;
-
-    // Into angle and magnitude
-    float pos_angle = std::atan2f((float)posx, (float)-posy) / M_PI * 180.0;
-    if(pos_angle < 0.0f) pos_angle = 360.0 + pos_angle;
-    return pos_angle;
-}
-
-QPoint FluorescenceApp::map_hue(float angle) {
-    constexpr float radius = 127.0f;
-    float angle_rad = angle / 180.0f * M_PI;
-    return QPoint(radius + radius * std::cosf(angle_rad), radius + radius * std::sinf(angle_rad)) - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2);
-};
-
-void FluorescenceApp::on_custom_color_wheel_mousePressed(const QPoint &pt)
+void FluorescenceApp::fw_update_manual_disconnect()
 {
-    if (!signalsBlocked()) {
-        on_custom_color_wheel_cursor_mouseMoved(pt);
-        ui->custom_color_wheel_cursor->move(pt - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2));
-    }
+    on_com_connect_clicked();
 }
 
-void FluorescenceApp::on_custom_color_wheel_cursor_mouseMoved(const QPoint &pt)
-{
-    if (!signalsBlocked()) {
-        float position = capture_hue(pt);
-        QColor new_color;
-        new_color.setHslF((double)position / 360.0f, custom_global_color.hslSaturationF(), custom_global_color.lightnessF());
-        custom_global_color = new_color;
-        custom_color_update_all_sliders(1);
-    }
-}

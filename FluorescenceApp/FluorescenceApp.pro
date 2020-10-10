@@ -21,7 +21,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     clickablelabel.cpp \
     fl_app_com.cpp \
-    fwupdatestm.cpp \
+    fwupdate.cpp \
     main.cpp \
     fluorescenceapp.cpp \
     movablelabel.cpp \
@@ -36,7 +36,7 @@ HEADERS += \
     clickablelabel.h \
     fl_app_com.h \
     fluorescenceapp.h \
-    fwupdatestm.h \
+    fwupdate.h \
     movablelabel.h \
     src/fl_app_colors.h \
     src/fl_app_lights.h \

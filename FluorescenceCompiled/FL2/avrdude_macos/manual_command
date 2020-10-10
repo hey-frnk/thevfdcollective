@@ -1,0 +1,4 @@
+For manual flashing, this works.
+While -P is the port, -U is the update file
+
+./avrdude -C avrdude.conf -v -p atmega328p -c arduino -P "/dev/cu.wchusbserial1410" -b115200 -D -U flash:w:"../3_1a.flupdate":i

@@ -6024,11 +6024,11 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_main_control</zorder>
    <zorder>panel_message</zorder>
    <zorder>panel_lsettings</zorder>
-   <zorder>panel_settings</zorder>
    <zorder>panel_timesync</zorder>
    <zorder>panel_presets</zorder>
    <zorder>panel_custom_colors</zorder>
    <zorder>panel_welcome</zorder>
+   <zorder>panel_settings</zorder>
   </widget>
  </widget>
  <customwidgets>
