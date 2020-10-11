@@ -5,6 +5,7 @@
 #include <QProcess>
 
 typedef enum {
+  FIRMWARE_UPDATE_UNDETERMINED,
   FIRMWARE_UPDATE_STM,
   FIRMWARE_UPDATE_AVR
 } fw_updater_t;
@@ -39,6 +40,8 @@ private slots:
     void UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
+    void execute_updater(QString command, fw_updater_t updater_type);
+
     Ui::FWUpdate *ui;
     fw_updater_t fw_updater_type_detected;
     QString fw_updater_path_detected, fw_updater_firmware_file_detected;

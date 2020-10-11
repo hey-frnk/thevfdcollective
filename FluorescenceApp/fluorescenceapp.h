@@ -215,6 +215,9 @@ public:
     float capture_hue(const QPoint&);
     QPoint map_hue(float angle);
 
+    void fw_update_manual_disconnect();
+    void fw_update_manual_dfu_request();
+
     void preset_ambient_light_update(uint_fast8_t counter);
 };
 #endif // FLUORESCENCEAPP_H

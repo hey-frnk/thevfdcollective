@@ -15,13 +15,13 @@ const QString fw_text_2_stm = "dfu-util";
 const QString fw_text_2_avr = "avrdude";
 const QString fw_text_3 = " that helps flashing the new firmware to your device.\nWhen clicking <Update>, be aware these steps will be performed to flash the new firmware to your device:\n";
 const QString fw_text_4_stm = "(1) Fluorescence is put into DFU mode. The clock display will show ""dFU"".\n\
-(2) The flashing process starts, when a console window ""dfu-util"" appears. While dfu-util is running, YOUR DEVICE NEEDS TO BE CONNECTED TO POWER AND TO YOUR COMPUTER, OR ELSE YOU WILL BRICK IT. DO NOT UNPLUG EITHER. Once the flashing process is done, dfu-util will close automatically.\n\
-(3) Meanwhile, Fluorescence App will restart.\n\
-(4) To restart the device, disconnect it from power and reconnect.";
+(2) The flashing process starts, when ""dfu-util"" appears. While dfu-util is running, YOUR DEVICE NEEDS TO BE CONNECTED TO POWER AND TO YOUR COMPUTER, OR ELSE YOU WILL BRICK IT. DO NOT UNPLUG EITHER. Once the flashing process is done, dfu-util will notify you and you can close the updater.\n\
+(3) Meanwhile, Fluorescence App disconnects from Fluorescence.\n\
+(4) If the device doesn't restart automatically, press the round shaped restart button in the back.";
 const QString fw_text_4_avr = "(1) Fluorescence is put into DFU mode. The clock display will show ""dFU"".\n\
-(2) The flashing process starts, when a console window ""avrdude"" appears. While avrdude is running, YOUR DEVICE NEEDS TO BE CONNECTED TO POWER AND TO YOUR COMPUTER, OR ELSE YOU WILL BRICK IT. DO NOT UNPLUG EITHER. Once the flashing process is done, avrdude will close automatically.\n\
-(3) Meanwhile, Fluorescence App will restart.\n\
-(4) The clock will restart automatically. In case it does not restart automatically, either press the reset button on the device, or disconnect and reconnect it from power.";
+(2) The flashing process starts, when ""avrdude"" appears. While avrdude is running, YOUR DEVICE NEEDS TO BE CONNECTED TO POWER AND TO YOUR COMPUTER, OR ELSE YOU WILL BRICK IT. DO NOT UNPLUG EITHER. Once the flashing process is done, avrdude will notify you and you can close the updater.\n\
+(3) Meanwhile, Fluorescence App disconnects from Fluorescence.\n\
+(4) If the device doesn't restart automatically, press the round shaped restart button in the back.";
 const QString fw_text_5 = "By ticking this box I confirm that\n\
 (1) I have read through the information above carefully\n\
 (2) I have acknowledged that The VFD Collective DOES NOT\n\
@@ -187,44 +187,52 @@ void FWUpdate::on_updater_update_clicked()
     } else {
         ui->updater_update->setEnabled(false);
         ui->updater_run->setEnabled(false);
+
+        QString updater_command;
+
         if(fw_updater_type_detected == FIRMWARE_UPDATE_STM) {
-            fl_app_inst->error_message("Hi i'm dfu-util", QMessageBox::Icon::Warning);
+            // fl_app_inst->error_message("Hi i'm dfu-util", QMessageBox::Icon::Warning);
+            QString updater_command_path;
+
+            #ifdef Q_OS_MACOS // macOS specific code
+            updater_command_path = fw_updater_path_detected + "dfu_util_macos" + QDir::separator() + "dfu-util";
+            #endif
+            #ifdef Q_OS_WIN64 // Windows specific code
+            updater_command_path = fw_updater_path_detected + "dfu_util_macos" + QDir::separator() + "dfu-util";
+            #endif
+
+            updater_command = updater_command_path + " -a 0 -s 0x08000000:leave -D \"" + fw_updater_firmware_file_detected + "\" -v -v -t 2048";
+
+            fl_app_inst->fw_update_manual_dfu_request();
         } else if(fw_updater_type_detected == FIRMWARE_UPDATE_AVR){
-            // macOS specific code
-            #ifdef Q_OS_MACOS
-            QString updater_command_path_macos = fw_updater_path_detected + "avrdude_macos" + QDir::separator() + "avrdude";
-            QString updater_command_path_conf = "\"" + fw_updater_path_detected + "avrdude_macos" + QDir::separator() + "avrdude.conf" + "\"";
-            QString updater_command_port_name = "\"/dev/" + port_name + "\"";
+            QString updater_command_path;
+            QString updater_command_path_conf;
+            QString updater_command_port_name;
 
-            QString updater_command = updater_command_path_macos + " -C " + updater_command_path_conf + " -v -p atmega328p -c arduino -P " + updater_command_port_name + " -b115200 -D -U flash:w:\"" + fw_updater_firmware_file_detected + "\":i";
-            qDebug().noquote() << updater_command;
-
-            // Start flashing!
-            fl_app_inst->fw_update_manual_disconnect();
-
-            QProcess *p = new QProcess(this);
-            if(p) {
-              p->setEnvironment(QProcess::systemEnvironment());
-              p->setProcessChannelMode(QProcess::MergedChannels);
-
-              p->start(updater_command);
-              p->waitForStarted();
-
-              ui->updater_info_text->setPlainText("AVRDUDE IS UPDATING FLUORESCENCE\n");
-              ui->updater_update->setText("Updating...");
-
-              connect(p, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOut()));
-              connect(p, SIGNAL(readyReadStandardError()), this, SLOT(ReadErr()));
-              connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(UpdateFinished(int, QProcess::ExitStatus)));
-            }
+            #ifdef Q_OS_MACOS // macOS specific code
+            updater_command_path = fw_updater_path_detected + "avrdude_macos" + QDir::separator() + "avrdude";
+            updater_command_path_conf = "\"" + fw_updater_path_detected + "avrdude_macos" + QDir::separator() + "avrdude.conf" + "\"";
+            updater_command_port_name = "\"/dev/" + port_name + "\"";
             #endif
-            #ifdef Q_OS_WIN64
-            QString updater_command_path_win64 = "." + fw_updater_path_detected + "avrdude_win64" + QDir::separator() + "avrdude.exe";
+            #ifdef Q_OS_WIN64 // Windows specific code
+            updater_command_path = fw_updater_path_detected + "avrdude_win64" + QDir::separator() + "avrdude.exe";
+            updater_command_path_conf = "\"" + fw_updater_path_detected + "avrdude_win64" + QDir::separator() + "avrdude.conf" + "\"";
+            updater_command_port_name = "\"" + port_name + "\"";
             #endif
-            // Windows specific code
+
+            updater_command = updater_command_path + " -C " + updater_command_path_conf + " -v -p atmega328p -c arduino -P " + updater_command_port_name + " -b115200 -D -U flash:w:\"" + fw_updater_firmware_file_detected + "\":i -Ulfuse:v:0x00:m";
+        } else {
+            return;
         }
 
-        return;
+        // Updater command compiled
+        qDebug().noquote() << updater_command;
+
+        // Start flashing!
+        fl_app_inst->fw_update_manual_disconnect();
+        QThread::msleep(500);
+
+        execute_updater(updater_command, fw_updater_type_detected);
     }
 }
 
@@ -241,11 +249,40 @@ void FWUpdate::ReadErr()
 
 void FWUpdate::UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     Q_UNUSED(exitStatus);
+    QString filename = fw_updater_path_detected + QDir::separator() + QDateTime::currentDateTime().toString() + "_update.log";
+    QFile file(filename);
+    if (file.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream << ui->updater_info_text->toPlainText() << endl;
+    }
+
     if(exitCode == 0) {
-        ui->updater_info_text->setPlainText("Update finished. Click 'finish' to close the updater!");
+        ui->updater_info_text->appendPlainText("Update finished. Click 'finish' to close the updater!");
     } else {
-        ui->updater_info_text->setPlainText("avrdude reported an error code: (" + QString("%1").arg(exitCode) + "). Click 'finish' to close the updater!");
+        ui->updater_info_text->appendPlainText("Updater reported a code: (" + QString("%1").arg(exitCode) + "). Click 'finish' to close the updater!");
     }
     ui->updater_update->setText("Close");
     ui->updater_update->setEnabled(true);
+}
+
+void FWUpdate::execute_updater(QString command, fw_updater_t updater_type)
+{
+    if(updater_type == FIRMWARE_UPDATE_UNDETERMINED) return;
+
+    QProcess *p = new QProcess(this);
+    if(p) {
+      p->setEnvironment(QProcess::systemEnvironment());
+      p->setProcessChannelMode(QProcess::MergedChannels);
+
+      p->start(command);
+      p->waitForStarted();
+
+      if(updater_type == FIRMWARE_UPDATE_AVR) ui->updater_info_text->setPlainText(fw_text_2_avr + " is updating Fluorescence\n");
+      else if(updater_type == FIRMWARE_UPDATE_STM) ui->updater_info_text->setPlainText(fw_text_2_stm + " is updating Fluorescence\n");
+      ui->updater_update->setText("Updating...");
+
+      connect(p, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOut()));
+      connect(p, SIGNAL(readyReadStandardError()), this, SLOT(ReadErr()));
+      connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(UpdateFinished(int, QProcess::ExitStatus)));
+    }
 }

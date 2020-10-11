@@ -1,0 +1,7 @@
+For manual flashing, this works.
+
+Updating with 3_0s.bin:
+./dfu-util -a 0 -s 0x08000000 -D 3_0s.bin -v -v -t 2048
+
+Reading to output1.bin
+./dfu-util -a 0 -U output1.bin -s 0x08000000:131072 -v -t 2048

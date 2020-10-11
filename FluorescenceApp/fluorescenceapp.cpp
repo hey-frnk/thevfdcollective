@@ -883,7 +883,7 @@ void FluorescenceApp::on_lisync_sample_clicked()
 void FluorescenceApp::on_settings_info_update_clicked()
 {
     FWUpdate fw_update_dialog(this, ui->settings_info_fw->text(), ui->com_select->currentText());
-    // FWUpdateSTM fw_update_dialog(this, "v3.9222s");
+    // FWUpdate fw_update_dialog(this, "v3.9222s", ui->com_select->currentText());
     fw_update_dialog.setModal(true);
     fw_update_dialog.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     fw_update_dialog.setFixedSize(321, fw_update_dialog.height());
@@ -895,5 +895,10 @@ void FluorescenceApp::on_settings_info_update_clicked()
 void FluorescenceApp::fw_update_manual_disconnect()
 {
     on_com_connect_clicked();
+}
+
+void FluorescenceApp::fw_update_manual_dfu_request()
+{
+    global_com_instance->transfer_dfu_request();
 }
 
