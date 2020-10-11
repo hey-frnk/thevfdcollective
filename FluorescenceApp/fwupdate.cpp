@@ -1,7 +1,7 @@
-#include "fluorescenceapp.h"
-#include "ui_fluorescenceapp.h"
-#include "fwupdate.h"
 #include "ui_fwupdatestm.h"
+#include "fwupdate.h"
+#include "ui_fluorescenceapp.h"
+#include "fluorescenceapp.h"
 
 #include <QFileDialog>
 #include <QLayout>

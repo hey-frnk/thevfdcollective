@@ -20,7 +20,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_FWUpdateSTM
+class Ui_FWUpdate
 {
 public:
     QWidget *welcome;
@@ -41,12 +41,12 @@ public:
     QPlainTextEdit *updater_info_text;
     QPushButton *updater_update;
 
-    void setupUi(QDialog *FWUpdateSTM)
+    void setupUi(QDialog *FWUpdate)
     {
-        if (FWUpdateSTM->objectName().isEmpty())
-            FWUpdateSTM->setObjectName(QString::fromUtf8("FWUpdateSTM"));
-        FWUpdateSTM->resize(801, 370);
-        welcome = new QWidget(FWUpdateSTM);
+        if (FWUpdate->objectName().isEmpty())
+            FWUpdate->setObjectName(QString::fromUtf8("FWUpdate"));
+        FWUpdate->resize(801, 370);
+        welcome = new QWidget(FWUpdate);
         welcome->setObjectName(QString::fromUtf8("welcome"));
         welcome->setGeometry(QRect(0, 0, 321, 371));
         welcome->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
@@ -76,7 +76,7 @@ public:
         welcome_intro_2->setGeometry(QRect(10, 240, 301, 31));
         welcome_intro_2->setFont(font1);
         welcome_intro_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
-        updater = new QWidget(FWUpdateSTM);
+        updater = new QWidget(FWUpdate);
         updater->setObjectName(QString::fromUtf8("updater"));
         updater->setGeometry(QRect(0, 0, 801, 371));
         updater->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
@@ -173,36 +173,36 @@ public:
         updater_update->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
 
-        retranslateUi(FWUpdateSTM);
+        retranslateUi(FWUpdate);
 
-        QMetaObject::connectSlotsByName(FWUpdateSTM);
+        QMetaObject::connectSlotsByName(FWUpdate);
     } // setupUi
 
-    void retranslateUi(QDialog *FWUpdateSTM)
+    void retranslateUi(QDialog *FWUpdate)
     {
-        FWUpdateSTM->setWindowTitle(QCoreApplication::translate("FWUpdateSTM", "Dialog", nullptr));
-        welcome_next->setText(QCoreApplication::translate("FWUpdateSTM", "Sure. Next please!", nullptr));
-        welcome_intro_1->setText(QCoreApplication::translate("FWUpdateSTM", "Hey there. I'm here to help you updating the\n"
+        FWUpdate->setWindowTitle(QCoreApplication::translate("FWUpdate", "Dialog", nullptr));
+        welcome_next->setText(QCoreApplication::translate("FWUpdate", "Sure. Next please!", nullptr));
+        welcome_intro_1->setText(QCoreApplication::translate("FWUpdate", "Hey there. I'm here to help you updating the\n"
 "firmware of your Fluorescence clock. Let's go!", nullptr));
         welcome_pic->setText(QString());
-        welcome_intro_2->setText(QCoreApplication::translate("FWUpdateSTM", "Is Fluorescence is powered on and connected?", nullptr));
-        updater_intro->setText(QCoreApplication::translate("FWUpdateSTM", "Step 2:", nullptr));
-        updater_curr->setText(QCoreApplication::translate("FWUpdateSTM", "v9.99s", nullptr));
-        updater_intro_curr->setText(QCoreApplication::translate("FWUpdateSTM", "That's the current version of Fluorescence.", nullptr));
-        updater_new->setText(QCoreApplication::translate("FWUpdateSTM", "v11.11s", nullptr));
-        updater_intro_new->setText(QCoreApplication::translate("FWUpdateSTM", "That's the version that we'll update to.", nullptr));
-        updater_run->setText(QCoreApplication::translate("FWUpdateSTM", "Looks great. Next!", nullptr));
+        welcome_intro_2->setText(QCoreApplication::translate("FWUpdate", "Is Fluorescence is powered on and connected?", nullptr));
+        updater_intro->setText(QCoreApplication::translate("FWUpdate", "Step 2:", nullptr));
+        updater_curr->setText(QCoreApplication::translate("FWUpdate", "v9.99s", nullptr));
+        updater_intro_curr->setText(QCoreApplication::translate("FWUpdate", "That's the current version of Fluorescence.", nullptr));
+        updater_new->setText(QCoreApplication::translate("FWUpdate", "v11.11s", nullptr));
+        updater_intro_new->setText(QCoreApplication::translate("FWUpdate", "That's the version that we'll update to.", nullptr));
+        updater_run->setText(QCoreApplication::translate("FWUpdate", "Looks great. Next!", nullptr));
         updater_agree->setText(QString());
-        updater_run_text->setText(QCoreApplication::translate("FWUpdateSTM", "Information about the firmware update process", nullptr));
-        updater_agree_text->setText(QCoreApplication::translate("FWUpdateSTM", "Updater Agree Text", nullptr));
-        updater_info_text->setPlainText(QCoreApplication::translate("FWUpdateSTM", "Plain Text", nullptr));
-        updater_update->setText(QCoreApplication::translate("FWUpdateSTM", "Update", nullptr));
+        updater_run_text->setText(QCoreApplication::translate("FWUpdate", "Information about the firmware update process", nullptr));
+        updater_agree_text->setText(QCoreApplication::translate("FWUpdate", "Updater Agree Text", nullptr));
+        updater_info_text->setPlainText(QCoreApplication::translate("FWUpdate", "Plain Text", nullptr));
+        updater_update->setText(QCoreApplication::translate("FWUpdate", "Update", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class FWUpdate: public Ui_FWUpdateSTM {};
+    class FWUpdate: public Ui_FWUpdate {};
 } // namespace Ui
 
 QT_END_NAMESPACE

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FWUpdateSTM</class>
- <widget class="QDialog" name="FWUpdateSTM">
+ <class>FWUpdate</class>
+ <widget class="QDialog" name="FWUpdate">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -84,7 +84,7 @@ firmware of your Fluorescence clock. Let's go!</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/HXP_TN.png</pixmap>
+     <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/HXP_TN.png</pixmap>
     </property>
    </widget>
    <widget class="QLabel" name="welcome_intro_2">
@@ -413,7 +413,7 @@ color: rgb(255, 255, 255);</string>
   </widget>
  </widget>
  <resources>
-  <include location="build/qmake_qmake_immediate.qrc"/>
+  <include location="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>

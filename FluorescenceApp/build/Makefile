@@ -840,6 +840,8 @@ moc_fluorescenceapp.cpp: ../fluorescenceapp.h \
 moc_fwupdate.cpp: ../fwupdate.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QProcess \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qprocess.h \
 		moc_predefs.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
 	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fwupdate.h -o moc_fwupdate.cpp
@@ -979,6 +981,8 @@ fwupdate.o: ../fwupdate.cpp ../fluorescenceapp.h \
 		../fwupdate.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QProcess \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qprocess.h \
 		ui_fwupdatestm.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
@@ -1058,6 +1062,8 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		../fwupdate.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QProcess \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qprocess.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QGraphicsEllipseItem \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
