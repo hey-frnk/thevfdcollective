@@ -62,6 +62,7 @@ void Time_Event_Reset(time_event_t *input) {
 }
 
 unsigned char Time_Event_Update(time_event_t *input) {
+  (void)input;
   // lel this is always true in simulation
   return 1;
 }
