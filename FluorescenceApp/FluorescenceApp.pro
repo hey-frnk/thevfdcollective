@@ -65,6 +65,8 @@ RESOURCES += \
     Resources/res1.jpg \
     Resources/res2.jpg \
     Resources/res3.jpg \
-    Resources/HXP_TN.png \
     Resources/hsl_wheel.png \
-    Resources/cursor.png
+    Resources/cursor.png \
+    Resources/fl2_usb.jpg \
+    Resources/fl3_usb.jpg
+

@@ -5427,6 +5427,11 @@ color: rgb(255, 255, 255);</string>
 Info</string>
      </property>
     </widget>
+    <zorder>main_message</zorder>
+    <zorder>main_timesync</zorder>
+    <zorder>main_settings</zorder>
+    <zorder>main_preset</zorder>
+    <zorder>main_custom</zorder>
    </widget>
    <widget class="QWidget" name="panel_lsettings" native="true">
     <property name="geometry">
@@ -5495,7 +5500,7 @@ Info</string>
      </widget>
      <widget class="QCheckBox" name="lsettings_td_l0_enable">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -5521,7 +5526,7 @@ Info</string>
      </widget>
      <widget class="QCheckBox" name="lsettings_td_intldate_enable">
       <property name="enabled">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
@@ -5750,9 +5755,9 @@ Info</string>
      <property name="geometry">
       <rect>
        <x>360</x>
-       <y>170</y>
+       <y>120</y>
        <width>371</width>
-       <height>171</height>
+       <height>231</height>
       </rect>
      </property>
      <property name="font">
@@ -5795,7 +5800,7 @@ Info</string>
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>110</y>
+        <y>170</y>
         <width>171</width>
         <height>51</height>
        </rect>
@@ -5932,7 +5937,7 @@ color: rgb(255, 255, 255);</string>
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>110</y>
+        <y>170</y>
         <width>171</width>
         <height>51</height>
        </rect>
@@ -5951,6 +5956,32 @@ color: rgb(255, 255, 255);</string>
 Latest Firmware</string>
       </property>
      </widget>
+     <widget class="QLabel" name="lsettings_info_notice">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>351</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>.AppleSystemUIFont</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(128, 0, 128);</string>
+      </property>
+      <property name="text">
+       <string>You are using an outdated version of firmware on
+Fluorescence. Firmware version 3.0 is available.
+Download the latest firmware and click on 
+'firmware update' to update to the latest version!</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="lsettings_settings">
      <property name="geometry">
@@ -5958,7 +5989,7 @@ Latest Firmware</string>
        <x>370</x>
        <y>20</y>
        <width>361</width>
-       <height>131</height>
+       <height>81</height>
       </rect>
      </property>
      <property name="font">
@@ -5978,7 +6009,7 @@ Latest Firmware</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>40</y>
+        <y>30</y>
         <width>171</width>
         <height>51</height>
        </rect>
@@ -6000,7 +6031,7 @@ color: rgb(255, 255, 255);</string>
       <property name="geometry">
        <rect>
         <x>190</x>
-        <y>40</y>
+        <y>30</y>
         <width>171</width>
         <height>51</height>
        </rect>
@@ -6019,16 +6050,20 @@ color: rgb(255, 255, 255);</string>
       </property>
      </widget>
     </widget>
+    <zorder>lsettings_td</zorder>
+    <zorder>lsettings_nsh</zorder>
+    <zorder>lsettings_settings</zorder>
+    <zorder>lsettings_info</zorder>
    </widget>
    <zorder>com_group</zorder>
    <zorder>panel_main_control</zorder>
    <zorder>panel_message</zorder>
-   <zorder>panel_lsettings</zorder>
    <zorder>panel_timesync</zorder>
-   <zorder>panel_presets</zorder>
-   <zorder>panel_custom_colors</zorder>
    <zorder>panel_welcome</zorder>
+   <zorder>panel_presets</zorder>
    <zorder>panel_settings</zorder>
+   <zorder>panel_custom_colors</zorder>
+   <zorder>panel_lsettings</zorder>
   </widget>
  </widget>
  <customwidgets>

@@ -110,17 +110,19 @@ void fl_app_com::transfer_serial1(uint8_t *clr_arr)
     transfer_serial(clr_arr, 1);
 }
 
-void fl_app_com::transfer_light_pattern(uint8_t instance, uint8_t param0, uint8_t param1)
+void fl_app_com::transfer_light_pattern(light_pattern_instance_t instance, uint8_t param0, uint8_t param1)
 {
     clear_buffer();
     if(!is_legacy_protocol) {
         set_command_byte(0x04);
-        buf_tx[COM_PROTOCOL_CONTROL_OFFSET] = instance;
+        buf_tx[COM_PROTOCOL_CONTROL_OFFSET] = (uint8_t)instance;
         buf_tx[COM_PROTOCOL_PARAM0_OFFSET] = param0;
         buf_tx[COM_PROTOCOL_PARAM1_OFFSET] = param1;
     } else {
         set_command_byte(0x20);
-        buf_tx[COM_PROTOCOL_CONTROL_OFFSET] = instance;
+        uint8_t remapped_instance = remap_light_pattern_legacy(instance);
+        if(remapped_instance == 0xFF) return;
+        buf_tx[COM_PROTOCOL_CONTROL_OFFSET] = remapped_instance;
         buf_tx[COM_PROTOCOL_PARAM0_OFFSET] = param0;
     }
     transfer();
@@ -452,8 +454,9 @@ void fl_app_com::determine_legacy()
     // Try if port is legacy
     buf_tx = new uint8_t[BUF_TX_SIZE_LEGACY];
     _transfer = &fl_app_com::legacy_transfer;
+    is_legacy_protocol = true;
     QString fw_str = transfer_clock_control(COM_PROTOCOL_FW_VERSION_REQ);
-    // qDebug() << "FW_STR: " << fw_str;
+    qDebug() << "FW_STR: " << fw_str;
     if(fw_str.at(0) == "v" && fw_str.at(1) == "2") {
         // Legacy protocol!
         is_legacy_protocol = true;
@@ -465,17 +468,32 @@ void fl_app_com::determine_legacy()
         _transfer = &fl_app_com::regular_transfer;
 
         // qDebug() << "Testing regular protocol";
+        is_legacy_protocol = false;
         QString fw_str = transfer_clock_control(COM_PROTOCOL_FW_VERSION_REQ);
         // qDebug() << "FW_STR: " << fw_str;
 
         if(fw_str.at(0) == "3" && fw_str.at(1) == ".") {
-            is_legacy_protocol = false;
+            // is_legacy_protocol = false;
             status = FL_APP_COM_STATUS_OK;
         } else {
-            is_legacy_protocol = false;
-            status = FL_APP_COM_STATUS_OK;
-            // status = FL_APP_COM_STATUS_CONNECTION_FAILED;
+            // is_legacy_protocol = false;
+            // status = FL_APP_COM_STATUS_OK;
+            status = FL_APP_COM_STATUS_CONNECTION_FAILED;
         }
+    }
+}
+
+uint8_t fl_app_com::remap_light_pattern_legacy(light_pattern_instance_t instance)
+{
+    switch(instance) {
+        case LIGHT_PATTERN_STATIC: return 0x01; break;
+        case LIGHT_PATTERN_SPECTRUM: return 0x02; break;
+        case LIGHT_PATTERN_RAINBOW: return 0x03; break;
+        case LIGHT_PATTERN_CHASE: return 0x04; break;
+        case LIGHT_PATTERN_TIME_CODE: return 0x05; break;
+        case LIGHT_PATTERN_MUSIC: return 0x06; break;
+        case LIGHT_PATTERN_COP: return 0x07; break;
+        default: return 0xFF; break;
     }
 }
 
@@ -547,7 +565,7 @@ void fl_app_com::regular_transfer()
 void fl_app_com::legacy_transfer()
 {
     buf_tx[0] = 0x23;
-    buf_tx[BUF_TX_SIZE - 1] = 0x24;
+    buf_tx[BUF_TX_SIZE_LEGACY - 1] = 0x24;
 
     if(is_bluetooth_communication) {
         QThread::msleep(250); // A little wait

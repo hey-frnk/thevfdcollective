@@ -297,6 +297,7 @@ public:
     QLabel *lsettings_info_app_t;
     QLabel *lsettings_info_app;
     QPushButton *lsettings_info_download;
+    QLabel *lsettings_info_notice;
     QGroupBox *lsettings_settings;
     QPushButton *lsettings_settings_default;
     QPushButton *lsettings_settings_save;
@@ -1693,6 +1694,11 @@ public:
         main_settings->setFont(font2);
         main_settings->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
+        main_message->raise();
+        main_timesync->raise();
+        main_settings->raise();
+        main_preset->raise();
+        main_custom->raise();
         panel_lsettings = new QWidget(centralwidget);
         panel_lsettings->setObjectName(QString::fromUtf8("panel_lsettings"));
         panel_lsettings->setGeometry(QRect(10, 120, 741, 371));
@@ -1711,13 +1717,13 @@ public:
         lsettings_td_12hr_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         lsettings_td_l0_enable = new QCheckBox(lsettings_td);
         lsettings_td_l0_enable->setObjectName(QString::fromUtf8("lsettings_td_l0_enable"));
-        lsettings_td_l0_enable->setEnabled(false);
+        lsettings_td_l0_enable->setEnabled(true);
         lsettings_td_l0_enable->setGeometry(QRect(0, 60, 221, 20));
         lsettings_td_l0_enable->setFont(font1);
         lsettings_td_l0_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         lsettings_td_intldate_enable = new QCheckBox(lsettings_td);
         lsettings_td_intldate_enable->setObjectName(QString::fromUtf8("lsettings_td_intldate_enable"));
-        lsettings_td_intldate_enable->setEnabled(false);
+        lsettings_td_intldate_enable->setEnabled(true);
         lsettings_td_intldate_enable->setGeometry(QRect(0, 90, 221, 20));
         lsettings_td_intldate_enable->setFont(font1);
         lsettings_td_intldate_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
@@ -1768,7 +1774,7 @@ public:
         lsettings_nsh_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         lsettings_info = new QGroupBox(panel_lsettings);
         lsettings_info->setObjectName(QString::fromUtf8("lsettings_info"));
-        lsettings_info->setGeometry(QRect(360, 170, 371, 171));
+        lsettings_info->setGeometry(QRect(360, 120, 371, 231));
         lsettings_info->setFont(font1);
         lsettings_info->setFlat(true);
         lsettings_info_hw_t = new QLabel(lsettings_info);
@@ -1778,7 +1784,7 @@ public:
         lsettings_info_hw_t->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         lsettings_info_update = new QPushButton(lsettings_info);
         lsettings_info_update->setObjectName(QString::fromUtf8("lsettings_info_update"));
-        lsettings_info_update->setGeometry(QRect(200, 110, 171, 51));
+        lsettings_info_update->setGeometry(QRect(200, 170, 171, 51));
         lsettings_info_update->setFont(font2);
         lsettings_info_update->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
@@ -1809,37 +1815,46 @@ public:
         lsettings_info_app->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         lsettings_info_download = new QPushButton(lsettings_info);
         lsettings_info_download->setObjectName(QString::fromUtf8("lsettings_info_download"));
-        lsettings_info_download->setGeometry(QRect(10, 110, 171, 51));
+        lsettings_info_download->setGeometry(QRect(10, 170, 171, 51));
         lsettings_info_download->setFont(font2);
         lsettings_info_download->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
+        lsettings_info_notice = new QLabel(lsettings_info);
+        lsettings_info_notice->setObjectName(QString::fromUtf8("lsettings_info_notice"));
+        lsettings_info_notice->setGeometry(QRect(10, 100, 351, 71));
+        lsettings_info_notice->setFont(font1);
+        lsettings_info_notice->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         lsettings_settings = new QGroupBox(panel_lsettings);
         lsettings_settings->setObjectName(QString::fromUtf8("lsettings_settings"));
-        lsettings_settings->setGeometry(QRect(370, 20, 361, 131));
+        lsettings_settings->setGeometry(QRect(370, 20, 361, 81));
         lsettings_settings->setFont(font1);
         lsettings_settings->setFlat(true);
         lsettings_settings_default = new QPushButton(lsettings_settings);
         lsettings_settings_default->setObjectName(QString::fromUtf8("lsettings_settings_default"));
-        lsettings_settings_default->setGeometry(QRect(0, 40, 171, 51));
+        lsettings_settings_default->setGeometry(QRect(0, 30, 171, 51));
         lsettings_settings_default->setFont(font2);
         lsettings_settings_default->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
         lsettings_settings_save = new QPushButton(lsettings_settings);
         lsettings_settings_save->setObjectName(QString::fromUtf8("lsettings_settings_save"));
-        lsettings_settings_save->setGeometry(QRect(190, 40, 171, 51));
+        lsettings_settings_save->setGeometry(QRect(190, 30, 171, 51));
         lsettings_settings_save->setFont(font2);
         lsettings_settings_save->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
+        lsettings_td->raise();
+        lsettings_nsh->raise();
+        lsettings_settings->raise();
+        lsettings_info->raise();
         FluorescenceApp->setCentralWidget(centralwidget);
         com_group->raise();
         panel_main_control->raise();
         panel_message->raise();
-        panel_lsettings->raise();
         panel_timesync->raise();
-        panel_presets->raise();
-        panel_custom_colors->raise();
         panel_welcome->raise();
+        panel_presets->raise();
         panel_settings->raise();
+        panel_custom_colors->raise();
+        panel_lsettings->raise();
 
         retranslateUi(FluorescenceApp);
 
@@ -2131,6 +2146,10 @@ public:
         lsettings_info_app->setText(QCoreApplication::translate("FluorescenceApp", "3.0", nullptr));
         lsettings_info_download->setText(QCoreApplication::translate("FluorescenceApp", "Download \n"
 "Latest Firmware", nullptr));
+        lsettings_info_notice->setText(QCoreApplication::translate("FluorescenceApp", "You are using an outdated version of firmware on\n"
+"Fluorescence. Firmware version 3.0 is available.\n"
+"Download the latest firmware and click on \n"
+"'firmware update' to update to the latest version!", nullptr));
         lsettings_settings->setTitle(QCoreApplication::translate("FluorescenceApp", "Settings", nullptr));
         lsettings_settings_default->setText(QCoreApplication::translate("FluorescenceApp", "Load Default", nullptr));
         lsettings_settings_save->setText(QCoreApplication::translate("FluorescenceApp", "Save All", nullptr));

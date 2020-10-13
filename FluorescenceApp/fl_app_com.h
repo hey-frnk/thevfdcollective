@@ -35,7 +35,7 @@ public:
     void transfer_serial0(uint8_t *clr_arr); // Legacy: No warm white LED
     void transfer_serial1(uint8_t *clr_arr); // Legacy: No warm white LED
 
-    void transfer_light_pattern(uint8_t instance, uint8_t param0, uint8_t param1); // Legacy: Only param0 relevant
+    void transfer_light_pattern(light_pattern_instance_t instance, uint8_t param0, uint8_t param1); // Legacy: Only param0 relevant
     void transfer_enable_presets(uint8_t enabled_instances); // Legacy: Unsupported
     void transfer_random_set(uint8_t enabled_instances, random_speed_t speed); // Legacy: Unsupported
 
@@ -89,6 +89,7 @@ private:
     QSerialPort serial_port;
 
     void determine_legacy();
+    uint8_t remap_light_pattern_legacy(light_pattern_instance_t instance);
 
     void clear_buffer(void);
     void set_command_byte(uint8_t value);

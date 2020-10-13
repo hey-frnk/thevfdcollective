@@ -239,7 +239,7 @@ void FluorescenceApp::app_com_connected_callback()
     if(global_com_instance->legacy_protocol()) {
         // Set legacy
         global_is_fw2 = true;
-        ui->lsettings_info_fw->setText(fw_version);
+        ui->lsettings_info_fw->setText((fw_version).mid(0, 6));
     } else {
         // Set regular
         global_is_fw2 = false;
@@ -322,12 +322,28 @@ void FluorescenceApp::on_main_preset_clicked()
 {
     hide_all_panels();
     ui->panel_presets->show();
+
+    if(!global_is_fw2) { // Legacy has some controls disabled
+        ui->dynamic_bliss_dnc->setEnabled(true);
+        ui->tab_shuffle->setEnabled(true);
+    } else {
+        ui->dynamic_bliss_dnc->setEnabled(false);
+        ui->tab_shuffle->setEnabled(false);
+    }
 }
 
 void FluorescenceApp::on_main_custom_clicked()
 {
     hide_all_panels();
     ui->panel_custom_colors->show();
+
+    if(!global_is_fw2) { // Legacy has some controls disabled
+        ui->custom_label_w->setEnabled(true);
+        ui->custom_slider_w->setEnabled(true);
+    } else {
+        ui->custom_label_w->setEnabled(false);
+        ui->custom_slider_w->setEnabled(false);
+    }
 }
 
 void FluorescenceApp::on_main_timesync_clicked()
@@ -889,7 +905,16 @@ void FluorescenceApp::on_settings_info_update_clicked()
     fw_update_dialog.setFixedSize(321, fw_update_dialog.height());
     fw_update_dialog.setWindowTitle("Fluorescence Updater");
     fw_update_dialog.exec();
-    // global_com_instance->transfer_dfu_request();
+}
+
+void FluorescenceApp::on_lsettings_info_update_clicked()
+{
+    FWUpdate fw_update_dialog(this, "2.x(a)", ui->com_select->currentText());
+    fw_update_dialog.setModal(true);
+    fw_update_dialog.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+    fw_update_dialog.setFixedSize(321, fw_update_dialog.height());
+    fw_update_dialog.setWindowTitle("Fluorescence Updater");
+    fw_update_dialog.exec();
 }
 
 void FluorescenceApp::fw_update_manual_disconnect()
@@ -901,4 +926,6 @@ void FluorescenceApp::fw_update_manual_dfu_request()
 {
     global_com_instance->transfer_dfu_request();
 }
+
+
 

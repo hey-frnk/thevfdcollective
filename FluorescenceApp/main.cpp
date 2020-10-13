@@ -1,6 +1,7 @@
 #include "fluorescenceapp.h"
 
 #include <QApplication>
+#include <QFontDatabase>
 
 int main(int argc, char *argv[])
 {
@@ -12,5 +13,8 @@ int main(int argc, char *argv[])
     w.setFixedSize(760, 500);
 
     w.show();
+
+    a.setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+
     return a.exec();
 }

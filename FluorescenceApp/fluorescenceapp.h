@@ -182,6 +182,8 @@ private slots:
 
     void on_custom_color_wheel_cursor_mouseMoved(const QPoint &);
 
+    void on_lsettings_info_update_clicked();
+
 public:
     Ui::FluorescenceApp *ui;
 

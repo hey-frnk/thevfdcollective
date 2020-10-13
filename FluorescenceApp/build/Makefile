@@ -751,15 +751,16 @@ qrc_qmake_qmake_immediate.cpp: qmake_qmake_immediate.qrc \
 		../Resources/green2blue.png \
 		../Resources/red2green_alt.png \
 		../Resources/res1.jpg \
+		../Resources/fl2_usb.jpg \
 		../Resources/rainbow_alt.png \
 		../Resources/cursor.png \
 		../Resources/red2blue1.png \
 		../Resources/res0.jpg \
+		../Resources/fl3_usb.jpg \
 		../Resources/computer.png \
 		../Resources/pastelrainbow.png \
 		../Resources/res3.jpg \
 		../Resources/hsl_wheel.png \
-		../Resources/HXP_TN.png \
 		../Resources/res2.jpg
 	/Applications/Qt/5.14.1/clang_64/bin/rcc -name qmake_qmake_immediate qmake_qmake_immediate.qrc -o qrc_qmake_qmake_immediate.cpp
 
@@ -941,7 +942,22 @@ fl_app_com.o: ../fl_app_com.cpp ../fl_app_com.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qtranslator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fl_app_com.o ../fl_app_com.cpp
 
-fwupdate.o: ../fwupdate.cpp ../fluorescenceapp.h \
+fwupdate.o: ../fwupdate.cpp ui_fwupdatestm.h \
+		../fwupdate.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QProcess \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qprocess.h \
+		ui_fluorescenceapp.h \
+		../clickablelabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
+		../movablelabel.h \
+		../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
@@ -969,21 +985,6 @@ fwupdate.o: ../fwupdate.cpp ../fluorescenceapp.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
 		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
 		../../FluorescenceV3/Commons/vfdco_util.h \
-		ui_fluorescenceapp.h \
-		../clickablelabel.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
-		../movablelabel.h \
-		../fwupdate.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QProcess \
-		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qprocess.h \
-		ui_fwupdatestm.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLayout \
@@ -1019,7 +1020,9 @@ main.o: ../main.cpp ../fluorescenceapp.h \
 		../../FluorescenceV3/Commons/vfdco_config_hw3.h \
 		../../FluorescenceV3/Commons/vfdco_util.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QFontDatabase \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
 fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \

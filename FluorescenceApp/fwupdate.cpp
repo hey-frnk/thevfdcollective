@@ -14,6 +14,12 @@ const QString fw_text_1 = "Please read carefully before you proceed.\nThe Firmwa
 const QString fw_text_2_stm = "dfu-util";
 const QString fw_text_2_avr = "avrdude";
 const QString fw_text_3 = " that helps flashing the new firmware to your device.\nWhen clicking <Update>, be aware these steps will be performed to flash the new firmware to your device:\n";
+const QString fw_text_4 =
+#ifdef Q_OS_MACOS
+"(0) Prior to the update, libusb needs to be installed. Installation can be done inside the macOS terminal with 'brew install libusb' after installing Homebrew. Visit https://brew.sh to install Homebrew.\n";
+#else
+"";
+#endif
 const QString fw_text_4_stm = "(1) Fluorescence is put into DFU mode. The clock display will show ""dFU"".\n\
 (2) The flashing process starts, when ""dfu-util"" appears. While dfu-util is running, YOUR DEVICE NEEDS TO BE CONNECTED TO POWER AND TO YOUR COMPUTER, OR ELSE YOU WILL BRICK IT. DO NOT UNPLUG EITHER. Once the flashing process is done, dfu-util will notify you and you can close the updater.\n\
 (3) Meanwhile, Fluorescence App disconnects from Fluorescence.\n\
@@ -38,6 +44,10 @@ FWUpdate::FWUpdate(QWidget *parent, QString fw_string, QString port_name) :
 
     ui->updater->hide();
     ui->welcome->show();
+
+    if(fw_string.contains(fw_suffix_stm)) {
+        ui->welcome_pic->setPixmap(QPixmap::fromImage(QImage(":/Resources/fl3_usb.jpg")));
+    }
 }
 
 FWUpdate::~FWUpdate()
@@ -153,7 +163,7 @@ void FWUpdate::on_updater_run_clicked()
     // FluorescenceApp* fl_app_inst = qobject_cast<FluorescenceApp*>(parent());
     // fl_app_inst->global_com_instance->transfer_dfu_request();
     if(fw_updater_type_detected == FIRMWARE_UPDATE_STM) {
-        ui->updater_info_text->setPlainText(fw_text_1 + fw_text_2_stm + fw_text_3 + fw_text_4_stm);
+        ui->updater_info_text->setPlainText(fw_text_1 + fw_text_2_stm + fw_text_3 + fw_text_4 + fw_text_4_stm);
     } else {
         ui->updater_info_text->setPlainText(fw_text_1 + fw_text_2_avr + fw_text_3 + fw_text_4_avr);
     }

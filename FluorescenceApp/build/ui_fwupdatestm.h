@@ -70,10 +70,11 @@ public:
         welcome_pic = new QLabel(welcome);
         welcome_pic->setObjectName(QString::fromUtf8("welcome_pic"));
         welcome_pic->setGeometry(QRect(10, 50, 301, 191));
-        welcome_pic->setPixmap(QPixmap(QString::fromUtf8(":/Resources/HXP_TN.png")));
+        welcome_pic->setFrameShape(QFrame::Box);
+        welcome_pic->setPixmap(QPixmap(QString::fromUtf8(":/Resources/fl2_usb.jpg")));
         welcome_intro_2 = new QLabel(welcome);
         welcome_intro_2->setObjectName(QString::fromUtf8("welcome_intro_2"));
-        welcome_intro_2->setGeometry(QRect(10, 240, 301, 31));
+        welcome_intro_2->setGeometry(QRect(10, 245, 301, 31));
         welcome_intro_2->setFont(font1);
         welcome_intro_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
         updater = new QWidget(FWUpdate);
@@ -172,6 +173,8 @@ public:
         updater_update->setFont(font7);
         updater_update->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
 "color: rgb(255, 255, 255);"));
+        updater->raise();
+        welcome->raise();
 
         retranslateUi(FWUpdate);
 
