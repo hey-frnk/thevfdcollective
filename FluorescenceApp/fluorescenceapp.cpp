@@ -2,6 +2,7 @@
 #include "ui_fluorescenceapp.h"
 
 #include "fwupdate.h"
+#include "infobox.h"
 
 #include "src/fl_app_time.h"
 #include "src/fl_app_lights.h"
@@ -1010,4 +1011,12 @@ void FluorescenceApp::on_com_text_clicked()
         }
         ui->com_select->addItem("Bluetooth");
     }
+}
+
+void FluorescenceApp::on_settings_info_app_clicked()
+{
+    infobox about_box;
+    about_box.setModal(true);
+    about_box.setWindowFlags(Qt::SplashScreen);
+    about_box.exec();
 }

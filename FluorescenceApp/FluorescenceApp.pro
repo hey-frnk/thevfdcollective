@@ -22,6 +22,7 @@ SOURCES += \
     clickablelabel.cpp \
     fl_app_com.cpp \
     fwupdate.cpp \
+    infobox.cpp \
     main.cpp \
     fluorescenceapp.cpp \
     movablelabel.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     fl_app_com.h \
     fluorescenceapp.h \
     fwupdate.h \
+    infobox.h \
     movablelabel.h \
     src/fl_app_colors.h \
     src/fl_app_lights.h \
@@ -44,7 +46,8 @@ HEADERS += \
 
 FORMS += \
     fluorescenceapp.ui \
-    fwupdatestm.ui
+    fwupdatestm.ui \
+    infobox.ui
 
 TRANSLATIONS += \
     FluorescenceApp_en_US.ts
@@ -68,5 +71,6 @@ RESOURCES += \
     Resources/hsl_wheel.png \
     Resources/cursor.png \
     Resources/fl2_usb.jpg \
-    Resources/fl3_usb.jpg
+    Resources/fl3_usb.jpg \
+    Resources/about.jpg
 

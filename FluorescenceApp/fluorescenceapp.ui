@@ -4973,7 +4973,7 @@ color: rgb(255, 255, 255);</string>
        <rect>
         <x>10</x>
         <y>70</y>
-        <width>171</width>
+        <width>121</width>
         <height>16</height>
        </rect>
       </property>
@@ -4991,12 +4991,12 @@ color: rgb(255, 255, 255);</string>
        <string>App version:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="settings_info_app">
+     <widget class="ClickableLabel" name="settings_info_app">
       <property name="geometry">
        <rect>
         <x>140</x>
         <y>70</y>
-        <width>91</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -5005,7 +5005,11 @@ color: rgb(255, 255, 255);</string>
         <family>.AppleSystemUIFont</family>
         <weight>75</weight>
         <bold>true</bold>
+        <underline>true</underline>
        </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>OpenHandCursor</cursorShape>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);</string>
@@ -6112,9 +6116,9 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_timesync</zorder>
    <zorder>panel_welcome</zorder>
    <zorder>panel_presets</zorder>
-   <zorder>panel_settings</zorder>
    <zorder>panel_lsettings</zorder>
    <zorder>panel_custom_colors</zorder>
+   <zorder>panel_settings</zorder>
   </widget>
  </widget>
  <customwidgets>

@@ -55,6 +55,7 @@ OBJECTS_DIR   = ./
 SOURCES       = ../clickablelabel.cpp \
 		../fl_app_com.cpp \
 		../fwupdate.cpp \
+		../infobox.cpp \
 		../main.cpp \
 		../fluorescenceapp.cpp \
 		../movablelabel.cpp \
@@ -66,10 +67,12 @@ SOURCES       = ../clickablelabel.cpp \
 		moc_fl_app_com.cpp \
 		moc_fluorescenceapp.cpp \
 		moc_fwupdate.cpp \
+		moc_infobox.cpp \
 		moc_movablelabel.cpp
 OBJECTS       = clickablelabel.o \
 		fl_app_com.o \
 		fwupdate.o \
+		infobox.o \
 		main.o \
 		fluorescenceapp.o \
 		movablelabel.o \
@@ -82,6 +85,7 @@ OBJECTS       = clickablelabel.o \
 		moc_fl_app_com.o \
 		moc_fluorescenceapp.o \
 		moc_fwupdate.o \
+		moc_infobox.o \
 		moc_movablelabel.o
 DIST          = /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Applications/Qt/5.14.1/clang_64/mkspecs/qdevice.pri \
@@ -269,12 +273,14 @@ DIST          = /Applications/Qt/5.14.1/clang_64/mkspecs/features/spec_pre.prf \
 		../fl_app_com.h \
 		../fluorescenceapp.h \
 		../fwupdate.h \
+		../infobox.h \
 		../movablelabel.h \
 		../src/fl_app_colors.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_time.h ../clickablelabel.cpp \
 		../fl_app_com.cpp \
 		../fwupdate.cpp \
+		../infobox.cpp \
 		../main.cpp \
 		../fluorescenceapp.cpp \
 		../movablelabel.cpp \
@@ -300,7 +306,7 @@ include /Applications/Qt/5.14.1/clang_64/mkspecs/features/mac/sdk.mk
 first: all
 ####### Build rules
 
-FluorescenceApp.app/Contents/MacOS/FluorescenceApp: ui_fluorescenceapp.h ui_fwupdatestm.h $(OBJECTS)  
+FluorescenceApp.app/Contents/MacOS/FluorescenceApp: ui_fluorescenceapp.h ui_fwupdatestm.h ui_infobox.h $(OBJECTS)  
 	@test -d FluorescenceApp.app/Contents/MacOS/ || mkdir -p FluorescenceApp.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -710,9 +716,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents qmake_qmake_immediate.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h ../../FluorescenceV3/Commons/vfdco_config.h ../clickablelabel.h ../fl_app_com.h ../fluorescenceapp.h ../fwupdate.h ../movablelabel.h ../src/fl_app_colors.h ../src/fl_app_lights.h ../src/fl_app_time.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../clickablelabel.cpp ../fl_app_com.cpp ../fwupdate.cpp ../main.cpp ../fluorescenceapp.cpp ../movablelabel.cpp ../src/fl_app_colors.cpp ../src/fl_app_lights.c ../src/fl_app_util.c ../src/fl_app_time.c $(DISTDIR)/
-	$(COPY_FILE) --parents ../fluorescenceapp.ui ../fwupdatestm.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../FluorescenceV3/Commons/vfdco_clock_routine_defines.h ../../FluorescenceV3/Commons/vfdco_config.h ../clickablelabel.h ../fl_app_com.h ../fluorescenceapp.h ../fwupdate.h ../infobox.h ../movablelabel.h ../src/fl_app_colors.h ../src/fl_app_lights.h ../src/fl_app_time.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../clickablelabel.cpp ../fl_app_com.cpp ../fwupdate.cpp ../infobox.cpp ../main.cpp ../fluorescenceapp.cpp ../movablelabel.cpp ../src/fl_app_colors.cpp ../src/fl_app_lights.c ../src/fl_app_util.c ../src/fl_app_time.c $(DISTDIR)/
+	$(COPY_FILE) --parents ../fluorescenceapp.ui ../fwupdatestm.ui ../infobox.ui $(DISTDIR)/
 	$(COPY_FILE) --parents FluorescenceApp_en_US.ts $(DISTDIR)/
 
 
@@ -747,6 +753,7 @@ qrc_qmake_qmake_immediate.cpp: qmake_qmake_immediate.qrc \
 		/Applications/Qt/5.14.1/clang_64/bin/rcc \
 		../Resources/green2blue.png \
 		../Resources/red2green_alt.png \
+		../Resources/about.jpg \
 		../Resources/res1.jpg \
 		../Resources/fl2_usb.jpg \
 		../Resources/rainbow_alt.png \
@@ -767,9 +774,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp
 	/Library/Developer/CommandLineTools/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=10.13 -Wall -Wextra -dM -E -o moc_predefs.h /Applications/Qt/5.14.1/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdate.cpp moc_movablelabel.cpp
+compiler_moc_header_make_all: moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdate.cpp moc_infobox.cpp moc_movablelabel.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdate.cpp moc_movablelabel.cpp
+	-$(DEL_FILE) moc_clickablelabel.cpp moc_fl_app_com.cpp moc_fluorescenceapp.cpp moc_fwupdate.cpp moc_infobox.cpp moc_movablelabel.cpp
 moc_clickablelabel.cpp: ../clickablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
@@ -844,6 +851,13 @@ moc_fwupdate.cpp: ../fwupdate.h \
 		/Applications/Qt/5.14.1/clang_64/bin/moc
 	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../fwupdate.h -o moc_fwupdate.cpp
 
+moc_infobox.cpp: ../infobox.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		moc_predefs.h \
+		/Applications/Qt/5.14.1/clang_64/bin/moc
+	/Applications/Qt/5.14.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.14.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.14.1/clang_64/lib ../infobox.h -o moc_infobox.cpp
+
 moc_movablelabel.cpp: ../movablelabel.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
@@ -859,9 +873,9 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_fluorescenceapp.h ui_fwupdatestm.h
+compiler_uic_make_all: ui_fluorescenceapp.h ui_fwupdatestm.h ui_infobox.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_fluorescenceapp.h ui_fwupdatestm.h
+	-$(DEL_FILE) ui_fluorescenceapp.h ui_fwupdatestm.h ui_infobox.h
 ui_fluorescenceapp.h: ../fluorescenceapp.ui \
 		/Applications/Qt/5.14.1/clang_64/bin/uic \
 		../clickablelabel.h \
@@ -883,6 +897,10 @@ ui_fluorescenceapp.h: ../fluorescenceapp.ui \
 ui_fwupdatestm.h: ../fwupdatestm.ui \
 		/Applications/Qt/5.14.1/clang_64/bin/uic
 	/Applications/Qt/5.14.1/clang_64/bin/uic ../fwupdatestm.ui -o ui_fwupdatestm.h
+
+ui_infobox.h: ../infobox.ui \
+		/Applications/Qt/5.14.1/clang_64/bin/uic
+	/Applications/Qt/5.14.1/clang_64/bin/uic ../infobox.ui -o ui_infobox.h
 
 compiler_rez_source_make_all:
 compiler_rez_source_clean:
@@ -988,6 +1006,12 @@ fwupdate.o: ../fwupdate.cpp ui_fwupdatestm.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlayout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fwupdate.o ../fwupdate.cpp
 
+infobox.o: ../infobox.cpp ../infobox.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		ui_infobox.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o infobox.o ../infobox.cpp
+
 main.o: ../main.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -1071,7 +1095,9 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDesktopServices \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QScreen \
-		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qscreen.h
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fluorescenceapp.o ../fluorescenceapp.cpp
 
 movablelabel.o: ../movablelabel.cpp /Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
@@ -1152,6 +1178,9 @@ moc_fluorescenceapp.o: moc_fluorescenceapp.cpp
 
 moc_fwupdate.o: moc_fwupdate.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_fwupdate.o moc_fwupdate.cpp
+
+moc_infobox.o: moc_infobox.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_infobox.o moc_infobox.cpp
 
 moc_movablelabel.o: moc_movablelabel.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_movablelabel.o moc_movablelabel.cpp

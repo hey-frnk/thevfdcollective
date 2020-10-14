@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>infobox</class>
+ <widget class="QDialog" name="infobox">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>679</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
+  <widget class="ClickableLabel" name="info_screen">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>681</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/about.jpg</pixmap>
+   </property>
+  </widget>
+  <widget class="ClickableLabel" name="info_1">
+   <property name="geometry">
+    <rect>
+     <x>28</x>
+     <y>210</y>
+     <width>631</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>With love by Frank from The VFD Collective.
+Thank you for using FluorescenceApp. We've got you covered. 
+If there's anything you want to talk about with us,
+please reach out to our customer service at</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="ClickableLabel" name="info_2">
+   <property name="geometry">
+    <rect>
+     <x>28</x>
+     <y>280</y>
+     <width>631</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <underline>true</underline>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>www.TheVFDCollective.com/support</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="ClickableLabel" name="info_3">
+   <property name="geometry">
+    <rect>
+     <x>28</x>
+     <y>320</y>
+     <width>631</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255, 0);
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>PICTURE CREDITS (no copyright infringement intended):
+Computer icon: http://icon-park.com/icon/imac/
+Ambient light pictures: Taken from Instagram by @bryanadamc and Pinterest</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>clickablelabel.h</header>
+   <slots>
+    <signal>clicked()</signal>
+    <signal>mousePressed(QPoint)</signal>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="build/qmake_qmake_immediate.qrc"/>
+ </resources>
+ <connections/>
+</ui>

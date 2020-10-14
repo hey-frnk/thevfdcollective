@@ -256,7 +256,7 @@ public:
     QLabel *settings_info_fw_t;
     QLabel *settings_info_fw;
     QLabel *settings_info_app_t;
-    QLabel *settings_info_app;
+    ClickableLabel *settings_info_app;
     QGroupBox *settings_presets;
     QCheckBox *settings_presets_en_static;
     QPushButton *settings_presets_en_set;
@@ -1592,13 +1592,14 @@ public:
         settings_info_fw->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         settings_info_app_t = new QLabel(settings_info);
         settings_info_app_t->setObjectName(QString::fromUtf8("settings_info_app_t"));
-        settings_info_app_t->setGeometry(QRect(10, 70, 171, 16));
+        settings_info_app_t->setGeometry(QRect(10, 70, 121, 16));
         settings_info_app_t->setFont(font1);
         settings_info_app_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
-        settings_info_app = new QLabel(settings_info);
+        settings_info_app = new ClickableLabel(settings_info);
         settings_info_app->setObjectName(QString::fromUtf8("settings_info_app"));
-        settings_info_app->setGeometry(QRect(140, 70, 91, 20));
-        settings_info_app->setFont(font1);
+        settings_info_app->setGeometry(QRect(140, 70, 111, 20));
+        settings_info_app->setFont(font4);
+        settings_info_app->setCursor(QCursor(Qt::OpenHandCursor));
         settings_info_app->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
         settings_presets = new QGroupBox(panel_settings);
         settings_presets->setObjectName(QString::fromUtf8("settings_presets"));
@@ -1872,9 +1873,9 @@ public:
         panel_timesync->raise();
         panel_welcome->raise();
         panel_presets->raise();
-        panel_settings->raise();
         panel_lsettings->raise();
         panel_custom_colors->raise();
+        panel_settings->raise();
 
         retranslateUi(FluorescenceApp);
 
