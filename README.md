@@ -6,6 +6,7 @@ The VFD Collective shared projects
 Glad to see you, welcome to the repository of Fluorescence by The VFD Collective. While having a colorful time, here are a few places to roam freely:
   - FluorescenceV3: (active) Source code of firmware version 3.0 for OpenVFD & Fluorescence. Includes source code for Arduino, STM32 HAL and simulation with Qt GUI
   - FluorescenceApp: (active) Source code of the app for OpenVFD & Fluorescence. The cross platform app enables communicating to Fluorescence over USB and Bluetooth
+  ![FluorescenceApp for Fluorescence by The VFD Collective](/openvfd_firmware_resources/demo_app.jpg)
   - FluorescenceCompiled: (active) Official compiled versions of FluorescenceApp and firmware files for Fluorescence
   - hardware: (active) Public Fluorescence/OpenVFD Eagle files. Includes libraries and published PCB designs
 
