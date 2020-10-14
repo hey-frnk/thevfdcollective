@@ -9,6 +9,7 @@ Glad to see you, welcome to the repository of Fluorescence by The VFD Collective
   ![FluorescenceApp for Fluorescence by The VFD Collective](/openvfd_firmware_resources/demo_app.jpg)
   - FluorescenceCompiled: (active) Official compiled versions of FluorescenceApp and firmware files for Fluorescence
   - hardware: (active) Public Fluorescence/OpenVFD Eagle files. Includes libraries and published PCB designs
+  ![Fluorescence by The VFD Collective PCB](/openvfd_firmware_resources/demo_board.png)
 
 No longer updated, kept for reference only:
   - openvfd_firmware: (V2 Legacy) Those sparking code lines for OpenVFD & Fluorescence. The cool thing about the firmware is that it is only one single file. Throw it into your Arduino IDE, compile and have fun. Oh and don't forget to tear it apart and get creative yourself
