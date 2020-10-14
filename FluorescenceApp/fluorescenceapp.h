@@ -184,6 +184,12 @@ private slots:
 
     void on_lsettings_info_update_clicked();
 
+    void on_custom_value_save_clicked();
+
+    void on_custom_value_load_clicked();
+
+    void on_com_text_clicked();
+
 public:
     Ui::FluorescenceApp *ui;
 

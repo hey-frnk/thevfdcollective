@@ -391,7 +391,7 @@ void fl_app_com::bt_connect_services_details_discovered(QLowEnergyService::Servi
 {
     if (newState != QLowEnergyService::ServiceDiscovered) {
         if (newState != QLowEnergyService::DiscoveringServices) {
-            QMetaObject::invokeMethod(this, "characteristicsUpdated", Qt::QueuedConnection);
+            // QMetaObject::invokeMethod(this, "characteristicsUpdated", Qt::QueuedConnection);
         }
         return;
     }
@@ -452,6 +452,8 @@ void fl_app_com::characteristicChanged(QLowEnergyCharacteristic ch, QByteArray a
 void fl_app_com::determine_legacy()
 {
     // Try if port is legacy
+    emit bt_status_changed("Determining device version");
+
     buf_tx = new uint8_t[BUF_TX_SIZE_LEGACY];
     _transfer = &fl_app_com::legacy_transfer;
     is_legacy_protocol = true;
@@ -461,6 +463,7 @@ void fl_app_com::determine_legacy()
         // Legacy protocol!
         is_legacy_protocol = true;
         status = FL_APP_COM_STATUS_OK;
+        emit bt_status_changed("Firmware 2 detected");
     } else {
         // Not legacy. try if protocol is 3.0
         delete[] buf_tx;
@@ -475,6 +478,7 @@ void fl_app_com::determine_legacy()
         if(fw_str.at(0) == "3" && fw_str.at(1) == ".") {
             // is_legacy_protocol = false;
             status = FL_APP_COM_STATUS_OK;
+            emit bt_status_changed("Firmware 3 detected");
         } else {
             // is_legacy_protocol = false;
             // status = FL_APP_COM_STATUS_OK;

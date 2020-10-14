@@ -52,6 +52,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	}
 
 	++com_bt_rx_buf_count;
+	if(global_com_data.rx_buffer_data_present == RX_BUFFER_DATA_IDLE) {
+		// Try to receive buffer data, one byte at a time
+		HAL_UART_Receive_IT(&huart2, com_bt_rx_buf + com_bt_rx_buf_count, 1);
+	}
 	if(com_bt_rx_buf_count >= 63) {
 		memset(com_bt_rx_buf, 0x00, 64);
 		com_bt_rx_buf_count = 0;

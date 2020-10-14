@@ -100,7 +100,7 @@ color: rgb(255, 255, 255);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="com_text">
+    <widget class="ClickableLabel" name="com_text">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -114,7 +114,14 @@ color: rgb(255, 255, 255);</string>
        <family>.AppleSystemUIFont</family>
        <weight>75</weight>
        <bold>true</bold>
+       <underline>true</underline>
       </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Click to refresh</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);</string>
@@ -3408,7 +3415,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>240</y>
+       <y>230</y>
        <width>61</width>
        <height>20</height>
       </rect>
@@ -3429,7 +3436,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>210</y>
+       <y>200</y>
        <width>61</width>
        <height>20</height>
       </rect>
@@ -3450,7 +3457,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>180</y>
+       <y>170</y>
        <width>61</width>
        <height>20</height>
       </rect>
@@ -3471,7 +3478,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>150</y>
+       <y>140</y>
        <width>61</width>
        <height>20</height>
       </rect>
@@ -3492,7 +3499,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>120</y>
+       <y>110</y>
        <width>61</width>
        <height>20</height>
       </rect>
@@ -3513,7 +3520,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>90</y>
+       <y>80</y>
        <width>61</width>
        <height>20</height>
       </rect>
@@ -3810,6 +3817,50 @@ randomly out of:</string>
      </property>
      <property name="plainText">
       <string>#C0FFEE</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="custom_value_load">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>270</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Load color</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="custom_value_save">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>310</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>.AppleSystemUIFont</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Save color</string>
      </property>
     </widget>
    </widget>
@@ -6062,8 +6113,8 @@ color: rgb(255, 255, 255);</string>
    <zorder>panel_welcome</zorder>
    <zorder>panel_presets</zorder>
    <zorder>panel_settings</zorder>
-   <zorder>panel_custom_colors</zorder>
    <zorder>panel_lsettings</zorder>
+   <zorder>panel_custom_colors</zorder>
   </widget>
  </widget>
  <customwidgets>

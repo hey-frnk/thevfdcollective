@@ -16,6 +16,7 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QScreen>
+#include <QFileDialog>
 
 // Global dynamic colors
 QLabel *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
@@ -232,6 +233,54 @@ void FluorescenceApp::update(){
     }
 }
 
+void FluorescenceApp::hide_all_panels() {
+    ui->panel_welcome->hide();
+    ui->panel_custom_colors->hide();
+    ui->panel_presets->hide();
+    ui->panel_message->hide();
+    ui->panel_timesync->hide();
+    ui->panel_settings->hide();
+    ui->panel_lsettings->hide();
+}
+
+void FluorescenceApp::on_com_connect_clicked()
+{
+    // Not connected
+    if(ui->com_label_connect->text() == "Click to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
+        // Check for no selection
+        if(!QString::compare(ui->com_select->currentText(), "")) {
+            error_message("Please select a device from the list", QMessageBox::Information);
+            return;
+        }
+
+        // Initialize COM instance & try to connect
+        if(ui->com_select->currentText() == "Bluetooth") {
+            global_com_instance = new fl_app_com();
+            QObject::connect(global_com_instance, &fl_app_com::app_com_connected, this, &FluorescenceApp::app_com_connected_callback);        
+            QObject::connect(global_com_instance, &fl_app_com::bt_status_changed, this, &FluorescenceApp::app_com_status_callback);
+        }
+        else {
+            global_com_instance = new fl_app_com(ui->com_select->currentText());
+            app_com_connected_callback();
+        }
+    }
+
+    // Connected
+    else if(ui->com_label_connect->text() == "Click to disconnect") {
+        delete global_com_instance;
+        global_com_instance = nullptr;
+
+        ui->com_select->setEnabled(true);
+        ui->com_select->setCurrentIndex(0); // Empty
+        ui->com_label_connect->setText("Click to connect");
+        ui->com_connect->setText("►");
+        ui->panel_main_control->setEnabled(false);
+
+        hide_all_panels();
+        ui->panel_welcome->show();
+    }
+}
+
 void FluorescenceApp::app_com_connected_callback()
 {
     // Request FW version
@@ -249,6 +298,18 @@ void FluorescenceApp::app_com_connected_callback()
         ui->settings_info_hw->setText(hw_version.mid(0, 4));
     }
 
+    if(global_com_instance->getStatus() == FL_APP_COM_STATUS_CONNECTION_FAILED) {
+        error_message("Oh deer 🦌, seems like we couldn't connect to Fluorescence. Please try again and make sure the right device is selected!", QMessageBox::Critical);
+
+        delete global_com_instance;
+        global_com_instance = nullptr;
+
+        // Enable reconnecting
+        ui->com_select->setEnabled(true);
+        return;
+    }
+
+    ui->com_select->setEnabled(false);
     ui->panel_main_control->setEnabled(true);
     ui->com_label_connect->setText("Click to disconnect");
     ui->com_connect->setText("◼");
@@ -259,54 +320,6 @@ void FluorescenceApp::app_com_status_callback(QString status) {
         error_message(status, QMessageBox::Icon::Critical);
     }
     ui->com_label_connect->setText(status);
-}
-
-void FluorescenceApp::hide_all_panels() {
-    ui->panel_welcome->hide();
-    ui->panel_custom_colors->hide();
-    ui->panel_presets->hide();
-    ui->panel_message->hide();
-    ui->panel_timesync->hide();
-    ui->panel_settings->hide();
-    ui->panel_lsettings->hide();
-}
-
-void FluorescenceApp::on_com_connect_clicked()
-{
-    if(ui->com_label_connect->text() == "Click to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
-        // Check for no selection
-        if(!QString::compare(ui->com_select->currentText(), "")) {
-            error_message("Please select a device from the list", QMessageBox::Critical);
-            return;
-        }
-
-        // Initialize COM instance & try to connect
-        if(ui->com_select->currentText() == "Bluetooth") {
-            global_com_instance = new fl_app_com();
-            QObject::connect(global_com_instance, &fl_app_com::app_com_connected, this, &FluorescenceApp::app_com_connected_callback);        
-            QObject::connect(global_com_instance, &fl_app_com::bt_status_changed, this, &FluorescenceApp::app_com_status_callback);
-        }
-        else {
-            global_com_instance = new fl_app_com(ui->com_select->currentText());
-            app_com_connected_callback();
-        }
-
-        if(global_com_instance->getStatus() == FL_APP_COM_STATUS_CONNECTION_FAILED) {
-            error_message("Oh deer 🦌, seems like we couldn't connect to Fluorescence. Please make sure you have connected Fluorescence correctly and try again!", QMessageBox::Critical);
-            return;
-        }
-    } else if(ui->com_label_connect->text() == "Click to disconnect") {
-        delete global_com_instance;
-        global_com_instance = nullptr;
-
-        ui->com_select->setCurrentIndex(0); // Empty
-        ui->com_label_connect->setText("Click to connect");
-        ui->com_connect->setText("►");
-        ui->panel_main_control->setEnabled(false);
-
-        hide_all_panels();
-        ui->panel_welcome->show();
-    }
 }
 
 void FluorescenceApp::on_com_select_currentTextChanged(const QString &arg1)
@@ -499,6 +512,57 @@ void FluorescenceApp::on_custom_value_w_valueChanged(int arg1) { on_custom_slide
 void FluorescenceApp::on_custom_value_h_valueChanged(int arg1) { on_custom_slider_h_valueChanged(arg1); }
 void FluorescenceApp::on_custom_value_s_valueChanged(int arg1) { on_custom_slider_s_valueChanged(arg1); }
 void FluorescenceApp::on_custom_value_l_valueChanged(int arg1) { on_custom_slider_l_valueChanged(arg1); }
+
+void FluorescenceApp::on_custom_value_save_clicked()
+{
+    QString file_path = QFileDialog::getSaveFileName(this, "Save custom color", QDir::homePath(), "Fluorescence Custom Color File (*.flclr)");
+    if(file_path.isEmpty()) return;
+
+    QFile save_file(file_path);
+    save_file.open(QIODevice::WriteOnly);
+    QDataStream output_stream(&save_file);
+    for(QColor c : custom_led_colors) output_stream << c;
+    for(uint8_t c : custom_led_white) output_stream << (quint8)c; // QString("x%1").arg((uint8_t)c, 2, 16, QChar('0'));
+
+    save_file.close();
+
+    qDebug() << "Serialized: ";
+    for(QColor c : custom_led_colors) qDebug() << c.name();
+    for(uint8_t c : custom_led_white) qDebug() << QString("x%1").arg((uint8_t)c, 2, 16, QChar('0'));
+}
+
+void FluorescenceApp::on_custom_value_load_clicked()
+{
+    QString file_path = QFileDialog::getOpenFileName(this, "Load custom color", QDir::homePath(), "Fluorescence Custom Color File (*.flclr)");
+    if(file_path.isEmpty()) return;
+
+    QFile load_file(file_path);
+    load_file.open(QIODevice::ReadOnly);
+    QDataStream input_stream(&load_file);
+    QColor color_read_in[6];
+    quint8 color_read_in_w[6] = {0};
+    for(int i = 0; i < 6; ++i) input_stream >> color_read_in[i];
+    for(int i = 0; i < 6; ++i) input_stream >> color_read_in_w[i];
+
+    load_file.close();
+
+    qDebug() << "De-serialized: ";
+    for(QColor c : color_read_in) qDebug() << c.name();
+    for(quint8 c : color_read_in_w) qDebug() << QString("x%1").arg((uint8_t)c, 2, 16, QChar('0'));
+
+    if(global_com_instance) {
+        uint8_t color_arr[4 * CONFIG_NUM_PIXELS] = {0};
+        for(uint_fast8_t i = 0; i < CONFIG_NUM_PIXELS; ++i) {
+            custom_led_colors[i] = color_read_in[i];
+            custom_led_white[i] = color_read_in_w[i];
+            color_arr[4 * i] = custom_led_colors[i].red();
+            color_arr[4 * i + 1] = custom_led_colors[i].green();
+            color_arr[4 * i + 2] = custom_led_colors[i].blue();
+            color_arr[4 * i + 3] = custom_led_white[i];
+        }
+        global_com_instance->transfer_serial1(color_arr);
+    }
+}
 
 float FluorescenceApp::capture_hue(const QPoint &pt) {
     // Check if in wheel
@@ -898,6 +962,10 @@ void FluorescenceApp::on_lisync_sample_clicked()
 
 void FluorescenceApp::on_settings_info_update_clicked()
 {
+    if(ui->com_select->currentText() == "Bluetooth") {
+        error_message("Bluetooth firmware update is not supported (yet). Please perform the firmware update over USB!", QMessageBox::Icon::Information);
+        return;
+    }
     FWUpdate fw_update_dialog(this, ui->settings_info_fw->text(), ui->com_select->currentText());
     // FWUpdate fw_update_dialog(this, "v3.9222s", ui->com_select->currentText());
     fw_update_dialog.setModal(true);
@@ -909,6 +977,10 @@ void FluorescenceApp::on_settings_info_update_clicked()
 
 void FluorescenceApp::on_lsettings_info_update_clicked()
 {
+    if(ui->com_select->currentText() == "Bluetooth") {
+        error_message("Bluetooth firmware update is not supported (yet). Please perform the firmware update over USB!", QMessageBox::Icon::Information);
+        return;
+    }
     FWUpdate fw_update_dialog(this, "2.x(a)", ui->com_select->currentText());
     fw_update_dialog.setModal(true);
     fw_update_dialog.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
@@ -927,5 +999,15 @@ void FluorescenceApp::fw_update_manual_dfu_request()
     global_com_instance->transfer_dfu_request();
 }
 
-
-
+void FluorescenceApp::on_com_text_clicked()
+{
+    // if in unconnected state
+    if(ui->com_label_connect->text() == "Click to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
+        ui->com_select->clear();
+        ui->com_select->addItem("");
+        for(QSerialPortInfo available_ports : QSerialPortInfo::availablePorts()) {
+            ui->com_select->addItem(available_ports.portName());
+        }
+        ui->com_select->addItem("Bluetooth");
+    }
+}
