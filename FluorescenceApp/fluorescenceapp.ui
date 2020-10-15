@@ -4037,7 +4037,7 @@ color: rgb(255, 255, 255);</string>
       <enum>QPlainTextEdit::NoWrap</enum>
      </property>
      <property name="plainText">
-      <string>ABCDEFGHIJKLMNOPQRSTUVWX</string>
+      <string>HEART HOPE  </string>
      </property>
     </widget>
     <widget class="QLabel" name="message_intro">
@@ -6112,13 +6112,13 @@ color: rgb(255, 255, 255);</string>
    </widget>
    <zorder>com_group</zorder>
    <zorder>panel_main_control</zorder>
-   <zorder>panel_message</zorder>
    <zorder>panel_timesync</zorder>
    <zorder>panel_welcome</zorder>
    <zorder>panel_presets</zorder>
    <zorder>panel_lsettings</zorder>
    <zorder>panel_custom_colors</zorder>
    <zorder>panel_settings</zorder>
+   <zorder>panel_message</zorder>
   </widget>
  </widget>
  <customwidgets>

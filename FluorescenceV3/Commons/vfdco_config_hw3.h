@@ -28,7 +28,7 @@ SOFTWARE.*/
   * @version  V1.0
   * @date     21-March-2020
   * @brief    This file contains the global configuration parameters optimized for 
-  *           Fluorescence running on STM32F042!!!K!!!6 (HW 3.0 and above)
+  *           Fluorescence running on STM32L412 (HW 3.0 and above)
   ******************************************************************************
   * @tableofcontents Table of contents, enter to navigate:
   * CONFIG_VERSION
@@ -55,7 +55,7 @@ extern "C" {
  */
 // Edit software version here
 #define CONFIG_SW_STRING_LENGTH 6
-#define CONFIG_SW_STRING {'3', '.', '0', 's', ' ', ' '}
+#define CONFIG_SW_STRING {'3', '.', '1', 's', ' ', ' '}
 // Edit hardware version here
 #define CONFIG_HW_STRING_LENGTH 4
 #define CONFIG_HW_STRING {'3', '.', '0', ' '}
@@ -98,7 +98,7 @@ extern "C" {
 // How many milliseconds should a regular message last?
 #define CONFIG_MESSAGE_LONG       1000
 // What should be the default welcome message? (Default: {'H', 'E', 'L', 'L', 'O', ' '})
-#define CONFIG_WELCOME_MESSAGE_DEFAULT 'L', 'O', 'S', 'E', 'I', 'T'
+#define CONFIG_WELCOME_MESSAGE_DEFAULT 'H', 'A', 'I', 'L', 'E', 'E'
 
 /**
  * @tableofcontents SECTION_CONFIG_LIGHTS

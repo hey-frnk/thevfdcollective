@@ -1869,13 +1869,13 @@ public:
         FluorescenceApp->setCentralWidget(centralwidget);
         com_group->raise();
         panel_main_control->raise();
-        panel_message->raise();
         panel_timesync->raise();
         panel_welcome->raise();
         panel_presets->raise();
         panel_lsettings->raise();
         panel_custom_colors->raise();
         panel_settings->raise();
+        panel_message->raise();
 
         retranslateUi(FluorescenceApp);
 
@@ -2078,7 +2078,7 @@ public:
 "to the time of your computer", nullptr));
         timesync_button->setText(QCoreApplication::translate("FluorescenceApp", "Sync", nullptr));
         timesync_intro_2->setText(QCoreApplication::translate("FluorescenceApp", "Ready to sync.", nullptr));
-        message_text->setPlainText(QCoreApplication::translate("FluorescenceApp", "ABCDEFGHIJKLMNOPQRSTUVWX", nullptr));
+        message_text->setPlainText(QCoreApplication::translate("FluorescenceApp", "HEART HOPE  ", nullptr));
         message_intro->setText(QCoreApplication::translate("FluorescenceApp", "Write a poem. Or say something lovely. We wrote this so that you can have a fun time :)", nullptr));
         message_intro_2->setText(QCoreApplication::translate("FluorescenceApp", "Rules of the game:", nullptr));
         message_intro_3->setText(QCoreApplication::translate("FluorescenceApp", "- 24 letters for you. The message will be split in max. three parts displayed separately", nullptr));

@@ -259,7 +259,9 @@ void FWUpdate::ReadErr()
 
 void FWUpdate::UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     Q_UNUSED(exitStatus);
-    QString filename = fw_updater_path_detected + QDir::separator() + QDateTime::currentDateTime().toString() + "_update.log";
+    QString filename = fw_updater_path_detected + QDir::separator()
+            + QDateTime::currentDateTime().toString().replace(QChar('/'), QChar('_'), Qt::CaseInsensitive).replace(QChar('.'), QChar('_'), Qt::CaseInsensitive)
+            + "_update.log";
     QFile file(filename);
     if (file.open(QIODevice::ReadWrite)) {
         QTextStream stream(&file);

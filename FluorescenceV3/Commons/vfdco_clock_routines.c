@@ -1,7 +1,7 @@
 /*MIT License
 
 Copyright (c) The VFD Collective, Frank from The VFD Collective (Fu Zheng)
-Date: 04/25/2020
+Date: 10/15/2020
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ SOFTWARE.*/
   * @file     vfdco_routines.c
   * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
   * @version  V1.0
-  * @date     12-February-2020
+  * @date     15-October-2020
   * @brief    Each (peripheral) component has an initializer and a routine function
   *           The routine function is desiged to be called periodically in main()
   *           The initializers and routines are defined here
@@ -733,8 +733,12 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
       uint8_t mapped_settings_index = _map_gui_instance_to_serialized_settings_index(instance);
       if(mapped_settings_index != 255) {
         serialized_settings[mapped_settings_index][0] = input_buffer[COM_PROTOCOL_PARAM0_OFFSET];
+      } 
+      // Check if setting instance matches current instance. If yes, notify and re-initialize
+      if(instance == global_gui_instance_counter) {
+        vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_LONG);
+        set_next_gui_instance(instance);
       }
-      if(instance == global_gui_instance_counter) vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_LONG);
     }
 
     // If time set command is detected
