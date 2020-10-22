@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <QScreen>
 #include <QFileDialog>
+#include <QGraphicsOpacityEffect>
 
 // Global dynamic colors
 QLabel *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
@@ -69,14 +70,17 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
     this->setWindowTitle("Fluorescence App by The VFD Collective");
     this->setFixedSize(this->size());
 
-    ui->com_connect->setText("►");
+    ui->com_connect->setText(">>");
     // List all available serial ports to com_select + empty
     ui->com_select->addItem("");
     for(QSerialPortInfo available_ports : QSerialPortInfo::availablePorts()) {
         ui->com_select->addItem(available_ports.portName());
     }
     ui->com_select->addItem("Bluetooth");
+
     hide_all_panels();
+    ui->menu_controls_layout->hide();
+
     ui->panel_welcome->show();
 
     // Init timer
@@ -242,12 +246,14 @@ void FluorescenceApp::hide_all_panels() {
     ui->panel_timesync->hide();
     ui->panel_settings->hide();
     ui->panel_lsettings->hide();
+
+    ui->menu_button->setPixmap(QPixmap::fromImage(QImage(":/Resources/menu.png")));
 }
 
 void FluorescenceApp::on_com_connect_clicked()
 {
     // Not connected
-    if(ui->com_label_connect->text() == "Click to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
+    if(ui->com_label_connect->text() == "Ready to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
         // Check for no selection
         if(!QString::compare(ui->com_select->currentText(), "")) {
             error_message("Please select a device from the list", QMessageBox::Information);
@@ -267,18 +273,32 @@ void FluorescenceApp::on_com_connect_clicked()
     }
 
     // Connected
-    else if(ui->com_label_connect->text() == "Click to disconnect") {
+    else if(ui->com_label_connect->text() == "Fluorescence is connected") {
         delete global_com_instance;
         global_com_instance = nullptr;
 
         ui->com_select->setEnabled(true);
         ui->com_select->setCurrentIndex(0); // Empty
-        ui->com_label_connect->setText("Click to connect");
-        ui->com_connect->setText("►");
-        ui->panel_main_control->setEnabled(false);
+        ui->com_label_connect->setText("Ready to connect");
+        ui->com_intro->setText("Time to connect. Let's talk to Fluorescence...");
+        ui->com_connect->setText(">>");
+        ui->menu_button->setEnabled(false);
 
         hide_all_panels();
         ui->panel_welcome->show();
+    }
+}
+
+void FluorescenceApp::on_com_reload_clicked()
+{
+    // if in unconnected state
+    if(ui->com_label_connect->text() == "Ready to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
+        ui->com_select->clear();
+        ui->com_select->addItem("");
+        for(QSerialPortInfo available_ports : QSerialPortInfo::availablePorts()) {
+            ui->com_select->addItem(available_ports.portName());
+        }
+        ui->com_select->addItem("Bluetooth");
     }
 }
 
@@ -311,9 +331,10 @@ void FluorescenceApp::app_com_connected_callback()
     }
 
     ui->com_select->setEnabled(false);
-    ui->panel_main_control->setEnabled(true);
-    ui->com_label_connect->setText("Click to disconnect");
-    ui->com_connect->setText("◼");
+    ui->menu_button->setEnabled(true);
+    ui->com_label_connect->setText("Fluorescence is connected");
+    ui->com_connect->setText("⏹");
+    ui->com_intro->setText("Fluorescence is connected. Have a colorful time.");
 }
 
 void FluorescenceApp::app_com_status_callback(QString status) {
@@ -328,13 +349,21 @@ void FluorescenceApp::on_com_select_currentTextChanged(const QString &arg1)
     if(arg1.compare("Bluetooth") == 0) {
         ui->com_label_connect->setText("Click to find Fluorescence and pair");
     } else {
-        ui->com_label_connect->setText("Click to connect");
+        ui->com_label_connect->setText("Ready to connect");
     }
+}
+
+void FluorescenceApp::on_main_welcome_clicked()
+{
+    hide_all_panels();
+    ui->menu_controls_layout->hide();
+    ui->panel_welcome->show();
 }
 
 void FluorescenceApp::on_main_preset_clicked()
 {
     hide_all_panels();
+    ui->menu_controls_layout->hide();
     ui->panel_presets->show();
 
     if(!global_is_fw2) { // Legacy has some controls disabled
@@ -349,6 +378,7 @@ void FluorescenceApp::on_main_preset_clicked()
 void FluorescenceApp::on_main_custom_clicked()
 {
     hide_all_panels();
+    ui->menu_controls_layout->hide();
     ui->panel_custom_colors->show();
 
     if(!global_is_fw2) { // Legacy has some controls disabled
@@ -363,18 +393,21 @@ void FluorescenceApp::on_main_custom_clicked()
 void FluorescenceApp::on_main_timesync_clicked()
 {
     hide_all_panels();
+    ui->menu_controls_layout->hide();
     ui->panel_timesync->show();
 }
 
 void FluorescenceApp::on_main_message_clicked()
 {
     hide_all_panels();
+    ui->menu_controls_layout->hide();
     ui->panel_message->show();
 }
 
 void FluorescenceApp::on_main_settings_clicked()
 {
     hide_all_panels();
+    ui->menu_controls_layout->hide();
     if(!global_is_fw2) {
         ui->panel_settings->show();
     } else { // Legacy (fw2) Settings
@@ -1000,23 +1033,42 @@ void FluorescenceApp::fw_update_manual_dfu_request()
     global_com_instance->transfer_dfu_request();
 }
 
-void FluorescenceApp::on_com_text_clicked()
-{
-    // if in unconnected state
-    if(ui->com_label_connect->text() == "Click to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
-        ui->com_select->clear();
-        ui->com_select->addItem("");
-        for(QSerialPortInfo available_ports : QSerialPortInfo::availablePorts()) {
-            ui->com_select->addItem(available_ports.portName());
-        }
-        ui->com_select->addItem("Bluetooth");
-    }
-}
-
 void FluorescenceApp::on_settings_info_app_clicked()
 {
     infobox about_box;
     about_box.setModal(true);
     about_box.setWindowFlags(Qt::SplashScreen);
     about_box.exec();
+}
+
+void FluorescenceApp::on_menu_button_clicked()
+{
+    if(!ui->menu_controls_layout->isVisible()) {
+        QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
+        ui->menu_controls_layout->setGraphicsEffect(eff);
+        QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
+        a->setDuration(500);
+        a->setStartValue(0);
+        a->setEndValue(1);
+        a->setEasingCurve(QEasingCurve::InBack);
+        a->start(QPropertyAnimation::DeleteWhenStopped);
+        ui->menu_button->setPixmap(QPixmap::fromImage(QImage(":/Resources/menu_inv.png")));
+        ui->menu_controls_layout->show();
+        // hide_all_panels();
+    } else {
+        ui->menu_button->setPixmap(QPixmap::fromImage(QImage(":/Resources/menu.png")));
+        QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
+        ui->menu_controls_layout->setGraphicsEffect(eff);
+        QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
+        a->setDuration(500);
+        a->setStartValue(1);
+        a->setEndValue(0);
+        a->setEasingCurve(QEasingCurve::OutBack);
+        a->start(QPropertyAnimation::DeleteWhenStopped);
+        connect(a, SIGNAL(finished()), this, SLOT(menu_hide_menu()));
+    }
+}
+
+void FluorescenceApp::menu_hide_menu() {
+    ui->menu_controls_layout->hide();
 }

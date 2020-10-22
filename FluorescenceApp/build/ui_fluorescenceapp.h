@@ -14,6 +14,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPlainTextEdit>
@@ -22,8 +23,9 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTimeEdit>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "clickablelabel.h"
+#include <clickablelabel.h>
 #include "movablelabel.h"
 
 QT_BEGIN_NAMESPACE
@@ -32,14 +34,11 @@ class Ui_FluorescenceApp
 {
 public:
     QWidget *centralwidget;
-    QGroupBox *com_group;
-    QPushButton *com_connect;
-    QComboBox *com_select;
-    ClickableLabel *com_text;
-    QLabel *com_label_connect;
     QWidget *panel_welcome;
-    QLabel *welcome_click2begin;
-    QLabel *welcome_text;
+    QComboBox *com_select;
+    QLabel *com_intro;
+    ClickableLabel *com_connect;
+    ClickableLabel *com_reload;
     QWidget *panel_presets;
     QTabWidget *tab_presets_container;
     QWidget *tab_presets_static;
@@ -270,12 +269,6 @@ public:
     QGroupBox *settings_update;
     QPushButton *settings_info_download;
     QPushButton *settings_info_update;
-    QGroupBox *panel_main_control;
-    QPushButton *main_preset;
-    QPushButton *main_custom;
-    QPushButton *main_message;
-    QPushButton *main_timesync;
-    QPushButton *main_settings;
     QWidget *panel_lsettings;
     QGroupBox *lsettings_td;
     QCheckBox *lsettings_td_12hr_enable;
@@ -303,13 +296,27 @@ public:
     QGroupBox *lsettings_settings;
     QPushButton *lsettings_settings_default;
     QPushButton *lsettings_settings_save;
+    QWidget *menu_controls_layout;
+    QVBoxLayout *menu_vlayout;
+    QPushButton *main_welcome;
+    QPushButton *main_timesync;
+    QPushButton *main_preset;
+    QPushButton *main_custom;
+    QPushButton *main_settings;
+    QPushButton *main_message;
+    QWidget *menu_layout;
+    QHBoxLayout *menu_hide;
+    ClickableLabel *menu_button;
+    QLabel *menu_about;
+    ClickableLabel *menu_button_balancer;
+    QLabel *com_label_connect;
 
     void setupUi(QMainWindow *FluorescenceApp)
     {
         if (FluorescenceApp->objectName().isEmpty())
             FluorescenceApp->setObjectName(QString::fromUtf8("FluorescenceApp"));
         FluorescenceApp->setWindowModality(Qt::NonModal);
-        FluorescenceApp->resize(760, 500);
+        FluorescenceApp->resize(760, 440);
         QFont font;
         font.setFamily(QString::fromUtf8("Arial"));
         FluorescenceApp->setFont(font);
@@ -318,95 +325,72 @@ public:
         FluorescenceApp->setDockNestingEnabled(false);
         centralwidget = new QWidget(FluorescenceApp);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        com_group = new QGroupBox(centralwidget);
-        com_group->setObjectName(QString::fromUtf8("com_group"));
-        com_group->setGeometry(QRect(10, 5, 241, 110));
-        QFont font1;
-        font1.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font1.setBold(true);
-        font1.setWeight(75);
-        com_group->setFont(font1);
-        com_group->setStyleSheet(QString::fromUtf8("QGroupBox::title {\n"
-"	color: rgb(128, 0, 128);\n"
-"}"));
-        com_group->setFlat(true);
-        com_connect = new QPushButton(com_group);
-        com_connect->setObjectName(QString::fromUtf8("com_connect"));
-        com_connect->setGeometry(QRect(170, 25, 61, 61));
-        QFont font2;
-        font2.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        com_connect->setFont(font2);
-        com_connect->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
-        com_select = new QComboBox(com_group);
-        com_select->setObjectName(QString::fromUtf8("com_select"));
-        com_select->setGeometry(QRect(5, 50, 151, 31));
-        QFont font3;
-        font3.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font3.setBold(false);
-        font3.setWeight(50);
-        com_select->setFont(font3);
-        com_select->setFrame(true);
-        com_text = new ClickableLabel(com_group);
-        com_text->setObjectName(QString::fromUtf8("com_text"));
-        com_text->setGeometry(QRect(10, 30, 151, 16));
-        QFont font4;
-        font4.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font4.setBold(true);
-        font4.setUnderline(true);
-        font4.setWeight(75);
-        com_text->setFont(font4);
-        com_text->setCursor(QCursor(Qt::OpenHandCursor));
-        com_text->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
-        com_label_connect = new QLabel(com_group);
-        com_label_connect->setObjectName(QString::fromUtf8("com_label_connect"));
-        com_label_connect->setGeometry(QRect(12, 87, 221, 20));
-        com_label_connect->setFont(font1);
-        com_label_connect->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128)"));
-        com_label_connect->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         panel_welcome = new QWidget(centralwidget);
         panel_welcome->setObjectName(QString::fromUtf8("panel_welcome"));
         panel_welcome->setEnabled(true);
-        panel_welcome->setGeometry(QRect(10, 120, 741, 371));
-        panel_welcome->setFont(font2);
+        panel_welcome->setGeometry(QRect(10, 40, 741, 371));
+        QFont font1;
+        font1.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
+        panel_welcome->setFont(font1);
         panel_welcome->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255)"));
-        welcome_click2begin = new QLabel(panel_welcome);
-        welcome_click2begin->setObjectName(QString::fromUtf8("welcome_click2begin"));
-        welcome_click2begin->setGeometry(QRect(160, 100, 401, 91));
-        QFont font5;
-        font5.setFamily(QString::fromUtf8("Arial Black"));
-        font5.setPointSize(96);
-        font5.setBold(true);
-        font5.setWeight(75);
-        welcome_click2begin->setFont(font5);
-        welcome_click2begin->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
-        welcome_click2begin->setAlignment(Qt::AlignCenter);
-        welcome_text = new QLabel(panel_welcome);
-        welcome_text->setObjectName(QString::fromUtf8("welcome_text"));
-        welcome_text->setGeometry(QRect(110, 190, 491, 31));
-        welcome_text->setFont(font1);
-        welcome_text->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128)"));
-        welcome_text->setAlignment(Qt::AlignCenter);
+        com_select = new QComboBox(panel_welcome);
+        com_select->setObjectName(QString::fromUtf8("com_select"));
+        com_select->setGeometry(QRect(40, 130, 661, 51));
+        QFont font2;
+        font2.setFamily(QString::fromUtf8("RalewayBold"));
+        font2.setPointSize(16);
+        font2.setBold(false);
+        font2.setItalic(false);
+        font2.setWeight(50);
+        com_select->setFont(font2);
+        com_select->setStyleSheet(QString::fromUtf8("font: 16pt \"RalewayBold\";"));
+        com_select->setFrame(true);
+        com_intro = new QLabel(panel_welcome);
+        com_intro->setObjectName(QString::fromUtf8("com_intro"));
+        com_intro->setGeometry(QRect(40, 80, 661, 41));
+        com_intro->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 18pt \"RalewayBlack\";"));
+        com_intro->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        com_connect = new ClickableLabel(panel_welcome);
+        com_connect->setObjectName(QString::fromUtf8("com_connect"));
+        com_connect->setGeometry(QRect(640, 210, 51, 51));
+        com_connect->setCursor(QCursor(Qt::OpenHandCursor));
+        com_connect->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 36pt \"RalewayBlack\";"));
+        com_connect->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        com_reload = new ClickableLabel(panel_welcome);
+        com_reload->setObjectName(QString::fromUtf8("com_reload"));
+        com_reload->setGeometry(QRect(40, 220, 40, 40));
+        com_reload->setCursor(QCursor(Qt::OpenHandCursor));
+        com_reload->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 36pt \"RalewayBlack\";"));
+        com_reload->setPixmap(QPixmap(QString::fromUtf8(":/Resources/reload.png")));
+        com_reload->setScaledContents(true);
+        com_reload->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
         panel_presets = new QWidget(centralwidget);
         panel_presets->setObjectName(QString::fromUtf8("panel_presets"));
         panel_presets->setEnabled(true);
-        panel_presets->setGeometry(QRect(10, 120, 741, 371));
-        panel_presets->setFont(font2);
+        panel_presets->setGeometry(QRect(10, 40, 741, 371));
+        panel_presets->setFont(font1);
         panel_presets->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255)"));
         tab_presets_container = new QTabWidget(panel_presets);
         tab_presets_container->setObjectName(QString::fromUtf8("tab_presets_container"));
         tab_presets_container->setGeometry(QRect(0, 0, 741, 371));
-        tab_presets_container->setFont(font2);
+        QFont font3;
+        font3.setFamily(QString::fromUtf8("RalewayBold"));
+        font3.setPointSize(12);
+        font3.setBold(false);
+        font3.setItalic(false);
+        font3.setWeight(50);
+        tab_presets_container->setFont(font3);
+        tab_presets_container->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         tab_presets_static = new QWidget();
         tab_presets_static->setObjectName(QString::fromUtf8("tab_presets_static"));
         static_intro = new QLabel(tab_presets_static);
         static_intro->setObjectName(QString::fromUtf8("static_intro"));
         static_intro->setGeometry(QRect(20, 30, 411, 16));
-        QFont font6;
-        font6.setFamily(QString::fromUtf8("Arial"));
-        font6.setBold(true);
-        font6.setWeight(75);
-        static_intro->setFont(font6);
+        static_intro->setFont(font3);
+        static_intro->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         static_rainbow = new ClickableLabel(tab_presets_static);
         static_rainbow->setObjectName(QString::fromUtf8("static_rainbow"));
         static_rainbow->setGeometry(QRect(190, 120, 281, 81));
@@ -435,126 +419,137 @@ public:
         static_magenta = new ClickableLabel(tab_presets_static);
         static_magenta->setObjectName(QString::fromUtf8("static_magenta"));
         static_magenta->setGeometry(QRect(460, 30, 131, 31));
-        QFont font7;
-        font7.setFamily(QString::fromUtf8("Arial"));
-        font7.setPointSize(26);
-        font7.setBold(true);
-        font7.setWeight(75);
-        static_magenta->setFont(font7);
+        QFont font4;
+        font4.setFamily(QString::fromUtf8("RalewayBold"));
+        font4.setPointSize(26);
+        font4.setBold(false);
+        font4.setItalic(false);
+        font4.setWeight(50);
+        static_magenta->setFont(font4);
         static_magenta->setCursor(QCursor(Qt::OpenHandCursor));
-        static_magenta->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        static_magenta->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         static_off = new ClickableLabel(tab_presets_static);
         static_off->setObjectName(QString::fromUtf8("static_off"));
         static_off->setGeometry(QRect(650, 30, 61, 31));
-        static_off->setFont(font7);
+        static_off->setFont(font4);
         static_off->setCursor(QCursor(Qt::OpenHandCursor));
+        static_off->setStyleSheet(QString::fromUtf8("font: 26pt \"RalewayBold\";"));
         static_violet = new ClickableLabel(tab_presets_static);
         static_violet->setObjectName(QString::fromUtf8("static_violet"));
         static_violet->setGeometry(QRect(540, 90, 91, 31));
-        static_violet->setFont(font7);
+        static_violet->setFont(font4);
         static_violet->setCursor(QCursor(Qt::OpenHandCursor));
-        static_violet->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 255);"));
+        static_violet->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 255);font: 26pt \"RalewayBold\";"));
         static_red = new ClickableLabel(tab_presets_static);
         static_red->setObjectName(QString::fromUtf8("static_red"));
         static_red->setGeometry(QRect(40, 150, 61, 31));
-        static_red->setFont(font7);
+        static_red->setFont(font4);
         static_red->setCursor(QCursor(Qt::OpenHandCursor));
-        static_red->setStyleSheet(QString::fromUtf8("color: rgb(252, 1, 7);"));
+        static_red->setStyleSheet(QString::fromUtf8("color: rgb(252, 1, 7);font: 26pt \"RalewayBold\";"));
         static_blue = new ClickableLabel(tab_presets_static);
         static_blue->setObjectName(QString::fromUtf8("static_blue"));
         static_blue->setGeometry(QRect(640, 230, 71, 31));
-        static_blue->setFont(font7);
+        static_blue->setFont(font4);
         static_blue->setCursor(QCursor(Qt::OpenHandCursor));
-        static_blue->setStyleSheet(QString::fromUtf8("color: rgb(15, 128, 255);"));
+        static_blue->setStyleSheet(QString::fromUtf8("color: rgb(15, 128, 255);font: 26pt \"RalewayBold\";"));
         static_cyan = new ClickableLabel(tab_presets_static);
         static_cyan->setObjectName(QString::fromUtf8("static_cyan"));
         static_cyan->setGeometry(QRect(520, 210, 81, 31));
-        static_cyan->setFont(font7);
+        static_cyan->setFont(font4);
         static_cyan->setCursor(QCursor(Qt::OpenHandCursor));
-        static_cyan->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        static_cyan->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 26pt \"RalewayBold\";"));
         static_green = new ClickableLabel(tab_presets_static);
         static_green->setObjectName(QString::fromUtf8("static_green"));
         static_green->setGeometry(QRect(370, 220, 101, 31));
-        static_green->setFont(font7);
+        static_green->setFont(font4);
         static_green->setCursor(QCursor(Qt::OpenHandCursor));
-        static_green->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 1);"));
+        static_green->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 1);font: 26pt \"RalewayBold\";"));
         static_warmwhite = new ClickableLabel(tab_presets_static);
         static_warmwhite->setObjectName(QString::fromUtf8("static_warmwhite"));
         static_warmwhite->setGeometry(QRect(260, 280, 161, 31));
-        static_warmwhite->setFont(font7);
+        static_warmwhite->setFont(font4);
         static_warmwhite->setCursor(QCursor(Qt::OpenHandCursor));
-        static_warmwhite->setStyleSheet(QString::fromUtf8("color: rgb(254, 204, 102);"));
+        static_warmwhite->setStyleSheet(QString::fromUtf8("color: rgb(254, 204, 102);font: 26pt \"RalewayBold\";"));
         static_white = new ClickableLabel(tab_presets_static);
         static_white->setObjectName(QString::fromUtf8("static_white"));
         static_white->setGeometry(QRect(30, 280, 101, 31));
-        static_white->setFont(font7);
+        static_white->setFont(font4);
         static_white->setCursor(QCursor(Qt::OpenHandCursor));
-        static_white->setStyleSheet(QString::fromUtf8("color: rgb(204, 204, 204);"));
+        static_white->setStyleSheet(QString::fromUtf8("color: rgb(204, 204, 204);font: 26pt \"RalewayBold\";"));
         static_orange = new ClickableLabel(tab_presets_static);
         static_orange->setObjectName(QString::fromUtf8("static_orange"));
         static_orange->setGeometry(QRect(60, 220, 111, 31));
-        static_orange->setFont(font7);
+        static_orange->setFont(font4);
         static_orange->setCursor(QCursor(Qt::OpenHandCursor));
-        static_orange->setStyleSheet(QString::fromUtf8("color: rgb(253, 128, 8);"));
+        static_orange->setStyleSheet(QString::fromUtf8("color: rgb(253, 128, 8);font: 26pt \"RalewayBold\";"));
         static_yellow = new ClickableLabel(tab_presets_static);
         static_yellow->setObjectName(QString::fromUtf8("static_yellow"));
         static_yellow->setGeometry(QRect(220, 210, 111, 31));
-        static_yellow->setFont(font7);
+        static_yellow->setFont(font4);
         static_yellow->setCursor(QCursor(Qt::OpenHandCursor));
-        static_yellow->setStyleSheet(QString::fromUtf8("color: rgb(185, 161, 29);"));
+        static_yellow->setStyleSheet(QString::fromUtf8("color: rgb(185, 161, 29);font: 26pt \"RalewayBold\";"));
         tab_presets_container->addTab(tab_presets_static, QString());
         tab_presets_dynamic = new QWidget();
         tab_presets_dynamic->setObjectName(QString::fromUtf8("tab_presets_dynamic"));
         dynamic_spectrum = new QPushButton(tab_presets_dynamic);
         dynamic_spectrum->setObjectName(QString::fromUtf8("dynamic_spectrum"));
         dynamic_spectrum->setGeometry(QRect(10, 10, 91, 31));
-        dynamic_spectrum->setFont(font2);
+        dynamic_spectrum->setFont(font3);
         dynamic_spectrum->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         dynamic_rainbow = new QPushButton(tab_presets_dynamic);
         dynamic_rainbow->setObjectName(QString::fromUtf8("dynamic_rainbow"));
         dynamic_rainbow->setGeometry(QRect(230, 10, 91, 31));
-        dynamic_rainbow->setFont(font2);
+        dynamic_rainbow->setFont(font3);
         dynamic_rainbow->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         dynamic_bliss_dnc = new QPushButton(tab_presets_dynamic);
         dynamic_bliss_dnc->setObjectName(QString::fromUtf8("dynamic_bliss_dnc"));
         dynamic_bliss_dnc->setGeometry(QRect(110, 10, 111, 31));
-        dynamic_bliss_dnc->setFont(font2);
+        dynamic_bliss_dnc->setFont(font3);
         dynamic_bliss_dnc->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         dynamic_timecode = new QPushButton(tab_presets_dynamic);
         dynamic_timecode->setObjectName(QString::fromUtf8("dynamic_timecode"));
         dynamic_timecode->setGeometry(QRect(530, 10, 91, 31));
-        dynamic_timecode->setFont(font2);
+        dynamic_timecode->setFont(font3);
         dynamic_timecode->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         dynamic_police = new QPushButton(tab_presets_dynamic);
         dynamic_police->setObjectName(QString::fromUtf8("dynamic_police"));
         dynamic_police->setGeometry(QRect(630, 10, 91, 31));
-        dynamic_police->setFont(font2);
+        dynamic_police->setFont(font3);
         dynamic_police->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         dynamic_chase = new QPushButton(tab_presets_dynamic);
         dynamic_chase->setObjectName(QString::fromUtf8("dynamic_chase"));
         dynamic_chase->setGeometry(QRect(330, 10, 91, 31));
-        dynamic_chase->setFont(font2);
+        dynamic_chase->setFont(font3);
         dynamic_chase->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         com_text_2 = new QLabel(tab_presets_dynamic);
         com_text_2->setObjectName(QString::fromUtf8("com_text_2"));
         com_text_2->setGeometry(QRect(70, 60, 481, 16));
-        com_text_2->setFont(font1);
-        com_text_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        com_text_2->setFont(font3);
+        com_text_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         com_text_3 = new QLabel(tab_presets_dynamic);
         com_text_3->setObjectName(QString::fromUtf8("com_text_3"));
         com_text_3->setGeometry(QRect(20, 190, 41, 16));
-        com_text_3->setFont(font1);
-        com_text_3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        com_text_3->setFont(font3);
+        com_text_3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         dynamic_t = new QWidget(tab_presets_dynamic);
         dynamic_t->setObjectName(QString::fromUtf8("dynamic_t"));
         dynamic_t->setGeometry(QRect(70, 190, 631, 21));
-        dynamic_t->setFont(font2);
+        dynamic_t->setFont(font3);
         dynamic_t_1 = new ClickableLabel(dynamic_t);
         dynamic_t_1->setObjectName(QString::fromUtf8("dynamic_t_1"));
         dynamic_t_1->setGeometry(QRect(0, 0, 21, 21));
@@ -642,69 +637,79 @@ public:
         panel_dyn_spectrum = new QWidget(tab_presets_dynamic);
         panel_dyn_spectrum->setObjectName(QString::fromUtf8("panel_dyn_spectrum"));
         panel_dyn_spectrum->setGeometry(QRect(0, 240, 741, 101));
-        panel_dyn_spectrum->setFont(font2);
+        panel_dyn_spectrum->setFont(font3);
         panel_dyn_spectrum_set = new QPushButton(panel_dyn_spectrum);
         panel_dyn_spectrum_set->setObjectName(QString::fromUtf8("panel_dyn_spectrum_set"));
         panel_dyn_spectrum_set->setGeometry(QRect(500, 20, 221, 61));
-        QFont font8;
-        font8.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font8.setPointSize(26);
-        font8.setBold(true);
-        font8.setWeight(75);
-        panel_dyn_spectrum_set->setFont(font8);
+        QFont font5;
+        font5.setFamily(QString::fromUtf8("RalewayBlack"));
+        font5.setPointSize(26);
+        font5.setBold(false);
+        font5.setItalic(false);
+        font5.setWeight(50);
+        panel_dyn_spectrum_set->setFont(font5);
         panel_dyn_spectrum_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         panel_dyn_spectrum_ptext1 = new QLabel(panel_dyn_spectrum);
         panel_dyn_spectrum_ptext1->setObjectName(QString::fromUtf8("panel_dyn_spectrum_ptext1"));
-        panel_dyn_spectrum_ptext1->setGeometry(QRect(200, 10, 141, 31));
-        panel_dyn_spectrum_ptext1->setFont(font8);
-        panel_dyn_spectrum_ptext1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_spectrum_ptext1->setGeometry(QRect(170, 10, 141, 31));
+        panel_dyn_spectrum_ptext1->setFont(font4);
+        panel_dyn_spectrum_ptext1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_spectrum_param_1 = new QComboBox(panel_dyn_spectrum);
         panel_dyn_spectrum_param_1->addItem(QString());
         panel_dyn_spectrum_param_1->addItem(QString());
         panel_dyn_spectrum_param_1->addItem(QString());
         panel_dyn_spectrum_param_1->setObjectName(QString::fromUtf8("panel_dyn_spectrum_param_1"));
-        panel_dyn_spectrum_param_1->setGeometry(QRect(340, 10, 141, 31));
-        QFont font9;
-        font9.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font9.setPointSize(18);
-        font9.setBold(true);
-        font9.setWeight(75);
-        panel_dyn_spectrum_param_1->setFont(font9);
+        panel_dyn_spectrum_param_1->setGeometry(QRect(310, 10, 171, 31));
+        QFont font6;
+        font6.setFamily(QString::fromUtf8("RalewayBold"));
+        font6.setPointSize(18);
+        font6.setBold(false);
+        font6.setItalic(false);
+        font6.setWeight(50);
+        panel_dyn_spectrum_param_1->setFont(font6);
+        panel_dyn_spectrum_param_1->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_spectrum_param_1->setFrame(false);
         panel_dyn_spectrum_ptext2 = new QLabel(panel_dyn_spectrum);
         panel_dyn_spectrum_ptext2->setObjectName(QString::fromUtf8("panel_dyn_spectrum_ptext2"));
-        panel_dyn_spectrum_ptext2->setGeometry(QRect(200, 50, 141, 31));
-        panel_dyn_spectrum_ptext2->setFont(font8);
-        panel_dyn_spectrum_ptext2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_spectrum_ptext2->setGeometry(QRect(170, 50, 141, 31));
+        panel_dyn_spectrum_ptext2->setFont(font4);
+        panel_dyn_spectrum_ptext2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_spectrum_param_2 = new QComboBox(panel_dyn_spectrum);
         panel_dyn_spectrum_param_2->addItem(QString());
         panel_dyn_spectrum_param_2->addItem(QString());
         panel_dyn_spectrum_param_2->addItem(QString());
         panel_dyn_spectrum_param_2->setObjectName(QString::fromUtf8("panel_dyn_spectrum_param_2"));
-        panel_dyn_spectrum_param_2->setGeometry(QRect(340, 50, 141, 31));
-        panel_dyn_spectrum_param_2->setFont(font9);
+        panel_dyn_spectrum_param_2->setGeometry(QRect(310, 50, 171, 31));
+        panel_dyn_spectrum_param_2->setFont(font6);
+        panel_dyn_spectrum_param_2->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_spectrum_param_2->setFrame(false);
         panel_dyn_spectrum_intro = new QLabel(panel_dyn_spectrum);
         panel_dyn_spectrum_intro->setObjectName(QString::fromUtf8("panel_dyn_spectrum_intro"));
         panel_dyn_spectrum_intro->setGeometry(QRect(10, 20, 151, 51));
-        panel_dyn_spectrum_intro->setFont(font1);
+        panel_dyn_spectrum_intro->setFont(font3);
+        panel_dyn_spectrum_intro->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_spectrum_intro->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_bliss = new QWidget(tab_presets_dynamic);
         panel_dyn_bliss->setObjectName(QString::fromUtf8("panel_dyn_bliss"));
         panel_dyn_bliss->setGeometry(QRect(0, 240, 741, 101));
-        panel_dyn_bliss->setFont(font2);
+        panel_dyn_bliss->setFont(font3);
         panel_dyn_bliss_set = new QPushButton(panel_dyn_bliss);
         panel_dyn_bliss_set->setObjectName(QString::fromUtf8("panel_dyn_bliss_set"));
         panel_dyn_bliss_set->setGeometry(QRect(500, 10, 221, 41));
-        panel_dyn_bliss_set->setFont(font8);
+        panel_dyn_bliss_set->setFont(font5);
         panel_dyn_bliss_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         panel_dyn_bliss_ptext = new QLabel(panel_dyn_bliss);
         panel_dyn_bliss_ptext->setObjectName(QString::fromUtf8("panel_dyn_bliss_ptext"));
         panel_dyn_bliss_ptext->setGeometry(QRect(20, 10, 91, 31));
-        panel_dyn_bliss_ptext->setFont(font8);
-        panel_dyn_bliss_ptext->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_bliss_ptext->setFont(font4);
+        panel_dyn_bliss_ptext->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_bliss_param = new QComboBox(panel_dyn_bliss);
         panel_dyn_bliss_param->addItem(QString());
         panel_dyn_bliss_param->addItem(QString());
@@ -714,37 +719,42 @@ public:
         panel_dyn_bliss_param->addItem(QString());
         panel_dyn_bliss_param->setObjectName(QString::fromUtf8("panel_dyn_bliss_param"));
         panel_dyn_bliss_param->setGeometry(QRect(150, 10, 271, 31));
-        panel_dyn_bliss_param->setFont(font9);
+        panel_dyn_bliss_param->setFont(font6);
+        panel_dyn_bliss_param->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_bliss_param->setFrame(false);
         panel_dyn_bliss_description = new QLabel(panel_dyn_bliss);
         panel_dyn_bliss_description->setObjectName(QString::fromUtf8("panel_dyn_bliss_description"));
         panel_dyn_bliss_description->setGeometry(QRect(20, 52, 701, 51));
-        panel_dyn_bliss_description->setFont(font1);
+        panel_dyn_bliss_description->setFont(font3);
+        panel_dyn_bliss_description->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_bliss_description->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_rnb = new QWidget(tab_presets_dynamic);
         panel_dyn_rnb->setObjectName(QString::fromUtf8("panel_dyn_rnb"));
         panel_dyn_rnb->setGeometry(QRect(0, 240, 741, 101));
-        panel_dyn_rnb->setFont(font2);
+        panel_dyn_rnb->setFont(font3);
         panel_dyn_rnb_set = new QPushButton(panel_dyn_rnb);
         panel_dyn_rnb_set->setObjectName(QString::fromUtf8("panel_dyn_rnb_set"));
         panel_dyn_rnb_set->setGeometry(QRect(500, 20, 221, 61));
-        panel_dyn_rnb_set->setFont(font8);
+        panel_dyn_rnb_set->setFont(font5);
         panel_dyn_rnb_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         panel_dyn_rnb_ptext_1 = new QLabel(panel_dyn_rnb);
         panel_dyn_rnb_ptext_1->setObjectName(QString::fromUtf8("panel_dyn_rnb_ptext_1"));
         panel_dyn_rnb_ptext_1->setGeometry(QRect(20, 10, 121, 31));
-        panel_dyn_rnb_ptext_1->setFont(font8);
-        panel_dyn_rnb_ptext_1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_rnb_ptext_1->setFont(font4);
+        panel_dyn_rnb_ptext_1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_rnb_p1_1 = new QLabel(panel_dyn_rnb);
         panel_dyn_rnb_p1_1->setObjectName(QString::fromUtf8("panel_dyn_rnb_p1_1"));
         panel_dyn_rnb_p1_1->setGeometry(QRect(190, 20, 41, 21));
-        panel_dyn_rnb_p1_1->setFont(font1);
+        panel_dyn_rnb_p1_1->setFont(font3);
+        panel_dyn_rnb_p1_1->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_rnb_p1_1->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_rnb_param1 = new QSlider(panel_dyn_rnb);
         panel_dyn_rnb_param1->setObjectName(QString::fromUtf8("panel_dyn_rnb_param1"));
         panel_dyn_rnb_param1->setGeometry(QRect(240, 20, 160, 22));
-        panel_dyn_rnb_param1->setFont(font2);
+        panel_dyn_rnb_param1->setFont(font3);
         panel_dyn_rnb_param1->setMinimum(10);
         panel_dyn_rnb_param1->setMaximum(42);
         panel_dyn_rnb_param1->setValue(18);
@@ -754,45 +764,51 @@ public:
         panel_dyn_rnb_p1_2 = new QLabel(panel_dyn_rnb);
         panel_dyn_rnb_p1_2->setObjectName(QString::fromUtf8("panel_dyn_rnb_p1_2"));
         panel_dyn_rnb_p1_2->setGeometry(QRect(420, 20, 41, 21));
-        panel_dyn_rnb_p1_2->setFont(font1);
+        panel_dyn_rnb_p1_2->setFont(font3);
+        panel_dyn_rnb_p1_2->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_rnb_p1_2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_rnb_ptext_2 = new QLabel(panel_dyn_rnb);
         panel_dyn_rnb_ptext_2->setObjectName(QString::fromUtf8("panel_dyn_rnb_ptext_2"));
         panel_dyn_rnb_ptext_2->setGeometry(QRect(20, 50, 141, 31));
-        panel_dyn_rnb_ptext_2->setFont(font8);
-        panel_dyn_rnb_ptext_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_rnb_ptext_2->setFont(font4);
+        panel_dyn_rnb_ptext_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_rnb_param2 = new QComboBox(panel_dyn_rnb);
         panel_dyn_rnb_param2->addItem(QString());
         panel_dyn_rnb_param2->addItem(QString());
         panel_dyn_rnb_param2->addItem(QString());
         panel_dyn_rnb_param2->setObjectName(QString::fromUtf8("panel_dyn_rnb_param2"));
         panel_dyn_rnb_param2->setGeometry(QRect(180, 50, 141, 31));
-        panel_dyn_rnb_param2->setFont(font9);
+        panel_dyn_rnb_param2->setFont(font6);
+        panel_dyn_rnb_param2->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_rnb_param2->setFrame(false);
         panel_dyn_chase = new QWidget(tab_presets_dynamic);
         panel_dyn_chase->setObjectName(QString::fromUtf8("panel_dyn_chase"));
         panel_dyn_chase->setGeometry(QRect(0, 240, 741, 101));
-        panel_dyn_chase->setFont(font2);
+        panel_dyn_chase->setFont(font3);
         panel_dyn_chase_set = new QPushButton(panel_dyn_chase);
         panel_dyn_chase_set->setObjectName(QString::fromUtf8("panel_dyn_chase_set"));
         panel_dyn_chase_set->setGeometry(QRect(500, 20, 221, 61));
-        panel_dyn_chase_set->setFont(font8);
+        panel_dyn_chase_set->setFont(font5);
         panel_dyn_chase_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         panel_dyn_chase_ptext_1 = new QLabel(panel_dyn_chase);
         panel_dyn_chase_ptext_1->setObjectName(QString::fromUtf8("panel_dyn_chase_ptext_1"));
         panel_dyn_chase_ptext_1->setGeometry(QRect(20, 10, 121, 31));
-        panel_dyn_chase_ptext_1->setFont(font8);
-        panel_dyn_chase_ptext_1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_chase_ptext_1->setFont(font4);
+        panel_dyn_chase_ptext_1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_chase_p1 = new QLabel(panel_dyn_chase);
         panel_dyn_chase_p1->setObjectName(QString::fromUtf8("panel_dyn_chase_p1"));
         panel_dyn_chase_p1->setGeometry(QRect(190, 20, 41, 21));
-        panel_dyn_chase_p1->setFont(font1);
+        panel_dyn_chase_p1->setFont(font3);
+        panel_dyn_chase_p1->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_chase_p1->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_chase_param1 = new QSlider(panel_dyn_chase);
         panel_dyn_chase_param1->setObjectName(QString::fromUtf8("panel_dyn_chase_param1"));
         panel_dyn_chase_param1->setGeometry(QRect(240, 20, 160, 22));
-        panel_dyn_chase_param1->setFont(font2);
+        panel_dyn_chase_param1->setFont(font3);
         panel_dyn_chase_param1->setMinimum(0);
         panel_dyn_chase_param1->setMaximum(6);
         panel_dyn_chase_param1->setValue(0);
@@ -802,13 +818,15 @@ public:
         panel_dyn_chase_p2 = new QLabel(panel_dyn_chase);
         panel_dyn_chase_p2->setObjectName(QString::fromUtf8("panel_dyn_chase_p2"));
         panel_dyn_chase_p2->setGeometry(QRect(420, 20, 41, 21));
-        panel_dyn_chase_p2->setFont(font1);
+        panel_dyn_chase_p2->setFont(font3);
+        panel_dyn_chase_p2->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_chase_p2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_chase_ptext_2 = new QLabel(panel_dyn_chase);
         panel_dyn_chase_ptext_2->setObjectName(QString::fromUtf8("panel_dyn_chase_ptext_2"));
         panel_dyn_chase_ptext_2->setGeometry(QRect(20, 50, 141, 31));
-        panel_dyn_chase_ptext_2->setFont(font8);
-        panel_dyn_chase_ptext_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_chase_ptext_2->setFont(font4);
+        panel_dyn_chase_ptext_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_chase_param2 = new QComboBox(panel_dyn_chase);
         panel_dyn_chase_param2->addItem(QString());
         panel_dyn_chase_param2->addItem(QString());
@@ -816,87 +834,99 @@ public:
         panel_dyn_chase_param2->addItem(QString());
         panel_dyn_chase_param2->setObjectName(QString::fromUtf8("panel_dyn_chase_param2"));
         panel_dyn_chase_param2->setGeometry(QRect(180, 50, 271, 31));
-        panel_dyn_chase_param2->setFont(font9);
+        panel_dyn_chase_param2->setFont(font6);
+        panel_dyn_chase_param2->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_chase_param2->setFrame(false);
         panel_dyn_tcode = new QWidget(tab_presets_dynamic);
         panel_dyn_tcode->setObjectName(QString::fromUtf8("panel_dyn_tcode"));
         panel_dyn_tcode->setGeometry(QRect(0, 240, 741, 101));
-        panel_dyn_tcode->setFont(font2);
+        panel_dyn_tcode->setFont(font3);
         panel_dyn_tcode_set = new QPushButton(panel_dyn_tcode);
         panel_dyn_tcode_set->setObjectName(QString::fromUtf8("panel_dyn_tcode_set"));
         panel_dyn_tcode_set->setGeometry(QRect(500, 20, 221, 61));
-        panel_dyn_tcode_set->setFont(font8);
+        panel_dyn_tcode_set->setFont(font5);
         panel_dyn_tcode_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         panel_dyn_tcode_intro = new QLabel(panel_dyn_tcode);
         panel_dyn_tcode_intro->setObjectName(QString::fromUtf8("panel_dyn_tcode_intro"));
         panel_dyn_tcode_intro->setGeometry(QRect(20, 20, 321, 21));
-        panel_dyn_tcode_intro->setFont(font1);
+        panel_dyn_tcode_intro->setFont(font3);
+        panel_dyn_tcode_intro->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_tcode_intro->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_tcode_ptext = new QLabel(panel_dyn_tcode);
         panel_dyn_tcode_ptext->setObjectName(QString::fromUtf8("panel_dyn_tcode_ptext"));
         panel_dyn_tcode_ptext->setGeometry(QRect(20, 50, 171, 31));
-        panel_dyn_tcode_ptext->setFont(font8);
-        panel_dyn_tcode_ptext->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_tcode_ptext->setFont(font4);
+        panel_dyn_tcode_ptext->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_tcode_param1 = new QComboBox(panel_dyn_tcode);
         panel_dyn_tcode_param1->addItem(QString());
         panel_dyn_tcode_param1->addItem(QString());
         panel_dyn_tcode_param1->setObjectName(QString::fromUtf8("panel_dyn_tcode_param1"));
         panel_dyn_tcode_param1->setGeometry(QRect(210, 50, 251, 31));
-        panel_dyn_tcode_param1->setFont(font9);
+        panel_dyn_tcode_param1->setFont(font6);
+        panel_dyn_tcode_param1->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_tcode_param1->setFrame(false);
         panel_dyn_cop = new QWidget(tab_presets_dynamic);
         panel_dyn_cop->setObjectName(QString::fromUtf8("panel_dyn_cop"));
         panel_dyn_cop->setGeometry(QRect(0, 240, 741, 101));
-        panel_dyn_cop->setFont(font2);
+        panel_dyn_cop->setFont(font3);
         panel_dyn_cop_set = new QPushButton(panel_dyn_cop);
         panel_dyn_cop_set->setObjectName(QString::fromUtf8("panel_dyn_cop_set"));
         panel_dyn_cop_set->setGeometry(QRect(500, 20, 221, 61));
-        panel_dyn_cop_set->setFont(font8);
+        panel_dyn_cop_set->setFont(font5);
         panel_dyn_cop_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         panel_dyn_cop_intro = new QLabel(panel_dyn_cop);
         panel_dyn_cop_intro->setObjectName(QString::fromUtf8("panel_dyn_cop_intro"));
         panel_dyn_cop_intro->setGeometry(QRect(20, 20, 411, 21));
-        panel_dyn_cop_intro->setFont(font1);
+        panel_dyn_cop_intro->setFont(font3);
+        panel_dyn_cop_intro->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_cop_intro->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_cop_ptext = new QLabel(panel_dyn_cop);
         panel_dyn_cop_ptext->setObjectName(QString::fromUtf8("panel_dyn_cop_ptext"));
         panel_dyn_cop_ptext->setGeometry(QRect(20, 50, 171, 31));
-        panel_dyn_cop_ptext->setFont(font8);
-        panel_dyn_cop_ptext->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_cop_ptext->setFont(font4);
+        panel_dyn_cop_ptext->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_cop_param1 = new QComboBox(panel_dyn_cop);
         panel_dyn_cop_param1->addItem(QString());
         panel_dyn_cop_param1->addItem(QString());
         panel_dyn_cop_param1->addItem(QString());
         panel_dyn_cop_param1->setObjectName(QString::fromUtf8("panel_dyn_cop_param1"));
         panel_dyn_cop_param1->setGeometry(QRect(210, 50, 251, 31));
-        panel_dyn_cop_param1->setFont(font9);
+        panel_dyn_cop_param1->setFont(font6);
+        panel_dyn_cop_param1->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_cop_param1->setFrame(false);
         panel_dyn_music = new QWidget(tab_presets_dynamic);
         panel_dyn_music->setObjectName(QString::fromUtf8("panel_dyn_music"));
         panel_dyn_music->setGeometry(QRect(0, 240, 741, 101));
-        panel_dyn_music->setFont(font2);
+        panel_dyn_music->setFont(font3);
         panel_dyn_music_set = new QPushButton(panel_dyn_music);
         panel_dyn_music_set->setObjectName(QString::fromUtf8("panel_dyn_music_set"));
         panel_dyn_music_set->setGeometry(QRect(500, 20, 221, 61));
-        panel_dyn_music_set->setFont(font8);
+        panel_dyn_music_set->setFont(font5);
         panel_dyn_music_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         panel_dyn_music_ptext_1 = new QLabel(panel_dyn_music);
         panel_dyn_music_ptext_1->setObjectName(QString::fromUtf8("panel_dyn_music_ptext_1"));
         panel_dyn_music_ptext_1->setGeometry(QRect(20, 10, 121, 31));
-        panel_dyn_music_ptext_1->setFont(font8);
-        panel_dyn_music_ptext_1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_music_ptext_1->setFont(font4);
+        panel_dyn_music_ptext_1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_music_p1 = new QLabel(panel_dyn_music);
         panel_dyn_music_p1->setObjectName(QString::fromUtf8("panel_dyn_music_p1"));
         panel_dyn_music_p1->setGeometry(QRect(190, 20, 41, 21));
-        panel_dyn_music_p1->setFont(font1);
+        panel_dyn_music_p1->setFont(font3);
+        panel_dyn_music_p1->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_music_p1->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_music_param1 = new QSlider(panel_dyn_music);
         panel_dyn_music_param1->setObjectName(QString::fromUtf8("panel_dyn_music_param1"));
         panel_dyn_music_param1->setGeometry(QRect(240, 20, 160, 22));
-        panel_dyn_music_param1->setFont(font2);
+        panel_dyn_music_param1->setFont(font3);
         panel_dyn_music_param1->setMinimum(10);
         panel_dyn_music_param1->setMaximum(42);
         panel_dyn_music_param1->setValue(18);
@@ -906,27 +936,31 @@ public:
         panel_dyn_music_p2 = new QLabel(panel_dyn_music);
         panel_dyn_music_p2->setObjectName(QString::fromUtf8("panel_dyn_music_p2"));
         panel_dyn_music_p2->setGeometry(QRect(420, 20, 41, 21));
-        panel_dyn_music_p2->setFont(font1);
+        panel_dyn_music_p2->setFont(font3);
+        panel_dyn_music_p2->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_dyn_music_p2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         panel_dyn_music_ptext_2 = new QLabel(panel_dyn_music);
         panel_dyn_music_ptext_2->setObjectName(QString::fromUtf8("panel_dyn_music_ptext_2"));
         panel_dyn_music_ptext_2->setGeometry(QRect(20, 50, 141, 31));
-        panel_dyn_music_ptext_2->setFont(font8);
-        panel_dyn_music_ptext_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        panel_dyn_music_ptext_2->setFont(font4);
+        panel_dyn_music_ptext_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 26pt \"RalewayBold\";"));
         panel_dyn_music_param2 = new QComboBox(panel_dyn_music);
         panel_dyn_music_param2->addItem(QString());
         panel_dyn_music_param2->addItem(QString());
         panel_dyn_music_param2->addItem(QString());
         panel_dyn_music_param2->setObjectName(QString::fromUtf8("panel_dyn_music_param2"));
         panel_dyn_music_param2->setGeometry(QRect(180, 50, 141, 31));
-        panel_dyn_music_param2->setFont(font9);
+        panel_dyn_music_param2->setFont(font6);
+        panel_dyn_music_param2->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         panel_dyn_music_param2->setFrame(false);
         dynamic_music = new QPushButton(tab_presets_dynamic);
         dynamic_music->setObjectName(QString::fromUtf8("dynamic_music"));
         dynamic_music->setGeometry(QRect(430, 10, 91, 31));
-        dynamic_music->setFont(font2);
+        dynamic_music->setFont(font3);
         dynamic_music->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         dynamic_c1 = new ClickableLabel(tab_presets_dynamic);
         dynamic_c1->setObjectName(QString::fromUtf8("dynamic_c1"));
         dynamic_c1->setGeometry(QRect(70, 90, 81, 81));
@@ -960,21 +994,21 @@ public:
         com_text_2->raise();
         com_text_3->raise();
         dynamic_t->raise();
-        panel_dyn_spectrum->raise();
-        panel_dyn_bliss->raise();
         dynamic_rainbow->raise();
-        panel_dyn_rnb->raise();
-        panel_dyn_tcode->raise();
-        panel_dyn_cop->raise();
-        panel_dyn_music->raise();
         dynamic_music->raise();
-        panel_dyn_chase->raise();
         dynamic_c1->raise();
         dynamic_c2->raise();
         dynamic_c3->raise();
         dynamic_c4->raise();
         dynamic_c6->raise();
         dynamic_c5->raise();
+        panel_dyn_tcode->raise();
+        panel_dyn_rnb->raise();
+        panel_dyn_music->raise();
+        panel_dyn_cop->raise();
+        panel_dyn_chase->raise();
+        panel_dyn_bliss->raise();
+        panel_dyn_spectrum->raise();
         tab_moodsync = new QWidget();
         tab_moodsync->setObjectName(QString::fromUtf8("tab_moodsync"));
         lisync_computer = new QLabel(tab_moodsync);
@@ -990,13 +1024,13 @@ public:
         lisync_intro = new QLabel(tab_moodsync);
         lisync_intro->setObjectName(QString::fromUtf8("lisync_intro"));
         lisync_intro->setGeometry(QRect(10, 120, 201, 51));
-        lisync_intro->setFont(font1);
-        lisync_intro->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lisync_intro->setFont(font3);
+        lisync_intro->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);font: 12pt \"RalewayBold\";"));
         lisync_status = new QLabel(tab_moodsync);
         lisync_status->setObjectName(QString::fromUtf8("lisync_status"));
         lisync_status->setGeometry(QRect(520, 120, 201, 51));
-        lisync_status->setFont(font1);
-        lisync_status->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lisync_status->setFont(font3);
+        lisync_status->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);font: 12pt \"RalewayBold\";"));
         lisync_c1 = new ClickableLabel(tab_moodsync);
         lisync_c1->setObjectName(QString::fromUtf8("lisync_c1"));
         lisync_c1->setGeometry(QRect(210, 290, 31, 31));
@@ -1028,48 +1062,48 @@ public:
         shuffle_en_static->setObjectName(QString::fromUtf8("shuffle_en_static"));
         shuffle_en_static->setEnabled(false);
         shuffle_en_static->setGeometry(QRect(60, 120, 71, 20));
-        shuffle_en_static->setFont(font1);
-        shuffle_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_static->setFont(font3);
+        shuffle_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_static->setChecked(true);
         shuffle_en_music = new QCheckBox(tab_shuffle);
         shuffle_en_music->setObjectName(QString::fromUtf8("shuffle_en_music"));
         shuffle_en_music->setGeometry(QRect(60, 240, 141, 20));
-        shuffle_en_music->setFont(font1);
-        shuffle_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_music->setFont(font3);
+        shuffle_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_cop = new QCheckBox(tab_shuffle);
         shuffle_en_cop->setObjectName(QString::fromUtf8("shuffle_en_cop"));
         shuffle_en_cop->setGeometry(QRect(60, 260, 141, 20));
-        shuffle_en_cop->setFont(font1);
-        shuffle_en_cop->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_cop->setFont(font3);
+        shuffle_en_cop->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_chase = new QCheckBox(tab_shuffle);
         shuffle_en_chase->setObjectName(QString::fromUtf8("shuffle_en_chase"));
         shuffle_en_chase->setGeometry(QRect(60, 200, 141, 20));
-        shuffle_en_chase->setFont(font1);
-        shuffle_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_chase->setFont(font3);
+        shuffle_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_chase->setChecked(true);
         shuffle_en_spectrum = new QCheckBox(tab_shuffle);
         shuffle_en_spectrum->setObjectName(QString::fromUtf8("shuffle_en_spectrum"));
         shuffle_en_spectrum->setGeometry(QRect(60, 160, 121, 20));
-        shuffle_en_spectrum->setFont(font1);
-        shuffle_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_spectrum->setFont(font3);
+        shuffle_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_spectrum->setChecked(true);
         shuffle_en_rnb = new QCheckBox(tab_shuffle);
         shuffle_en_rnb->setObjectName(QString::fromUtf8("shuffle_en_rnb"));
         shuffle_en_rnb->setGeometry(QRect(60, 180, 121, 20));
-        shuffle_en_rnb->setFont(font1);
-        shuffle_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_rnb->setFont(font3);
+        shuffle_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_rnb->setChecked(true);
         shuffle_en_bliss = new QCheckBox(tab_shuffle);
         shuffle_en_bliss->setObjectName(QString::fromUtf8("shuffle_en_bliss"));
         shuffle_en_bliss->setGeometry(QRect(60, 140, 141, 20));
-        shuffle_en_bliss->setFont(font1);
-        shuffle_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_bliss->setFont(font3);
+        shuffle_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_bliss->setChecked(true);
         shuffle_en_tcode = new QCheckBox(tab_shuffle);
         shuffle_en_tcode->setObjectName(QString::fromUtf8("shuffle_en_tcode"));
         shuffle_en_tcode->setGeometry(QRect(60, 220, 141, 20));
-        shuffle_en_tcode->setFont(font1);
-        shuffle_en_tcode->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        shuffle_en_tcode->setFont(font3);
+        shuffle_en_tcode->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12pt \"RalewayBold\";"));
         shuffle_en_tcode->setChecked(false);
         shuffle_speed = new QComboBox(tab_shuffle);
         shuffle_speed->addItem(QString());
@@ -1078,164 +1112,202 @@ public:
         shuffle_speed->addItem(QString());
         shuffle_speed->addItem(QString());
         shuffle_speed->setObjectName(QString::fromUtf8("shuffle_speed"));
-        shuffle_speed->setGeometry(QRect(340, 140, 281, 51));
-        shuffle_speed->setFont(font9);
+        shuffle_speed->setGeometry(QRect(340, 140, 341, 51));
+        shuffle_speed->setFont(font6);
+        shuffle_speed->setStyleSheet(QString::fromUtf8("font: 18pt \"RalewayBold\";"));
         shuffle_speed->setFrame(false);
         shuffle_set = new QPushButton(tab_shuffle);
         shuffle_set->setObjectName(QString::fromUtf8("shuffle_set"));
-        shuffle_set->setGeometry(QRect(340, 210, 281, 61));
-        shuffle_set->setFont(font8);
+        shuffle_set->setGeometry(QRect(340, 210, 341, 61));
+        shuffle_set->setFont(font5);
         shuffle_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 26pt \"RalewayBlack\";"));
         shuffle_intro1 = new QLabel(tab_shuffle);
         shuffle_intro1->setObjectName(QString::fromUtf8("shuffle_intro1"));
-        shuffle_intro1->setGeometry(QRect(60, 30, 291, 31));
-        shuffle_intro1->setFont(font8);
-        shuffle_intro1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        shuffle_intro1->setGeometry(QRect(60, 30, 351, 31));
+        shuffle_intro1->setFont(font6);
+        shuffle_intro1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);font: 18pt \"RalewayBold\";"));
         shuffle_intro2 = new QLabel(tab_shuffle);
         shuffle_intro2->setObjectName(QString::fromUtf8("shuffle_intro2"));
         shuffle_intro2->setGeometry(QRect(350, 110, 351, 31));
-        shuffle_intro2->setFont(font8);
-        shuffle_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        shuffle_intro2->setFont(font6);
+        shuffle_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);font: 18pt \"RalewayBold\";"));
         shuffle_intro3 = new QLabel(tab_shuffle);
         shuffle_intro3->setObjectName(QString::fromUtf8("shuffle_intro3"));
         shuffle_intro3->setGeometry(QRect(60, 60, 551, 51));
-        shuffle_intro3->setFont(font1);
-        shuffle_intro3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        shuffle_intro3->setFont(font3);
+        shuffle_intro3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);font: 12pt \"RalewayBold\";"));
         tab_presets_container->addTab(tab_shuffle, QString());
         panel_custom_colors = new QWidget(centralwidget);
         panel_custom_colors->setObjectName(QString::fromUtf8("panel_custom_colors"));
         panel_custom_colors->setEnabled(true);
-        panel_custom_colors->setGeometry(QRect(10, 120, 741, 371));
-        panel_custom_colors->setFont(font2);
+        panel_custom_colors->setGeometry(QRect(10, 40, 741, 371));
+        panel_custom_colors->setFont(font1);
         panel_custom_colors->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         custom_label_r = new QLabel(panel_custom_colors);
         custom_label_r->setObjectName(QString::fromUtf8("custom_label_r"));
-        custom_label_r->setGeometry(QRect(450, 70, 21, 16));
-        custom_label_r->setFont(font2);
+        custom_label_r->setGeometry(QRect(450, 60, 21, 16));
+        QFont font7;
+        font7.setFamily(QString::fromUtf8("RalewayMedium"));
+        font7.setPointSize(12);
+        font7.setBold(false);
+        font7.setItalic(false);
+        font7.setWeight(50);
+        custom_label_r->setFont(font7);
+        custom_label_r->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_label_g = new QLabel(panel_custom_colors);
         custom_label_g->setObjectName(QString::fromUtf8("custom_label_g"));
-        custom_label_g->setGeometry(QRect(450, 101, 21, 16));
-        custom_label_g->setFont(font2);
+        custom_label_g->setGeometry(QRect(450, 91, 21, 16));
+        custom_label_g->setFont(font7);
+        custom_label_g->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_label_b = new QLabel(panel_custom_colors);
         custom_label_b->setObjectName(QString::fromUtf8("custom_label_b"));
-        custom_label_b->setGeometry(QRect(450, 130, 21, 16));
-        custom_label_b->setFont(font2);
+        custom_label_b->setGeometry(QRect(450, 120, 21, 16));
+        custom_label_b->setFont(font7);
+        custom_label_b->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_label_h = new QLabel(panel_custom_colors);
         custom_label_h->setObjectName(QString::fromUtf8("custom_label_h"));
-        custom_label_h->setGeometry(QRect(450, 230, 21, 16));
-        custom_label_h->setFont(font2);
+        custom_label_h->setGeometry(QRect(450, 220, 21, 16));
+        custom_label_h->setFont(font7);
+        custom_label_h->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_label_s = new QLabel(panel_custom_colors);
         custom_label_s->setObjectName(QString::fromUtf8("custom_label_s"));
-        custom_label_s->setGeometry(QRect(450, 260, 21, 16));
-        custom_label_s->setFont(font2);
+        custom_label_s->setGeometry(QRect(450, 250, 21, 16));
+        custom_label_s->setFont(font7);
+        custom_label_s->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_label_l = new QLabel(panel_custom_colors);
         custom_label_l->setObjectName(QString::fromUtf8("custom_label_l"));
-        custom_label_l->setGeometry(QRect(450, 290, 21, 16));
-        custom_label_l->setFont(font2);
+        custom_label_l->setGeometry(QRect(450, 280, 21, 16));
+        custom_label_l->setFont(font7);
+        custom_label_l->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_r = new QSpinBox(panel_custom_colors);
         custom_value_r->setObjectName(QString::fromUtf8("custom_value_r"));
-        custom_value_r->setGeometry(QRect(680, 71, 51, 21));
-        custom_value_r->setFont(font2);
+        custom_value_r->setGeometry(QRect(680, 61, 51, 21));
+        custom_value_r->setFont(font7);
         custom_value_r->setLayoutDirection(Qt::LeftToRight);
+        custom_value_r->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_r->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         custom_value_r->setMaximum(255);
         custom_value_g = new QSpinBox(panel_custom_colors);
         custom_value_g->setObjectName(QString::fromUtf8("custom_value_g"));
-        custom_value_g->setGeometry(QRect(680, 101, 51, 21));
-        custom_value_g->setFont(font2);
+        custom_value_g->setGeometry(QRect(680, 91, 51, 21));
+        custom_value_g->setFont(font7);
         custom_value_g->setLayoutDirection(Qt::LeftToRight);
+        custom_value_g->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_g->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         custom_value_g->setMaximum(255);
         custom_value_b = new QSpinBox(panel_custom_colors);
         custom_value_b->setObjectName(QString::fromUtf8("custom_value_b"));
-        custom_value_b->setGeometry(QRect(680, 130, 51, 21));
-        custom_value_b->setFont(font2);
+        custom_value_b->setGeometry(QRect(680, 120, 51, 21));
+        custom_value_b->setFont(font7);
         custom_value_b->setLayoutDirection(Qt::LeftToRight);
+        custom_value_b->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_b->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         custom_value_b->setMaximum(255);
         custom_value_h = new QSpinBox(panel_custom_colors);
         custom_value_h->setObjectName(QString::fromUtf8("custom_value_h"));
-        custom_value_h->setGeometry(QRect(680, 230, 51, 21));
-        custom_value_h->setFont(font2);
+        custom_value_h->setGeometry(QRect(680, 220, 51, 21));
+        custom_value_h->setFont(font7);
         custom_value_h->setLayoutDirection(Qt::LeftToRight);
+        custom_value_h->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_h->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         custom_value_h->setMaximum(359);
         custom_value_s = new QSpinBox(panel_custom_colors);
         custom_value_s->setObjectName(QString::fromUtf8("custom_value_s"));
-        custom_value_s->setGeometry(QRect(680, 260, 51, 21));
-        custom_value_s->setFont(font2);
+        custom_value_s->setGeometry(QRect(680, 250, 51, 21));
+        custom_value_s->setFont(font7);
         custom_value_s->setLayoutDirection(Qt::LeftToRight);
+        custom_value_s->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_s->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         custom_value_s->setMaximum(255);
         custom_value_l = new QSpinBox(panel_custom_colors);
         custom_value_l->setObjectName(QString::fromUtf8("custom_value_l"));
-        custom_value_l->setGeometry(QRect(680, 290, 51, 21));
-        custom_value_l->setFont(font2);
+        custom_value_l->setGeometry(QRect(680, 280, 51, 21));
+        custom_value_l->setFont(font7);
         custom_value_l->setLayoutDirection(Qt::LeftToRight);
+        custom_value_l->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_l->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         custom_value_l->setMaximum(255);
         custom_label_hex = new QLabel(panel_custom_colors);
         custom_label_hex->setObjectName(QString::fromUtf8("custom_label_hex"));
-        custom_label_hex->setGeometry(QRect(450, 320, 101, 16));
-        custom_label_hex->setFont(font1);
+        custom_label_hex->setGeometry(QRect(450, 310, 101, 16));
+        custom_label_hex->setFont(font3);
+        custom_label_hex->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         custom_label_w = new QLabel(panel_custom_colors);
         custom_label_w->setObjectName(QString::fromUtf8("custom_label_w"));
-        custom_label_w->setGeometry(QRect(450, 160, 31, 16));
-        custom_label_w->setFont(font2);
+        custom_label_w->setGeometry(QRect(450, 150, 31, 16));
+        custom_label_w->setFont(font7);
+        custom_label_w->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_w = new QSpinBox(panel_custom_colors);
         custom_value_w->setObjectName(QString::fromUtf8("custom_value_w"));
-        custom_value_w->setGeometry(QRect(680, 160, 51, 21));
-        custom_value_w->setFont(font2);
+        custom_value_w->setGeometry(QRect(680, 150, 51, 21));
+        custom_value_w->setFont(font7);
         custom_value_w->setLayoutDirection(Qt::LeftToRight);
+        custom_value_w->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         custom_value_w->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         custom_value_w->setMaximum(255);
         custom_select_led_1 = new QCheckBox(panel_custom_colors);
         custom_select_led_1->setObjectName(QString::fromUtf8("custom_select_led_1"));
-        custom_select_led_1->setGeometry(QRect(30, 230, 61, 20));
-        custom_select_led_1->setFont(font2);
+        custom_select_led_1->setGeometry(QRect(30, 220, 61, 20));
+        custom_select_led_1->setFont(font7);
+        custom_select_led_1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         custom_select_led_1->setChecked(true);
         custom_select_led_2 = new QCheckBox(panel_custom_colors);
         custom_select_led_2->setObjectName(QString::fromUtf8("custom_select_led_2"));
-        custom_select_led_2->setGeometry(QRect(30, 200, 61, 20));
-        custom_select_led_2->setFont(font2);
+        custom_select_led_2->setGeometry(QRect(30, 190, 61, 20));
+        custom_select_led_2->setFont(font7);
+        custom_select_led_2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         custom_select_led_2->setChecked(true);
         custom_select_led_3 = new QCheckBox(panel_custom_colors);
         custom_select_led_3->setObjectName(QString::fromUtf8("custom_select_led_3"));
-        custom_select_led_3->setGeometry(QRect(30, 170, 61, 20));
-        custom_select_led_3->setFont(font2);
+        custom_select_led_3->setGeometry(QRect(30, 160, 61, 20));
+        custom_select_led_3->setFont(font7);
+        custom_select_led_3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         custom_select_led_3->setChecked(true);
         custom_select_led_4 = new QCheckBox(panel_custom_colors);
         custom_select_led_4->setObjectName(QString::fromUtf8("custom_select_led_4"));
-        custom_select_led_4->setGeometry(QRect(30, 140, 61, 20));
-        custom_select_led_4->setFont(font2);
+        custom_select_led_4->setGeometry(QRect(30, 130, 61, 20));
+        custom_select_led_4->setFont(font7);
+        custom_select_led_4->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         custom_select_led_4->setChecked(true);
         custom_select_led_5 = new QCheckBox(panel_custom_colors);
         custom_select_led_5->setObjectName(QString::fromUtf8("custom_select_led_5"));
-        custom_select_led_5->setGeometry(QRect(30, 110, 61, 20));
-        custom_select_led_5->setFont(font2);
+        custom_select_led_5->setGeometry(QRect(30, 100, 61, 20));
+        custom_select_led_5->setFont(font7);
+        custom_select_led_5->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         custom_select_led_5->setChecked(true);
         custom_select_led_6 = new QCheckBox(panel_custom_colors);
         custom_select_led_6->setObjectName(QString::fromUtf8("custom_select_led_6"));
-        custom_select_led_6->setGeometry(QRect(30, 80, 61, 20));
-        custom_select_led_6->setFont(font2);
+        custom_select_led_6->setGeometry(QRect(30, 70, 61, 20));
+        custom_select_led_6->setFont(font7);
+        custom_select_led_6->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         custom_select_led_6->setChecked(true);
         custom_intro = new QLabel(panel_custom_colors);
         custom_intro->setObjectName(QString::fromUtf8("custom_intro"));
-        custom_intro->setGeometry(QRect(30, 40, 301, 16));
-        custom_intro->setFont(font1);
-        custom_intro->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        custom_intro->setGeometry(QRect(30, 30, 301, 16));
+        custom_intro->setFont(font7);
+        custom_intro->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         custom_label_r_2 = new QLabel(panel_custom_colors);
         custom_label_r_2->setObjectName(QString::fromUtf8("custom_label_r_2"));
-        custom_label_r_2->setGeometry(QRect(450, 41, 211, 16));
-        custom_label_r_2->setFont(font1);
+        custom_label_r_2->setGeometry(QRect(450, 31, 211, 16));
+        custom_label_r_2->setFont(font3);
+        custom_label_r_2->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         custom_label_r_3 = new QLabel(panel_custom_colors);
         custom_label_r_3->setObjectName(QString::fromUtf8("custom_label_r_3"));
-        custom_label_r_3->setGeometry(QRect(450, 200, 171, 16));
-        custom_label_r_3->setFont(font1);
+        custom_label_r_3->setGeometry(QRect(450, 190, 171, 16));
+        custom_label_r_3->setFont(font3);
+        custom_label_r_3->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         custom_color_wheel_parent = new QWidget(panel_custom_colors);
         custom_color_wheel_parent->setObjectName(QString::fromUtf8("custom_color_wheel_parent"));
-        custom_color_wheel_parent->setGeometry(QRect(140, 80, 255, 255));
+        custom_color_wheel_parent->setGeometry(QRect(140, 70, 255, 255));
         custom_color_wheel_cursor = new MovableLabel(custom_color_wheel_parent);
         custom_color_wheel_cursor->setObjectName(QString::fromUtf8("custom_color_wheel_cursor"));
         custom_color_wheel_cursor->setGeometry(QRect(100, 120, 10, 10));
@@ -1251,187 +1323,213 @@ public:
         custom_color_wheel_cursor->raise();
         custom_slider_r = new QSlider(panel_custom_colors);
         custom_slider_r->setObjectName(QString::fromUtf8("custom_slider_r"));
-        custom_slider_r->setGeometry(QRect(480, 70, 181, 22));
+        custom_slider_r->setGeometry(QRect(480, 60, 181, 22));
         custom_slider_r->setMaximum(255);
         custom_slider_r->setOrientation(Qt::Horizontal);
         custom_slider_r->setInvertedAppearance(false);
         custom_slider_g = new QSlider(panel_custom_colors);
         custom_slider_g->setObjectName(QString::fromUtf8("custom_slider_g"));
-        custom_slider_g->setGeometry(QRect(480, 100, 181, 22));
+        custom_slider_g->setGeometry(QRect(480, 90, 181, 22));
         custom_slider_g->setMaximum(255);
         custom_slider_g->setOrientation(Qt::Horizontal);
         custom_slider_g->setInvertedAppearance(false);
         custom_slider_b = new QSlider(panel_custom_colors);
         custom_slider_b->setObjectName(QString::fromUtf8("custom_slider_b"));
-        custom_slider_b->setGeometry(QRect(480, 130, 181, 22));
+        custom_slider_b->setGeometry(QRect(480, 120, 181, 22));
         custom_slider_b->setMaximum(255);
         custom_slider_b->setOrientation(Qt::Horizontal);
         custom_slider_b->setInvertedAppearance(false);
         custom_slider_w = new QSlider(panel_custom_colors);
         custom_slider_w->setObjectName(QString::fromUtf8("custom_slider_w"));
-        custom_slider_w->setGeometry(QRect(480, 160, 181, 22));
+        custom_slider_w->setGeometry(QRect(480, 150, 181, 22));
         custom_slider_w->setMaximum(255);
         custom_slider_w->setOrientation(Qt::Horizontal);
         custom_slider_w->setInvertedAppearance(false);
         custom_slider_h = new QSlider(panel_custom_colors);
         custom_slider_h->setObjectName(QString::fromUtf8("custom_slider_h"));
-        custom_slider_h->setGeometry(QRect(480, 230, 181, 22));
+        custom_slider_h->setGeometry(QRect(480, 220, 181, 22));
         custom_slider_h->setMaximum(359);
         custom_slider_h->setOrientation(Qt::Horizontal);
         custom_slider_h->setInvertedAppearance(false);
         custom_slider_s = new QSlider(panel_custom_colors);
         custom_slider_s->setObjectName(QString::fromUtf8("custom_slider_s"));
-        custom_slider_s->setGeometry(QRect(480, 260, 181, 22));
+        custom_slider_s->setGeometry(QRect(480, 250, 181, 22));
         custom_slider_s->setMaximum(255);
         custom_slider_s->setOrientation(Qt::Horizontal);
         custom_slider_s->setInvertedAppearance(false);
         custom_slider_l = new QSlider(panel_custom_colors);
         custom_slider_l->setObjectName(QString::fromUtf8("custom_slider_l"));
-        custom_slider_l->setGeometry(QRect(480, 290, 181, 22));
+        custom_slider_l->setGeometry(QRect(480, 280, 181, 22));
         custom_slider_l->setMaximum(255);
         custom_slider_l->setOrientation(Qt::Horizontal);
         custom_slider_l->setInvertedAppearance(false);
         custom_value_hex = new QPlainTextEdit(panel_custom_colors);
         custom_value_hex->setObjectName(QString::fromUtf8("custom_value_hex"));
-        custom_value_hex->setGeometry(QRect(660, 320, 71, 21));
-        QFont font10;
-        font10.setFamily(QString::fromUtf8("Courier New"));
-        font10.setPointSize(12);
-        font10.setBold(true);
-        font10.setWeight(75);
-        custom_value_hex->setFont(font10);
+        custom_value_hex->setGeometry(QRect(660, 310, 71, 21));
+        QFont font8;
+        font8.setFamily(QString::fromUtf8("Courier New"));
+        font8.setPointSize(12);
+        font8.setBold(true);
+        font8.setWeight(75);
+        custom_value_hex->setFont(font8);
         custom_value_hex->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         custom_value_hex->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         custom_value_hex->setLineWrapMode(QPlainTextEdit::NoWrap);
         custom_value_hex->setReadOnly(true);
         custom_value_load = new QPushButton(panel_custom_colors);
         custom_value_load->setObjectName(QString::fromUtf8("custom_value_load"));
-        custom_value_load->setGeometry(QRect(30, 270, 111, 31));
-        custom_value_load->setFont(font2);
+        custom_value_load->setGeometry(QRect(30, 260, 111, 31));
+        custom_value_load->setFont(font7);
+        custom_value_load->setAutoFillBackground(false);
         custom_value_load->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayMedium\";"));
+        custom_value_load->setFlat(false);
         custom_value_save = new QPushButton(panel_custom_colors);
         custom_value_save->setObjectName(QString::fromUtf8("custom_value_save"));
-        custom_value_save->setGeometry(QRect(30, 310, 111, 31));
-        custom_value_save->setFont(font2);
+        custom_value_save->setGeometry(QRect(30, 300, 111, 31));
+        custom_value_save->setFont(font7);
+        custom_value_save->setAutoFillBackground(false);
         custom_value_save->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayMedium\";"));
+        custom_value_save->setFlat(false);
         panel_timesync = new QWidget(centralwidget);
         panel_timesync->setObjectName(QString::fromUtf8("panel_timesync"));
-        panel_timesync->setGeometry(QRect(10, 120, 741, 371));
-        panel_timesync->setFont(font2);
+        panel_timesync->setGeometry(QRect(10, 40, 741, 371));
+        panel_timesync->setFont(font1);
         panel_timesync->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         timesync_time_label = new QLabel(panel_timesync);
         timesync_time_label->setObjectName(QString::fromUtf8("timesync_time_label"));
-        timesync_time_label->setGeometry(QRect(50, 120, 441, 91));
-        QFont font11;
-        font11.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font11.setPointSize(96);
-        font11.setBold(true);
-        font11.setWeight(75);
-        timesync_time_label->setFont(font11);
-        timesync_time_label->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        timesync_time_label->setGeometry(QRect(50, 120, 441, 101));
+        QFont font9;
+        font9.setFamily(QString::fromUtf8("RalewayBlack"));
+        font9.setPointSize(96);
+        font9.setBold(false);
+        font9.setItalic(false);
+        font9.setWeight(50);
+        timesync_time_label->setFont(font9);
+        timesync_time_label->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 96pt \"RalewayBlack\";"));
         timesync_date_label = new QLabel(panel_timesync);
         timesync_date_label->setObjectName(QString::fromUtf8("timesync_date_label"));
         timesync_date_label->setGeometry(QRect(50, 220, 391, 31));
-        QFont font12;
-        font12.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font12.setPointSize(24);
-        font12.setBold(true);
-        font12.setWeight(75);
-        timesync_date_label->setFont(font12);
+        QFont font10;
+        font10.setFamily(QString::fromUtf8("RalewayBlack"));
+        font10.setPointSize(24);
+        font10.setBold(false);
+        font10.setItalic(false);
+        font10.setWeight(50);
+        timesync_date_label->setFont(font10);
+        timesync_date_label->setStyleSheet(QString::fromUtf8("font: 24pt \"RalewayBlack\";"));
         timesync_intro = new QLabel(panel_timesync);
         timesync_intro->setObjectName(QString::fromUtf8("timesync_intro"));
         timesync_intro->setGeometry(QRect(510, 80, 211, 41));
-        timesync_intro->setFont(font1);
+        timesync_intro->setFont(font3);
+        timesync_intro->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         timesync_button = new QPushButton(panel_timesync);
         timesync_button->setObjectName(QString::fromUtf8("timesync_button"));
         timesync_button->setGeometry(QRect(510, 120, 211, 121));
-        QFont font13;
-        font13.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font13.setPointSize(36);
-        font13.setBold(true);
-        font13.setWeight(75);
-        timesync_button->setFont(font13);
+        QFont font11;
+        font11.setFamily(QString::fromUtf8("RalewayBlack"));
+        font11.setPointSize(36);
+        font11.setBold(false);
+        font11.setItalic(false);
+        font11.setWeight(50);
+        timesync_button->setFont(font11);
         timesync_button->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 36pt \"RalewayBlack\";"));
         timesync_button->setFlat(false);
         timesync_intro_2 = new QLabel(panel_timesync);
         timesync_intro_2->setObjectName(QString::fromUtf8("timesync_intro_2"));
         timesync_intro_2->setGeometry(QRect(510, 240, 211, 41));
-        timesync_intro_2->setFont(font1);
+        timesync_intro_2->setFont(font3);
+        timesync_intro_2->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         panel_message = new QWidget(centralwidget);
         panel_message->setObjectName(QString::fromUtf8("panel_message"));
-        panel_message->setGeometry(QRect(10, 120, 741, 371));
-        panel_message->setFont(font2);
+        panel_message->setGeometry(QRect(10, 40, 741, 371));
+        panel_message->setFont(font1);
         panel_message->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         message_text = new QPlainTextEdit(panel_message);
         message_text->setObjectName(QString::fromUtf8("message_text"));
-        message_text->setGeometry(QRect(20, 50, 691, 71));
-        QFont font14;
-        font14.setFamily(QString::fromUtf8(".AppleSystemUIFont"));
-        font14.setPointSize(48);
-        font14.setBold(true);
-        font14.setWeight(75);
-        message_text->setFont(font14);
-        message_text->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        message_text->setGeometry(QRect(20, 40, 691, 71));
+        QFont font12;
+        font12.setFamily(QString::fromUtf8("RalewayBlack"));
+        font12.setPointSize(48);
+        font12.setBold(false);
+        font12.setItalic(false);
+        font12.setWeight(50);
+        message_text->setFont(font12);
+        message_text->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 48pt \"RalewayBlack\";"));
         message_text->setLineWrapMode(QPlainTextEdit::NoWrap);
         message_intro = new QLabel(panel_message);
         message_intro->setObjectName(QString::fromUtf8("message_intro"));
-        message_intro->setGeometry(QRect(20, 30, 661, 16));
-        message_intro->setFont(font2);
+        message_intro->setGeometry(QRect(20, 20, 661, 16));
+        message_intro->setFont(font7);
+        message_intro->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         message_intro_2 = new QLabel(panel_message);
         message_intro_2->setObjectName(QString::fromUtf8("message_intro_2"));
-        message_intro_2->setGeometry(QRect(20, 140, 311, 16));
-        message_intro_2->setFont(font1);
+        message_intro_2->setGeometry(QRect(20, 130, 311, 16));
+        message_intro_2->setFont(font3);
+        message_intro_2->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         message_intro_3 = new QLabel(panel_message);
         message_intro_3->setObjectName(QString::fromUtf8("message_intro_3"));
-        message_intro_3->setGeometry(QRect(30, 160, 601, 16));
-        message_intro_3->setFont(font2);
+        message_intro_3->setGeometry(QRect(30, 150, 601, 16));
+        message_intro_3->setFont(font7);
+        message_intro_3->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         message_intro_4 = new QLabel(panel_message);
         message_intro_4->setObjectName(QString::fromUtf8("message_intro_4"));
-        message_intro_4->setGeometry(QRect(30, 180, 601, 16));
-        message_intro_4->setFont(font2);
+        message_intro_4->setGeometry(QRect(30, 170, 601, 16));
+        message_intro_4->setFont(font7);
+        message_intro_4->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         message_intro_5 = new QLabel(panel_message);
         message_intro_5->setObjectName(QString::fromUtf8("message_intro_5"));
-        message_intro_5->setGeometry(QRect(30, 200, 601, 16));
-        message_intro_5->setFont(font2);
+        message_intro_5->setGeometry(QRect(30, 190, 601, 16));
+        message_intro_5->setFont(font7);
+        message_intro_5->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         message_intro_6 = new QLabel(panel_message);
         message_intro_6->setObjectName(QString::fromUtf8("message_intro_6"));
-        message_intro_6->setGeometry(QRect(30, 220, 601, 16));
-        message_intro_6->setFont(font2);
+        message_intro_6->setGeometry(QRect(30, 210, 601, 16));
+        message_intro_6->setFont(font7);
+        message_intro_6->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         message_set_custom_welcome = new QCheckBox(panel_message);
         message_set_custom_welcome->setObjectName(QString::fromUtf8("message_set_custom_welcome"));
-        message_set_custom_welcome->setGeometry(QRect(20, 240, 681, 20));
-        message_set_custom_welcome->setFont(font2);
+        message_set_custom_welcome->setGeometry(QRect(20, 230, 681, 20));
+        message_set_custom_welcome->setFont(font7);
+        message_set_custom_welcome->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         message_length = new QPlainTextEdit(panel_message);
         message_length->setObjectName(QString::fromUtf8("message_length"));
-        message_length->setGeometry(QRect(20, 280, 51, 71));
-        message_length->setFont(font14);
-        message_length->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        message_length->setGeometry(QRect(20, 270, 51, 71));
+        message_length->setFont(font12);
+        message_length->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 48pt \"RalewayBlack\";"));
         message_length->setLineWrapMode(QPlainTextEdit::NoWrap);
         message_intro_7 = new QLabel(panel_message);
         message_intro_7->setObjectName(QString::fromUtf8("message_intro_7"));
-        message_intro_7->setGeometry(QRect(90, 280, 311, 61));
-        message_intro_7->setFont(font14);
-        message_intro_7->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        message_intro_7->setGeometry(QRect(90, 270, 311, 61));
+        message_intro_7->setFont(font12);
+        message_intro_7->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 48pt \"RalewayBlack\";"));
         message_send = new QPushButton(panel_message);
         message_send->setObjectName(QString::fromUtf8("message_send"));
-        message_send->setGeometry(QRect(340, 280, 371, 71));
-        message_send->setFont(font13);
+        message_send->setGeometry(QRect(340, 270, 371, 71));
+        message_send->setFont(font11);
         message_send->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 36pt \"RalewayBlack\";"));
         message_send->setFlat(false);
         panel_settings = new QWidget(centralwidget);
         panel_settings->setObjectName(QString::fromUtf8("panel_settings"));
-        panel_settings->setGeometry(QRect(10, 120, 741, 371));
-        panel_settings->setFont(font2);
+        panel_settings->setGeometry(QRect(10, 40, 741, 371));
+        panel_settings->setFont(font1);
         panel_settings->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         settings_td = new QGroupBox(panel_settings);
         settings_td->setObjectName(QString::fromUtf8("settings_td"));
         settings_td->setGeometry(QRect(10, 10, 271, 131));
-        settings_td->setFont(font1);
-        settings_td->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        settings_td->setFont(font3);
+        settings_td->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         settings_td->setFlat(true);
         settings_td_timemode = new QComboBox(settings_td);
         settings_td_timemode->addItem(QString());
@@ -1439,36 +1537,42 @@ public:
         settings_td_timemode->addItem(QString());
         settings_td_timemode->setObjectName(QString::fromUtf8("settings_td_timemode"));
         settings_td_timemode->setGeometry(QRect(140, 30, 121, 21));
-        settings_td_timemode->setFont(font3);
+        settings_td_timemode->setFont(font7);
+        settings_td_timemode->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         settings_td_timemode->setFrame(false);
         settings_td_timemode_t = new QLabel(settings_td);
         settings_td_timemode_t->setObjectName(QString::fromUtf8("settings_td_timemode_t"));
         settings_td_timemode_t->setGeometry(QRect(10, 30, 91, 16));
-        settings_td_timemode_t->setFont(font1);
+        settings_td_timemode_t->setFont(font3);
         settings_td_timemode_t->setAutoFillBackground(false);
-        settings_td_timemode_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_td_timemode_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_td_datemode_t = new QLabel(settings_td);
         settings_td_datemode_t->setObjectName(QString::fromUtf8("settings_td_datemode_t"));
         settings_td_datemode_t->setGeometry(QRect(10, 60, 91, 16));
-        settings_td_datemode_t->setFont(font1);
-        settings_td_datemode_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_td_datemode_t->setFont(font3);
+        settings_td_datemode_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_td_datemode = new QComboBox(settings_td);
         settings_td_datemode->addItem(QString());
         settings_td_datemode->addItem(QString());
         settings_td_datemode->setObjectName(QString::fromUtf8("settings_td_datemode"));
         settings_td_datemode->setGeometry(QRect(140, 60, 121, 21));
-        settings_td_datemode->setFont(font3);
+        settings_td_datemode->setFont(font7);
+        settings_td_datemode->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         settings_td_datemode->setFrame(false);
         settings_td_set = new QPushButton(settings_td);
         settings_td_set->setObjectName(QString::fromUtf8("settings_td_set"));
         settings_td_set->setGeometry(QRect(150, 90, 111, 21));
-        settings_td_set->setFont(font2);
+        settings_td_set->setFont(font3);
         settings_td_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_bri = new QGroupBox(panel_settings);
         settings_bri->setObjectName(QString::fromUtf8("settings_bri"));
         settings_bri->setGeometry(QRect(10, 140, 271, 131));
-        settings_bri->setFont(font1);
+        settings_bri->setFont(font3);
+        settings_bri->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         settings_bri->setFlat(true);
         settings_bri_disp = new QComboBox(settings_bri);
         settings_bri_disp->addItem(QString());
@@ -1476,410 +1580,559 @@ public:
         settings_bri_disp->addItem(QString());
         settings_bri_disp->setObjectName(QString::fromUtf8("settings_bri_disp"));
         settings_bri_disp->setGeometry(QRect(140, 30, 121, 21));
-        settings_bri_disp->setFont(font3);
+        settings_bri_disp->setFont(font7);
+        settings_bri_disp->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         settings_bri_disp->setFrame(false);
         settings_bri_t_disp = new QLabel(settings_bri);
         settings_bri_t_disp->setObjectName(QString::fromUtf8("settings_bri_t_disp"));
         settings_bri_t_disp->setGeometry(QRect(10, 30, 131, 16));
-        settings_bri_t_disp->setFont(font1);
-        settings_bri_t_disp->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_bri_t_disp->setFont(font3);
+        settings_bri_t_disp->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_bri_t_led = new QLabel(settings_bri);
         settings_bri_t_led->setObjectName(QString::fromUtf8("settings_bri_t_led"));
         settings_bri_t_led->setGeometry(QRect(10, 60, 111, 16));
-        settings_bri_t_led->setFont(font1);
-        settings_bri_t_led->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_bri_t_led->setFont(font3);
+        settings_bri_t_led->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_bri_led = new QComboBox(settings_bri);
         settings_bri_led->addItem(QString());
         settings_bri_led->addItem(QString());
         settings_bri_led->addItem(QString());
         settings_bri_led->setObjectName(QString::fromUtf8("settings_bri_led"));
         settings_bri_led->setGeometry(QRect(140, 60, 121, 21));
-        settings_bri_led->setFont(font3);
+        settings_bri_led->setFont(font7);
+        settings_bri_led->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         settings_bri_led->setFrame(false);
         settings_bri_set = new QPushButton(settings_bri);
         settings_bri_set->setObjectName(QString::fromUtf8("settings_bri_set"));
         settings_bri_set->setGeometry(QRect(150, 90, 111, 21));
-        settings_bri_set->setFont(font2);
+        settings_bri_set->setFont(font3);
         settings_bri_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_nsh = new QGroupBox(panel_settings);
         settings_nsh->setObjectName(QString::fromUtf8("settings_nsh"));
         settings_nsh->setGeometry(QRect(470, 10, 261, 161));
-        settings_nsh->setFont(font1);
+        settings_nsh->setFont(font3);
+        settings_nsh->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         settings_nsh->setFlat(true);
         settings_nsh_enable = new QCheckBox(settings_nsh);
         settings_nsh_enable->setObjectName(QString::fromUtf8("settings_nsh_enable"));
         settings_nsh_enable->setGeometry(QRect(10, 30, 141, 20));
-        settings_nsh_enable->setFont(font1);
-        settings_nsh_enable->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_nsh_enable->setFont(font3);
+        settings_nsh_enable->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_nsh_set = new QPushButton(settings_nsh);
         settings_nsh_set->setObjectName(QString::fromUtf8("settings_nsh_set"));
         settings_nsh_set->setGeometry(QRect(130, 130, 111, 21));
-        settings_nsh_set->setFont(font2);
+        settings_nsh_set->setFont(font3);
         settings_nsh_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_nsh_panel = new QWidget(settings_nsh);
         settings_nsh_panel->setObjectName(QString::fromUtf8("settings_nsh_panel"));
         settings_nsh_panel->setEnabled(false);
         settings_nsh_panel->setGeometry(QRect(10, 50, 241, 71));
-        settings_nsh_panel->setFont(font2);
+        settings_nsh_panel->setFont(font3);
         settings_nsh_start = new QTimeEdit(settings_nsh_panel);
         settings_nsh_start->setObjectName(QString::fromUtf8("settings_nsh_start"));
         settings_nsh_start->setGeometry(QRect(140, 10, 81, 22));
-        settings_nsh_start->setFont(font2);
+        settings_nsh_start->setFont(font7);
+        settings_nsh_start->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         settings_nsh_start->setTime(QTime(22, 0, 0));
         settings_nsh_intro1 = new QLabel(settings_nsh_panel);
         settings_nsh_intro1->setObjectName(QString::fromUtf8("settings_nsh_intro1"));
         settings_nsh_intro1->setGeometry(QRect(10, 10, 131, 16));
-        settings_nsh_intro1->setFont(font1);
-        settings_nsh_intro1->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_nsh_intro1->setFont(font7);
+        settings_nsh_intro1->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         settings_nsh_stop = new QTimeEdit(settings_nsh_panel);
         settings_nsh_stop->setObjectName(QString::fromUtf8("settings_nsh_stop"));
         settings_nsh_stop->setGeometry(QRect(50, 40, 81, 22));
-        settings_nsh_stop->setFont(font2);
+        settings_nsh_stop->setFont(font7);
+        settings_nsh_stop->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayMedium\";"));
         settings_nsh_stop->setTime(QTime(8, 0, 0));
         settings_nsh_intro3 = new QLabel(settings_nsh_panel);
         settings_nsh_intro3->setObjectName(QString::fromUtf8("settings_nsh_intro3"));
         settings_nsh_intro3->setGeometry(QRect(140, 40, 111, 20));
-        settings_nsh_intro3->setFont(font1);
-        settings_nsh_intro3->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_nsh_intro3->setFont(font7);
+        settings_nsh_intro3->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         settings_nsh_intro2 = new QLabel(settings_nsh_panel);
         settings_nsh_intro2->setObjectName(QString::fromUtf8("settings_nsh_intro2"));
         settings_nsh_intro2->setGeometry(QRect(10, 40, 31, 16));
-        settings_nsh_intro2->setFont(font1);
-        settings_nsh_intro2->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_nsh_intro2->setFont(font7);
+        settings_nsh_intro2->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         settings_settings = new QGroupBox(panel_settings);
         settings_settings->setObjectName(QString::fromUtf8("settings_settings"));
         settings_settings->setGeometry(QRect(10, 270, 271, 81));
-        settings_settings->setFont(font1);
+        settings_settings->setFont(font3);
+        settings_settings->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         settings_settings->setFlat(true);
         settings_settings_default = new QPushButton(settings_settings);
         settings_settings_default->setObjectName(QString::fromUtf8("settings_settings_default"));
         settings_settings_default->setGeometry(QRect(10, 30, 111, 41));
-        settings_settings_default->setFont(font2);
+        settings_settings_default->setFont(font3);
         settings_settings_default->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);font: 12pt \"RalewayBold\";"));
         settings_settings_save = new QPushButton(settings_settings);
         settings_settings_save->setObjectName(QString::fromUtf8("settings_settings_save"));
         settings_settings_save->setGeometry(QRect(140, 30, 121, 41));
-        settings_settings_save->setFont(font2);
+        settings_settings_save->setFont(font3);
         settings_settings_save->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);font: 12pt \"RalewayBold\";"));
         settings_info = new QGroupBox(panel_settings);
         settings_info->setObjectName(QString::fromUtf8("settings_info"));
         settings_info->setGeometry(QRect(470, 170, 251, 91));
-        settings_info->setFont(font1);
+        settings_info->setFont(font3);
+        settings_info->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         settings_info->setFlat(true);
         settings_info_hw_t = new QLabel(settings_info);
         settings_info_hw_t->setObjectName(QString::fromUtf8("settings_info_hw_t"));
         settings_info_hw_t->setGeometry(QRect(10, 30, 131, 16));
-        settings_info_hw_t->setFont(font1);
-        settings_info_hw_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_info_hw_t->setFont(font3);
+        settings_info_hw_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_info_hw = new QLabel(settings_info);
         settings_info_hw->setObjectName(QString::fromUtf8("settings_info_hw"));
         settings_info_hw->setGeometry(QRect(140, 30, 91, 20));
-        settings_info_hw->setFont(font1);
-        settings_info_hw->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_info_hw->setFont(font7);
+        settings_info_hw->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         settings_info_fw_t = new QLabel(settings_info);
         settings_info_fw_t->setObjectName(QString::fromUtf8("settings_info_fw_t"));
         settings_info_fw_t->setGeometry(QRect(10, 50, 131, 16));
-        settings_info_fw_t->setFont(font1);
-        settings_info_fw_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_info_fw_t->setFont(font3);
+        settings_info_fw_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_info_fw = new QLabel(settings_info);
         settings_info_fw->setObjectName(QString::fromUtf8("settings_info_fw"));
         settings_info_fw->setGeometry(QRect(140, 50, 91, 20));
-        settings_info_fw->setFont(font1);
-        settings_info_fw->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_info_fw->setFont(font7);
+        settings_info_fw->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         settings_info_app_t = new QLabel(settings_info);
         settings_info_app_t->setObjectName(QString::fromUtf8("settings_info_app_t"));
         settings_info_app_t->setGeometry(QRect(10, 70, 121, 16));
-        settings_info_app_t->setFont(font1);
-        settings_info_app_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_info_app_t->setFont(font3);
+        settings_info_app_t->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_info_app = new ClickableLabel(settings_info);
         settings_info_app->setObjectName(QString::fromUtf8("settings_info_app"));
         settings_info_app->setGeometry(QRect(140, 70, 111, 20));
-        settings_info_app->setFont(font4);
+        QFont font13;
+        font13.setFamily(QString::fromUtf8("RalewayMedium"));
+        font13.setPointSize(12);
+        font13.setBold(false);
+        font13.setItalic(false);
+        font13.setUnderline(true);
+        font13.setWeight(50);
+        settings_info_app->setFont(font13);
         settings_info_app->setCursor(QCursor(Qt::OpenHandCursor));
-        settings_info_app->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_info_app->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         settings_presets = new QGroupBox(panel_settings);
         settings_presets->setObjectName(QString::fromUtf8("settings_presets"));
         settings_presets->setGeometry(QRect(290, 10, 151, 241));
-        settings_presets->setFont(font1);
+        settings_presets->setFont(font3);
+        settings_presets->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         settings_presets->setFlat(true);
         settings_presets_en_static = new QCheckBox(settings_presets);
         settings_presets_en_static->setObjectName(QString::fromUtf8("settings_presets_en_static"));
         settings_presets_en_static->setEnabled(false);
         settings_presets_en_static->setGeometry(QRect(10, 30, 71, 20));
-        settings_presets_en_static->setFont(font1);
-        settings_presets_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_static->setFont(font3);
+        settings_presets_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_static->setChecked(true);
         settings_presets_en_set = new QPushButton(settings_presets);
         settings_presets_en_set->setObjectName(QString::fromUtf8("settings_presets_en_set"));
         settings_presets_en_set->setGeometry(QRect(40, 210, 111, 21));
-        settings_presets_en_set->setFont(font2);
+        settings_presets_en_set->setFont(font3);
         settings_presets_en_set->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_spectrum = new QCheckBox(settings_presets);
         settings_presets_en_spectrum->setObjectName(QString::fromUtf8("settings_presets_en_spectrum"));
         settings_presets_en_spectrum->setGeometry(QRect(10, 70, 121, 20));
-        settings_presets_en_spectrum->setFont(font1);
-        settings_presets_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_spectrum->setFont(font3);
+        settings_presets_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_spectrum->setChecked(true);
         settings_presets_en_rnb = new QCheckBox(settings_presets);
         settings_presets_en_rnb->setObjectName(QString::fromUtf8("settings_presets_en_rnb"));
         settings_presets_en_rnb->setGeometry(QRect(10, 90, 121, 20));
-        settings_presets_en_rnb->setFont(font1);
-        settings_presets_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_rnb->setFont(font3);
+        settings_presets_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_rnb->setChecked(true);
         settings_presets_en_bliss = new QCheckBox(settings_presets);
         settings_presets_en_bliss->setObjectName(QString::fromUtf8("settings_presets_en_bliss"));
         settings_presets_en_bliss->setGeometry(QRect(10, 50, 141, 20));
-        settings_presets_en_bliss->setFont(font1);
-        settings_presets_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_bliss->setFont(font3);
+        settings_presets_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_bliss->setChecked(true);
         settings_presets_en_chase = new QCheckBox(settings_presets);
         settings_presets_en_chase->setObjectName(QString::fromUtf8("settings_presets_en_chase"));
         settings_presets_en_chase->setGeometry(QRect(10, 110, 141, 20));
-        settings_presets_en_chase->setFont(font1);
-        settings_presets_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_chase->setFont(font3);
+        settings_presets_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_chase->setChecked(true);
         settings_presets_en_tcode = new QCheckBox(settings_presets);
         settings_presets_en_tcode->setObjectName(QString::fromUtf8("settings_presets_en_tcode"));
         settings_presets_en_tcode->setGeometry(QRect(10, 130, 141, 20));
-        settings_presets_en_tcode->setFont(font1);
-        settings_presets_en_tcode->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_tcode->setFont(font3);
+        settings_presets_en_tcode->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_tcode->setChecked(true);
         settings_presets_en_music = new QCheckBox(settings_presets);
         settings_presets_en_music->setObjectName(QString::fromUtf8("settings_presets_en_music"));
         settings_presets_en_music->setGeometry(QRect(10, 150, 141, 20));
-        settings_presets_en_music->setFont(font1);
-        settings_presets_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_music->setFont(font3);
+        settings_presets_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_presets_en_cop = new QCheckBox(settings_presets);
         settings_presets_en_cop->setObjectName(QString::fromUtf8("settings_presets_en_cop"));
         settings_presets_en_cop->setGeometry(QRect(10, 170, 141, 20));
-        settings_presets_en_cop->setFont(font1);
-        settings_presets_en_cop->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);"));
+        settings_presets_en_cop->setFont(font3);
+        settings_presets_en_cop->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 12pt \"RalewayBold\";"));
         settings_update = new QGroupBox(panel_settings);
         settings_update->setObjectName(QString::fromUtf8("settings_update"));
         settings_update->setGeometry(QRect(300, 270, 421, 91));
-        settings_update->setFont(font1);
+        settings_update->setFont(font3);
+        settings_update->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         settings_update->setFlat(true);
         settings_info_download = new QPushButton(settings_update);
         settings_info_download->setObjectName(QString::fromUtf8("settings_info_download"));
         settings_info_download->setGeometry(QRect(10, 30, 181, 41));
-        settings_info_download->setFont(font2);
+        settings_info_download->setFont(font3);
         settings_info_download->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);font: 12pt \"RalewayBold\";"));
         settings_info_update = new QPushButton(settings_update);
         settings_info_update->setObjectName(QString::fromUtf8("settings_info_update"));
         settings_info_update->setGeometry(QRect(220, 30, 191, 41));
-        settings_info_update->setFont(font2);
+        settings_info_update->setFont(font3);
         settings_info_update->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
-        panel_main_control = new QGroupBox(centralwidget);
-        panel_main_control->setObjectName(QString::fromUtf8("panel_main_control"));
-        panel_main_control->setEnabled(false);
-        panel_main_control->setGeometry(QRect(265, 5, 481, 91));
-        panel_main_control->setFont(font1);
-        panel_main_control->setStyleSheet(QString::fromUtf8("QGroupBox::title {\n"
-"	color: rgb(128, 0, 128);\n"
-"}"));
-        panel_main_control->setFlat(true);
-        main_preset = new QPushButton(panel_main_control);
-        main_preset->setObjectName(QString::fromUtf8("main_preset"));
-        main_preset->setGeometry(QRect(0, 30, 81, 61));
-        main_preset->setFont(font2);
-        main_preset->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
-        main_custom = new QPushButton(panel_main_control);
-        main_custom->setObjectName(QString::fromUtf8("main_custom"));
-        main_custom->setGeometry(QRect(90, 30, 81, 61));
-        main_custom->setFont(font2);
-        main_custom->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
-        main_message = new QPushButton(panel_main_control);
-        main_message->setObjectName(QString::fromUtf8("main_message"));
-        main_message->setGeometry(QRect(200, 30, 81, 61));
-        main_message->setFont(font2);
-        main_message->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
-        main_timesync = new QPushButton(panel_main_control);
-        main_timesync->setObjectName(QString::fromUtf8("main_timesync"));
-        main_timesync->setGeometry(QRect(290, 30, 81, 61));
-        main_timesync->setFont(font2);
-        main_timesync->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
-        main_settings = new QPushButton(panel_main_control);
-        main_settings->setObjectName(QString::fromUtf8("main_settings"));
-        main_settings->setGeometry(QRect(400, 30, 81, 61));
-        main_settings->setFont(font2);
-        main_settings->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
-        main_message->raise();
-        main_timesync->raise();
-        main_settings->raise();
-        main_preset->raise();
-        main_custom->raise();
+"color: rgb(255, 255, 255);font: 12pt \"RalewayBold\";"));
         panel_lsettings = new QWidget(centralwidget);
         panel_lsettings->setObjectName(QString::fromUtf8("panel_lsettings"));
-        panel_lsettings->setGeometry(QRect(10, 120, 741, 371));
-        panel_lsettings->setFont(font2);
+        panel_lsettings->setGeometry(QRect(10, 40, 741, 371));
+        panel_lsettings->setFont(font1);
         panel_lsettings->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
         lsettings_td = new QGroupBox(panel_lsettings);
         lsettings_td->setObjectName(QString::fromUtf8("lsettings_td"));
         lsettings_td->setGeometry(QRect(0, 20, 341, 121));
-        lsettings_td->setFont(font1);
-        lsettings_td->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+        lsettings_td->setFont(font3);
+        lsettings_td->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         lsettings_td->setFlat(true);
         lsettings_td_12hr_enable = new QCheckBox(lsettings_td);
         lsettings_td_12hr_enable->setObjectName(QString::fromUtf8("lsettings_td_12hr_enable"));
         lsettings_td_12hr_enable->setGeometry(QRect(0, 30, 221, 20));
-        lsettings_td_12hr_enable->setFont(font1);
-        lsettings_td_12hr_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_td_12hr_enable->setFont(font7);
+        lsettings_td_12hr_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_td_l0_enable = new QCheckBox(lsettings_td);
         lsettings_td_l0_enable->setObjectName(QString::fromUtf8("lsettings_td_l0_enable"));
         lsettings_td_l0_enable->setEnabled(true);
         lsettings_td_l0_enable->setGeometry(QRect(0, 60, 221, 20));
-        lsettings_td_l0_enable->setFont(font1);
-        lsettings_td_l0_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_td_l0_enable->setFont(font7);
+        lsettings_td_l0_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_td_intldate_enable = new QCheckBox(lsettings_td);
         lsettings_td_intldate_enable->setObjectName(QString::fromUtf8("lsettings_td_intldate_enable"));
         lsettings_td_intldate_enable->setEnabled(true);
         lsettings_td_intldate_enable->setGeometry(QRect(0, 90, 221, 20));
-        lsettings_td_intldate_enable->setFont(font1);
-        lsettings_td_intldate_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_td_intldate_enable->setFont(font7);
+        lsettings_td_intldate_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_nsh = new QGroupBox(panel_lsettings);
         lsettings_nsh->setObjectName(QString::fromUtf8("lsettings_nsh"));
         lsettings_nsh->setGeometry(QRect(0, 170, 341, 181));
-        lsettings_nsh->setFont(font1);
+        lsettings_nsh->setFont(font3);
+        lsettings_nsh->setStyleSheet(QString::fromUtf8("\n"
+"font: 12pt \"RalewayBold\";"));
         lsettings_nsh->setFlat(true);
         lsettings_nsh_enable = new QCheckBox(lsettings_nsh);
         lsettings_nsh_enable->setObjectName(QString::fromUtf8("lsettings_nsh_enable"));
         lsettings_nsh_enable->setGeometry(QRect(0, 30, 141, 20));
-        lsettings_nsh_enable->setFont(font1);
-        lsettings_nsh_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_nsh_enable->setFont(font7);
+        lsettings_nsh_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_nsh_scheduled_enable = new QCheckBox(lsettings_nsh);
         lsettings_nsh_scheduled_enable->setObjectName(QString::fromUtf8("lsettings_nsh_scheduled_enable"));
         lsettings_nsh_scheduled_enable->setGeometry(QRect(0, 60, 161, 20));
-        lsettings_nsh_scheduled_enable->setFont(font1);
-        lsettings_nsh_scheduled_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_nsh_scheduled_enable->setFont(font7);
+        lsettings_nsh_scheduled_enable->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_nsh_panel = new QWidget(lsettings_nsh);
         lsettings_nsh_panel->setObjectName(QString::fromUtf8("lsettings_nsh_panel"));
         lsettings_nsh_panel->setEnabled(false);
         lsettings_nsh_panel->setGeometry(QRect(0, 90, 301, 71));
-        lsettings_nsh_panel->setFont(font2);
+        lsettings_nsh_panel->setFont(font3);
         lsettings_nsh_start = new QTimeEdit(lsettings_nsh_panel);
         lsettings_nsh_start->setObjectName(QString::fromUtf8("lsettings_nsh_start"));
         lsettings_nsh_start->setGeometry(QRect(190, 10, 91, 22));
-        lsettings_nsh_start->setFont(font2);
+        lsettings_nsh_start->setFont(font7);
         lsettings_nsh_start->setTime(QTime(22, 0, 0));
         lsettings_nsh_intro1 = new QLabel(lsettings_nsh_panel);
         lsettings_nsh_intro1->setObjectName(QString::fromUtf8("lsettings_nsh_intro1"));
         lsettings_nsh_intro1->setGeometry(QRect(10, 10, 141, 16));
-        lsettings_nsh_intro1->setFont(font1);
-        lsettings_nsh_intro1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_nsh_intro1->setFont(font7);
+        lsettings_nsh_intro1->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_nsh_stop = new QTimeEdit(lsettings_nsh_panel);
         lsettings_nsh_stop->setObjectName(QString::fromUtf8("lsettings_nsh_stop"));
         lsettings_nsh_stop->setGeometry(QRect(60, 40, 91, 22));
-        lsettings_nsh_stop->setFont(font2);
+        lsettings_nsh_stop->setFont(font7);
         lsettings_nsh_stop->setTime(QTime(8, 0, 0));
         lsettings_nsh_intro3 = new QLabel(lsettings_nsh_panel);
         lsettings_nsh_intro3->setObjectName(QString::fromUtf8("lsettings_nsh_intro3"));
         lsettings_nsh_intro3->setGeometry(QRect(170, 40, 111, 20));
-        lsettings_nsh_intro3->setFont(font1);
-        lsettings_nsh_intro3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_nsh_intro3->setFont(font7);
+        lsettings_nsh_intro3->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_nsh_intro2 = new QLabel(lsettings_nsh_panel);
         lsettings_nsh_intro2->setObjectName(QString::fromUtf8("lsettings_nsh_intro2"));
         lsettings_nsh_intro2->setGeometry(QRect(10, 40, 41, 16));
-        lsettings_nsh_intro2->setFont(font1);
-        lsettings_nsh_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_nsh_intro2->setFont(font7);
+        lsettings_nsh_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_info = new QGroupBox(panel_lsettings);
         lsettings_info->setObjectName(QString::fromUtf8("lsettings_info"));
         lsettings_info->setGeometry(QRect(360, 120, 371, 231));
-        lsettings_info->setFont(font1);
+        lsettings_info->setFont(font3);
+        lsettings_info->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         lsettings_info->setFlat(true);
         lsettings_info_hw_t = new QLabel(lsettings_info);
         lsettings_info_hw_t->setObjectName(QString::fromUtf8("lsettings_info_hw_t"));
         lsettings_info_hw_t->setGeometry(QRect(10, 30, 131, 16));
-        lsettings_info_hw_t->setFont(font1);
-        lsettings_info_hw_t->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_info_hw_t->setFont(font7);
+        lsettings_info_hw_t->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_info_update = new QPushButton(lsettings_info);
         lsettings_info_update->setObjectName(QString::fromUtf8("lsettings_info_update"));
         lsettings_info_update->setGeometry(QRect(200, 170, 171, 51));
-        lsettings_info_update->setFont(font2);
+        lsettings_info_update->setFont(font3);
         lsettings_info_update->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         lsettings_info_hw = new QLabel(lsettings_info);
         lsettings_info_hw->setObjectName(QString::fromUtf8("lsettings_info_hw"));
         lsettings_info_hw->setGeometry(QRect(200, 30, 91, 20));
-        lsettings_info_hw->setFont(font1);
-        lsettings_info_hw->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_info_hw->setFont(font7);
+        lsettings_info_hw->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_info_fw_t = new QLabel(lsettings_info);
         lsettings_info_fw_t->setObjectName(QString::fromUtf8("lsettings_info_fw_t"));
         lsettings_info_fw_t->setGeometry(QRect(10, 50, 131, 16));
-        lsettings_info_fw_t->setFont(font1);
-        lsettings_info_fw_t->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_info_fw_t->setFont(font7);
+        lsettings_info_fw_t->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_info_fw = new QLabel(lsettings_info);
         lsettings_info_fw->setObjectName(QString::fromUtf8("lsettings_info_fw"));
         lsettings_info_fw->setGeometry(QRect(200, 50, 91, 20));
-        lsettings_info_fw->setFont(font1);
-        lsettings_info_fw->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_info_fw->setFont(font7);
+        lsettings_info_fw->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_info_app_t = new QLabel(lsettings_info);
         lsettings_info_app_t->setObjectName(QString::fromUtf8("lsettings_info_app_t"));
         lsettings_info_app_t->setGeometry(QRect(10, 70, 171, 16));
-        lsettings_info_app_t->setFont(font1);
-        lsettings_info_app_t->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_info_app_t->setFont(font7);
+        lsettings_info_app_t->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_info_app = new QLabel(lsettings_info);
         lsettings_info_app->setObjectName(QString::fromUtf8("lsettings_info_app"));
         lsettings_info_app->setGeometry(QRect(200, 70, 91, 20));
-        lsettings_info_app->setFont(font1);
-        lsettings_info_app->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_info_app->setFont(font7);
+        lsettings_info_app->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_info_download = new QPushButton(lsettings_info);
         lsettings_info_download->setObjectName(QString::fromUtf8("lsettings_info_download"));
         lsettings_info_download->setGeometry(QRect(10, 170, 171, 51));
-        lsettings_info_download->setFont(font2);
+        lsettings_info_download->setFont(font3);
         lsettings_info_download->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         lsettings_info_notice = new QLabel(lsettings_info);
         lsettings_info_notice->setObjectName(QString::fromUtf8("lsettings_info_notice"));
         lsettings_info_notice->setGeometry(QRect(10, 100, 351, 71));
-        lsettings_info_notice->setFont(font1);
-        lsettings_info_notice->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);"));
+        lsettings_info_notice->setFont(font7);
+        lsettings_info_notice->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";"));
         lsettings_settings = new QGroupBox(panel_lsettings);
         lsettings_settings->setObjectName(QString::fromUtf8("lsettings_settings"));
         lsettings_settings->setGeometry(QRect(370, 20, 361, 81));
-        lsettings_settings->setFont(font1);
+        lsettings_settings->setFont(font3);
+        lsettings_settings->setStyleSheet(QString::fromUtf8("font: 12pt \"RalewayBold\";"));
         lsettings_settings->setFlat(true);
         lsettings_settings_default = new QPushButton(lsettings_settings);
         lsettings_settings_default->setObjectName(QString::fromUtf8("lsettings_settings_default"));
         lsettings_settings_default->setGeometry(QRect(0, 30, 171, 51));
-        lsettings_settings_default->setFont(font2);
+        lsettings_settings_default->setFont(font3);
         lsettings_settings_default->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         lsettings_settings_save = new QPushButton(lsettings_settings);
         lsettings_settings_save->setObjectName(QString::fromUtf8("lsettings_settings_save"));
         lsettings_settings_save->setGeometry(QRect(190, 30, 171, 51));
-        lsettings_settings_save->setFont(font2);
+        lsettings_settings_save->setFont(font3);
         lsettings_settings_save->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayBold\";"));
         lsettings_td->raise();
         lsettings_nsh->raise();
         lsettings_settings->raise();
         lsettings_info->raise();
+        menu_controls_layout = new QWidget(centralwidget);
+        menu_controls_layout->setObjectName(QString::fromUtf8("menu_controls_layout"));
+        menu_controls_layout->setGeometry(QRect(10, 40, 741, 371));
+        menu_controls_layout->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);"));
+        menu_vlayout = new QVBoxLayout(menu_controls_layout);
+        menu_vlayout->setSpacing(0);
+        menu_vlayout->setObjectName(QString::fromUtf8("menu_vlayout"));
+        menu_vlayout->setContentsMargins(0, 0, 0, 0);
+        main_welcome = new QPushButton(menu_controls_layout);
+        main_welcome->setObjectName(QString::fromUtf8("main_welcome"));
+        QFont font14;
+        font14.setFamily(QString::fromUtf8("RalewayBold"));
+        font14.setPointSize(32);
+        font14.setBold(false);
+        font14.setItalic(false);
+        font14.setWeight(50);
+        main_welcome->setFont(font14);
+        main_welcome->setAutoFillBackground(false);
+        main_welcome->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
+"color: rgb(255, 255, 255);\n"
+"font: 32pt \"RalewayBold\";"));
+        main_welcome->setAutoDefault(false);
+        main_welcome->setFlat(true);
+
+        menu_vlayout->addWidget(main_welcome);
+
+        main_timesync = new QPushButton(menu_controls_layout);
+        main_timesync->setObjectName(QString::fromUtf8("main_timesync"));
+        main_timesync->setFont(font14);
+        main_timesync->setAutoFillBackground(false);
+        main_timesync->setStyleSheet(QString::fromUtf8("background-color:  rgb(128, 128, 128);\n"
+"color: rgb(255, 255, 255);\n"
+"font: 32pt \"RalewayBold\";"));
+        main_timesync->setAutoDefault(false);
+        main_timesync->setFlat(true);
+
+        menu_vlayout->addWidget(main_timesync);
+
+        main_preset = new QPushButton(menu_controls_layout);
+        main_preset->setObjectName(QString::fromUtf8("main_preset"));
+        main_preset->setFont(font14);
+        main_preset->setAutoFillBackground(false);
+        main_preset->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
+"color: rgb(255, 255, 255);\n"
+"font: 32pt \"RalewayBold\";"));
+        main_preset->setAutoDefault(false);
+        main_preset->setFlat(true);
+
+        menu_vlayout->addWidget(main_preset);
+
+        main_custom = new QPushButton(menu_controls_layout);
+        main_custom->setObjectName(QString::fromUtf8("main_custom"));
+        main_custom->setFont(font14);
+        main_custom->setAutoFillBackground(false);
+        main_custom->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
+"color: rgb(255, 255, 255);\n"
+"font: 32pt \"RalewayBold\";\n"
+"QPushButton {color: grey; border-bottom: 3px; }"));
+        main_custom->setFlat(true);
+
+        menu_vlayout->addWidget(main_custom);
+
+        main_settings = new QPushButton(menu_controls_layout);
+        main_settings->setObjectName(QString::fromUtf8("main_settings"));
+        main_settings->setFont(font14);
+        main_settings->setAutoFillBackground(false);
+        main_settings->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
+"color: rgb(255, 255, 255);\n"
+"font: 32pt \"RalewayBold\";"));
+        main_settings->setAutoDefault(false);
+        main_settings->setFlat(true);
+
+        menu_vlayout->addWidget(main_settings);
+
+        main_message = new QPushButton(menu_controls_layout);
+        main_message->setObjectName(QString::fromUtf8("main_message"));
+        main_message->setFont(font14);
+        main_message->setAutoFillBackground(false);
+        main_message->setStyleSheet(QString::fromUtf8("background-color: rgb(16, 128, 128);\n"
+"color: rgb(255, 255, 255);\n"
+"font: 32pt \"RalewayBold\";"));
+        main_message->setAutoDefault(false);
+        main_message->setFlat(true);
+
+        menu_vlayout->addWidget(main_message);
+
+        menu_layout = new QWidget(centralwidget);
+        menu_layout->setObjectName(QString::fromUtf8("menu_layout"));
+        menu_layout->setGeometry(QRect(0, 0, 761, 41));
+        menu_hide = new QHBoxLayout(menu_layout);
+        menu_hide->setSpacing(0);
+        menu_hide->setObjectName(QString::fromUtf8("menu_hide"));
+        menu_hide->setSizeConstraint(QLayout::SetNoConstraint);
+        menu_hide->setContentsMargins(10, 0, 10, 0);
+        menu_button = new ClickableLabel(menu_layout);
+        menu_button->setObjectName(QString::fromUtf8("menu_button"));
+        menu_button->setEnabled(false);
+        menu_button->setMinimumSize(QSize(46, 40));
+        menu_button->setMaximumSize(QSize(46, 40));
+        menu_button->setPixmap(QPixmap(QString::fromUtf8(":/Resources/menu.png")));
+        menu_button->setScaledContents(true);
+
+        menu_hide->addWidget(menu_button);
+
+        menu_about = new QLabel(menu_layout);
+        menu_about->setObjectName(QString::fromUtf8("menu_about"));
+        menu_about->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);\n"
+"font: 18pt \"RalewayBlack\";"));
+        menu_about->setAlignment(Qt::AlignCenter);
+
+        menu_hide->addWidget(menu_about);
+
+        menu_button_balancer = new ClickableLabel(menu_layout);
+        menu_button_balancer->setObjectName(QString::fromUtf8("menu_button_balancer"));
+        menu_button_balancer->setMinimumSize(QSize(39, 0));
+        menu_button_balancer->setScaledContents(false);
+
+        menu_hide->addWidget(menu_button_balancer);
+
+        menu_hide->setStretch(0, 1);
+        menu_hide->setStretch(1, 17);
+        com_label_connect = new QLabel(centralwidget);
+        com_label_connect->setObjectName(QString::fromUtf8("com_label_connect"));
+        com_label_connect->setGeometry(QRect(20, 415, 721, 21));
+        com_label_connect->setFont(font3);
+        com_label_connect->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayBold\";"));
+        com_label_connect->setScaledContents(false);
+        com_label_connect->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
         FluorescenceApp->setCentralWidget(centralwidget);
-        com_group->raise();
-        panel_main_control->raise();
-        panel_timesync->raise();
-        panel_welcome->raise();
         panel_presets->raise();
-        panel_lsettings->raise();
         panel_custom_colors->raise();
+        panel_welcome->raise();
         panel_settings->raise();
+        com_label_connect->raise();
+        panel_lsettings->raise();
+        panel_timesync->raise();
         panel_message->raise();
+        menu_layout->raise();
+        menu_controls_layout->raise();
 
         retranslateUi(FluorescenceApp);
 
-        tab_presets_container->setCurrentIndex(0);
+        tab_presets_container->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(FluorescenceApp);
@@ -1888,15 +2141,9 @@ public:
     void retranslateUi(QMainWindow *FluorescenceApp)
     {
         FluorescenceApp->setWindowTitle(QCoreApplication::translate("FluorescenceApp", "FluorescenceApp", nullptr));
-        com_group->setTitle(QCoreApplication::translate("FluorescenceApp", "Connect to Fluorescence", nullptr));
-        com_connect->setText(QString());
-#if QT_CONFIG(tooltip)
-        com_text->setToolTip(QCoreApplication::translate("FluorescenceApp", "Click to refresh", nullptr));
-#endif // QT_CONFIG(tooltip)
-        com_text->setText(QCoreApplication::translate("FluorescenceApp", "Where's Fluorescence?", nullptr));
-        com_label_connect->setText(QCoreApplication::translate("FluorescenceApp", "Click to connect", nullptr));
-        welcome_click2begin->setText(QCoreApplication::translate("FluorescenceApp", "READY", nullptr));
-        welcome_text->setText(QCoreApplication::translate("FluorescenceApp", "to connect. use the controls above to connect fluorescence & get started", nullptr));
+        com_intro->setText(QCoreApplication::translate("FluorescenceApp", "Time to connect. Let's talk to Fluorescence...", nullptr));
+        com_connect->setText(QCoreApplication::translate("FluorescenceApp", ">>", nullptr));
+        com_reload->setText(QString());
         static_intro->setText(QCoreApplication::translate("FluorescenceApp", "Some hand crafted presets that look fantastic on Fluorescence.", nullptr));
         static_rainbow->setText(QString());
         static_pastelrainbow->setText(QString());
@@ -2141,17 +2388,6 @@ public:
         settings_update->setTitle(QCoreApplication::translate("FluorescenceApp", "Updates", nullptr));
         settings_info_download->setText(QCoreApplication::translate("FluorescenceApp", "Download Latest Firmware", nullptr));
         settings_info_update->setText(QCoreApplication::translate("FluorescenceApp", "Firmware Update", nullptr));
-        panel_main_control->setTitle(QCoreApplication::translate("FluorescenceApp", "Main Menu", nullptr));
-        main_preset->setText(QCoreApplication::translate("FluorescenceApp", "Color\n"
-"Presets", nullptr));
-        main_custom->setText(QCoreApplication::translate("FluorescenceApp", "Custom\n"
-"Colors", nullptr));
-        main_message->setText(QCoreApplication::translate("FluorescenceApp", "Send\n"
-"Message", nullptr));
-        main_timesync->setText(QCoreApplication::translate("FluorescenceApp", "Time\n"
-"Sync", nullptr));
-        main_settings->setText(QCoreApplication::translate("FluorescenceApp", "Settings &&\n"
-"Info", nullptr));
         lsettings_td->setTitle(QCoreApplication::translate("FluorescenceApp", "Set time and date format", nullptr));
         lsettings_td_12hr_enable->setText(QCoreApplication::translate("FluorescenceApp", "12h hour format", nullptr));
         lsettings_td_l0_enable->setText(QCoreApplication::translate("FluorescenceApp", "Enable leading zero '0'", nullptr));
@@ -2159,7 +2395,11 @@ public:
         lsettings_nsh->setTitle(QCoreApplication::translate("FluorescenceApp", "Brightness && Night Shift", nullptr));
         lsettings_nsh_enable->setText(QCoreApplication::translate("FluorescenceApp", "Enable silent mode", nullptr));
         lsettings_nsh_scheduled_enable->setText(QCoreApplication::translate("FluorescenceApp", "Scheduled night shift", nullptr));
+        lsettings_nsh_start->setStyleSheet(QCoreApplication::translate("FluorescenceApp", "color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";", nullptr));
         lsettings_nsh_intro1->setText(QCoreApplication::translate("FluorescenceApp", "Every evening from", nullptr));
+        lsettings_nsh_stop->setStyleSheet(QCoreApplication::translate("FluorescenceApp", "color: rgb(128, 0, 128);\n"
+"font: 12pt \"RalewayMedium\";", nullptr));
         lsettings_nsh_intro3->setText(QCoreApplication::translate("FluorescenceApp", "the next morning", nullptr));
         lsettings_nsh_intro2->setText(QCoreApplication::translate("FluorescenceApp", "until", nullptr));
         lsettings_info->setTitle(QCoreApplication::translate("FluorescenceApp", "Hardware && Firmware", nullptr));
@@ -2179,6 +2419,16 @@ public:
         lsettings_settings->setTitle(QCoreApplication::translate("FluorescenceApp", "Settings", nullptr));
         lsettings_settings_default->setText(QCoreApplication::translate("FluorescenceApp", "Load Default", nullptr));
         lsettings_settings_save->setText(QCoreApplication::translate("FluorescenceApp", "Save All", nullptr));
+        main_welcome->setText(QCoreApplication::translate("FluorescenceApp", "Device", nullptr));
+        main_timesync->setText(QCoreApplication::translate("FluorescenceApp", "Time", nullptr));
+        main_preset->setText(QCoreApplication::translate("FluorescenceApp", "Color Presets", nullptr));
+        main_custom->setText(QCoreApplication::translate("FluorescenceApp", "Custom Color", nullptr));
+        main_settings->setText(QCoreApplication::translate("FluorescenceApp", "Preferences", nullptr));
+        main_message->setText(QCoreApplication::translate("FluorescenceApp", "Message", nullptr));
+        menu_button->setText(QString());
+        menu_about->setText(QCoreApplication::translate("FluorescenceApp", "Fluorescence App          ", nullptr));
+        menu_button_balancer->setText(QString());
+        com_label_connect->setText(QCoreApplication::translate("FluorescenceApp", "Ready to connect", nullptr));
     } // retranslateUi
 
 };

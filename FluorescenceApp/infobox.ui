@@ -43,7 +43,8 @@
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayMedium&quot;;</string>
    </property>
    <property name="text">
     <string>With love by Frank from The VFD Collective.
@@ -66,12 +67,17 @@ please reach out to our customer service at</string>
    </property>
    <property name="font">
     <font>
+     <family>RalewayMedium</family>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
      <underline>true</underline>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayMedium&quot;;</string>
    </property>
    <property name="text">
     <string>www.TheVFDCollective.com/support</string>
@@ -91,7 +97,7 @@ color: rgb(255, 255, 255);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayMedium&quot;;</string>
    </property>
    <property name="text">
     <string>PICTURE CREDITS (no copyright infringement intended):
@@ -107,7 +113,7 @@ Ambient light pictures: Taken from Instagram by @bryanadamc and Pinterest</strin
   <customwidget>
    <class>ClickableLabel</class>
    <extends>QLabel</extends>
-   <header>clickablelabel.h</header>
+   <header location="global">clickablelabel.h</header>
    <slots>
     <signal>clicked()</signal>
     <signal>mousePressed(QPoint)</signal>

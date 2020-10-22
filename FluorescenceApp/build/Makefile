@@ -751,21 +751,27 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_qmake_qmake_immediate.cpp
 qrc_qmake_qmake_immediate.cpp: qmake_qmake_immediate.qrc \
 		/Applications/Qt/5.14.1/clang_64/bin/rcc \
+		../Resources/fl3_usb.jpg \
+		../Resources/RalewayBold.ttf \
 		../Resources/green2blue.png \
+		../Resources/computer.png \
+		../Resources/RalewayBlack.ttf \
+		../Resources/RalewayMedium.ttf \
+		../Resources/cursor.png \
+		../Resources/pastelrainbow.png \
+		../Resources/reload.png \
 		../Resources/red2green_alt.png \
+		../Resources/res0.jpg \
 		../Resources/about.jpg \
 		../Resources/res1.jpg \
+		../Resources/res2.jpg \
 		../Resources/fl2_usb.jpg \
-		../Resources/rainbow_alt.png \
-		../Resources/cursor.png \
-		../Resources/red2blue1.png \
-		../Resources/res0.jpg \
-		../Resources/fl3_usb.jpg \
-		../Resources/computer.png \
-		../Resources/pastelrainbow.png \
+		../Resources/menu.png \
 		../Resources/res3.jpg \
+		../Resources/rainbow_alt.png \
+		../Resources/red2blue1.png \
 		../Resources/hsl_wheel.png \
-		../Resources/res2.jpg
+		../Resources/menu_inv.png
 	/Applications/Qt/5.14.1/clang_64/bin/rcc -name qmake_qmake_immediate qmake_qmake_immediate.qrc -o qrc_qmake_qmake_immediate.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -899,7 +905,14 @@ ui_fwupdatestm.h: ../fwupdatestm.ui \
 	/Applications/Qt/5.14.1/clang_64/bin/uic ../fwupdatestm.ui -o ui_fwupdatestm.h
 
 ui_infobox.h: ../infobox.ui \
-		/Applications/Qt/5.14.1/clang_64/bin/uic
+		/Applications/Qt/5.14.1/clang_64/bin/uic \
+		../clickablelabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h
 	/Applications/Qt/5.14.1/clang_64/bin/uic ../infobox.ui -o ui_infobox.h
 
 compiler_rez_source_make_all:
@@ -1009,7 +1022,18 @@ fwupdate.o: ../fwupdate.cpp ui_fwupdatestm.h \
 infobox.o: ../infobox.cpp ../infobox.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		ui_infobox.h
+		ui_infobox.h \
+		../clickablelabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/Qt \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qnamespace.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QDesktopServices \
+		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QUrl \
+		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qurl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o infobox.o ../infobox.cpp
 
 main.o: ../main.cpp ../fluorescenceapp.h \
@@ -1088,6 +1112,7 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/QProcess \
 		/Applications/Qt/5.14.1/clang_64/lib/QtCore.framework/Headers/qprocess.h \
+		../infobox.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QGraphicsEllipseItem \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QGraphicsItem \
@@ -1097,7 +1122,9 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QScreen \
 		/Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/qscreen.h \
 		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
-		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/QGraphicsOpacityEffect \
+		/Applications/Qt/5.14.1/clang_64/lib/QtWidgets.framework/Headers/qgraphicseffect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fluorescenceapp.o ../fluorescenceapp.cpp
 
 movablelabel.o: ../movablelabel.cpp /Applications/Qt/5.14.1/clang_64/lib/QtGui.framework/Headers/QMouseEvent \

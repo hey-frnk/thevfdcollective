@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>760</width>
-    <height>500</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="font">
@@ -31,132 +31,6 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="com_group">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>5</y>
-      <width>241</width>
-      <height>110</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QGroupBox::title {
-	color: rgb(128, 0, 128);
-}</string>
-    </property>
-    <property name="title">
-     <string>Connect to Fluorescence</string>
-    </property>
-    <property name="flat">
-     <bool>true</bool>
-    </property>
-    <widget class="QPushButton" name="com_connect">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>25</y>
-       <width>61</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="com_select">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>50</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="frame">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="ClickableLabel" name="com_text">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>151</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
-       <underline>true</underline>
-      </font>
-     </property>
-     <property name="cursor">
-      <cursorShape>OpenHandCursor</cursorShape>
-     </property>
-     <property name="toolTip">
-      <string>Click to refresh</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(128, 0, 128);</string>
-     </property>
-     <property name="text">
-      <string>Where's Fluorescence?</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="com_label_connect">
-     <property name="geometry">
-      <rect>
-       <x>12</x>
-       <y>87</y>
-       <width>221</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(128, 0, 128)</string>
-     </property>
-     <property name="text">
-      <string>Click to connect</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </widget>
    <widget class="QWidget" name="panel_welcome" native="true">
     <property name="enabled">
      <bool>true</bool>
@@ -164,7 +38,7 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>40</y>
       <width>741</width>
       <height>371</height>
      </rect>
@@ -177,57 +51,101 @@ color: rgb(255, 255, 255);</string>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255)</string>
     </property>
-    <widget class="QLabel" name="welcome_click2begin">
+    <widget class="QComboBox" name="com_select">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>100</y>
-       <width>401</width>
-       <height>91</height>
+       <x>40</x>
+       <y>130</y>
+       <width>661</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>Arial Black</family>
-       <pointsize>96</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>16</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(128, 0, 128);</string>
+      <string notr="true">font: 16pt &quot;RalewayBold&quot;;</string>
      </property>
-     <property name="text">
-      <string>READY</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+     <property name="frame">
+      <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="welcome_text">
+    <widget class="QLabel" name="com_intro">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>190</y>
-       <width>491</width>
-       <height>31</height>
+       <x>40</x>
+       <y>80</y>
+       <width>661</width>
+       <height>41</height>
       </rect>
      </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(16, 128, 128)</string>
+      <string notr="true">color: rgb(16, 128, 128);
+font: 18pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
-      <string>to connect. use the controls above to connect fluorescence &amp; get started</string>
+      <string>Time to connect. Let's talk to Fluorescence...</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="ClickableLabel" name="com_connect">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>210</y>
+       <width>51</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);
+font: 36pt &quot;RalewayBlack&quot;;</string>
+     </property>
+     <property name="text">
+      <string>&gt;&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="ClickableLabel" name="com_reload">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>220</y>
+       <width>40</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);
+font: 36pt &quot;RalewayBlack&quot;;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/reload.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -238,7 +156,7 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>40</y>
       <width>741</width>
       <height>371</height>
      </rect>
@@ -262,11 +180,18 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -283,10 +208,15 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Some hand crafted presets that look fantastic on Fluorescence.</string>
@@ -398,17 +328,19 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#magenta</string>
@@ -425,14 +357,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#off</string>
@@ -449,17 +385,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 255);</string>
+        <string notr="true">color: rgb(128, 0, 255);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#violet</string>
@@ -476,17 +413,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(252, 1, 7);</string>
+        <string notr="true">color: rgb(252, 1, 7);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#red</string>
@@ -503,17 +441,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(15, 128, 255);</string>
+        <string notr="true">color: rgb(15, 128, 255);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#blue</string>
@@ -530,17 +469,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#cyan</string>
@@ -557,17 +497,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 1);</string>
+        <string notr="true">color: rgb(16, 128, 1);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#green</string>
@@ -584,17 +525,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(254, 204, 102);</string>
+        <string notr="true">color: rgb(254, 204, 102);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#warmwhite</string>
@@ -611,17 +553,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(204, 204, 204);</string>
+        <string notr="true">color: rgb(204, 204, 204);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#white</string>
@@ -638,17 +581,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(253, 128, 8);</string>
+        <string notr="true">color: rgb(253, 128, 8);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#orange</string>
@@ -665,17 +609,18 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
+         <family>RalewayBold</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(185, 161, 29);</string>
+        <string notr="true">color: rgb(185, 161, 29);font: 26pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#yellow</string>
@@ -697,12 +642,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Spectrum</string>
@@ -719,12 +669,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Rainbow Fade</string>
@@ -741,12 +696,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Moments of Bliss</string>
@@ -763,12 +723,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Time Code</string>
@@ -785,12 +750,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Police Lights</string>
@@ -807,12 +777,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Chase Fade</string>
@@ -829,13 +804,16 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Animated visualization. We know it's prettier on Fluorescence.</string>
@@ -852,13 +830,16 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Time:</string>
@@ -875,7 +856,11 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="ClickableLabel" name="dynamic_t_1">
@@ -1226,7 +1211,11 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="QPushButton" name="panel_dyn_spectrum_set">
@@ -1240,15 +1229,17 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBlack</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1257,7 +1248,7 @@ color: rgb(255, 255, 255);</string>
        <widget class="QLabel" name="panel_dyn_spectrum_ptext1">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>170</x>
           <y>10</y>
           <width>141</width>
           <height>31</height>
@@ -1265,14 +1256,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>saturation:</string>
@@ -1281,19 +1274,23 @@ color: rgb(255, 255, 255);</string>
        <widget class="QComboBox" name="panel_dyn_spectrum_param_1">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>310</x>
           <y>10</y>
-          <width>141</width>
+          <width>171</width>
           <height>31</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1317,7 +1314,7 @@ color: rgb(255, 255, 255);</string>
        <widget class="QLabel" name="panel_dyn_spectrum_ptext2">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>170</x>
           <y>50</y>
           <width>141</width>
           <height>31</height>
@@ -1325,14 +1322,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>lightness:</string>
@@ -1341,19 +1340,23 @@ color: rgb(255, 255, 255);</string>
        <widget class="QComboBox" name="panel_dyn_spectrum_param_2">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>310</x>
           <y>50</y>
-          <width>141</width>
+          <width>171</width>
           <height>31</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1385,10 +1388,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>Guides you through
@@ -1410,7 +1418,11 @@ all the amazing colors.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="QPushButton" name="panel_dyn_bliss_set">
@@ -1424,15 +1436,17 @@ all the amazing colors.</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBlack</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1449,14 +1463,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>mood:</string>
@@ -1473,11 +1489,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1524,10 +1544,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>Means wumbo in German. i wumbo, you wumbo
@@ -1549,7 +1574,11 @@ he she me wumbo. That's first grade Spongebob!</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="QPushButton" name="panel_dyn_rnb_set">
@@ -1563,15 +1592,17 @@ he she me wumbo. That's first grade Spongebob!</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBlack</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1588,14 +1619,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>distance:</string>
@@ -1612,10 +1645,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>chill</string>
@@ -1635,7 +1673,11 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="minimum">
@@ -1668,10 +1710,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>tight</string>
@@ -1691,14 +1738,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>saturation:</string>
@@ -1715,11 +1764,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1752,7 +1805,11 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="QPushButton" name="panel_dyn_chase_set">
@@ -1766,15 +1823,17 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBlack</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1791,14 +1850,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>distance:</string>
@@ -1815,10 +1876,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>chill</string>
@@ -1838,7 +1904,11 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="minimum">
@@ -1871,10 +1941,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>tight</string>
@@ -1894,14 +1969,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>mode:</string>
@@ -1918,11 +1995,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1960,7 +2041,11 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="QPushButton" name="panel_dyn_tcode_set">
@@ -1974,15 +2059,17 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBlack</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1999,10 +2086,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>For every digit value, there is a different color!</string>
@@ -2022,14 +2114,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>color palette:</string>
@@ -2046,11 +2140,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -2078,7 +2176,11 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="QPushButton" name="panel_dyn_cop_set">
@@ -2092,15 +2194,17 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBlack</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -2117,10 +2221,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>Should Fluorescence be on patrol or a high speed, hot pursuit?</string>
@@ -2140,14 +2249,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>pattern:</string>
@@ -2164,11 +2275,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -2201,7 +2316,11 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <widget class="QPushButton" name="panel_dyn_music_set">
@@ -2215,15 +2334,17 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBlack</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -2240,14 +2361,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>distance:</string>
@@ -2264,10 +2387,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>chill</string>
@@ -2287,7 +2415,11 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="minimum">
@@ -2320,10 +2452,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>RalewayBold</family>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>tight</string>
@@ -2343,14 +2480,16 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>26</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(128, 0, 128);</string>
+         <string notr="true">color: rgb(128, 0, 128);
+font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>saturation:</string>
@@ -2367,11 +2506,15 @@ color: rgb(255, 255, 255);</string>
         </property>
         <property name="font">
          <font>
-          <family>.AppleSystemUIFont</family>
+          <family>RalewayBold</family>
           <pointsize>18</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -2404,12 +2547,17 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Music</string>
@@ -2519,21 +2667,21 @@ color: rgb(255, 255, 255);</string>
       <zorder>com_text_2</zorder>
       <zorder>com_text_3</zorder>
       <zorder>dynamic_t</zorder>
-      <zorder>panel_dyn_spectrum</zorder>
-      <zorder>panel_dyn_bliss</zorder>
       <zorder>dynamic_rainbow</zorder>
-      <zorder>panel_dyn_rnb</zorder>
-      <zorder>panel_dyn_tcode</zorder>
-      <zorder>panel_dyn_cop</zorder>
-      <zorder>panel_dyn_music</zorder>
       <zorder>dynamic_music</zorder>
-      <zorder>panel_dyn_chase</zorder>
       <zorder>dynamic_c1</zorder>
       <zorder>dynamic_c2</zorder>
       <zorder>dynamic_c3</zorder>
       <zorder>dynamic_c4</zorder>
       <zorder>dynamic_c6</zorder>
       <zorder>dynamic_c5</zorder>
+      <zorder>panel_dyn_tcode</zorder>
+      <zorder>panel_dyn_rnb</zorder>
+      <zorder>panel_dyn_music</zorder>
+      <zorder>panel_dyn_cop</zorder>
+      <zorder>panel_dyn_chase</zorder>
+      <zorder>panel_dyn_bliss</zorder>
+      <zorder>panel_dyn_spectrum</zorder>
      </widget>
      <widget class="QWidget" name="tab_moodsync">
       <attribute name="title">
@@ -2588,13 +2736,15 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Generate ambient light colors
@@ -2613,13 +2763,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Click on the computer to begin.</string>
@@ -2740,13 +2892,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Static</string>
@@ -2766,13 +2920,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Music</string>
@@ -2789,13 +2945,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Police Lights</string>
@@ -2812,13 +2970,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Chase Fade</string>
@@ -2838,13 +2998,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Spectrum Fade</string>
@@ -2864,13 +3026,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Rainbow Fade</string>
@@ -2890,13 +3054,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Moments of Bliss</string>
@@ -2916,13 +3082,15 @@ screen.</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Time Code</string>
@@ -2936,17 +3104,21 @@ screen.</string>
         <rect>
          <x>340</x>
          <y>140</y>
-         <width>281</width>
+         <width>341</width>
          <height>51</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBold</family>
          <pointsize>18</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -2982,21 +3154,23 @@ screen.</string>
         <rect>
          <x>340</x>
          <y>210</y>
-         <width>281</width>
+         <width>341</width>
          <height>61</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayBlack</family>
          <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 26pt &quot;RalewayBlack&quot;;</string>
        </property>
        <property name="text">
         <string>Looks good, go!</string>
@@ -3007,20 +3181,21 @@ color: rgb(255, 255, 255);</string>
         <rect>
          <x>60</x>
          <y>30</y>
-         <width>291</width>
+         <width>351</width>
          <height>31</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>18</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 18pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Not in the mood to pick?</string>
@@ -3037,14 +3212,15 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>18</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 18pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>and pick another one every...</string>
@@ -3061,13 +3237,15 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayBold</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Not a problem! Shuffle to let Fluorescence pick a pattern,
@@ -3084,7 +3262,7 @@ randomly out of:</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>40</y>
       <width>741</width>
       <height>371</height>
      </rect>
@@ -3101,15 +3279,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>70</y>
+       <y>60</y>
        <width>21</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>R:</string>
@@ -3119,15 +3304,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>101</y>
+       <y>91</y>
        <width>21</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>G:</string>
@@ -3137,15 +3329,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>130</y>
+       <y>120</y>
        <width>21</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>B:</string>
@@ -3155,15 +3354,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>230</y>
+       <y>220</y>
        <width>21</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>H:</string>
@@ -3173,15 +3379,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>260</y>
+       <y>250</y>
        <width>21</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>S:</string>
@@ -3191,15 +3404,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>290</y>
+       <y>280</y>
        <width>21</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>L:</string>
@@ -3209,18 +3429,25 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>71</y>
+       <y>61</y>
        <width>51</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3233,18 +3460,25 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>101</y>
+       <y>91</y>
        <width>51</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3257,18 +3491,25 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>130</y>
+       <y>120</y>
        <width>51</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3281,18 +3522,25 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>230</y>
+       <y>220</y>
        <width>51</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3305,18 +3553,25 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>260</y>
+       <y>250</y>
        <width>51</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3329,18 +3584,25 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>290</y>
+       <y>280</y>
        <width>51</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3353,17 +3615,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>320</y>
+       <y>310</y>
        <width>101</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>hex color code:</string>
@@ -3373,15 +3640,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>160</y>
+       <y>150</y>
        <width>31</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>W:</string>
@@ -3391,18 +3665,25 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>160</y>
+       <y>150</y>
        <width>51</width>
        <height>21</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3415,15 +3696,23 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>230</y>
+       <y>220</y>
        <width>61</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 1</string>
@@ -3436,15 +3725,23 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>200</y>
+       <y>190</y>
        <width>61</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 2</string>
@@ -3457,15 +3754,23 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>170</y>
+       <y>160</y>
        <width>61</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 3</string>
@@ -3478,15 +3783,23 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>140</y>
+       <y>130</y>
        <width>61</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 4</string>
@@ -3499,15 +3812,23 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>110</y>
+       <y>100</y>
        <width>61</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 5</string>
@@ -3520,15 +3841,23 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>80</y>
+       <y>70</y>
        <width>61</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 6</string>
@@ -3541,20 +3870,23 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>40</y>
+       <y>30</y>
        <width>301</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(128, 0, 128);</string>
+      <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Time to paint the night sky. Or some LEDs.</string>
@@ -3564,17 +3896,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>41</y>
+       <y>31</y>
        <width>211</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>red, green, blue &amp; white.</string>
@@ -3584,17 +3921,22 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>450</x>
-       <y>200</y>
+       <y>190</y>
        <width>171</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>hue, saturation &amp; lightness.</string>
@@ -3604,7 +3946,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>140</x>
-       <y>80</y>
+       <y>70</y>
        <width>255</width>
        <height>255</height>
       </rect>
@@ -3657,7 +3999,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>70</y>
+       <y>60</y>
        <width>181</width>
        <height>22</height>
       </rect>
@@ -3676,7 +4018,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>100</y>
+       <y>90</y>
        <width>181</width>
        <height>22</height>
       </rect>
@@ -3695,7 +4037,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>130</y>
+       <y>120</y>
        <width>181</width>
        <height>22</height>
       </rect>
@@ -3714,7 +4056,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>160</y>
+       <y>150</y>
        <width>181</width>
        <height>22</height>
       </rect>
@@ -3733,7 +4075,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>230</y>
+       <y>220</y>
        <width>181</width>
        <height>22</height>
       </rect>
@@ -3752,7 +4094,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>260</y>
+       <y>250</y>
        <width>181</width>
        <height>22</height>
       </rect>
@@ -3771,7 +4113,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>290</y>
+       <y>280</y>
        <width>181</width>
        <height>22</height>
       </rect>
@@ -3790,7 +4132,7 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>660</x>
-       <y>320</y>
+       <y>310</y>
        <width>71</width>
        <height>21</height>
       </rect>
@@ -3823,44 +4165,66 @@ randomly out of:</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>270</y>
+       <y>260</y>
        <width>111</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Load color</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QPushButton" name="custom_value_save">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>310</y>
+       <y>300</y>
        <width>111</width>
        <height>31</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Save color</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
@@ -3868,7 +4232,7 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>40</y>
       <width>741</width>
       <height>371</height>
      </rect>
@@ -3887,19 +4251,21 @@ color: rgb(255, 255, 255);</string>
        <x>50</x>
        <y>120</y>
        <width>441</width>
-       <height>91</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBlack</family>
        <pointsize>96</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(128, 0, 128);</string>
+      <string notr="true">color: rgb(128, 0, 128);
+font: 96pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>20:15:16</string>
@@ -3916,11 +4282,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBlack</family>
        <pointsize>24</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 24pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>Friyay, March 7th 2032</string>
@@ -3937,10 +4307,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>Match the time of Fluorescence
@@ -3958,15 +4333,17 @@ to the time of your computer</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBlack</family>
        <pointsize>36</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 36pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>Sync</string>
@@ -3986,10 +4363,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>Ready to sync.</string>
@@ -4000,7 +4382,7 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>40</y>
       <width>741</width>
       <height>371</height>
      </rect>
@@ -4017,21 +4399,23 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>50</y>
+       <y>40</y>
        <width>691</width>
        <height>71</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBlack</family>
        <pointsize>48</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(16, 128, 128);</string>
+      <string notr="true">color: rgb(16, 128, 128);
+font: 48pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="lineWrapMode">
       <enum>QPlainTextEdit::NoWrap</enum>
@@ -4044,15 +4428,22 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>30</y>
+       <y>20</y>
        <width>661</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Write a poem. Or say something lovely. We wrote this so that you can have a fun time :)</string>
@@ -4062,17 +4453,22 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>140</y>
+       <y>130</y>
        <width>311</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>Rules of the game:</string>
@@ -4082,15 +4478,22 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>160</y>
+       <y>150</y>
        <width>601</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- 24 letters for you. The message will be split in max. three parts displayed separately</string>
@@ -4100,15 +4503,22 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>180</y>
+       <y>170</y>
        <width>601</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- Write in CAPITAL LETTERS, and only use those the display can display (see next point)</string>
@@ -4118,15 +4528,22 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>200</y>
+       <y>190</y>
        <width>601</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- Allowed: A B C D E F G H I J L N O P Q R S T U V Y, 0, spacebar and minus (-)</string>
@@ -4136,15 +4553,22 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>220</y>
+       <y>210</y>
        <width>601</width>
        <height>16</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- It's a bit like SNAPCHAT. But you decide for how long each message part is on display:</string>
@@ -4154,15 +4578,22 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>240</y>
+       <y>230</y>
        <width>681</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayMedium</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Use this message as the new welcome message Fluorescence uses to greet you on startup</string>
@@ -4172,21 +4603,23 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>280</y>
+       <y>270</y>
        <width>51</width>
        <height>71</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBlack</family>
        <pointsize>48</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(128, 0, 128);</string>
+      <string notr="true">color: rgb(128, 0, 128);
+font: 48pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="lineWrapMode">
       <enum>QPlainTextEdit::NoWrap</enum>
@@ -4199,21 +4632,23 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>280</y>
+       <y>270</y>
        <width>311</width>
        <height>61</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBlack</family>
        <pointsize>48</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(128, 0, 128);</string>
+      <string notr="true">color: rgb(128, 0, 128);
+font: 48pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>second(s)</string>
@@ -4223,22 +4658,24 @@ color: rgb(255, 255, 255);</string>
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>280</y>
+       <y>270</y>
        <width>371</width>
        <height>71</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
+       <family>RalewayBlack</family>
        <pointsize>36</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 36pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>Send Message</string>
@@ -4252,7 +4689,7 @@ color: rgb(255, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>40</y>
       <width>741</width>
       <height>371</height>
      </rect>
@@ -4276,13 +4713,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Set time and date format</string>
@@ -4301,10 +4740,15 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
         <weight>50</weight>
+        <italic>false</italic>
         <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4336,16 +4780,19 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="autoFillBackground">
        <bool>false</bool>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Hour format:</string>
@@ -4362,13 +4809,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Date format:</string>
@@ -4385,10 +4835,15 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
         <weight>50</weight>
+        <italic>false</italic>
         <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4415,12 +4870,17 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -4438,10 +4898,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Brightness</string>
@@ -4460,10 +4925,15 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
         <weight>50</weight>
+        <italic>false</italic>
         <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4495,13 +4965,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Display brightness:</string>
@@ -4518,13 +4991,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>LED brightness:</string>
@@ -4541,10 +5017,15 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
         <weight>50</weight>
+        <italic>false</italic>
         <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4576,12 +5057,17 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -4599,10 +5085,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Night shift</string>
@@ -4621,13 +5112,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Enable night shift</string>
@@ -4644,12 +5138,17 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -4669,7 +5168,11 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <widget class="QTimeEdit" name="settings_nsh_start">
@@ -4683,8 +5186,15 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -4705,13 +5215,16 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>Every evening from</string>
@@ -4728,8 +5241,15 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -4750,13 +5270,16 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>next morning.</string>
@@ -4773,13 +5296,16 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);</string>
+        <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>until</string>
@@ -4798,10 +5324,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Settings</string>
@@ -4820,12 +5351,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Load Default</string>
@@ -4842,12 +5377,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Save All</string>
@@ -4865,10 +5404,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Hardware &amp;&amp; Firmware Info</string>
@@ -4887,13 +5431,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Hardware version:</string>
@@ -4910,13 +5457,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>hw_str</string>
@@ -4933,13 +5483,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware version:</string>
@@ -4956,13 +5509,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>sw_str</string>
@@ -4979,13 +5535,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>App version:</string>
@@ -5002,9 +5561,11 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
         <underline>true</underline>
        </font>
       </property>
@@ -5012,7 +5573,8 @@ color: rgb(255, 255, 255);</string>
        <cursorShape>OpenHandCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>3.0</string>
@@ -5030,10 +5592,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Enabled presets</string>
@@ -5055,13 +5622,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Static</string>
@@ -5081,12 +5651,17 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -5103,13 +5678,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Spectrum Fade</string>
@@ -5129,13 +5707,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Rainbow Fade</string>
@@ -5155,13 +5736,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Moments of Bliss</string>
@@ -5181,13 +5765,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Chase Fade</string>
@@ -5207,13 +5794,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Time Code</string>
@@ -5233,13 +5823,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Music</string>
@@ -5256,13 +5849,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(16, 128, 128);</string>
+       <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Police Lights</string>
@@ -5280,10 +5876,15 @@ color: rgb(255, 255, 255);</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Updates</string>
@@ -5302,12 +5903,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Download Latest Firmware</string>
@@ -5324,12 +5929,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware Update</string>
@@ -5337,162 +5946,11 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="panel_main_control">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>265</x>
-      <y>5</y>
-      <width>481</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QGroupBox::title {
-	color: rgb(128, 0, 128);
-}</string>
-    </property>
-    <property name="title">
-     <string>Main Menu</string>
-    </property>
-    <property name="flat">
-     <bool>true</bool>
-    </property>
-    <widget class="QPushButton" name="main_preset">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>30</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Color
-Presets</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_custom">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>30</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Custom
-Colors</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_message">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>30</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Send
-Message</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_timesync">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>30</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Time
-Sync</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="main_settings">
-     <property name="geometry">
-      <rect>
-       <x>400</x>
-       <y>30</y>
-       <width>81</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>.AppleSystemUIFont</family>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Settings &amp;&amp;
-Info</string>
-     </property>
-    </widget>
-    <zorder>main_message</zorder>
-    <zorder>main_timesync</zorder>
-    <zorder>main_settings</zorder>
-    <zorder>main_preset</zorder>
-    <zorder>main_custom</zorder>
-   </widget>
    <widget class="QWidget" name="panel_lsettings" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>40</y>
       <width>741</width>
       <height>371</height>
      </rect>
@@ -5516,13 +5974,16 @@ Info</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
+      <string notr="true">background-color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Set time and date format</string>
@@ -5541,13 +6002,16 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>12h hour format</string>
@@ -5567,13 +6031,16 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Enable leading zero '0'</string>
@@ -5593,13 +6060,16 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>MM.DD.YY format</string>
@@ -5617,10 +6087,16 @@ Info</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Brightness &amp;&amp; Night Shift</string>
@@ -5639,13 +6115,16 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Enable silent mode</string>
@@ -5662,13 +6141,16 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Scheduled night shift</string>
@@ -5688,7 +6170,11 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <widget class="QTimeEdit" name="lsettings_nsh_start">
@@ -5702,8 +6188,16 @@ Info</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string>color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -5724,13 +6218,16 @@ Info</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>Every evening from</string>
@@ -5747,8 +6244,16 @@ Info</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string>color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -5769,13 +6274,16 @@ Info</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>the next morning</string>
@@ -5792,13 +6300,16 @@ Info</string>
        </property>
        <property name="font">
         <font>
-         <family>.AppleSystemUIFont</family>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>RalewayMedium</family>
+         <pointsize>12</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);</string>
+        <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>until</string>
@@ -5817,10 +6328,15 @@ Info</string>
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Hardware &amp;&amp; Firmware</string>
@@ -5839,13 +6355,16 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Hardware version:</string>
@@ -5862,12 +6381,17 @@ Info</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware Update</string>
@@ -5884,13 +6408,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>2.0 or 2.1</string>
@@ -5907,13 +6434,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware version:</string>
@@ -5930,13 +6460,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>sw_str</string>
@@ -5953,13 +6486,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Fluorescence app version:</string>
@@ -5976,13 +6512,16 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>3.0</string>
@@ -5999,12 +6538,17 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Download 
@@ -6022,13 +6566,16 @@ Latest Firmware</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
-        <weight>75</weight>
-        <bold>true</bold>
+        <family>RalewayMedium</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(128, 0, 128);</string>
+       <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>You are using an outdated version of firmware on
@@ -6049,10 +6596,15 @@ Download the latest firmware and click on
      </property>
      <property name="font">
       <font>
-       <family>.AppleSystemUIFont</family>
-       <weight>75</weight>
-       <bold>true</bold>
+       <family>RalewayBold</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Settings</string>
@@ -6071,12 +6623,17 @@ Download the latest firmware and click on
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Load Default</string>
@@ -6093,12 +6650,17 @@ color: rgb(255, 255, 255);</string>
       </property>
       <property name="font">
        <font>
-        <family>.AppleSystemUIFont</family>
+        <family>RalewayBold</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Save All</string>
@@ -6110,22 +6672,351 @@ color: rgb(255, 255, 255);</string>
     <zorder>lsettings_settings</zorder>
     <zorder>lsettings_info</zorder>
    </widget>
-   <zorder>com_group</zorder>
-   <zorder>panel_main_control</zorder>
-   <zorder>panel_timesync</zorder>
-   <zorder>panel_welcome</zorder>
+   <widget class="QWidget" name="menu_controls_layout" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>741</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(16, 128, 128);</string>
+    </property>
+    <layout class="QVBoxLayout" name="menu_vlayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="main_welcome">
+       <property name="font">
+        <font>
+         <family>RalewayBold</family>
+         <pointsize>32</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);
+font: 32pt &quot;RalewayBold&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Device</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="main_timesync">
+       <property name="font">
+        <font>
+         <family>RalewayBold</family>
+         <pointsize>32</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:  rgb(128, 128, 128);
+color: rgb(255, 255, 255);
+font: 32pt &quot;RalewayBold&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Time</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="main_preset">
+       <property name="font">
+        <font>
+         <family>RalewayBold</family>
+         <pointsize>32</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);
+font: 32pt &quot;RalewayBold&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Color Presets</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="main_custom">
+       <property name="font">
+        <font>
+         <family>RalewayBold</family>
+         <pointsize>32</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);
+font: 32pt &quot;RalewayBold&quot;;
+QPushButton {color: grey; border-bottom: 3px; }</string>
+       </property>
+       <property name="text">
+        <string>Custom Color</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="main_settings">
+       <property name="font">
+        <font>
+         <family>RalewayBold</family>
+         <pointsize>32</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);
+font: 32pt &quot;RalewayBold&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Preferences</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="main_message">
+       <property name="font">
+        <font>
+         <family>RalewayBold</family>
+         <pointsize>32</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);
+font: 32pt &quot;RalewayBold&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Message</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="menu_layout" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>761</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="menu_hide" stretch="1,17,0">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="ClickableLabel" name="menu_button">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>46</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>46</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/menu.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="menu_about">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);
+font: 18pt &quot;RalewayBlack&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Fluorescence App          </string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="ClickableLabel" name="menu_button_balancer">
+       <property name="minimumSize">
+        <size>
+         <width>39</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="com_label_connect">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>415</y>
+      <width>721</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Ready to connect</string>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+   </widget>
    <zorder>panel_presets</zorder>
-   <zorder>panel_lsettings</zorder>
    <zorder>panel_custom_colors</zorder>
+   <zorder>panel_welcome</zorder>
    <zorder>panel_settings</zorder>
+   <zorder>com_label_connect</zorder>
+   <zorder>panel_lsettings</zorder>
+   <zorder>panel_timesync</zorder>
    <zorder>panel_message</zorder>
+   <zorder>menu_layout</zorder>
+   <zorder>menu_controls_layout</zorder>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>ClickableLabel</class>
    <extends>QLabel</extends>
-   <header>clickablelabel.h</header>
+   <header location="global">clickablelabel.h</header>
    <slots>
     <signal>clicked()</signal>
     <signal>mousePressed(QPoint)</signal>

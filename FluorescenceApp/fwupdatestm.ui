@@ -36,12 +36,16 @@
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Sure. Next please!</string>
@@ -58,13 +62,16 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(128, 0, 128);</string>
+     <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Hey there. I'm here to help you updating the
@@ -101,13 +108,16 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(128, 0, 128);</string>
+     <string notr="true">color: rgb(128, 0, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Is Fluorescence is powered on and connected?</string>
@@ -137,14 +147,15 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
+      <family>RalewayBold</family>
       <pointsize>18</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);</string>
+     <string notr="true">color: rgb(16, 128, 128);font: 18pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Step 2:</string>
@@ -164,14 +175,15 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
+      <family>RalewayBold</family>
       <pointsize>26</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(128, 0, 128);</string>
+     <string notr="true">color: rgb(128, 0, 128);font: 26pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>v9.99s</string>
@@ -191,13 +203,15 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);</string>
+     <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>That's the current version of Fluorescence.</string>
@@ -217,14 +231,15 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
+      <family>RalewayBold</family>
       <pointsize>26</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(128, 0, 128);</string>
+     <string notr="true">color: rgb(128, 0, 128);font: 26pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>v11.11s</string>
@@ -244,13 +259,15 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);</string>
+     <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>That's the version that we'll update to.</string>
@@ -270,15 +287,17 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <pointsize>13</pointsize>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
       <weight>50</weight>
+      <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Looks great. Next!</string>
@@ -317,13 +336,16 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);</string>
+     <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Information about the firmware update process</string>
@@ -346,13 +368,16 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);</string>
+     <string notr="true">color: rgb(16, 128, 128);
+font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Updater Agree Text</string>
@@ -399,15 +424,16 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="font">
      <font>
-      <family>.AppleSystemUIFont</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>RalewayBold</family>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Update</string>

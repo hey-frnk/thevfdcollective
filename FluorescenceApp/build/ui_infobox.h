@@ -12,7 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
-#include "clickablelabel.h"
+#include <clickablelabel.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -38,22 +38,28 @@ public:
         info_1->setObjectName(QString::fromUtf8("info_1"));
         info_1->setGeometry(QRect(28, 210, 631, 71));
         info_1->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);\n"
+"font: 12pt \"RalewayMedium\";"));
         info_1->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         info_2 = new ClickableLabel(infobox);
         info_2->setObjectName(QString::fromUtf8("info_2"));
         info_2->setGeometry(QRect(28, 280, 631, 21));
         QFont font;
+        font.setFamily(QString::fromUtf8("RalewayMedium"));
+        font.setPointSize(12);
+        font.setBold(false);
+        font.setItalic(false);
         font.setUnderline(true);
+        font.setWeight(50);
         info_2->setFont(font);
         info_2->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);font: 12pt \"RalewayMedium\";"));
         info_2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         info_3 = new ClickableLabel(infobox);
         info_3->setObjectName(QString::fromUtf8("info_3"));
         info_3->setGeometry(QRect(28, 320, 631, 51));
         info_3->setStyleSheet(QString::fromUtf8("background-color: rgba(255, 255, 255, 0);\n"
-"color: rgb(255, 255, 255);"));
+"color: rgb(255, 255, 255);font: 12pt \"RalewayMedium\";"));
         info_3->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
 
         retranslateUi(infobox);

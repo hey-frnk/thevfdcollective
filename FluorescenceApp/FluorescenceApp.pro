@@ -72,5 +72,11 @@ RESOURCES += \
     Resources/cursor.png \
     Resources/fl2_usb.jpg \
     Resources/fl3_usb.jpg \
-    Resources/about.jpg
+    Resources/about.jpg \
+    Resources/menu.png \
+    Resources/menu_inv.png \
+    Resources/reload.png \
+    Resources/RalewayBlack.ttf \
+    Resources/RalewayBold.ttf \
+    Resources/RalewayMedium.ttf
 

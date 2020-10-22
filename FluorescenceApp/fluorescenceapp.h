@@ -188,9 +188,15 @@ private slots:
 
     void on_custom_value_load_clicked();
 
-    void on_com_text_clicked();
-
     void on_settings_info_app_clicked();
+
+    void on_menu_button_clicked();
+
+    void menu_hide_menu();
+
+    void on_main_welcome_clicked();
+
+    void on_com_reload_clicked();
 
 public:
     Ui::FluorescenceApp *ui;
