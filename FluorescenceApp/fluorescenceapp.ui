@@ -194,7 +194,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
       <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_presets_static">
       <attribute name="title">
@@ -325,8 +325,8 @@ font: 36px &quot;RalewayBlack&quot;;</string>
         <rect>
          <x>460</x>
          <y>30</y>
-         <width>131</width>
-         <height>31</height>
+         <width>141</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -355,7 +355,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
          <x>650</x>
          <y>30</y>
          <width>61</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -382,8 +382,8 @@ font: 26px &quot;RalewayBold&quot;;</string>
         <rect>
          <x>540</x>
          <y>90</y>
-         <width>91</width>
-         <height>31</height>
+         <width>101</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -409,9 +409,9 @@ font: 26px &quot;RalewayBold&quot;;</string>
        <property name="geometry">
         <rect>
          <x>40</x>
-         <y>150</y>
-         <width>61</width>
-         <height>31</height>
+         <y>140</y>
+         <width>71</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -437,9 +437,9 @@ font: 26px &quot;RalewayBold&quot;;</string>
        <property name="geometry">
         <rect>
          <x>640</x>
-         <y>230</y>
-         <width>71</width>
-         <height>31</height>
+         <y>220</y>
+         <width>81</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -467,7 +467,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
          <x>520</x>
          <y>210</y>
          <width>81</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -495,7 +495,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
          <x>370</x>
          <y>220</y>
          <width>101</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -523,7 +523,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
          <x>260</x>
          <y>280</y>
          <width>161</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -551,7 +551,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
          <x>30</x>
          <y>280</y>
          <width>101</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -577,9 +577,9 @@ font: 26px &quot;RalewayBold&quot;;</string>
        <property name="geometry">
         <rect>
          <x>60</x>
-         <y>220</y>
+         <y>210</y>
          <width>111</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -607,7 +607,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
          <x>220</x>
          <y>210</y>
          <width>111</width>
-         <height>31</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="font">
@@ -933,7 +933,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_5">
         <property name="geometry">
          <rect>
-          <x>150</x>
+          <x>120</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -949,7 +949,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_6">
         <property name="geometry">
          <rect>
-          <x>120</x>
+          <x>150</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -965,7 +965,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_7">
         <property name="geometry">
          <rect>
-          <x>270</x>
+          <x>180</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -981,7 +981,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_8">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>210</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -997,7 +997,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_9">
         <property name="geometry">
          <rect>
-          <x>180</x>
+          <x>240</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1013,7 +1013,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_10">
         <property name="geometry">
          <rect>
-          <x>300</x>
+          <x>270</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1029,7 +1029,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_11">
         <property name="geometry">
          <rect>
-          <x>210</x>
+          <x>300</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1045,7 +1045,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_12">
         <property name="geometry">
          <rect>
-          <x>240</x>
+          <x>330</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1061,7 +1061,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_18">
         <property name="geometry">
          <rect>
-          <x>420</x>
+          <x>510</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1077,7 +1077,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_15">
         <property name="geometry">
          <rect>
-          <x>360</x>
+          <x>420</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1093,7 +1093,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_17">
         <property name="geometry">
          <rect>
-          <x>390</x>
+          <x>480</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1109,7 +1109,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_13">
         <property name="geometry">
          <rect>
-          <x>450</x>
+          <x>360</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1125,7 +1125,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_16">
         <property name="geometry">
          <rect>
-          <x>480</x>
+          <x>450</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -1141,7 +1141,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <widget class="ClickableLabel" name="dynamic_t_14">
         <property name="geometry">
          <rect>
-          <x>510</x>
+          <x>390</x>
           <y>0</y>
           <width>21</width>
           <height>21</height>
@@ -3207,7 +3207,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
       <widget class="QLabel" name="shuffle_intro2">
        <property name="geometry">
         <rect>
-         <x>350</x>
+         <x>340</x>
          <y>110</y>
          <width>351</width>
          <height>31</height>
@@ -5515,7 +5515,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>131</width>
+         <width>121</width>
          <height>16</height>
         </rect>
        </property>
@@ -7306,9 +7306,9 @@ font: 12px &quot;RalewayBold&quot;;</string>
     </property>
    </widget>
    <zorder>panel_timesync</zorder>
-   <zorder>panel_welcome</zorder>
-   <zorder>panel_settings</zorder>
    <zorder>panel_presets</zorder>
+   <zorder>panel_settings</zorder>
+   <zorder>panel_welcome</zorder>
    <zorder>panel_custom_colors</zorder>
    <zorder>com_label_connect</zorder>
    <zorder>panel_lsettings</zorder>

@@ -622,7 +622,7 @@ float FluorescenceApp::capture_hue(const QPoint &pt) {
          posy = pt.y() - ui->custom_color_wheel->width() / 2;
 
     // Into angle and magnitude
-    float pos_angle = std::atan2f((float)posx, (float)-posy) / M_PI * 180.0;
+    float pos_angle = std::atan2((float)posx, (float)-posy) / M_PI * 180.0;
     if(pos_angle < 0.0f) pos_angle = 360.0 + pos_angle;
     return pos_angle;
 }
@@ -630,7 +630,7 @@ float FluorescenceApp::capture_hue(const QPoint &pt) {
 QPoint FluorescenceApp::map_hue(float angle) {
     constexpr float radius = 127.0f;
     float angle_rad = angle / 180.0f * M_PI;
-    return QPoint(radius + radius * std::cosf(angle_rad), radius + radius * std::sinf(angle_rad)) - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2);
+    return QPoint(radius + radius * std::cos(angle_rad), radius + radius * std::sin(angle_rad)) - QPoint(ui->custom_color_wheel_cursor->width() / 2, ui->custom_color_wheel_cursor->height() / 2);
 }
 
 void FluorescenceApp::on_custom_color_wheel_mousePressed(const QPoint &pt)
