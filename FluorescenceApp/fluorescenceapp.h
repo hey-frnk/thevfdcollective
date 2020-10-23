@@ -198,6 +198,8 @@ private slots:
 
     void on_com_reload_clicked();
 
+    void on_timesync_time_label_clicked();
+
 public:
     Ui::FluorescenceApp *ui;
 

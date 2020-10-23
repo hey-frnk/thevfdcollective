@@ -29,7 +29,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/about.jpg</pixmap>
+    <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/about.jpg</pixmap>
    </property>
   </widget>
   <widget class="ClickableLabel" name="info_1">
@@ -43,8 +43,7 @@
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayMedium&quot;;</string>
    </property>
    <property name="text">
     <string>With love by Frank from The VFD Collective.
@@ -68,7 +67,7 @@ please reach out to our customer service at</string>
    <property name="font">
     <font>
      <family>RalewayMedium</family>
-     <pointsize>12</pointsize>
+     <pointsize>-1</pointsize>
      <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
@@ -77,7 +76,7 @@ please reach out to our customer service at</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayMedium&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayMedium&quot;;</string>
    </property>
    <property name="text">
     <string>www.TheVFDCollective.com/support</string>
@@ -97,7 +96,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayMedium&quot;;</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayMedium&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayMedium&quot;;</string>
    </property>
    <property name="text">
     <string>PICTURE CREDITS (no copyright infringement intended):
@@ -121,7 +120,7 @@ Ambient light pictures: Taken from Instagram by @bryanadamc and Pinterest</strin
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="build/qmake_qmake_immediate.qrc"/>
+  <include location="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>

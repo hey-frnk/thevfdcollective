@@ -228,8 +228,8 @@ void FluorescenceApp::preset_ambient_light_update(uint_fast8_t counter) {
 
 void FluorescenceApp::update(){
     // Display current time!
-    QTime ct = QTime::currentTime();
-    QDate cd = QDate::currentDate();
+    QTime ct = QTime::currentTime().addSecs(60 * ui->timesync_p_m->value() + 60 * 60 * ui->timesync_p_h->value());
+    QDate cd = QDate::currentDate().addDays(ui->timesync_p_d->value()).addMonths(ui->timesync_p_mo->value()).addYears(ui->timesync_p_y->value());
     ui->timesync_time_label->setText(ct.toString("hh:mm:ss"));
     ui->timesync_date_label->setText(cd.toString(Qt::DefaultLocaleLongDate));
 
@@ -241,7 +241,7 @@ void FluorescenceApp::update(){
     for(uint_fast8_t i = 0; i < NUM_PRESET_DYNAMIC_TIME; ++i) {
         uint_fast8_t hpdt = preset_dynamic_timer / 8;
         if(i < hpdt) preset_dynamic_time[i]->setStyleSheet("background-color:" + QColor::fromRgb(16, 128, 128).name());
-        else preset_dynamic_time[i]->setStatusTip("background-color:" + QColor::fromRgb(196, 196, 196).name());
+        else preset_dynamic_time[i]->setStyleSheet("background-color:" + QColor::fromRgb(196, 196, 196).name());
     }
     if(preset_dynamic_timer == (NUM_PRESET_DYNAMIC_TIME * 8)) preset_dynamic_timer = 0;
 
@@ -297,6 +297,7 @@ void FluorescenceApp::on_com_connect_clicked()
         ui->com_select->setCurrentIndex(0); // Empty
         ui->com_label_connect->setText("Ready to connect");
         ui->com_intro->setText("Time to connect. Let's talk to Fluorescence...");
+        ui->com_connect->clear();
         ui->com_connect->setText(">>");
         ui->menu_button->setEnabled(false);
 
@@ -349,7 +350,8 @@ void FluorescenceApp::app_com_connected_callback()
     ui->com_select->setEnabled(false);
     ui->menu_button->setEnabled(true);
     ui->com_label_connect->setText("Fluorescence is connected");
-    ui->com_connect->setText("⏹");
+    ui->com_connect->setText("");
+    ui->com_connect->setPixmap(QPixmap::fromImage(QImage(":/Resources/stop.png")));
     ui->com_intro->setText("Fluorescence is connected. Have a colorful time.");
 }
 
@@ -853,8 +855,8 @@ void FluorescenceApp::on_lsettings_info_download_clicked() { on_settings_info_do
 
 void FluorescenceApp::on_timesync_button_clicked()
 {
-    QTime ct = QTime::currentTime();
-    QDate cd = QDate::currentDate();
+    QTime ct = QTime::currentTime().addSecs(60 * ui->timesync_p_m->value() + 60 * 60 * ui->timesync_p_h->value());
+    QDate cd = QDate::currentDate().addDays(ui->timesync_p_d->value()).addMonths(ui->timesync_p_mo->value()).addYears(ui->timesync_p_y->value());
     vfdco_time_t v_time;
     v_time.h = (uint8_t)ct.hour();
     v_time.m = (uint8_t)ct.minute();
@@ -867,6 +869,16 @@ void FluorescenceApp::on_timesync_button_clicked()
 
     QString resp = global_com_instance->transfer_time_date(v_time, v_date);
     if(resp.contains(QStringLiteral("Time Sy"))) ui->timesync_intro_2->setText("Sync successful.");
+}
+
+
+void FluorescenceApp::on_timesync_time_label_clicked()
+{
+    ui->timesync_p_y->setValue(0);
+    ui->timesync_p_mo->setValue(0);
+    ui->timesync_p_d->setValue(0);
+    ui->timesync_p_h->setValue(0);
+    ui->timesync_p_m->setValue(0);
 }
 
 void FluorescenceApp::on_static_off_clicked() {         global_com_instance->transfer_light_pattern(LIGHT_PATTERN_STATIC, 0, 0); }
@@ -1088,3 +1100,4 @@ void FluorescenceApp::on_menu_button_clicked()
 void FluorescenceApp::menu_hide_menu() {
     ui->menu_controls_layout->hide();
 }
+

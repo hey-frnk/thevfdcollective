@@ -63,14 +63,14 @@
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>16</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 16pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 16px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="frame">
       <bool>true</bool>
@@ -87,7 +87,7 @@
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(16, 128, 128);
-font: 18pt &quot;RalewayBlack&quot;;</string>
+font: 18px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>Time to connect. Let's talk to Fluorescence...</string>
@@ -99,10 +99,10 @@ font: 18pt &quot;RalewayBlack&quot;;</string>
     <widget class="ClickableLabel" name="com_connect">
      <property name="geometry">
       <rect>
-       <x>640</x>
-       <y>210</y>
-       <width>51</width>
-       <height>51</height>
+       <x>660</x>
+       <y>220</y>
+       <width>40</width>
+       <height>40</height>
       </rect>
      </property>
      <property name="cursor">
@@ -110,10 +110,13 @@ font: 18pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(16, 128, 128);
-font: 36pt &quot;RalewayBlack&quot;;</string>
+font: 36px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>&gt;&gt;</string>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -133,7 +136,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(16, 128, 128);
-font: 36pt &quot;RalewayBlack&quot;;</string>
+font: 36px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string/>
@@ -181,14 +184,14 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="currentIndex">
       <number>3</number>
@@ -209,14 +212,14 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Some hand crafted presets that look fantastic on Fluorescence.</string>
@@ -329,7 +332,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -340,7 +343,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#magenta</string>
@@ -358,7 +361,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -368,7 +371,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#off</string>
@@ -386,7 +389,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -396,7 +399,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 255);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(128, 0, 255);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#violet</string>
@@ -414,7 +417,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -424,7 +427,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(252, 1, 7);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(252, 1, 7);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#red</string>
@@ -442,7 +445,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -452,7 +455,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(15, 128, 255);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(15, 128, 255);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#blue</string>
@@ -470,7 +473,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -480,7 +483,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#cyan</string>
@@ -498,7 +501,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -508,7 +511,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 1);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 1);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#green</string>
@@ -526,7 +529,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -536,7 +539,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(254, 204, 102);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(254, 204, 102);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#warmwhite</string>
@@ -554,7 +557,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -564,7 +567,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(204, 204, 204);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(204, 204, 204);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#white</string>
@@ -582,7 +585,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -592,7 +595,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(253, 128, 8);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(253, 128, 8);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#orange</string>
@@ -610,7 +613,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -620,7 +623,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <cursorShape>OpenHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(185, 161, 29);font: 26pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(185, 161, 29);font: 26px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>#yellow</string>
@@ -643,7 +646,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -652,7 +655,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Spectrum</string>
@@ -670,7 +673,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -679,7 +682,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Rainbow Fade</string>
@@ -697,7 +700,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -706,7 +709,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Moments of Bliss</string>
@@ -724,7 +727,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -733,7 +736,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Time Code</string>
@@ -751,7 +754,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -760,7 +763,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Police Lights</string>
@@ -778,7 +781,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -787,7 +790,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Chase Fade</string>
@@ -805,7 +808,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -813,7 +816,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Animated visualization. We know it's prettier on Fluorescence.</string>
@@ -831,7 +834,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -839,7 +842,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Time:</string>
@@ -857,7 +860,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -1212,7 +1215,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -1230,7 +1233,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBlack</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1239,7 +1242,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1257,7 +1260,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1265,7 +1268,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>saturation:</string>
@@ -1283,14 +1286,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1323,7 +1326,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1331,7 +1334,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>lightness:</string>
@@ -1349,14 +1352,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1389,14 +1392,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>Guides you through
@@ -1419,7 +1422,7 @@ all the amazing colors.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -1437,7 +1440,7 @@ all the amazing colors.</string>
         <property name="font">
          <font>
           <family>RalewayBlack</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1446,7 +1449,7 @@ all the amazing colors.</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1464,7 +1467,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1472,7 +1475,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>mood:</string>
@@ -1490,14 +1493,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1545,14 +1548,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>Means wumbo in German. i wumbo, you wumbo
@@ -1575,7 +1578,7 @@ he she me wumbo. That's first grade Spongebob!</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -1593,7 +1596,7 @@ he she me wumbo. That's first grade Spongebob!</string>
         <property name="font">
          <font>
           <family>RalewayBlack</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1602,7 +1605,7 @@ he she me wumbo. That's first grade Spongebob!</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1620,7 +1623,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1628,7 +1631,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>distance:</string>
@@ -1646,14 +1649,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>chill</string>
@@ -1674,7 +1677,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1711,14 +1714,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>tight</string>
@@ -1739,7 +1742,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1747,7 +1750,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>saturation:</string>
@@ -1765,14 +1768,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -1806,7 +1809,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -1824,7 +1827,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBlack</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1833,7 +1836,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1851,7 +1854,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1859,7 +1862,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>distance:</string>
@@ -1877,14 +1880,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>chill</string>
@@ -1905,7 +1908,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1942,14 +1945,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>tight</string>
@@ -1970,7 +1973,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1978,7 +1981,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>mode:</string>
@@ -1996,14 +1999,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -2042,7 +2045,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -2060,7 +2063,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBlack</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2069,7 +2072,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -2087,14 +2090,14 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>For every digit value, there is a different color!</string>
@@ -2115,7 +2118,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2123,7 +2126,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>color palette:</string>
@@ -2141,14 +2144,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -2177,7 +2180,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -2195,7 +2198,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBlack</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2204,7 +2207,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -2222,14 +2225,14 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>Should Fluorescence be on patrol or a high speed, hot pursuit?</string>
@@ -2250,7 +2253,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2258,7 +2261,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>pattern:</string>
@@ -2276,14 +2279,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -2317,7 +2320,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -2335,7 +2338,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBlack</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2344,7 +2347,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="styleSheet">
          <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -2362,7 +2365,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2370,7 +2373,7 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>distance:</string>
@@ -2388,14 +2391,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>chill</string>
@@ -2416,7 +2419,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2453,14 +2456,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>12</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>tight</string>
@@ -2481,7 +2484,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>26</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -2489,7 +2492,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(128, 0, 128);
-font: 26pt &quot;RalewayBold&quot;;</string>
+font: 26px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="text">
          <string>saturation:</string>
@@ -2507,14 +2510,14 @@ font: 26pt &quot;RalewayBold&quot;;</string>
         <property name="font">
          <font>
           <family>RalewayBold</family>
-          <pointsize>18</pointsize>
+          <pointsize>-1</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+         <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -2548,7 +2551,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -2557,7 +2560,7 @@ font: 26pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Music</string>
@@ -2737,14 +2740,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Generate ambient light colors
@@ -2764,14 +2767,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Click on the computer to begin.</string>
@@ -2893,14 +2896,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Static</string>
@@ -2921,14 +2924,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Music</string>
@@ -2946,14 +2949,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Police Lights</string>
@@ -2971,14 +2974,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Chase Fade</string>
@@ -2999,14 +3002,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Spectrum Fade</string>
@@ -3027,14 +3030,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Rainbow Fade</string>
@@ -3055,14 +3058,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Moments of Bliss</string>
@@ -3083,14 +3086,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Time Code</string>
@@ -3111,14 +3114,14 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>18</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 18pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">font: 18px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="frame">
         <bool>false</bool>
@@ -3161,7 +3164,7 @@ screen.</string>
        <property name="font">
         <font>
          <family>RalewayBlack</family>
-         <pointsize>26</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -3170,7 +3173,7 @@ screen.</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 26pt &quot;RalewayBlack&quot;;</string>
+font: 26px &quot;RalewayBlack&quot;;</string>
        </property>
        <property name="text">
         <string>Looks good, go!</string>
@@ -3188,14 +3191,14 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>18</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);font: 18pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 18px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Not in the mood to pick?</string>
@@ -3213,14 +3216,14 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>18</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);font: 18pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 18px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>and pick another one every...</string>
@@ -3238,14 +3241,14 @@ font: 26pt &quot;RalewayBlack&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(128, 0, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+        <string notr="true">color: rgb(128, 0, 128);font: 12px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Not a problem! Shuffle to let Fluorescence pick a pattern,
@@ -3287,14 +3290,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>R:</string>
@@ -3312,14 +3315,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>G:</string>
@@ -3337,14 +3340,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>B:</string>
@@ -3362,14 +3365,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>H:</string>
@@ -3387,14 +3390,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>S:</string>
@@ -3412,14 +3415,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>L:</string>
@@ -3437,7 +3440,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3447,7 +3450,7 @@ randomly out of:</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3468,7 +3471,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3478,7 +3481,7 @@ randomly out of:</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3499,7 +3502,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3509,7 +3512,7 @@ randomly out of:</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3530,7 +3533,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3540,7 +3543,7 @@ randomly out of:</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3561,7 +3564,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3571,7 +3574,7 @@ randomly out of:</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3592,7 +3595,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3602,7 +3605,7 @@ randomly out of:</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3623,14 +3626,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>hex color code:</string>
@@ -3648,14 +3651,14 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>W:</string>
@@ -3673,7 +3676,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3683,7 +3686,7 @@ randomly out of:</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3704,7 +3707,7 @@ randomly out of:</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3712,7 +3715,7 @@ randomly out of:</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 1</string>
@@ -3733,7 +3736,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3741,7 +3744,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 2</string>
@@ -3762,7 +3765,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3770,7 +3773,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 3</string>
@@ -3791,7 +3794,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3799,7 +3802,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 4</string>
@@ -3820,7 +3823,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3828,7 +3831,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 5</string>
@@ -3849,7 +3852,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3857,7 +3860,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>LED 6</string>
@@ -3878,7 +3881,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -3886,7 +3889,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Time to paint the night sky. Or some LEDs.</string>
@@ -3904,14 +3907,14 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>red, green, blue &amp; white.</string>
@@ -3929,14 +3932,14 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>hue, saturation &amp; lightness.</string>
@@ -4173,7 +4176,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -4185,7 +4188,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Load color</string>
@@ -4206,7 +4209,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -4218,7 +4221,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Save color</string>
@@ -4245,11 +4248,11 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
-    <widget class="QLabel" name="timesync_time_label">
+    <widget class="ClickableLabel" name="timesync_time_label">
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>120</y>
+       <y>70</y>
        <width>441</width>
        <height>101</height>
       </rect>
@@ -4257,15 +4260,22 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBlack</family>
-       <pointsize>96</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
+       <underline>false</underline>
       </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Click to reset adjustment</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 96pt &quot;RalewayBlack&quot;;</string>
+font: 96px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>20:15:16</string>
@@ -4275,7 +4285,7 @@ font: 96pt &quot;RalewayBlack&quot;;</string>
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>220</y>
+       <y>170</y>
        <width>391</width>
        <height>31</height>
       </rect>
@@ -4283,14 +4293,14 @@ font: 96pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBlack</family>
-       <pointsize>24</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 24pt &quot;RalewayBlack&quot;;</string>
+      <string notr="true">font: 24px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>Friyay, March 7th 2032</string>
@@ -4300,7 +4310,7 @@ font: 96pt &quot;RalewayBlack&quot;;</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>80</y>
+       <y>60</y>
        <width>211</width>
        <height>41</height>
       </rect>
@@ -4308,14 +4318,14 @@ font: 96pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>Match the time of Fluorescence
@@ -4326,15 +4336,15 @@ to the time of your computer</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>120</y>
+       <y>100</y>
        <width>211</width>
-       <height>121</height>
+       <height>161</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>RalewayBlack</family>
-       <pointsize>36</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -4343,7 +4353,7 @@ to the time of your computer</string>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 36pt &quot;RalewayBlack&quot;;</string>
+font: 36px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>Sync</string>
@@ -4356,7 +4366,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
      <property name="geometry">
       <rect>
        <x>510</x>
-       <y>240</y>
+       <y>260</y>
        <width>211</width>
        <height>41</height>
       </rect>
@@ -4364,17 +4374,313 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>Ready to sync.</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="timesync_p_y">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>220</y>
+       <width>71</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::PlusMinus</enum>
+     </property>
+     <property name="minimum">
+      <number>-10</number>
+     </property>
+     <property name="maximum">
+      <number>10</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="timesync_p_mo">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>220</y>
+       <width>71</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::PlusMinus</enum>
+     </property>
+     <property name="minimum">
+      <number>-24</number>
+     </property>
+     <property name="maximum">
+      <number>24</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="timesync_p_d">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>220</y>
+       <width>71</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::PlusMinus</enum>
+     </property>
+     <property name="minimum">
+      <number>-60</number>
+     </property>
+     <property name="maximum">
+      <number>60</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="timesync_p_h">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>220</y>
+       <width>71</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::PlusMinus</enum>
+     </property>
+     <property name="minimum">
+      <number>-48</number>
+     </property>
+     <property name="maximum">
+      <number>48</number>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="timesync_p_m">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>220</y>
+       <width>71</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::PlusMinus</enum>
+     </property>
+     <property name="minimum">
+      <number>-90</number>
+     </property>
+     <property name="maximum">
+      <number>90</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timesync_label">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>260</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>RalewayBold</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 18px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="text">
+      <string>years</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timesync_label_2">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>260</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>RalewayBold</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 18px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="text">
+      <string>months</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timesync_label_3">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>260</y>
+       <width>61</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>RalewayBold</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 18px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="text">
+      <string>days</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timesync_label_4">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>260</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>RalewayBold</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 18px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="text">
+      <string>hours</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timesync_label_5">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>260</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>RalewayBold</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 18px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="text">
+      <string>minutes</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timesync_label_6">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>220</y>
+       <width>21</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>RalewayBold</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
+     </property>
+     <property name="text">
+      <string>+</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -4407,7 +4713,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBlack</family>
-       <pointsize>48</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -4415,7 +4721,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(16, 128, 128);
-font: 48pt &quot;RalewayBlack&quot;;</string>
+font: 48px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="lineWrapMode">
       <enum>QPlainTextEdit::NoWrap</enum>
@@ -4436,14 +4742,14 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Write a poem. Or say something lovely. We wrote this so that you can have a fun time :)</string>
@@ -4461,14 +4767,14 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="text">
       <string>Rules of the game:</string>
@@ -4486,14 +4792,14 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- 24 letters for you. The message will be split in max. three parts displayed separately</string>
@@ -4511,14 +4817,14 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- Write in CAPITAL LETTERS, and only use those the display can display (see next point)</string>
@@ -4536,14 +4842,14 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- Allowed: A B C D E F G H I J L N O P Q R S T U V Y, 0, spacebar and minus (-)</string>
@@ -4561,14 +4867,14 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>- It's a bit like SNAPCHAT. But you decide for how long each message part is on display:</string>
@@ -4586,14 +4892,14 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayMedium</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="text">
       <string>Use this message as the new welcome message Fluorescence uses to greet you on startup</string>
@@ -4611,7 +4917,7 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBlack</family>
-       <pointsize>48</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -4619,7 +4925,7 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 48pt &quot;RalewayBlack&quot;;</string>
+font: 48px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="lineWrapMode">
       <enum>QPlainTextEdit::NoWrap</enum>
@@ -4640,7 +4946,7 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBlack</family>
-       <pointsize>48</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -4648,7 +4954,7 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(128, 0, 128);
-font: 48pt &quot;RalewayBlack&quot;;</string>
+font: 48px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>second(s)</string>
@@ -4666,7 +4972,7 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBlack</family>
-       <pointsize>36</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -4675,7 +4981,7 @@ font: 48pt &quot;RalewayBlack&quot;;</string>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 36pt &quot;RalewayBlack&quot;;</string>
+font: 36px &quot;RalewayBlack&quot;;</string>
      </property>
      <property name="text">
       <string>Send Message</string>
@@ -4714,14 +5020,14 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Set time and date format</string>
@@ -4741,14 +5047,14 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+       <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4781,7 +5087,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -4792,7 +5098,7 @@ font: 36pt &quot;RalewayBlack&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Hour format:</string>
@@ -4810,7 +5116,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -4818,7 +5124,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Date format:</string>
@@ -4836,14 +5142,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+       <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4871,7 +5177,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -4880,7 +5186,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -4899,14 +5205,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Brightness</string>
@@ -4926,14 +5232,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+       <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -4966,7 +5272,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -4974,7 +5280,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Display brightness:</string>
@@ -4992,7 +5298,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5000,7 +5306,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>LED brightness:</string>
@@ -5018,14 +5324,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+       <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="frame">
        <bool>false</bool>
@@ -5058,7 +5364,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5067,7 +5373,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -5086,14 +5392,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Night shift</string>
@@ -5113,7 +5419,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5121,7 +5427,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Enable night shift</string>
@@ -5139,7 +5445,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5148,7 +5454,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -5169,7 +5475,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5187,14 +5493,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+        <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -5216,7 +5522,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -5224,7 +5530,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>Every evening from</string>
@@ -5242,14 +5548,14 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 12pt &quot;RalewayMedium&quot;;</string>
+        <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -5271,7 +5577,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -5279,7 +5585,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>next morning.</string>
@@ -5297,7 +5603,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -5305,7 +5611,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>until</string>
@@ -5325,14 +5631,14 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Settings</string>
@@ -5352,7 +5658,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5360,7 +5666,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Load Default</string>
@@ -5378,7 +5684,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5386,7 +5692,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Save All</string>
@@ -5405,14 +5711,14 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Hardware &amp;&amp; Firmware Info</string>
@@ -5432,7 +5738,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5440,7 +5746,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Hardware version:</string>
@@ -5458,7 +5764,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5466,7 +5772,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>hw_str</string>
@@ -5484,7 +5790,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5492,7 +5798,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware version:</string>
@@ -5510,7 +5816,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5518,7 +5824,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>sw_str</string>
@@ -5536,7 +5842,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5544,7 +5850,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>App version:</string>
@@ -5562,7 +5868,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5574,7 +5880,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>3.0</string>
@@ -5593,14 +5899,14 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Enabled presets</string>
@@ -5623,7 +5929,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5631,7 +5937,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Static</string>
@@ -5652,7 +5958,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5661,7 +5967,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Set</string>
@@ -5679,7 +5985,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5687,7 +5993,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Spectrum Fade</string>
@@ -5708,7 +6014,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5716,7 +6022,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Rainbow Fade</string>
@@ -5737,7 +6043,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5745,7 +6051,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Moments of Bliss</string>
@@ -5766,7 +6072,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5774,7 +6080,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Chase Fade</string>
@@ -5795,7 +6101,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5803,7 +6109,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Time Code</string>
@@ -5824,7 +6130,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5832,7 +6138,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Music</string>
@@ -5850,7 +6156,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5858,7 +6164,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Police Lights</string>
@@ -5877,14 +6183,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Updates</string>
@@ -5904,7 +6210,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5912,7 +6218,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Download Latest Firmware</string>
@@ -5930,7 +6236,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -5938,7 +6244,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware Update</string>
@@ -5975,7 +6281,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -5983,7 +6289,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Set time and date format</string>
@@ -6003,7 +6309,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6011,7 +6317,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>12h hour format</string>
@@ -6032,7 +6338,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6040,7 +6346,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Enable leading zero '0'</string>
@@ -6061,7 +6367,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6069,7 +6375,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>MM.DD.YY format</string>
@@ -6088,7 +6394,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -6096,7 +6402,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Brightness &amp;&amp; Night Shift</string>
@@ -6116,7 +6422,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6124,7 +6430,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Enable silent mode</string>
@@ -6142,7 +6448,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6150,7 +6456,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Scheduled night shift</string>
@@ -6171,7 +6477,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6189,7 +6495,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6197,7 +6503,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="styleSheet">
         <string>color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -6219,7 +6525,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6227,7 +6533,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>Every evening from</string>
@@ -6245,7 +6551,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6253,7 +6559,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="styleSheet">
         <string>color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="time">
         <time>
@@ -6275,7 +6581,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6283,7 +6589,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>the next morning</string>
@@ -6301,7 +6607,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayMedium</family>
-         <pointsize>12</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6309,7 +6615,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
        </property>
        <property name="text">
         <string>until</string>
@@ -6329,14 +6635,14 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Hardware &amp;&amp; Firmware</string>
@@ -6356,7 +6662,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6364,7 +6670,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Hardware version:</string>
@@ -6382,7 +6688,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6391,7 +6697,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware Update</string>
@@ -6409,7 +6715,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6417,7 +6723,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>2.0 or 2.1</string>
@@ -6435,7 +6741,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6443,7 +6749,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Firmware version:</string>
@@ -6461,7 +6767,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6469,7 +6775,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>sw_str</string>
@@ -6487,7 +6793,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6495,7 +6801,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>Fluorescence app version:</string>
@@ -6513,7 +6819,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6521,7 +6827,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>3.0</string>
@@ -6539,7 +6845,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6548,7 +6854,7 @@ font: 12pt &quot;RalewayMedium&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Download 
@@ -6567,7 +6873,7 @@ Latest Firmware</string>
       <property name="font">
        <font>
         <family>RalewayMedium</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6575,7 +6881,7 @@ Latest Firmware</string>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayMedium&quot;;</string>
+font: 12px &quot;RalewayMedium&quot;;</string>
       </property>
       <property name="text">
        <string>You are using an outdated version of firmware on
@@ -6597,14 +6903,14 @@ Download the latest firmware and click on
      <property name="font">
       <font>
        <family>RalewayBold</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;RalewayBold&quot;;</string>
+      <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
      </property>
      <property name="title">
       <string>Settings</string>
@@ -6624,7 +6930,7 @@ Download the latest firmware and click on
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6633,7 +6939,7 @@ Download the latest firmware and click on
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Load Default</string>
@@ -6651,7 +6957,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="font">
        <font>
         <family>RalewayBold</family>
-        <pointsize>12</pointsize>
+        <pointsize>-1</pointsize>
         <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
@@ -6660,7 +6966,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
       </property>
       <property name="text">
        <string>Save All</string>
@@ -6705,7 +7011,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>32</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6717,7 +7023,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 32pt &quot;RalewayBold&quot;;</string>
+font: 32px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Device</string>
@@ -6735,7 +7041,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>32</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6747,7 +7053,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color:  rgb(128, 128, 128);
 color: rgb(255, 255, 255);
-font: 32pt &quot;RalewayBold&quot;;</string>
+font: 32px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Time</string>
@@ -6765,7 +7071,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>32</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6777,7 +7083,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 32pt &quot;RalewayBold&quot;;</string>
+font: 32px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Color Presets</string>
@@ -6795,7 +7101,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>32</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6807,8 +7113,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 32pt &quot;RalewayBold&quot;;
-QPushButton {color: grey; border-bottom: 3px; }</string>
+font: 32px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Custom Color</string>
@@ -6823,7 +7128,7 @@ QPushButton {color: grey; border-bottom: 3px; }</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>32</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6835,7 +7140,7 @@ QPushButton {color: grey; border-bottom: 3px; }</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 32pt &quot;RalewayBold&quot;;</string>
+font: 32px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Preferences</string>
@@ -6853,7 +7158,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="font">
         <font>
          <family>RalewayBold</family>
-         <pointsize>32</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -6865,7 +7170,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 32pt &quot;RalewayBold&quot;;</string>
+font: 32px &quot;RalewayBold&quot;;</string>
        </property>
        <property name="text">
         <string>Message</string>
@@ -6940,7 +7245,7 @@ font: 32pt &quot;RalewayBold&quot;;</string>
       <widget class="QLabel" name="menu_about">
        <property name="styleSheet">
         <string notr="true">color: rgb(16, 128, 128);
-font: 18pt &quot;RalewayBlack&quot;;</string>
+font: 18px &quot;RalewayBlack&quot;;</string>
        </property>
        <property name="text">
         <string>Fluorescence App          </string>
@@ -6980,7 +7285,7 @@ font: 18pt &quot;RalewayBlack&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -6988,7 +7293,7 @@ font: 18pt &quot;RalewayBlack&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Ready to connect</string>
@@ -7000,13 +7305,13 @@ font: 12pt &quot;RalewayBold&quot;;</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <zorder>panel_timesync</zorder>
+   <zorder>panel_welcome</zorder>
    <zorder>panel_settings</zorder>
    <zorder>panel_presets</zorder>
    <zorder>panel_custom_colors</zorder>
-   <zorder>panel_welcome</zorder>
    <zorder>com_label_connect</zorder>
    <zorder>panel_lsettings</zorder>
-   <zorder>panel_timesync</zorder>
    <zorder>panel_message</zorder>
    <zorder>menu_layout</zorder>
    <zorder>menu_controls_layout</zorder>

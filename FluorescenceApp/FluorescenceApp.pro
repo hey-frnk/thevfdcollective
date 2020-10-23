@@ -76,6 +76,7 @@ RESOURCES += \
     Resources/menu.png \
     Resources/menu_inv.png \
     Resources/reload.png \
+    Resources/stop.png \
     Resources/RalewayBlack.ttf \
     Resources/RalewayBold.ttf \
     Resources/RalewayMedium.ttf

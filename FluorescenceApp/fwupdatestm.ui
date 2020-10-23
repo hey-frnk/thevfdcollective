@@ -37,7 +37,7 @@
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -45,7 +45,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Sure. Next please!</string>
@@ -63,7 +63,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -71,7 +71,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Hey there. I'm here to help you updating the
@@ -94,7 +94,7 @@ firmware of your Fluorescence clock. Let's go!</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/fl2_usb.jpg</pixmap>
+     <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/fl2_usb.jpg</pixmap>
     </property>
    </widget>
    <widget class="QLabel" name="welcome_intro_2">
@@ -109,7 +109,7 @@ firmware of your Fluorescence clock. Let's go!</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -117,7 +117,7 @@ firmware of your Fluorescence clock. Let's go!</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(128, 0, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Is Fluorescence is powered on and connected?</string>
@@ -148,14 +148,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>18</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);font: 18pt &quot;RalewayBold&quot;;</string>
+     <string notr="true">color: rgb(16, 128, 128);font: 18px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Step 2:</string>
@@ -176,14 +176,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>26</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(128, 0, 128);font: 26pt &quot;RalewayBold&quot;;</string>
+     <string notr="true">color: rgb(128, 0, 128);font: 26px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>v9.99s</string>
@@ -204,14 +204,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+     <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>That's the current version of Fluorescence.</string>
@@ -232,14 +232,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>26</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(128, 0, 128);font: 26pt &quot;RalewayBold&quot;;</string>
+     <string notr="true">color: rgb(128, 0, 128);font: 26px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>v11.11s</string>
@@ -260,14 +260,14 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(16, 128, 128);font: 12pt &quot;RalewayBold&quot;;</string>
+     <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>That's the version that we'll update to.</string>
@@ -288,7 +288,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -297,7 +297,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(16, 128, 128);
 color: rgb(255, 255, 255);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Looks great. Next!</string>
@@ -337,7 +337,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -345,7 +345,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Information about the firmware update process</string>
@@ -369,7 +369,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -377,7 +377,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(16, 128, 128);
-font: 12pt &quot;RalewayBold&quot;;</string>
+font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Updater Agree Text</string>
@@ -425,7 +425,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     <property name="font">
      <font>
       <family>RalewayBold</family>
-      <pointsize>12</pointsize>
+      <pointsize>-1</pointsize>
       <weight>50</weight>
       <italic>false</italic>
       <bold>false</bold>
@@ -433,7 +433,7 @@ font: 12pt &quot;RalewayBold&quot;;</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
+color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
     </property>
     <property name="text">
      <string>Update</string>
@@ -444,7 +444,7 @@ color: rgb(255, 255, 255);font: 12pt &quot;RalewayBold&quot;;</string>
   <zorder>welcome</zorder>
  </widget>
  <resources>
-  <include location="build/qmake_qmake_immediate.qrc"/>
+  <include location="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>
