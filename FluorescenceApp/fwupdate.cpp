@@ -208,7 +208,7 @@ void FWUpdate::on_updater_update_clicked()
             updater_command_path = fw_updater_path_detected + "dfu_util_macos" + QDir::separator() + "dfu-util";
             #endif
             #ifdef Q_OS_WIN64 // Windows specific code
-            updater_command_path = fw_updater_path_detected + "dfu_util_macos" + QDir::separator() + "dfu-util";
+            updater_command_path = fw_updater_path_detected + "dfu_util_win64" + QDir::separator() + "dfu-util.exe";
             #endif
 
             updater_command = updater_command_path + " -a 0 -s 0x08000000:leave -D \"" + fw_updater_firmware_file_detected + "\" -v -v -t 2048";

@@ -78,7 +78,10 @@ fl_app_com::fl_app_com(const QString portname) :
     qDebug() << serial_port.error();
 
     // If WCH CH340G, clock will reboot. Wait appropriately
-    if(portname.contains("wch")) QThread::msleep(8000);
+    QSerialPortInfo s_info(serial_port);
+    qDebug() << s_info.productIdentifier();
+    qDebug() << s_info.vendorIdentifier();
+    if(s_info.productIdentifier() == 29987 && s_info.vendorIdentifier() == 6790) QThread::msleep(8000);
 
     // Try if port is legacy
     determine_legacy();
