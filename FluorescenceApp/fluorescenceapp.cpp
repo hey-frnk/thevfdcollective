@@ -70,6 +70,8 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
     this->setWindowTitle("Fluorescence App by The VFD Collective");
     this->setFixedSize(this->size());
 
+    ui->com_connect->hide(); ui->com_reload->hide(); ui->com_select->hide();
+
     ui->com_connect->setText(">>");
     // List all available serial ports to com_select + empty
     ui->com_select->addItem("");
@@ -82,6 +84,20 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
     ui->menu_controls_layout->hide();
 
     ui->panel_welcome->show();
+
+    // Animate fade in
+    QGraphicsOpacityEffect *com_connect_eff = new QGraphicsOpacityEffect(this);
+    QGraphicsOpacityEffect *com_reload_eff = new QGraphicsOpacityEffect(this);
+    QGraphicsOpacityEffect *com_select_eff = new QGraphicsOpacityEffect(this);
+    ui->com_connect->setGraphicsEffect(com_connect_eff); ui->com_reload->setGraphicsEffect(com_reload_eff); ui->com_select->setGraphicsEffect(com_select_eff);
+    QPropertyAnimation *com_connect_a = new QPropertyAnimation(com_connect_eff,"opacity");
+    QPropertyAnimation *com_reload_a = new QPropertyAnimation(com_reload_eff,"opacity");
+    QPropertyAnimation *com_select_a = new QPropertyAnimation(com_select_eff,"opacity");
+    com_connect_a->setDuration(1000); com_reload_a->setDuration(1000); com_select_a->setDuration(1000);
+    com_connect_a->setStartValue(0); com_reload_a->setStartValue(0); com_select_a->setStartValue(0);
+    com_connect_a->setEndValue(1); com_reload_a->setEndValue(1); com_select_a->setEndValue(1);
+    ui->com_connect->show(); ui->com_reload->show(); ui->com_select->show();
+    com_connect_a->start(QPropertyAnimation::DeleteWhenStopped); com_reload_a->start(QPropertyAnimation::DeleteWhenStopped); com_select_a->start(QPropertyAnimation::DeleteWhenStopped);
 
     // Init timer
     global_timer = new QTimer(this);

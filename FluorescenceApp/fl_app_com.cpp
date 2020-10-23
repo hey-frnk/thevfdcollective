@@ -647,13 +647,9 @@ QString fl_app_com::receive_and_extract_data(int wait_timeout)
 
 QByteArray fl_app_com::receive_raw(int wait_timeout)
 {
-    if (serial_port.waitForReadyRead(wait_timeout)) {
-        // read request
-        QByteArray request_data = serial_port.readAll();
-        while (serial_port.waitForReadyRead(10)) request_data += serial_port.readAll();
-        return request_data;
-    } else {
-        return QByteArray("");
-    }
+    serial_port.waitForReadyRead(wait_timeout);
+    QByteArray request_data = serial_port.readAll();
+    while (serial_port.waitForReadyRead(100)) request_data.append(serial_port.readAll());
     serial_port.clear();
+    return request_data;
 }

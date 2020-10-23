@@ -5,6 +5,8 @@
 
 int main(int argc, char *argv[])
 {
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
     QApplication a(argc, argv);
     qDebug() << QFontDatabase::addApplicationFont(QStringLiteral(":/Resources/RalewayBlack.ttf"));
     qDebug() << QFontDatabase::addApplicationFont(QStringLiteral(":/Resources/RalewayBold.ttf"));
