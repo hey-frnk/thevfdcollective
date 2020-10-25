@@ -4,5 +4,5 @@ dfu_util_macos/dfu-suffix
 dfu_util_macos/dfu-util
 dfu_util_win64/dfu-prefix.exe
 dfu_util_win64/dfu-suffix.exe
-dfu_util_win64/dfu-util-static.exe
+dfu_util_win64/dfu-util.exe
 dfu_util_win64/libusb-1.0.dll
