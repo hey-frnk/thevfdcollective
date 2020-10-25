@@ -45,7 +45,7 @@ public:
     QString transfer_time_date(vfdco_time_t t, vfdco_date_t d); // Legacy: Fully compatible
 
     void transfer_brightness(uint8_t disp_or_led, uint8_t dim_factor); // Legacy: Unsupported
-    void transfer_night_shift(vfdco_time_t start, vfdco_time_t stop); // Legacy: Unsupported
+    void transfer_night_shift(vfdco_time_t start, vfdco_time_t stop, uint8_t en); // Legacy: Unsupported
     void legacy_transfer_night_shift(vfdco_time_t start, vfdco_time_t stop, uint8_t en1, uint8_t en2); // Legacy: Only
 
     void transfer_welcome_set(uint8_t *message); // Legacy: Fully compatible

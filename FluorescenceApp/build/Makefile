@@ -771,6 +771,7 @@ qrc_qmake_qmake_immediate.cpp: qmake_qmake_immediate.qrc \
 		../Resources/rainbow_alt.png \
 		../Resources/red2blue1.png \
 		../Resources/hsl_wheel.png \
+		../Resources/stop.png \
 		../Resources/menu_inv.png
 	/Applications/Qt/5.14.1/clang_64/bin/rcc -name qmake_qmake_immediate qmake_qmake_immediate.qrc -o qrc_qmake_qmake_immediate.cpp
 

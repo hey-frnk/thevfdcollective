@@ -1,10 +1,15 @@
-/*
- * Being part of something special makes you special
- *
- * Created winter 2020
- * Author: Copyright (C) The VFD Collective, Frank Zheng
- *
- */
+/**
+  ******************************************************************************
+  * @file     vfdco_iv11.c
+  * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
+  * @version  V1.0
+  * @date     24-October-2020
+  * @brief    This file contains definitions for communication functions to an
+  *           array of IV-11 vfd displays
+  ******************************************************************************
+  * @toc      Table of contents, enter to navigate:
+  ******************************************************************************
+ **/
 
 #include "stm32l4xx_hal.h"
 #include <string.h>

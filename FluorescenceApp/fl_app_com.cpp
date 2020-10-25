@@ -197,7 +197,7 @@ void fl_app_com::transfer_brightness(uint8_t disp_or_led, uint8_t dim_factor)
     transfer();
 }
 
-void fl_app_com::transfer_night_shift(vfdco_time_t start, vfdco_time_t stop)
+void fl_app_com::transfer_night_shift(vfdco_time_t start, vfdco_time_t stop, uint8_t en)
 {
     clear_buffer();
     set_command_byte(0x22);
@@ -205,6 +205,7 @@ void fl_app_com::transfer_night_shift(vfdco_time_t start, vfdco_time_t stop)
     buf_tx[COM_PROTOCOL_DATA_OFFSET + 1] = start.m;
     buf_tx[COM_PROTOCOL_DATA_OFFSET + 2] = stop.h;
     buf_tx[COM_PROTOCOL_DATA_OFFSET + 3] = stop.m;
+    buf_tx[COM_PROTOCOL_DATA_OFFSET + 4] = en;
     transfer();
 }
 

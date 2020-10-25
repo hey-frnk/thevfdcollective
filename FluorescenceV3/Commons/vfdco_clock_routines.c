@@ -33,7 +33,13 @@ SOFTWARE.*/
   *           Designed to be used with Fluorescence by The VFD Collective
   ******************************************************************************
   * @tableofcontents Table of contents, enter to navigate:
-  * TODO
+  * SECTION_SUPPORTING_FUNCTIONS
+  * SECTION_GLOBAL_INITIALIZER
+  * SECTION_PERIPHERAL_INITIALIZERS
+  * SECTION_GLOBAL_ROUTINE
+  * SECTION_PERIPHERAL_ROUTINES
+  * SECTION_SETTING_FUNCTIONS
+  * SECTION_AUTOMATED_GENERATION
   ******************************************************************************
  **/
 
@@ -227,7 +233,7 @@ inline void vfdco_clock_routine() {
 }
 
 /** Begin of:
-  * @tableofcontents SECTION_PERIPHRAL_ROUTINES
+  * @tableofcontents SECTION_PERIPHERAL_ROUTINES
  **/
 // Human interface device (Buttons) routine
 inline void vfdco_clock_hid_routine() {
@@ -259,7 +265,7 @@ inline void vfdco_clock_power_routine() {
       // Look for implicit wake trigger
       if(global_time.h == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h]) { // if statement reduction
         if(global_time.m == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m]) {
-          if(global_time.s < 3) {                   // Safe switching time span. Bug (which is ok): Waking when s < 3!
+          if(global_time.s < 3) { // Safe switching time span. Bug (which is ok): Waking when s < 3!
             // Implicit wake: Restore previos brightness values
             vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
             vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
@@ -279,8 +285,8 @@ inline void vfdco_clock_power_routine() {
       // Look for enable trigger
       if(global_time.h == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h]) { // if statement reduction
         if(global_time.m == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m]) {
-          if(global_time.s < 3) {                   // Safe switching time span. Bug (which is ok): Waking when s < 3!
-            // Implicit wake: Restore previos brightness values
+          if(global_time.s < 3) { // Safe switching time span. Bug (which is ok): Sleeping when s < 3!
+            // Implicit set: Enter night shift. The previous brightness is already in SERIALIZABLE_CLOCK_ROUTINE_arr
             vfdco_display_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
             vfdco_clr_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
             global_night_shift_state = NIGHT_SHIFT_ON;
@@ -439,7 +445,7 @@ inline void vfdco_clock_com_routine() {
 }
 
 /** Begin of:
-  * @tableofcontents SECTION_SETTING FUNCTIONS
+  * @tableofcontents SECTION_SETTING_FUNCTIONS
  **/
 void _vfdco_clock_settings_default_internal();
 void vfdco_clock_settings_default(uint8_t silent) {
@@ -475,7 +481,7 @@ void vfdco_clock_settings_save(uint8_t silent) {
 
 /** Begin of:
   * @tableofcontents SECTION_SUPPORTING_FUNCTIONS
-  * @brief Prototypes. Implementation see very end
+  * @brief Implementation
  **/
 static inline void vfdco_welcome(char *message, uint32_t color) {
   uint8_t spaces = 0; // Empty spaces
@@ -785,6 +791,22 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
       vfdco_display_render_message(Messages_Routine_Night, 0, CONFIG_MESSAGE_LONG);
       vfdco_display_render_message(Messages_Routine_Shift, 0, CONFIG_MESSAGE_LONG);
       vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_LONG);
+      // Explicit set: If incoming command detects that time is in night shift range (instant_on), turn on NSH immediately
+      if(input_buffer[COM_PROTOCOL_DATA_OFFSET + 4]) {
+        vfdco_display_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
+        vfdco_clr_set_dim_factor(CONFIG_BRIGHTNESS_MIN);
+        global_night_shift_state = NIGHT_SHIFT_ON;
+      }
+      // Explicit wake: If incoming command disables night shift explicitly, turn off NSH immediately
+      if(( (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_h] == 0) &&
+        (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_start_m] == 0) &&
+        (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_h] == 0)   &&
+        (SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_night_shift_end_m] == 0)
+      )) { // If night shift is being turned off, do that explicitly here
+        vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
+        vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
+        global_night_shift_state = NIGHT_SHIFT_OFF;
+      }
     }
 
     // If welcome message set is detected
@@ -857,6 +879,10 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
   else {}
 }
 
+/** Begin of:
+  * @tableofcontents SECTION_AUTOMATED_GENERATION
+  * @brief Implementation
+ **/
 // ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE, only change in designated section in vfdco_clock_routines.h! ########
 // Creates setting array for each saved class
 #define CREATE_SERIALIZED_ARR(_globalindex, _size, _enum_map, _serializable_identifier) \

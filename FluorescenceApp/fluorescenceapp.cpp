@@ -729,7 +729,7 @@ void FluorescenceApp::on_settings_td_set_clicked()
     uint8_t time_format = ui->settings_td_timemode->currentIndex();
     uint8_t date_format = ui->settings_td_datemode->currentIndex();
     global_com_instance->transfer_gui_set(0, time_format);
-    QThread::msleep(100);
+    QThread::msleep(25);
     global_com_instance->transfer_gui_set(1, date_format);
 }
 
@@ -739,7 +739,7 @@ void FluorescenceApp::on_settings_bri_set_clicked()
     uint8_t brightness_display = ui->settings_bri_disp->currentIndex() << 1;
     uint8_t brightness_led = ui->settings_bri_led->currentIndex() << 1;
     global_com_instance->transfer_brightness(0, brightness_display);
-    QThread::msleep(100);
+    QThread::msleep(25);
     global_com_instance->transfer_brightness(1, brightness_led);
 }
 
@@ -783,19 +783,45 @@ void FluorescenceApp::on_settings_nsh_enable_stateChanged(int arg1)
 
 void FluorescenceApp::on_settings_nsh_set_clicked()
 {
-    vfdco_time_t t_start;
-    t_start.h = (uint8_t)ui->settings_nsh_start->time().hour();
-    t_start.m = (uint8_t)ui->settings_nsh_start->time().minute();
-    t_start.s = 0;
-    vfdco_time_t t_stop;
-    t_stop.h = (uint8_t)ui->settings_nsh_stop->time().hour();
-    t_stop.m = (uint8_t)ui->settings_nsh_stop->time().minute();
-    t_stop.s = 0;
-    global_com_instance->transfer_night_shift(t_start, t_stop);
+    if(ui->settings_nsh_enable->isChecked()) {
+        QDateTime current_datetime = QDateTime::currentDateTime();
+        QDateTime t_in_start = ui->settings_nsh_start->dateTime();
+        QDateTime t_in_stop = ui->settings_nsh_stop->dateTime();
+        // Take time from input, but reference date to current date
+        t_in_start.setDate(current_datetime.date()); t_in_stop.setDate(current_datetime.date());
+        t_in_stop = t_in_stop.addDays(1); // The next day
+        auto span_to_start = t_in_start.msecsTo(current_datetime);
+        auto span_to_stop = t_in_stop.msecsTo(current_datetime);
+
+        vfdco_time_t t_start;
+        t_start.h = (uint8_t)t_in_start.time().hour();
+        t_start.m = (uint8_t)t_in_start.time().minute();
+        t_start.s = 0;
+        vfdco_time_t t_stop;
+        t_stop.h = (uint8_t)t_in_stop.time().hour();
+        t_stop.m = (uint8_t)t_in_stop.time().minute();
+        t_stop.s = 0;
+
+        // Check if NSH has to be set explicitly
+        if(span_to_start >= 0 && span_to_stop <= 0) {
+            // If we are supposed to be in NSH already, do it
+            global_com_instance->transfer_night_shift(t_start, t_stop, 1);
+        } else {
+            // Otherwise just set
+            global_com_instance->transfer_night_shift(t_start, t_stop, 0);
+        }
+    } else {
+        vfdco_time_t t_start;
+        t_start.h = 0; t_start.m = 0; t_start.s = 0;
+        vfdco_time_t t_stop;
+        t_stop.h = 0; t_stop.m = 0; t_stop.s = 0;
+        global_com_instance->transfer_night_shift(t_start, t_stop, 0);
+    }
 }
 
 void FluorescenceApp::on_settings_settings_default_clicked() {
     global_com_instance->transfer_clock_control(COM_PROTOCOL_DEFAULT_REQ);
+    // Overwrite brightness to maximum
 }
 
 void FluorescenceApp::on_settings_settings_save_clicked()

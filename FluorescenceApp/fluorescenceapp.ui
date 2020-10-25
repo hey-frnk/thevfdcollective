@@ -142,7 +142,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/reload.png</pixmap>
+      <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/reload.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -241,7 +241,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/rainbow_alt.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/rainbow_alt.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_pastelrainbow">
@@ -260,7 +260,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/pastelrainbow.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/pastelrainbow.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_red2green">
@@ -279,7 +279,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/red2green_alt.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/red2green_alt.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_green2blue">
@@ -298,7 +298,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/green2blue.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/green2blue.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_red2blue">
@@ -317,7 +317,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="static_magenta">
@@ -2703,7 +2703,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/computer.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/computer.png</pixmap>
        </property>
       </widget>
       <widget class="ClickableLabel" name="lisync_sample">
@@ -2725,7 +2725,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/res0.jpg</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/res0.jpg</pixmap>
        </property>
       </widget>
       <widget class="QLabel" name="lisync_intro">
@@ -3970,7 +3970,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/cursor.png</pixmap>
+       <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/cursor.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -3989,7 +3989,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/hsl_wheel.png</pixmap>
+       <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/hsl_wheel.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -4252,9 +4252,9 @@ font: 12px &quot;RalewayMedium&quot;;</string>
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>70</y>
+       <y>50</y>
        <width>441</width>
-       <height>101</height>
+       <height>121</height>
       </rect>
      </property>
      <property name="font">
@@ -7194,7 +7194,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
       <height>41</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="menu_hide" stretch="1,17,0">
+    <layout class="QHBoxLayout" name="menu_hide" stretch="1,10,10,1">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -7234,7 +7234,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/menu.png</pixmap>
+        <pixmap resource="build/qmake_qmake_immediate.qrc">:/Resources/menu.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -7248,10 +7248,28 @@ font: 32px &quot;RalewayBold&quot;;</string>
 font: 18px &quot;RalewayBlack&quot;;</string>
        </property>
        <property name="text">
-        <string>Fluorescence App          </string>
+        <string>Fluorescence App   </string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="menu_about_2">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(16, 128, 128);
+font: 12px &quot;RalewayMedium&quot;;</string>
+       </property>
+       <property name="text">
+        <string>
+   T H E   V F D   C O L L E C T I V E</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+       <property name="margin">
+        <number>0</number>
        </property>
       </widget>
      </item>
@@ -7306,8 +7324,8 @@ font: 12px &quot;RalewayBold&quot;;</string>
     </property>
    </widget>
    <zorder>panel_timesync</zorder>
-   <zorder>panel_presets</zorder>
    <zorder>panel_settings</zorder>
+   <zorder>panel_presets</zorder>
    <zorder>panel_welcome</zorder>
    <zorder>panel_custom_colors</zorder>
    <zorder>com_label_connect</zorder>
@@ -7337,7 +7355,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc"/>
+  <include location="build/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>
