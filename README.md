@@ -1,5 +1,4 @@
 # Fluorescence by The VFD Collective
-The VFD Collective shared projects
 
 ![Fluorescence by The VFD Collective](/openvfd_firmware_resources/demo.jpg)
 

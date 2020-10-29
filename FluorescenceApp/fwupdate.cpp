@@ -265,7 +265,7 @@ void FWUpdate::UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     QFile file(filename);
     if (file.open(QIODevice::ReadWrite)) {
         QTextStream stream(&file);
-        stream << ui->updater_info_text->toPlainText() << endl;
+        stream << ui->updater_info_text->toPlainText() << Qt::endl;
     }
 
     if(exitCode == 0) {

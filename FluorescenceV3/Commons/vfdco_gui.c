@@ -84,7 +84,7 @@ static const uint8_t Messages_Brightness_Set_Idle_Dots[MESSAGES_BRIGHTNESS_SET_I
 #define MESSAGES_BRIGHTNESS_SET_NSH 6
 static const uint8_t Brightness_Set_Night_Shift_Times[MESSAGES_BRIGHTNESS_SET_NSH][2] = {
   { 0,  0}, // Off
-  {20,  5}, // Farmer: 8 PM -> 5 AM
+  {20,  5}, // Yogi: 8 PM -> 5 AM
   {21,  6}, // Early bird: 9 PM -> 6 AM
   {22,  8}, // Average joe: 10 PM -> 8 AM
   { 0,  9}, // Night owl: Midnight -> 9 AM
