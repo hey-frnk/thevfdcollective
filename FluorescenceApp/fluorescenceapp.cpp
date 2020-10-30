@@ -61,7 +61,6 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("Fluorescence App by The VFD Collective");
-    this->setFixedSize(this->size());
 
     ui->com_connect->hide(); ui->com_reload->hide(); ui->com_select->hide();
 

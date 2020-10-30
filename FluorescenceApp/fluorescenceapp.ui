@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>795</width>
+    <width>700</width>
     <height>2551</height>
    </rect>
   </property>
@@ -193,7 +193,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
            <number>10</number>
           </property>
           <property name="bottomMargin">
-           <number>20</number>
+           <number>30</number>
           </property>
           <item>
            <widget class="QPushButton" name="main_welcome">
@@ -379,7 +379,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
         <widget class="QWidget" name="control_parent" native="true">
          <property name="minimumSize">
           <size>
-           <width>450</width>
+           <width>400</width>
            <height>400</height>
           </size>
          </property>
@@ -403,7 +403,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
            <widget class="QScrollArea" name="panel_presets">
             <property name="minimumSize">
              <size>
-              <width>450</width>
+              <width>400</width>
               <height>0</height>
              </size>
             </property>
@@ -421,7 +421,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>545</width>
+               <width>450</width>
                <height>375</height>
               </rect>
              </property>
@@ -453,7 +453,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
                  <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
                 </property>
                 <property name="currentIndex">
-                 <number>3</number>
+                 <number>1</number>
                 </property>
                 <widget class="QWidget" name="tab_presets_static">
                  <attribute name="title">
@@ -491,8 +491,8 @@ font: 32px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>515</width>
-                       <height>1059</height>
+                       <width>420</width>
+                       <height>1094</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_19">
@@ -500,16 +500,16 @@ font: 32px &quot;RalewayBold&quot;;</string>
                        <number>30</number>
                       </property>
                       <property name="leftMargin">
-                       <number>0</number>
+                       <number>20</number>
                       </property>
                       <property name="topMargin">
-                       <number>15</number>
+                       <number>20</number>
                       </property>
                       <property name="rightMargin">
-                       <number>0</number>
+                       <number>20</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>30</number>
+                       <number>60</number>
                       </property>
                       <item>
                        <widget class="QLabel" name="static_intro">
@@ -936,9 +936,9 @@ color: rgb(83, 27, 147);</string>
                      <property name="geometry">
                       <rect>
                        <x>0</x>
-                       <y>0</y>
-                       <width>539</width>
-                       <height>1848</height>
+                       <y>-1254</y>
+                       <width>444</width>
+                       <height>1878</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -955,7 +955,7 @@ color: rgb(83, 27, 147);</string>
                        <number>20</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>30</number>
+                       <number>60</number>
                       </property>
                       <item>
                        <widget class="QWidget" name="panel_presets_control_grid" native="true">
@@ -2824,19 +2824,25 @@ font: 12px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>499</width>
-                       <height>430</height>
+                       <width>404</width>
+                       <height>475</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_7">
                       <property name="spacing">
                        <number>10</number>
                       </property>
+                      <property name="leftMargin">
+                       <number>20</number>
+                      </property>
                       <property name="topMargin">
                        <number>15</number>
                       </property>
-                      <property name="bottomMargin">
+                      <property name="rightMargin">
                        <number>20</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>50</number>
                       </property>
                       <item>
                        <widget class="QLabel" name="lisync_intro">
@@ -3062,20 +3068,57 @@ font: 12px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>499</width>
-                       <height>331</height>
+                       <width>404</width>
+                       <height>469</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_12">
+                      <property name="leftMargin">
+                       <number>20</number>
+                      </property>
                       <property name="topMargin">
-                       <number>10</number>
+                       <number>20</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>20</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>30</number>
+                       <number>50</number>
                       </property>
-                      <property name="spacing">
+                      <property name="horizontalSpacing">
                        <number>10</number>
                       </property>
+                      <property name="verticalSpacing">
+                       <number>20</number>
+                      </property>
+                      <item row="6" column="0" colspan="2">
+                       <widget class="QLabel" name="shuffle_intro2">
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(128, 0, 128);font: 18px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>and pick another one every...</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
                       <item row="0" column="0" colspan="2">
                        <widget class="QLabel" name="shuffle_intro1">
                         <property name="sizePolicy">
@@ -3107,6 +3150,97 @@ font: 12px &quot;RalewayBold&quot;;</string>
                         </property>
                         <property name="alignment">
                          <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_chase">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Chase Fade</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="5" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_rnb">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Rainbow Fade</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_static">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Static</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_spectrum">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Spectrum Fade</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
                         </property>
                        </widget>
                       </item>
@@ -3145,209 +3279,14 @@ randomly out of:</string>
                         </property>
                        </widget>
                       </item>
-                      <item row="2" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_static">
-                        <property name="enabled">
-                         <bool>false</bool>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Static</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_chase">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Chase Fade</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_bliss">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Moments of Bliss</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_tcode">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Time Code</string>
-                        </property>
-                        <property name="checked">
-                         <bool>false</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="4" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_spectrum">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Spectrum Fade</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="4" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_music">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Music</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="5" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_rnb">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Rainbow Fade</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="5" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_cop">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Police Lights</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="6" column="0" colspan="2">
-                       <widget class="QLabel" name="shuffle_intro2">
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>40</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(128, 0, 128);font: 18px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>and pick another one every...</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="7" column="0" colspan="2">
                        <widget class="QComboBox" name="shuffle_speed">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>60</height>
+                         </size>
+                        </property>
                         <property name="font">
                          <font>
                           <family>RalewayBold</family>
@@ -3388,6 +3327,88 @@ randomly out of:</string>
                           <string>hour</string>
                          </property>
                         </item>
+                       </widget>
+                      </item>
+                      <item row="4" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_music">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Music</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_tcode">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Time Code</string>
+                        </property>
+                        <property name="checked">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="5" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_cop">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Police Lights</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_bliss">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <weight>50</weight>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Moments of Bliss</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
                        </widget>
                       </item>
                       <item row="8" column="0" colspan="2">
@@ -3433,7 +3454,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
            <widget class="QScrollArea" name="panel_custom_colors">
             <property name="minimumSize">
              <size>
-              <width>450</width>
+              <width>400</width>
               <height>0</height>
              </size>
             </property>
@@ -3450,14 +3471,26 @@ font: 26px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>545</width>
-               <height>917</height>
+               <y>-31</y>
+               <width>450</width>
+               <height>963</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
               <property name="spacing">
                <number>20</number>
+              </property>
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>20</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>50</number>
               </property>
               <item>
                <widget class="QLabel" name="custom_intro">
@@ -4329,7 +4362,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
            <widget class="QScrollArea" name="panel_lsettings">
             <property name="minimumSize">
              <size>
-              <width>450</width>
+              <width>400</width>
               <height>0</height>
              </size>
             </property>
@@ -4347,8 +4380,8 @@ font: 12px &quot;RalewayMedium&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>545</width>
-               <height>739</height>
+               <width>450</width>
+               <height>759</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -4356,16 +4389,16 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                <number>10</number>
               </property>
               <property name="leftMargin">
-               <number>20</number>
+               <number>30</number>
               </property>
               <property name="topMargin">
                <number>30</number>
               </property>
               <property name="rightMargin">
-               <number>20</number>
+               <number>30</number>
               </property>
               <property name="bottomMargin">
-               <number>30</number>
+               <number>50</number>
               </property>
               <item>
                <widget class="QGroupBox" name="lsettings_td">
@@ -4968,7 +5001,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
            <widget class="QScrollArea" name="panel_message">
             <property name="minimumSize">
              <size>
-              <width>450</width>
+              <width>400</width>
               <height>0</height>
              </size>
             </property>
@@ -4988,9 +5021,9 @@ font: 12px &quot;RalewayBold&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>545</width>
-               <height>642</height>
+               <y>-362</y>
+               <width>450</width>
+               <height>737</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
@@ -4998,16 +5031,16 @@ font: 12px &quot;RalewayBold&quot;;</string>
                <number>20</number>
               </property>
               <property name="leftMargin">
-               <number>20</number>
+               <number>30</number>
               </property>
               <property name="topMargin">
                <number>30</number>
               </property>
               <property name="rightMargin">
-               <number>20</number>
+               <number>30</number>
               </property>
               <property name="bottomMargin">
-               <number>30</number>
+               <number>50</number>
               </property>
               <item>
                <widget class="QLabel" name="message_intro">
@@ -5112,7 +5145,7 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <string>24 letters for you. The message will be split in max. 4 parts shown separately</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 <set>Qt::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -5136,6 +5169,9 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                 <property name="text">
                  <string>Write in CAPS, and only use those the display can display (see next point)</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                 <property name="wordWrap">
                  <bool>true</bool>
                 </property>
@@ -5157,6 +5193,9 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                 </property>
                 <property name="text">
                  <string>Allowed: A B C D E F G H I J L N O P Q R S T U V Y, 0, spacebar and minus (-)</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -5182,6 +5221,9 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                 </property>
                 <property name="scaledContents">
                  <bool>false</bool>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -5298,7 +5340,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
            <widget class="QScrollArea" name="panel_settings">
             <property name="minimumSize">
              <size>
-              <width>450</width>
+              <width>400</width>
               <height>0</height>
              </size>
             </property>
@@ -5315,9 +5357,9 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>545</width>
-               <height>1140</height>
+               <y>-795</y>
+               <width>450</width>
+               <height>1170</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -5325,16 +5367,16 @@ font: 36px &quot;RalewayBlack&quot;;</string>
                <number>20</number>
               </property>
               <property name="leftMargin">
-               <number>20</number>
+               <number>30</number>
               </property>
               <property name="topMargin">
                <number>30</number>
               </property>
               <property name="rightMargin">
-               <number>20</number>
+               <number>30</number>
               </property>
               <property name="bottomMargin">
-               <number>30</number>
+               <number>60</number>
               </property>
               <item>
                <widget class="QGroupBox" name="settings_td">
@@ -6314,7 +6356,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="text">
-                    <string>3.0</string>
+                    <string>3.0, Build 10/30/2020 for macOS</string>
                    </property>
                   </widget>
                  </item>
@@ -6408,7 +6450,7 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
            <widget class="QScrollArea" name="panel_timesync">
             <property name="minimumSize">
              <size>
-              <width>450</width>
+              <width>400</width>
               <height>0</height>
              </size>
             </property>
@@ -6426,16 +6468,22 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>545</width>
-               <height>426</height>
+               <width>450</width>
+               <height>472</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_12" stretch="3,2,2,1,3,1">
               <property name="leftMargin">
                <number>30</number>
               </property>
+              <property name="topMargin">
+               <number>20</number>
+              </property>
               <property name="rightMargin">
                <number>30</number>
+              </property>
+              <property name="bottomMargin">
+               <number>50</number>
               </property>
               <item>
                <widget class="ClickableLabel" name="timesync_time_label">
@@ -6854,7 +6902,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
            <widget class="QScrollArea" name="panel_welcome">
             <property name="minimumSize">
              <size>
-              <width>450</width>
+              <width>400</width>
               <height>0</height>
              </size>
             </property>
@@ -6872,8 +6920,8 @@ font: 36px &quot;RalewayBlack&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>545</width>
-               <height>251</height>
+               <width>450</width>
+               <height>291</height>
               </rect>
              </property>
              <property name="sizePolicy">
@@ -6882,7 +6930,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,3,3,3,3">
+             <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,3,3,3,4">
               <property name="spacing">
                <number>20</number>
               </property>
@@ -6896,7 +6944,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
                <number>40</number>
               </property>
               <property name="bottomMargin">
-               <number>20</number>
+               <number>60</number>
               </property>
               <item>
                <widget class="QWidget" name="widget_2" native="true"/>
@@ -7054,6 +7102,13 @@ font: 36px &quot;RalewayBlack&quot;;</string>
            </widget>
           </item>
          </layout>
+         <zorder>panel_presets</zorder>
+         <zorder>panel_custom_colors</zorder>
+         <zorder>panel_lsettings</zorder>
+         <zorder>panel_settings</zorder>
+         <zorder>panel_timesync</zorder>
+         <zorder>panel_welcome</zorder>
+         <zorder>panel_message</zorder>
         </widget>
        </item>
       </layout>

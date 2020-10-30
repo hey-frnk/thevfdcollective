@@ -205,18 +205,18 @@ public:
     QScrollArea *scroll_shuffle;
     QWidget *tab_shuffle_content;
     QGridLayout *gridLayout_12;
-    QLabel *shuffle_intro1;
-    QLabel *shuffle_intro3;
-    QCheckBox *shuffle_en_static;
-    QCheckBox *shuffle_en_chase;
-    QCheckBox *shuffle_en_bliss;
-    QCheckBox *shuffle_en_tcode;
-    QCheckBox *shuffle_en_spectrum;
-    QCheckBox *shuffle_en_music;
-    QCheckBox *shuffle_en_rnb;
-    QCheckBox *shuffle_en_cop;
     QLabel *shuffle_intro2;
+    QLabel *shuffle_intro1;
+    QCheckBox *shuffle_en_chase;
+    QCheckBox *shuffle_en_rnb;
+    QCheckBox *shuffle_en_static;
+    QCheckBox *shuffle_en_spectrum;
+    QLabel *shuffle_intro3;
     QComboBox *shuffle_speed;
+    QCheckBox *shuffle_en_music;
+    QCheckBox *shuffle_en_tcode;
+    QCheckBox *shuffle_en_cop;
+    QCheckBox *shuffle_en_bliss;
     QPushButton *shuffle_set;
     QScrollArea *panel_custom_colors;
     QWidget *panel_custom_colors_content;
@@ -410,7 +410,7 @@ public:
     {
         if (FluorescenceApp->objectName().isEmpty())
             FluorescenceApp->setObjectName(QString::fromUtf8("FluorescenceApp"));
-        FluorescenceApp->resize(795, 2551);
+        FluorescenceApp->resize(700, 2551);
         QFont font;
         font.setFamily(QString::fromUtf8("Arial"));
         FluorescenceApp->setFont(font);
@@ -481,7 +481,7 @@ public:
         menu_vlayout = new QVBoxLayout(menu_controls_layout);
         menu_vlayout->setSpacing(0);
         menu_vlayout->setObjectName(QString::fromUtf8("menu_vlayout"));
-        menu_vlayout->setContentsMargins(10, 0, 10, 20);
+        menu_vlayout->setContentsMargins(10, 0, 10, 30);
         main_welcome = new QPushButton(menu_controls_layout);
         main_welcome->setObjectName(QString::fromUtf8("main_welcome"));
         QFont font1;
@@ -563,20 +563,20 @@ public:
 
         control_parent = new QWidget(parent_menu_control);
         control_parent->setObjectName(QString::fromUtf8("control_parent"));
-        control_parent->setMinimumSize(QSize(450, 400));
+        control_parent->setMinimumSize(QSize(400, 400));
         verticalLayout_17 = new QVBoxLayout(control_parent);
         verticalLayout_17->setSpacing(0);
         verticalLayout_17->setObjectName(QString::fromUtf8("verticalLayout_17"));
         verticalLayout_17->setContentsMargins(0, 0, 0, 0);
         panel_presets = new QScrollArea(control_parent);
         panel_presets->setObjectName(QString::fromUtf8("panel_presets"));
-        panel_presets->setMinimumSize(QSize(450, 0));
+        panel_presets->setMinimumSize(QSize(400, 0));
         panel_presets->setFrameShape(QFrame::NoFrame);
         panel_presets->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         panel_presets->setWidgetResizable(true);
         panel_presets_content = new QWidget();
         panel_presets_content->setObjectName(QString::fromUtf8("panel_presets_content"));
-        panel_presets_content->setGeometry(QRect(0, 0, 545, 375));
+        panel_presets_content->setGeometry(QRect(0, 0, 450, 375));
         verticalLayout_4 = new QVBoxLayout(panel_presets_content);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         verticalLayout_4->setContentsMargins(0, 0, 0, 0);
@@ -597,11 +597,11 @@ public:
         scroll_presets_static->setWidgetResizable(true);
         scroll_presets_static_content = new QWidget();
         scroll_presets_static_content->setObjectName(QString::fromUtf8("scroll_presets_static_content"));
-        scroll_presets_static_content->setGeometry(QRect(0, 0, 515, 1059));
+        scroll_presets_static_content->setGeometry(QRect(0, 0, 420, 1094));
         verticalLayout_19 = new QVBoxLayout(scroll_presets_static_content);
         verticalLayout_19->setSpacing(30);
         verticalLayout_19->setObjectName(QString::fromUtf8("verticalLayout_19"));
-        verticalLayout_19->setContentsMargins(0, 15, 0, 30);
+        verticalLayout_19->setContentsMargins(20, 20, 20, 60);
         static_intro = new QLabel(scroll_presets_static_content);
         static_intro->setObjectName(QString::fromUtf8("static_intro"));
         static_intro->setFont(font1);
@@ -774,11 +774,11 @@ public:
         scroll_presets_dynamic->setAlignment(Qt::AlignCenter);
         tab_presets_dynamic_content = new QWidget();
         tab_presets_dynamic_content->setObjectName(QString::fromUtf8("tab_presets_dynamic_content"));
-        tab_presets_dynamic_content->setGeometry(QRect(0, 0, 539, 1848));
+        tab_presets_dynamic_content->setGeometry(QRect(0, -1254, 444, 1878));
         verticalLayout_6 = new QVBoxLayout(tab_presets_dynamic_content);
         verticalLayout_6->setSpacing(10);
         verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
-        verticalLayout_6->setContentsMargins(20, 30, 20, 30);
+        verticalLayout_6->setContentsMargins(20, 30, 20, 60);
         panel_presets_control_grid = new QWidget(tab_presets_dynamic_content);
         panel_presets_control_grid->setObjectName(QString::fromUtf8("panel_presets_control_grid"));
         gridLayout_11 = new QGridLayout(panel_presets_control_grid);
@@ -1539,11 +1539,11 @@ public:
         scroll_moodsync->setWidgetResizable(true);
         tab_moodsync_content = new QWidget();
         tab_moodsync_content->setObjectName(QString::fromUtf8("tab_moodsync_content"));
-        tab_moodsync_content->setGeometry(QRect(0, 0, 499, 430));
+        tab_moodsync_content->setGeometry(QRect(0, 0, 404, 475));
         verticalLayout_7 = new QVBoxLayout(tab_moodsync_content);
         verticalLayout_7->setSpacing(10);
         verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
-        verticalLayout_7->setContentsMargins(-1, 15, -1, 20);
+        verticalLayout_7->setContentsMargins(20, 15, 20, 50);
         lisync_intro = new QLabel(tab_moodsync_content);
         lisync_intro->setObjectName(QString::fromUtf8("lisync_intro"));
         lisync_intro->setFont(font1);
@@ -1642,11 +1642,21 @@ public:
         scroll_shuffle->setWidgetResizable(true);
         tab_shuffle_content = new QWidget();
         tab_shuffle_content->setObjectName(QString::fromUtf8("tab_shuffle_content"));
-        tab_shuffle_content->setGeometry(QRect(0, 0, 499, 331));
+        tab_shuffle_content->setGeometry(QRect(0, 0, 404, 469));
         gridLayout_12 = new QGridLayout(tab_shuffle_content);
-        gridLayout_12->setSpacing(10);
         gridLayout_12->setObjectName(QString::fromUtf8("gridLayout_12"));
-        gridLayout_12->setContentsMargins(-1, 10, -1, 30);
+        gridLayout_12->setHorizontalSpacing(10);
+        gridLayout_12->setVerticalSpacing(20);
+        gridLayout_12->setContentsMargins(20, 20, 20, 50);
+        shuffle_intro2 = new QLabel(tab_shuffle_content);
+        shuffle_intro2->setObjectName(QString::fromUtf8("shuffle_intro2"));
+        shuffle_intro2->setMaximumSize(QSize(16777215, 40));
+        shuffle_intro2->setFont(font1);
+        shuffle_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);font: 18px \"RalewayBold\";"));
+        shuffle_intro2->setAlignment(Qt::AlignCenter);
+
+        gridLayout_12->addWidget(shuffle_intro2, 6, 0, 1, 2);
+
         shuffle_intro1 = new QLabel(tab_shuffle_content);
         shuffle_intro1->setObjectName(QString::fromUtf8("shuffle_intro1"));
         QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -1661,6 +1671,39 @@ public:
 
         gridLayout_12->addWidget(shuffle_intro1, 0, 0, 1, 2);
 
+        shuffle_en_chase = new QCheckBox(tab_shuffle_content);
+        shuffle_en_chase->setObjectName(QString::fromUtf8("shuffle_en_chase"));
+        shuffle_en_chase->setFont(font1);
+        shuffle_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
+        shuffle_en_chase->setChecked(true);
+
+        gridLayout_12->addWidget(shuffle_en_chase, 2, 1, 1, 1);
+
+        shuffle_en_rnb = new QCheckBox(tab_shuffle_content);
+        shuffle_en_rnb->setObjectName(QString::fromUtf8("shuffle_en_rnb"));
+        shuffle_en_rnb->setFont(font1);
+        shuffle_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
+        shuffle_en_rnb->setChecked(true);
+
+        gridLayout_12->addWidget(shuffle_en_rnb, 5, 0, 1, 1);
+
+        shuffle_en_static = new QCheckBox(tab_shuffle_content);
+        shuffle_en_static->setObjectName(QString::fromUtf8("shuffle_en_static"));
+        shuffle_en_static->setEnabled(false);
+        shuffle_en_static->setFont(font1);
+        shuffle_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
+        shuffle_en_static->setChecked(true);
+
+        gridLayout_12->addWidget(shuffle_en_static, 2, 0, 1, 1);
+
+        shuffle_en_spectrum = new QCheckBox(tab_shuffle_content);
+        shuffle_en_spectrum->setObjectName(QString::fromUtf8("shuffle_en_spectrum"));
+        shuffle_en_spectrum->setFont(font1);
+        shuffle_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
+        shuffle_en_spectrum->setChecked(true);
+
+        gridLayout_12->addWidget(shuffle_en_spectrum, 4, 0, 1, 1);
+
         shuffle_intro3 = new QLabel(tab_shuffle_content);
         shuffle_intro3->setObjectName(QString::fromUtf8("shuffle_intro3"));
         sizePolicy1.setHeightForWidth(shuffle_intro3->sizePolicy().hasHeightForWidth());
@@ -1672,30 +1715,26 @@ public:
 
         gridLayout_12->addWidget(shuffle_intro3, 1, 0, 1, 2);
 
-        shuffle_en_static = new QCheckBox(tab_shuffle_content);
-        shuffle_en_static->setObjectName(QString::fromUtf8("shuffle_en_static"));
-        shuffle_en_static->setEnabled(false);
-        shuffle_en_static->setFont(font1);
-        shuffle_en_static->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
-        shuffle_en_static->setChecked(true);
+        shuffle_speed = new QComboBox(tab_shuffle_content);
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->addItem(QString());
+        shuffle_speed->setObjectName(QString::fromUtf8("shuffle_speed"));
+        shuffle_speed->setMinimumSize(QSize(0, 60));
+        shuffle_speed->setFont(font1);
+        shuffle_speed->setStyleSheet(QString::fromUtf8("font: 18px \"RalewayBold\";"));
+        shuffle_speed->setFrame(false);
 
-        gridLayout_12->addWidget(shuffle_en_static, 2, 0, 1, 1);
+        gridLayout_12->addWidget(shuffle_speed, 7, 0, 1, 2);
 
-        shuffle_en_chase = new QCheckBox(tab_shuffle_content);
-        shuffle_en_chase->setObjectName(QString::fromUtf8("shuffle_en_chase"));
-        shuffle_en_chase->setFont(font1);
-        shuffle_en_chase->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
-        shuffle_en_chase->setChecked(true);
+        shuffle_en_music = new QCheckBox(tab_shuffle_content);
+        shuffle_en_music->setObjectName(QString::fromUtf8("shuffle_en_music"));
+        shuffle_en_music->setFont(font1);
+        shuffle_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
 
-        gridLayout_12->addWidget(shuffle_en_chase, 2, 1, 1, 1);
-
-        shuffle_en_bliss = new QCheckBox(tab_shuffle_content);
-        shuffle_en_bliss->setObjectName(QString::fromUtf8("shuffle_en_bliss"));
-        shuffle_en_bliss->setFont(font1);
-        shuffle_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
-        shuffle_en_bliss->setChecked(true);
-
-        gridLayout_12->addWidget(shuffle_en_bliss, 3, 0, 1, 1);
+        gridLayout_12->addWidget(shuffle_en_music, 4, 1, 1, 1);
 
         shuffle_en_tcode = new QCheckBox(tab_shuffle_content);
         shuffle_en_tcode->setObjectName(QString::fromUtf8("shuffle_en_tcode"));
@@ -1705,29 +1744,6 @@ public:
 
         gridLayout_12->addWidget(shuffle_en_tcode, 3, 1, 1, 1);
 
-        shuffle_en_spectrum = new QCheckBox(tab_shuffle_content);
-        shuffle_en_spectrum->setObjectName(QString::fromUtf8("shuffle_en_spectrum"));
-        shuffle_en_spectrum->setFont(font1);
-        shuffle_en_spectrum->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
-        shuffle_en_spectrum->setChecked(true);
-
-        gridLayout_12->addWidget(shuffle_en_spectrum, 4, 0, 1, 1);
-
-        shuffle_en_music = new QCheckBox(tab_shuffle_content);
-        shuffle_en_music->setObjectName(QString::fromUtf8("shuffle_en_music"));
-        shuffle_en_music->setFont(font1);
-        shuffle_en_music->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
-
-        gridLayout_12->addWidget(shuffle_en_music, 4, 1, 1, 1);
-
-        shuffle_en_rnb = new QCheckBox(tab_shuffle_content);
-        shuffle_en_rnb->setObjectName(QString::fromUtf8("shuffle_en_rnb"));
-        shuffle_en_rnb->setFont(font1);
-        shuffle_en_rnb->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
-        shuffle_en_rnb->setChecked(true);
-
-        gridLayout_12->addWidget(shuffle_en_rnb, 5, 0, 1, 1);
-
         shuffle_en_cop = new QCheckBox(tab_shuffle_content);
         shuffle_en_cop->setObjectName(QString::fromUtf8("shuffle_en_cop"));
         shuffle_en_cop->setFont(font1);
@@ -1735,27 +1751,13 @@ public:
 
         gridLayout_12->addWidget(shuffle_en_cop, 5, 1, 1, 1);
 
-        shuffle_intro2 = new QLabel(tab_shuffle_content);
-        shuffle_intro2->setObjectName(QString::fromUtf8("shuffle_intro2"));
-        shuffle_intro2->setMaximumSize(QSize(16777215, 40));
-        shuffle_intro2->setFont(font1);
-        shuffle_intro2->setStyleSheet(QString::fromUtf8("color: rgb(128, 0, 128);font: 18px \"RalewayBold\";"));
-        shuffle_intro2->setAlignment(Qt::AlignCenter);
+        shuffle_en_bliss = new QCheckBox(tab_shuffle_content);
+        shuffle_en_bliss->setObjectName(QString::fromUtf8("shuffle_en_bliss"));
+        shuffle_en_bliss->setFont(font1);
+        shuffle_en_bliss->setStyleSheet(QString::fromUtf8("color: rgb(16, 128, 128);font: 12px \"RalewayBold\";"));
+        shuffle_en_bliss->setChecked(true);
 
-        gridLayout_12->addWidget(shuffle_intro2, 6, 0, 1, 2);
-
-        shuffle_speed = new QComboBox(tab_shuffle_content);
-        shuffle_speed->addItem(QString());
-        shuffle_speed->addItem(QString());
-        shuffle_speed->addItem(QString());
-        shuffle_speed->addItem(QString());
-        shuffle_speed->addItem(QString());
-        shuffle_speed->setObjectName(QString::fromUtf8("shuffle_speed"));
-        shuffle_speed->setFont(font1);
-        shuffle_speed->setStyleSheet(QString::fromUtf8("font: 18px \"RalewayBold\";"));
-        shuffle_speed->setFrame(false);
-
-        gridLayout_12->addWidget(shuffle_speed, 7, 0, 1, 2);
+        gridLayout_12->addWidget(shuffle_en_bliss, 3, 0, 1, 1);
 
         shuffle_set = new QPushButton(tab_shuffle_content);
         shuffle_set->setObjectName(QString::fromUtf8("shuffle_set"));
@@ -1781,16 +1783,17 @@ public:
 
         panel_custom_colors = new QScrollArea(control_parent);
         panel_custom_colors->setObjectName(QString::fromUtf8("panel_custom_colors"));
-        panel_custom_colors->setMinimumSize(QSize(450, 0));
+        panel_custom_colors->setMinimumSize(QSize(400, 0));
         panel_custom_colors->setFrameShape(QFrame::NoFrame);
         panel_custom_colors->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         panel_custom_colors->setWidgetResizable(true);
         panel_custom_colors_content = new QWidget();
         panel_custom_colors_content->setObjectName(QString::fromUtf8("panel_custom_colors_content"));
-        panel_custom_colors_content->setGeometry(QRect(0, 0, 545, 917));
+        panel_custom_colors_content->setGeometry(QRect(0, -31, 450, 963));
         verticalLayout_3 = new QVBoxLayout(panel_custom_colors_content);
         verticalLayout_3->setSpacing(20);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(20, 20, 20, 50);
         custom_intro = new QLabel(panel_custom_colors_content);
         custom_intro->setObjectName(QString::fromUtf8("custom_intro"));
         QFont font3;
@@ -2178,17 +2181,17 @@ public:
 
         panel_lsettings = new QScrollArea(control_parent);
         panel_lsettings->setObjectName(QString::fromUtf8("panel_lsettings"));
-        panel_lsettings->setMinimumSize(QSize(450, 0));
+        panel_lsettings->setMinimumSize(QSize(400, 0));
         panel_lsettings->setFrameShape(QFrame::NoFrame);
         panel_lsettings->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         panel_lsettings->setWidgetResizable(true);
         panel_lsettings_content = new QWidget();
         panel_lsettings_content->setObjectName(QString::fromUtf8("panel_lsettings_content"));
-        panel_lsettings_content->setGeometry(QRect(0, 0, 545, 739));
+        panel_lsettings_content->setGeometry(QRect(0, 0, 450, 759));
         verticalLayout_16 = new QVBoxLayout(panel_lsettings_content);
         verticalLayout_16->setSpacing(10);
         verticalLayout_16->setObjectName(QString::fromUtf8("verticalLayout_16"));
-        verticalLayout_16->setContentsMargins(20, 30, 20, 30);
+        verticalLayout_16->setContentsMargins(30, 30, 30, 50);
         lsettings_td = new QGroupBox(panel_lsettings_content);
         lsettings_td->setObjectName(QString::fromUtf8("lsettings_td"));
         lsettings_td->setFont(font1);
@@ -2427,18 +2430,18 @@ public:
 
         panel_message = new QScrollArea(control_parent);
         panel_message->setObjectName(QString::fromUtf8("panel_message"));
-        panel_message->setMinimumSize(QSize(450, 0));
+        panel_message->setMinimumSize(QSize(400, 0));
         panel_message->setFrameShape(QFrame::NoFrame);
         panel_message->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         panel_message->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         panel_message->setWidgetResizable(true);
         panel_message_content = new QWidget();
         panel_message_content->setObjectName(QString::fromUtf8("panel_message_content"));
-        panel_message_content->setGeometry(QRect(0, 0, 545, 642));
+        panel_message_content->setGeometry(QRect(0, -362, 450, 737));
         verticalLayout = new QVBoxLayout(panel_message_content);
         verticalLayout->setSpacing(20);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(20, 30, 20, 30);
+        verticalLayout->setContentsMargins(30, 30, 30, 50);
         message_intro = new QLabel(panel_message_content);
         message_intro->setObjectName(QString::fromUtf8("message_intro"));
         message_intro->setFont(font3);
@@ -2473,7 +2476,7 @@ public:
         message_intro_3->setObjectName(QString::fromUtf8("message_intro_3"));
         message_intro_3->setFont(font3);
         message_intro_3->setStyleSheet(QString::fromUtf8("font: 12px \"RalewayMedium\";"));
-        message_intro_3->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        message_intro_3->setAlignment(Qt::AlignCenter);
         message_intro_3->setWordWrap(true);
 
         verticalLayout->addWidget(message_intro_3);
@@ -2482,6 +2485,7 @@ public:
         message_intro_4->setObjectName(QString::fromUtf8("message_intro_4"));
         message_intro_4->setFont(font3);
         message_intro_4->setStyleSheet(QString::fromUtf8("font: 12px \"RalewayMedium\";"));
+        message_intro_4->setAlignment(Qt::AlignCenter);
         message_intro_4->setWordWrap(true);
 
         verticalLayout->addWidget(message_intro_4);
@@ -2490,6 +2494,7 @@ public:
         message_intro_5->setObjectName(QString::fromUtf8("message_intro_5"));
         message_intro_5->setFont(font3);
         message_intro_5->setStyleSheet(QString::fromUtf8("font: 12px \"RalewayMedium\";"));
+        message_intro_5->setAlignment(Qt::AlignCenter);
         message_intro_5->setWordWrap(true);
 
         verticalLayout->addWidget(message_intro_5);
@@ -2499,6 +2504,7 @@ public:
         message_intro_6->setFont(font3);
         message_intro_6->setStyleSheet(QString::fromUtf8("font: 12px \"RalewayMedium\";"));
         message_intro_6->setScaledContents(false);
+        message_intro_6->setAlignment(Qt::AlignCenter);
         message_intro_6->setWordWrap(true);
 
         verticalLayout->addWidget(message_intro_6);
@@ -2546,17 +2552,17 @@ public:
 
         panel_settings = new QScrollArea(control_parent);
         panel_settings->setObjectName(QString::fromUtf8("panel_settings"));
-        panel_settings->setMinimumSize(QSize(450, 0));
+        panel_settings->setMinimumSize(QSize(400, 0));
         panel_settings->setFrameShape(QFrame::NoFrame);
         panel_settings->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         panel_settings->setWidgetResizable(true);
         panel_settings_content = new QWidget();
         panel_settings_content->setObjectName(QString::fromUtf8("panel_settings_content"));
-        panel_settings_content->setGeometry(QRect(0, 0, 545, 1140));
+        panel_settings_content->setGeometry(QRect(0, -795, 450, 1170));
         verticalLayout_11 = new QVBoxLayout(panel_settings_content);
         verticalLayout_11->setSpacing(20);
         verticalLayout_11->setObjectName(QString::fromUtf8("verticalLayout_11"));
-        verticalLayout_11->setContentsMargins(20, 30, 20, 30);
+        verticalLayout_11->setContentsMargins(30, 30, 30, 60);
         settings_td = new QGroupBox(panel_settings_content);
         settings_td->setObjectName(QString::fromUtf8("settings_td"));
         settings_td->setFont(font1);
@@ -2975,16 +2981,16 @@ public:
 
         panel_timesync = new QScrollArea(control_parent);
         panel_timesync->setObjectName(QString::fromUtf8("panel_timesync"));
-        panel_timesync->setMinimumSize(QSize(450, 0));
+        panel_timesync->setMinimumSize(QSize(400, 0));
         panel_timesync->setFrameShape(QFrame::NoFrame);
         panel_timesync->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         panel_timesync->setWidgetResizable(true);
         panel_timesync_content = new QWidget();
         panel_timesync_content->setObjectName(QString::fromUtf8("panel_timesync_content"));
-        panel_timesync_content->setGeometry(QRect(0, 0, 545, 426));
+        panel_timesync_content->setGeometry(QRect(0, 0, 450, 472));
         verticalLayout_12 = new QVBoxLayout(panel_timesync_content);
         verticalLayout_12->setObjectName(QString::fromUtf8("verticalLayout_12"));
-        verticalLayout_12->setContentsMargins(30, -1, 30, -1);
+        verticalLayout_12->setContentsMargins(30, 20, 30, 50);
         timesync_time_label = new ClickableLabel(panel_timesync_content);
         timesync_time_label->setObjectName(QString::fromUtf8("timesync_time_label"));
         QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -3172,13 +3178,13 @@ public:
 
         panel_welcome = new QScrollArea(control_parent);
         panel_welcome->setObjectName(QString::fromUtf8("panel_welcome"));
-        panel_welcome->setMinimumSize(QSize(450, 0));
+        panel_welcome->setMinimumSize(QSize(400, 0));
         panel_welcome->setFrameShape(QFrame::NoFrame);
         panel_welcome->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         panel_welcome->setWidgetResizable(true);
         panel_welcome_content = new QWidget();
         panel_welcome_content->setObjectName(QString::fromUtf8("panel_welcome_content"));
-        panel_welcome_content->setGeometry(QRect(0, 0, 545, 251));
+        panel_welcome_content->setGeometry(QRect(0, 0, 450, 291));
         QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Minimum);
         sizePolicy5.setHorizontalStretch(0);
         sizePolicy5.setVerticalStretch(0);
@@ -3187,7 +3193,7 @@ public:
         verticalLayout_2 = new QVBoxLayout(panel_welcome_content);
         verticalLayout_2->setSpacing(20);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        verticalLayout_2->setContentsMargins(40, 20, 40, 20);
+        verticalLayout_2->setContentsMargins(40, 20, 40, 60);
         widget_2 = new QWidget(panel_welcome_content);
         widget_2->setObjectName(QString::fromUtf8("widget_2"));
 
@@ -3266,11 +3272,18 @@ public:
         verticalLayout_2->setStretch(1, 3);
         verticalLayout_2->setStretch(2, 3);
         verticalLayout_2->setStretch(3, 3);
-        verticalLayout_2->setStretch(4, 3);
+        verticalLayout_2->setStretch(4, 4);
         panel_welcome->setWidget(panel_welcome_content);
 
         verticalLayout_17->addWidget(panel_welcome);
 
+        panel_presets->raise();
+        panel_custom_colors->raise();
+        panel_lsettings->raise();
+        panel_settings->raise();
+        panel_timesync->raise();
+        panel_welcome->raise();
+        panel_message->raise();
 
         horizontalLayout_9->addWidget(control_parent);
 
@@ -3297,7 +3310,7 @@ public:
 
         retranslateUi(FluorescenceApp);
 
-        tab_presets_container->setCurrentIndex(3);
+        tab_presets_container->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(FluorescenceApp);
@@ -3448,24 +3461,24 @@ public:
         lisync_c6->setText(QString());
         lisync_status->setText(QCoreApplication::translate("FluorescenceApp", "Click on the computer to begin.", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_moodsync), QCoreApplication::translate("FluorescenceApp", "Ambient Light", nullptr));
+        shuffle_intro2->setText(QCoreApplication::translate("FluorescenceApp", "and pick another one every...", nullptr));
         shuffle_intro1->setText(QCoreApplication::translate("FluorescenceApp", "Not in the mood to pick?", nullptr));
+        shuffle_en_chase->setText(QCoreApplication::translate("FluorescenceApp", "Chase Fade", nullptr));
+        shuffle_en_rnb->setText(QCoreApplication::translate("FluorescenceApp", "Rainbow Fade", nullptr));
+        shuffle_en_static->setText(QCoreApplication::translate("FluorescenceApp", "Static", nullptr));
+        shuffle_en_spectrum->setText(QCoreApplication::translate("FluorescenceApp", "Spectrum Fade", nullptr));
         shuffle_intro3->setText(QCoreApplication::translate("FluorescenceApp", "Not a problem! Shuffle to let Fluorescence pick a pattern,\n"
 "randomly out of:", nullptr));
-        shuffle_en_static->setText(QCoreApplication::translate("FluorescenceApp", "Static", nullptr));
-        shuffle_en_chase->setText(QCoreApplication::translate("FluorescenceApp", "Chase Fade", nullptr));
-        shuffle_en_bliss->setText(QCoreApplication::translate("FluorescenceApp", "Moments of Bliss", nullptr));
-        shuffle_en_tcode->setText(QCoreApplication::translate("FluorescenceApp", "Time Code", nullptr));
-        shuffle_en_spectrum->setText(QCoreApplication::translate("FluorescenceApp", "Spectrum Fade", nullptr));
-        shuffle_en_music->setText(QCoreApplication::translate("FluorescenceApp", "Music", nullptr));
-        shuffle_en_rnb->setText(QCoreApplication::translate("FluorescenceApp", "Rainbow Fade", nullptr));
-        shuffle_en_cop->setText(QCoreApplication::translate("FluorescenceApp", "Police Lights", nullptr));
-        shuffle_intro2->setText(QCoreApplication::translate("FluorescenceApp", "and pick another one every...", nullptr));
         shuffle_speed->setItemText(0, QCoreApplication::translate("FluorescenceApp", "minute", nullptr));
         shuffle_speed->setItemText(1, QCoreApplication::translate("FluorescenceApp", "other minute", nullptr));
         shuffle_speed->setItemText(2, QCoreApplication::translate("FluorescenceApp", "ten minutes", nullptr));
         shuffle_speed->setItemText(3, QCoreApplication::translate("FluorescenceApp", "half hour", nullptr));
         shuffle_speed->setItemText(4, QCoreApplication::translate("FluorescenceApp", "hour", nullptr));
 
+        shuffle_en_music->setText(QCoreApplication::translate("FluorescenceApp", "Music", nullptr));
+        shuffle_en_tcode->setText(QCoreApplication::translate("FluorescenceApp", "Time Code", nullptr));
+        shuffle_en_cop->setText(QCoreApplication::translate("FluorescenceApp", "Police Lights", nullptr));
+        shuffle_en_bliss->setText(QCoreApplication::translate("FluorescenceApp", "Moments of Bliss", nullptr));
         shuffle_set->setText(QCoreApplication::translate("FluorescenceApp", "Looks good, go!", nullptr));
         tab_presets_container->setTabText(tab_presets_container->indexOf(tab_shuffle), QCoreApplication::translate("FluorescenceApp", "Shuffle", nullptr));
         custom_intro->setText(QCoreApplication::translate("FluorescenceApp", "Time to paint the night sky. Or some LEDs.", nullptr));
@@ -3577,7 +3590,7 @@ public:
         settings_info_fw_t->setText(QCoreApplication::translate("FluorescenceApp", "Firmware version:", nullptr));
         settings_info_fw->setText(QCoreApplication::translate("FluorescenceApp", "sw_str", nullptr));
         settings_info_app_t->setText(QCoreApplication::translate("FluorescenceApp", "App version:", nullptr));
-        settings_info_app->setText(QCoreApplication::translate("FluorescenceApp", "3.0", nullptr));
+        settings_info_app->setText(QCoreApplication::translate("FluorescenceApp", "3.0, Build 10/30/2020 for macOS", nullptr));
         settings_update->setTitle(QCoreApplication::translate("FluorescenceApp", "Updates", nullptr));
         settings_info_download->setText(QCoreApplication::translate("FluorescenceApp", "Download Latest Firmware", nullptr));
         settings_info_update->setText(QCoreApplication::translate("FluorescenceApp", "Firmware Update", nullptr));

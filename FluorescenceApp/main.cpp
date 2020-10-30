@@ -2,6 +2,7 @@
 
 #include <QApplication>
 #include <QFontDatabase>
+#include <QLayout>
 
 int main(int argc, char *argv[])
 {
@@ -17,7 +18,8 @@ int main(int argc, char *argv[])
     // Fix size and disable maximizing (update: freely resizable now!)
     // w.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     #ifndef Q_OS_IOS
-    w.setFixedSize(600, 600);
+    w.setMinimumSize(640, 480);
+    w.resize(w.minimumSize());
     #endif
 
     w.show();
