@@ -211,7 +211,7 @@ void FWUpdate::on_updater_update_clicked()
             updater_command_path = fw_updater_path_detected + "dfu_util_win64" + QDir::separator() + "dfu-util.exe";
             #endif
 
-            updater_command = updater_command_path + " -a 0 -s 0x08000000:leave -D \"" + fw_updater_firmware_file_detected + "\" -v -v -t 2048";
+            updater_command = "\"" + updater_command_path + "\"" +  " -a 0 -s 0x08000000:leave -D \"" + fw_updater_firmware_file_detected + "\" -v -v -t 2048";
 
             fl_app_inst->fw_update_manual_dfu_request();
         } else if(fw_updater_type_detected == FIRMWARE_UPDATE_AVR){
@@ -230,7 +230,7 @@ void FWUpdate::on_updater_update_clicked()
             updater_command_port_name = "\"" + port_name + "\"";
             #endif
 
-            updater_command = updater_command_path + " -C " + updater_command_path_conf + " -v -p atmega328p -c arduino -P " + updater_command_port_name + " -b115200 -D -U flash:w:\"" + fw_updater_firmware_file_detected + "\":i -Ulfuse:v:0x00:m";
+            updater_command = "\"" + updater_command_path + "\"" + " -C " + updater_command_path_conf + " -v -p atmega328p -c arduino -P " + updater_command_port_name + " -b115200 -D -U flash:w:\"" + fw_updater_firmware_file_detected + "\":i -Ulfuse:v:0x00:m";
         } else {
             return;
         }
