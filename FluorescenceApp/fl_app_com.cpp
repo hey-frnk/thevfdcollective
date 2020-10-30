@@ -4,8 +4,6 @@
 #include "src/fl_app_lights.h"
 #include "../FluorescenceV3/Commons/vfdco_config.h"
 
-#include <QTranslator>
-
 fl_app_com::fl_app_com() :
     is_bluetooth_communication(true),
     incoming_characteristic_present(false),
@@ -19,7 +17,9 @@ fl_app_com::fl_app_com() :
     buf_rx = new uint8_t[BUF_RX_SIZE];
 
     // Check if Bluetooth is available on this device
+    #ifndef Q_OS_IOS
     if (localDevice->isValid()) {
+    #endif
 
         qDebug() << "Bluetooth is available on this device";
         emit bt_status_changed("Bluetooth available");
@@ -41,12 +41,14 @@ fl_app_com::fl_app_com() :
         discoveryAgent->start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
         qDebug() << "Device discover started";
         emit bt_status_changed("Looking for Fluorescence...");
+    #ifndef Q_OS_IOS
     }
     else
     {
         qDebug() << "Bluetooth is not available on this device";
         emit bt_status_changed("Click to find Fluorescence and pair");
     }
+    #endif
 
     // Callback will determine legacy
 }
@@ -61,6 +63,7 @@ fl_app_com::fl_app_com(const QString portname) :
     currentService(nullptr),
     currentCharacteristic(nullptr)
 {
+    #ifndef Q_OS_IOS
     buf_rx = new uint8_t[BUF_RX_SIZE];
 
     qDebug() << portname;
@@ -85,6 +88,7 @@ fl_app_com::fl_app_com(const QString portname) :
 
     // Try if port is legacy
     determine_legacy();
+    #endif
 }
 
 fl_app_com::~fl_app_com() {
@@ -98,7 +102,11 @@ fl_app_com::~fl_app_com() {
         currentDevice = nullptr;
         serviceList.clear();
     }
-    else serial_port.close();
+    else {
+        #ifndef Q_OS_IOS
+        serial_port.close();
+        #endif
+    }
     delete[] buf_rx;
     delete[] buf_tx;
 }
@@ -277,8 +285,10 @@ void fl_app_com::transfer_dfu_request()
 {
     memset(buf_tx, 0x30, BUF_TX_SIZE); // All 0x30!
     if(!is_bluetooth_communication) {
+        #ifndef Q_OS_IOS
         serial_port.write((char const *)buf_tx, BUF_TX_SIZE);
         serial_port.waitForBytesWritten(10);
+        #endif
     }
 }
 
@@ -512,7 +522,11 @@ void fl_app_com::clear_buffer()
     else memset(buf_tx, 0x00, BUF_TX_SIZE_LEGACY);
     memset(buf_rx, 0x00, BUF_RX_SIZE);
     // Clear global
-    if(!is_bluetooth_communication) serial_port.clear();
+    if(!is_bluetooth_communication) {
+        #ifndef Q_OS_IOS
+        serial_port.clear();
+        #endif
+    }
 }
 
 void fl_app_com::set_command_byte(uint8_t value)
@@ -561,8 +575,10 @@ void fl_app_com::regular_transfer()
             qDebug() << "Not connected to service!";
         }
     } else {
+        #ifndef Q_OS_IOS
         serial_port.write((char const *)buf_tx, BUF_TX_SIZE);
         serial_port.waitForBytesWritten(10);
+        #endif
     }
 
     QString _debug_str = "[";
@@ -588,8 +604,10 @@ void fl_app_com::legacy_transfer()
             qDebug() << "Not connected to service!";
         }
     } else {
+        #ifndef Q_OS_IOS
         serial_port.write((char const *)buf_tx, BUF_TX_SIZE_LEGACY);
         serial_port.waitForBytesWritten(10);
+        #endif
     }
 
     QString _debug_str = "[";
@@ -651,9 +669,14 @@ QString fl_app_com::receive_and_extract_data(int wait_timeout)
 
 QByteArray fl_app_com::receive_raw(int wait_timeout)
 {
+    #ifndef Q_OS_IOS
     serial_port.waitForReadyRead(wait_timeout);
     QByteArray request_data = serial_port.readAll();
     while (serial_port.waitForReadyRead(100)) request_data.append(serial_port.readAll());
     serial_port.clear();
     return request_data;
+    #else
+    QByteArray request_data;
+    return request_data;
+    #endif
 }

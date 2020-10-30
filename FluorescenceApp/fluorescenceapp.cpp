@@ -9,8 +9,10 @@
 #include "../FluorescenceV3/Commons/vfdco_clock_routine_defines.h"
 #include "../FluorescenceV3/Commons/vfdco_config.h"
 
+#ifndef Q_OS_IOS
 #include <QtSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+#endif
 #include <QGraphicsEllipseItem>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
@@ -19,6 +21,9 @@
 #include <QScreen>
 #include <QFileDialog>
 #include <QGraphicsOpacityEffect>
+#include <QPropertyAnimation>
+#include <QTimer>
+#include <QThread>
 
 // Global dynamic colors
 QLabel *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
@@ -29,24 +34,12 @@ QLabel *preset_dynamic_lisync[NUM_PRESET_LIGHT_SYNC];
 #define NUM_AMBIENT_LIGHT_SAMPLES 3
 
 const QString bliss_descriptions[6] = {
-    "Nordlicht means northern light in German. Temperament: mysterious, majestic, spirited, impressive\n\
-Ink: fluorescent green to teal, touches of purple, Song: Higher Ground by ODESZA",
-
-    "Pastellfrühling means pastel spring in German. Temperament: delightful, lovely, awakening, inspirational\n\
-Ink: pastel. cherry, pink, some light green and rarely drip of light blue. Taste: Cherry and honey",
-
-    "Hummelhonig means bumble bee honey in German. Temperament: lively, energetic, active, peaceful\n\
-Ink: highly saturated green and blue gradients. Song: Here We Are by BRVTHR",
-
-    "Meeresgeflüster means whispers of the sea in German. Temperament: light-hearted, carefree, liberating, calm\n\
-Ink: watercolor. light sky blue to turquoise, with warm white sparks. Song: Island by Unknown Neighbour",
-
-    "Herbstlagerfeuer means fall camp fire in German. Temperament: cozy, sentimental, sincere, warm\n\
-Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red. Song: Portland\n\
-by Andrea von Kampen. Taste: pumpkin, blood orange, maple, cinnamon",
-
-    "Abendhimmel means evening sky in German. Temperament: passionate, untamed, infinite, intense\n\
-Ink: strong red. every warm red tone, some orange, some magenta. Song: Lost In The Night - THBD"
+    "Nordlicht means northern light in German. Temperament: mysterious, majestic, spirited, impressive. Ink: fluorescent green to teal, touches of purple, Song: Higher Ground by ODESZA",
+    "Pastellfrühling means pastel spring in German. Temperament: delightful, lovely, awakening, inspirational. Ink: pastel. cherry, pink, some light green and rarely drip of light blue. Taste: Cherry and honey",
+    "Hummelhonig means bumble bee honey in German. Temperament: lively, energetic, active, peaceful. Ink: highly saturated green and blue gradients. Song: Here We Are by BRVTHR",
+    "Meeresgeflüster means whispers of the sea in German. Temperament: light-hearted, carefree, liberating, calm. Ink: watercolor. light sky blue to turquoise, with warm white sparks. Song: Island by Unknown Neighbour",
+    "Herbstlagerfeuer means fall camp fire in German. Temperament: cozy, sentimental, sincere, warm. Ink: acrylic. lots of orange and strong yellow tones. rarely some green and brick red. Song: Portland by Andrea von Kampen. Taste: pumpkin, blood orange, maple, cinnamon",
+    "Abendhimmel means evening sky in German. Temperament: passionate, untamed, infinite, intense. Ink: strong red. every warm red tone, some orange, some magenta. Song: Lost In The Night - THBD"
 };
 
 const QString ambient_light_sample_paths[NUM_AMBIENT_LIGHT_SAMPLES] = {
@@ -75,9 +68,11 @@ FluorescenceApp::FluorescenceApp(QWidget *parent)
     ui->com_connect->setText(">>");
     // List all available serial ports to com_select + empty
     ui->com_select->addItem("");
+    #ifndef Q_OS_IOS
     for(QSerialPortInfo available_ports : QSerialPortInfo::availablePorts()) {
         ui->com_select->addItem(available_ports.portName());
     }
+    #endif
     ui->com_select->addItem("Bluetooth");
 
     hide_all_panels();
@@ -312,9 +307,11 @@ void FluorescenceApp::on_com_reload_clicked()
     if(ui->com_label_connect->text() == "Ready to connect" || ui->com_label_connect->text() == "Click to find Fluorescence and pair") {
         ui->com_select->clear();
         ui->com_select->addItem("");
+        #ifndef Q_OS_IOS
         for(QSerialPortInfo available_ports : QSerialPortInfo::availablePorts()) {
             ui->com_select->addItem(available_ports.portName());
         }
+        #endif
         ui->com_select->addItem("Bluetooth");
     }
 }

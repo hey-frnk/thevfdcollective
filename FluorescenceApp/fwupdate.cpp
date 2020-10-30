@@ -248,15 +248,20 @@ void FWUpdate::on_updater_update_clicked()
 
 void FWUpdate::ReadOut()
 {
+    #ifndef Q_OS_IOS
     QProcess *p = dynamic_cast<QProcess *>(sender());
     if(p) ui->updater_info_text->appendPlainText(p->readAllStandardOutput());
+    #endif
 }
 void FWUpdate::ReadErr()
 {
+    #ifndef Q_OS_IOS
     QProcess *p = dynamic_cast<QProcess *>(sender());
     if(p) ui->updater_info_text->appendPlainText(p->readAllStandardError());
+    #endif
 }
 
+#ifndef Q_OS_IOS
 void FWUpdate::UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     Q_UNUSED(exitStatus);
     QString filename = fw_updater_path_detected + QDir::separator()
@@ -276,11 +281,13 @@ void FWUpdate::UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     ui->updater_update->setText("Close");
     ui->updater_update->setEnabled(true);
 }
+#endif
 
 void FWUpdate::execute_updater(QString command, fw_updater_t updater_type)
 {
     if(updater_type == FIRMWARE_UPDATE_UNDETERMINED) return;
 
+    #ifndef Q_OS_IOS
     QProcess *p = new QProcess(this);
     if(p) {
       p->setEnvironment(QProcess::systemEnvironment());
@@ -297,4 +304,5 @@ void FWUpdate::execute_updater(QString command, fw_updater_t updater_type)
       connect(p, SIGNAL(readyReadStandardError()), this, SLOT(ReadErr()));
       connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(UpdateFinished(int, QProcess::ExitStatus)));
     }
+    #endif
 }

@@ -2,7 +2,9 @@
 #define FWUPDATESTM_H
 
 #include <QDialog>
+#ifndef Q_OS_IOS
 #include <QProcess>
+#endif
 
 typedef enum {
   FIRMWARE_UPDATE_UNDETERMINED,
@@ -37,7 +39,9 @@ private slots:
 
     void ReadOut();
     void ReadErr();
+    #ifndef Q_OS_IOS
     void UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    #endif
 
 private:
     void execute_updater(QString command, fw_updater_t updater_type);

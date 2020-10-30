@@ -14,9 +14,11 @@ int main(int argc, char *argv[])
 
     FluorescenceApp w;
 
-    // Fix size and disable maximizing
-    w.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-    w.setFixedSize(760, 440);
+    // Fix size and disable maximizing (update: freely resizable now!)
+    // w.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+    #ifndef Q_OS_IOS
+    w.setFixedSize(600, 600);
+    #endif
 
     w.show();
 

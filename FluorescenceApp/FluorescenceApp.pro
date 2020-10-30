@@ -1,7 +1,9 @@
 QT       += core gui \
-            serialport \
             widgets \
             bluetooth
+
+# Comment this when compiling for mobile (Apple iOS)
+QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 

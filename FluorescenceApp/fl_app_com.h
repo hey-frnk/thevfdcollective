@@ -5,12 +5,18 @@
 #include "../FluorescenceV3/Commons/vfdco_clock_routine_defines.h"
 
 #include <QObject>
+#ifndef Q_OS_IOS
 #include <QtSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+#endif
 #include <QBluetoothSocket>
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QLowEnergyController>
+#include <QTranslator>
+#include <QThread>
+#include <QTimer>
+#include <QEventLoop>
 
 #define BUF_RX_SIZE 10
 #define BUF_TX_SIZE_LEGACY 24
@@ -86,7 +92,9 @@ private:
     QByteArray incoming_characteristic;
     bool incoming_characteristic_present;
 
+    #ifndef Q_OS_IOS
     QSerialPort serial_port;
+    #endif
 
     void determine_legacy();
     uint8_t remap_light_pattern_legacy(light_pattern_instance_t instance);
