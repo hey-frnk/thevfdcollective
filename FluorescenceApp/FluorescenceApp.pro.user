@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.13.2, 2020-10-30T20:48:06. -->
+<!-- Written by QtCreator 4.13.2, 2020-10-30T23:10:43. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -596,7 +596,7 @@
      <value type="QString" key="identifier"></value>
      <value type="int" key="type">0</value>
     </valuemap>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">FluorescenceApp</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Run  on Go Vegan to Join</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.IosRunConfiguration:/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/FluorescenceApp.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/FluorescenceApp.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
