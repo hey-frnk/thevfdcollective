@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     // Fix size and disable maximizing (update: freely resizable now!)
     // w.setWindowFlags(Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
     #ifndef Q_OS_IOS
-    w.setMinimumSize(640, 480);
+    w.setMinimumSize(640, 440);
     w.resize(w.minimumSize());
     #endif
 

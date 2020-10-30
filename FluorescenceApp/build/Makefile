@@ -876,6 +876,8 @@ moc_fl_app_com.cpp: ../fl_app_com.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qthread.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QEventLoop \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qeventloop.h \
 		moc_predefs.h \
 		/Applications/Qt/5.15.1/clang_64/bin/moc
 	/Applications/Qt/5.15.1/clang_64/bin/moc $(DEFINES) --include /Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp/build/moc_predefs.h -I/Applications/Qt/5.15.1/clang_64/mkspecs/macx-clang -I/Users/HARDWARECOP/Documents/GitHub/thevfdcollective/FluorescenceApp -I/Applications/Qt/5.15.1/clang_64/lib/QtWidgets.framework/Headers -I/Applications/Qt/5.15.1/clang_64/lib/QtGui.framework/Headers -I/Applications/Qt/5.15.1/clang_64/lib/QtBluetooth.framework/Headers -I/Applications/Qt/5.15.1/clang_64/lib/QtSerialPort.framework/Headers -I/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/Applications/Qt/5.15.1/clang_64/lib ../fl_app_com.h -o moc_fl_app_com.cpp
@@ -909,6 +911,8 @@ moc_fluorescenceapp.cpp: ../fluorescenceapp.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qthread.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QEventLoop \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qeventloop.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
@@ -1032,6 +1036,8 @@ fl_app_com.o: ../fl_app_com.cpp ../fl_app_com.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qthread.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QEventLoop \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qeventloop.h \
 		../fluorescenceapp.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Applications/Qt/5.15.1/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -1088,6 +1094,8 @@ fwupdate.o: ../fwupdate.cpp ui_fwupdatestm.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qthread.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QEventLoop \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qeventloop.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
@@ -1145,6 +1153,8 @@ main.o: ../main.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qthread.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QEventLoop \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qeventloop.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
@@ -1153,7 +1163,9 @@ main.o: ../main.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Applications/Qt/5.15.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtGui.framework/Headers/QFontDatabase \
-		/Applications/Qt/5.15.1/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h
+		/Applications/Qt/5.15.1/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtWidgets.framework/Headers/QLayout \
+		/Applications/Qt/5.15.1/clang_64/lib/QtWidgets.framework/Headers/qlayout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
 fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
@@ -1185,6 +1197,8 @@ fluorescenceapp.o: ../fluorescenceapp.cpp ../fluorescenceapp.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qthread.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QEventLoop \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qeventloop.h \
 		../src/fl_app_lights.h \
 		../src/fl_app_colors.h \
 		../../FluorescenceV3/Commons/vfdco_config.h \
@@ -1264,6 +1278,8 @@ fl_app_colors.o: ../src/fl_app_colors.cpp ../src/fl_app_colors.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qthread.h \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QEventLoop \
+		/Applications/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qeventloop.h \
 		../src/fl_app_lights.h \
 		../../FluorescenceV3/Commons/vfdco_util.h \
 		ui_fluorescenceapp.h \
