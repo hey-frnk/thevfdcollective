@@ -6359,7 +6359,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="text">
-                    <string>3.0, Build 10/30/2020 for macOS</string>
+                    <string>3.0, Build 10/30/2020 for iPadOS 14</string>
                    </property>
                   </widget>
                  </item>
