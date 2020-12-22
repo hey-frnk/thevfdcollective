@@ -422,7 +422,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
                <x>0</x>
                <y>0</y>
                <width>450</width>
-               <height>375</height>
+               <height>369</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -453,7 +453,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
                  <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
                 </property>
                 <property name="currentIndex">
-                 <number>2</number>
+                 <number>0</number>
                 </property>
                 <widget class="QWidget" name="tab_presets_static">
                  <attribute name="title">
@@ -936,7 +936,7 @@ color: rgb(83, 27, 147);</string>
                      <property name="geometry">
                       <rect>
                        <x>0</x>
-                       <y>-1254</y>
+                       <y>0</y>
                        <width>444</width>
                        <height>1878</height>
                       </rect>
@@ -3070,7 +3070,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                      <property name="geometry">
                       <rect>
                        <x>0</x>
-                       <y>-155</y>
+                       <y>0</y>
                        <width>404</width>
                        <height>469</height>
                       </rect>
@@ -3474,7 +3474,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-31</y>
+               <y>0</y>
                <width>450</width>
                <height>963</height>
               </rect>
@@ -5024,7 +5024,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-362</y>
+               <y>0</y>
                <width>450</width>
                <height>737</height>
               </rect>
@@ -5360,7 +5360,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-795</y>
+               <y>0</y>
                <width>450</width>
                <height>1170</height>
               </rect>
@@ -6359,7 +6359,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="text">
-                    <string>3.0, Build 10/30/2020 for iPadOS 14</string>
+                    <string>3.0, Build 10/30/2020 for macOS</string>
                    </property>
                   </widget>
                  </item>
@@ -6470,7 +6470,7 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
+               <y>-103</y>
                <width>450</width>
                <height>472</height>
               </rect>
@@ -6922,7 +6922,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
+               <y>-15</y>
                <width>450</width>
                <height>291</height>
               </rect>

@@ -18,8 +18,8 @@
 					<folderInfo id="fr.ac6.managedbuild.config.gnu.cross.exe.debug.1398142185." name="/" resourcePath="">
 						<toolChain id="fr.ac6.managedbuild.toolchain.gnu.cross.exe.debug.881653178" name="Ac6 STM32 MCU GCC" superClass="fr.ac6.managedbuild.toolchain.gnu.cross.exe.debug">
 							<option id="fr.ac6.managedbuild.option.gnu.cross.prefix.517174597" name="Prefix" superClass="fr.ac6.managedbuild.option.gnu.cross.prefix" value="arm-none-eabi-" valueType="string"/>
-							<option id="fr.ac6.managedbuild.option.gnu.cross.mcu.2105403649" name="Mcu" superClass="fr.ac6.managedbuild.option.gnu.cross.mcu" value="STM32L412KBTx" valueType="string"/>
-							<option id="fr.ac6.managedbuild.option.gnu.cross.board.1766011797" name="Board" superClass="fr.ac6.managedbuild.option.gnu.cross.board" value="FL3" valueType="string"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.mcu.2105403649" name="Mcu" superClass="fr.ac6.managedbuild.option.gnu.cross.mcu" value="STM32L412K8Tx" valueType="string"/>
+							<option id="fr.ac6.managedbuild.option.gnu.cross.board.1766011797" name="Board" superClass="fr.ac6.managedbuild.option.gnu.cross.board" value="genericBoard" valueType="string"/>
 							<option id="fr.ac6.managedbuild.option.gnu.cross.core.1083960614" name="Core" superClass="fr.ac6.managedbuild.option.gnu.cross.core" valueType="stringList">
 								<listOptionValue builtIn="false" value="ARM Cortex-M4"/>
 								<listOptionValue builtIn="false" value="CM4"/>

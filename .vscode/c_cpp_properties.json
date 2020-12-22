@@ -6,9 +6,12 @@
                 "/Users/HARDWARECOP/Library/Arduino15/packages/esp8266/tools/**",
                 "/Users/HARDWARECOP/Library/Arduino15/packages/esp8266/hardware/esp8266/2.4.2/**",
                 "/Applications/Arduino.app/Contents/Java/hardware/**",
-                "/Users/HARDWARECOP/Documents/Arduino/libraries/**"
+                "/Users/HARDWARECOP/Documents/Arduino/libraries/**",
+                "/Applications/Arduino.app/Contents/Java/libraries/**"
             ],
-            "defines": [],
+            "defines": [
+                "USBCON"
+            ],
             "macFrameworkPath": [],
             "compilerPath": "/usr/local/bin/gcc-8",
             "intelliSenseMode": "clang-x64",
