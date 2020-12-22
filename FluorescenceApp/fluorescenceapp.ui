@@ -421,7 +421,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>450</width>
+               <width>447</width>
                <height>369</height>
               </rect>
              </property>
@@ -491,7 +491,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>420</width>
+                       <width>417</width>
                        <height>1094</height>
                       </rect>
                      </property>
@@ -937,7 +937,7 @@ color: rgb(83, 27, 147);</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>444</width>
+                       <width>441</width>
                        <height>1878</height>
                       </rect>
                      </property>
@@ -2827,7 +2827,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>394</width>
+                       <width>391</width>
                        <height>475</height>
                       </rect>
                      </property>
@@ -3071,7 +3071,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>404</width>
+                       <width>401</width>
                        <height>469</height>
                       </rect>
                      </property>
@@ -3475,7 +3475,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>450</width>
+               <width>447</width>
                <height>963</height>
               </rect>
              </property>
@@ -4382,8 +4382,8 @@ font: 12px &quot;RalewayMedium&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>450</width>
+               <y>-390</y>
+               <width>447</width>
                <height>759</height>
               </rect>
              </property>
@@ -5024,8 +5024,8 @@ font: 12px &quot;RalewayBold&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>450</width>
+               <y>-368</y>
+               <width>447</width>
                <height>737</height>
               </rect>
              </property>
@@ -5360,8 +5360,8 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>450</width>
+               <y>-801</y>
+               <width>447</width>
                <height>1170</height>
               </rect>
              </property>
@@ -6359,7 +6359,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="text">
-                    <string>3.0, Build 10/30/2020 for macOS</string>
+                    <string>3.01, Build 12/22/2020 for macOS</string>
                    </property>
                   </widget>
                  </item>
@@ -6470,8 +6470,8 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-103</y>
-               <width>450</width>
+               <y>0</y>
+               <width>447</width>
                <height>472</height>
               </rect>
              </property>
@@ -6922,8 +6922,8 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-15</y>
-               <width>450</width>
+               <y>0</y>
+               <width>447</width>
                <height>291</height>
               </rect>
              </property>

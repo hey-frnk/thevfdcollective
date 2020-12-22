@@ -54,7 +54,7 @@ uint8_t vfdco_hid_button_retrieve(uint8_t num) {
     if(button_enable[num] == 1) {                               // If pressed flag set
       if(long_press_enable[num] == 1) {                         // If long press flag set
         long_press_enable[num] = 0;                             // Reset long press flag
-      }else {
+      } else {
         button_state = BUTTON_STATE_SHORTPRESS;
       }
       button_enable[num] = 0;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>FL3</name>
-	<comment></comment>
+	<comment />
 	<projects>
 	</projects>
 	<buildSpec>
@@ -28,7 +28,7 @@
 		<link>
 			<name>Commons</name>
 			<type>2</type>
-			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Commons</locationURI>
+			<location>PARENT-1-PROJECT_LOC/Commons</location>
 		</link>
 	</linkedResources>
 </projectDescription>

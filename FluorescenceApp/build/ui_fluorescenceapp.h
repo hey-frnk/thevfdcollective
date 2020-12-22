@@ -576,7 +576,7 @@ public:
         panel_presets->setWidgetResizable(true);
         panel_presets_content = new QWidget();
         panel_presets_content->setObjectName(QString::fromUtf8("panel_presets_content"));
-        panel_presets_content->setGeometry(QRect(0, 0, 450, 375));
+        panel_presets_content->setGeometry(QRect(0, 0, 447, 369));
         verticalLayout_4 = new QVBoxLayout(panel_presets_content);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         verticalLayout_4->setContentsMargins(0, 0, 0, 0);
@@ -597,11 +597,11 @@ public:
         scroll_presets_static->setWidgetResizable(true);
         scroll_presets_static_content = new QWidget();
         scroll_presets_static_content->setObjectName(QString::fromUtf8("scroll_presets_static_content"));
-        scroll_presets_static_content->setGeometry(QRect(0, 0, 420, 1094));
+        scroll_presets_static_content->setGeometry(QRect(0, 0, 417, 1094));
         verticalLayout_19 = new QVBoxLayout(scroll_presets_static_content);
         verticalLayout_19->setSpacing(30);
         verticalLayout_19->setObjectName(QString::fromUtf8("verticalLayout_19"));
-        verticalLayout_19->setContentsMargins(20, 20, 20, 60);
+        verticalLayout_19->setContentsMargins(20, 20, 30, 60);
         static_intro = new QLabel(scroll_presets_static_content);
         static_intro->setObjectName(QString::fromUtf8("static_intro"));
         static_intro->setFont(font1);
@@ -774,11 +774,11 @@ public:
         scroll_presets_dynamic->setAlignment(Qt::AlignCenter);
         tab_presets_dynamic_content = new QWidget();
         tab_presets_dynamic_content->setObjectName(QString::fromUtf8("tab_presets_dynamic_content"));
-        tab_presets_dynamic_content->setGeometry(QRect(0, -1254, 444, 1878));
+        tab_presets_dynamic_content->setGeometry(QRect(0, 0, 441, 1878));
         verticalLayout_6 = new QVBoxLayout(tab_presets_dynamic_content);
         verticalLayout_6->setSpacing(10);
         verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
-        verticalLayout_6->setContentsMargins(20, 30, 20, 60);
+        verticalLayout_6->setContentsMargins(20, 30, 30, 60);
         panel_presets_control_grid = new QWidget(tab_presets_dynamic_content);
         panel_presets_control_grid->setObjectName(QString::fromUtf8("panel_presets_control_grid"));
         gridLayout_11 = new QGridLayout(panel_presets_control_grid);
@@ -1532,6 +1532,7 @@ public:
         tab_moodsync->setObjectName(QString::fromUtf8("tab_moodsync"));
         horizontalLayout_7 = new QHBoxLayout(tab_moodsync);
         horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        horizontalLayout_7->setContentsMargins(-1, -1, 30, -1);
         scroll_moodsync = new QScrollArea(tab_moodsync);
         scroll_moodsync->setObjectName(QString::fromUtf8("scroll_moodsync"));
         scroll_moodsync->setFrameShape(QFrame::NoFrame);
@@ -1539,7 +1540,7 @@ public:
         scroll_moodsync->setWidgetResizable(true);
         tab_moodsync_content = new QWidget();
         tab_moodsync_content->setObjectName(QString::fromUtf8("tab_moodsync_content"));
-        tab_moodsync_content->setGeometry(QRect(0, 0, 404, 475));
+        tab_moodsync_content->setGeometry(QRect(0, 0, 391, 475));
         verticalLayout_7 = new QVBoxLayout(tab_moodsync_content);
         verticalLayout_7->setSpacing(10);
         verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
@@ -1642,12 +1643,12 @@ public:
         scroll_shuffle->setWidgetResizable(true);
         tab_shuffle_content = new QWidget();
         tab_shuffle_content->setObjectName(QString::fromUtf8("tab_shuffle_content"));
-        tab_shuffle_content->setGeometry(QRect(0, 0, 404, 469));
+        tab_shuffle_content->setGeometry(QRect(0, 0, 401, 469));
         gridLayout_12 = new QGridLayout(tab_shuffle_content);
         gridLayout_12->setObjectName(QString::fromUtf8("gridLayout_12"));
         gridLayout_12->setHorizontalSpacing(10);
         gridLayout_12->setVerticalSpacing(20);
-        gridLayout_12->setContentsMargins(20, 20, 20, 50);
+        gridLayout_12->setContentsMargins(20, 20, 30, 50);
         shuffle_intro2 = new QLabel(tab_shuffle_content);
         shuffle_intro2->setObjectName(QString::fromUtf8("shuffle_intro2"));
         shuffle_intro2->setMaximumSize(QSize(16777215, 40));
@@ -1789,7 +1790,7 @@ public:
         panel_custom_colors->setWidgetResizable(true);
         panel_custom_colors_content = new QWidget();
         panel_custom_colors_content->setObjectName(QString::fromUtf8("panel_custom_colors_content"));
-        panel_custom_colors_content->setGeometry(QRect(0, -31, 450, 963));
+        panel_custom_colors_content->setGeometry(QRect(0, 0, 447, 963));
         verticalLayout_3 = new QVBoxLayout(panel_custom_colors_content);
         verticalLayout_3->setSpacing(20);
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
@@ -2187,7 +2188,7 @@ public:
         panel_lsettings->setWidgetResizable(true);
         panel_lsettings_content = new QWidget();
         panel_lsettings_content->setObjectName(QString::fromUtf8("panel_lsettings_content"));
-        panel_lsettings_content->setGeometry(QRect(0, 0, 450, 759));
+        panel_lsettings_content->setGeometry(QRect(0, -390, 447, 759));
         verticalLayout_16 = new QVBoxLayout(panel_lsettings_content);
         verticalLayout_16->setSpacing(10);
         verticalLayout_16->setObjectName(QString::fromUtf8("verticalLayout_16"));
@@ -2437,7 +2438,7 @@ public:
         panel_message->setWidgetResizable(true);
         panel_message_content = new QWidget();
         panel_message_content->setObjectName(QString::fromUtf8("panel_message_content"));
-        panel_message_content->setGeometry(QRect(0, -362, 450, 737));
+        panel_message_content->setGeometry(QRect(0, -368, 447, 737));
         verticalLayout = new QVBoxLayout(panel_message_content);
         verticalLayout->setSpacing(20);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
@@ -2558,7 +2559,7 @@ public:
         panel_settings->setWidgetResizable(true);
         panel_settings_content = new QWidget();
         panel_settings_content->setObjectName(QString::fromUtf8("panel_settings_content"));
-        panel_settings_content->setGeometry(QRect(0, -795, 450, 1170));
+        panel_settings_content->setGeometry(QRect(0, -801, 447, 1170));
         verticalLayout_11 = new QVBoxLayout(panel_settings_content);
         verticalLayout_11->setSpacing(20);
         verticalLayout_11->setObjectName(QString::fromUtf8("verticalLayout_11"));
@@ -2987,7 +2988,7 @@ public:
         panel_timesync->setWidgetResizable(true);
         panel_timesync_content = new QWidget();
         panel_timesync_content->setObjectName(QString::fromUtf8("panel_timesync_content"));
-        panel_timesync_content->setGeometry(QRect(0, 0, 450, 472));
+        panel_timesync_content->setGeometry(QRect(0, 0, 447, 472));
         verticalLayout_12 = new QVBoxLayout(panel_timesync_content);
         verticalLayout_12->setObjectName(QString::fromUtf8("verticalLayout_12"));
         verticalLayout_12->setContentsMargins(30, 20, 30, 50);
@@ -3184,7 +3185,7 @@ public:
         panel_welcome->setWidgetResizable(true);
         panel_welcome_content = new QWidget();
         panel_welcome_content->setObjectName(QString::fromUtf8("panel_welcome_content"));
-        panel_welcome_content->setGeometry(QRect(0, 0, 450, 291));
+        panel_welcome_content->setGeometry(QRect(0, 0, 447, 291));
         QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Minimum);
         sizePolicy5.setHorizontalStretch(0);
         sizePolicy5.setVerticalStretch(0);
@@ -3310,7 +3311,7 @@ public:
 
         retranslateUi(FluorescenceApp);
 
-        tab_presets_container->setCurrentIndex(1);
+        tab_presets_container->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(FluorescenceApp);
@@ -3590,7 +3591,7 @@ public:
         settings_info_fw_t->setText(QCoreApplication::translate("FluorescenceApp", "Firmware version:", nullptr));
         settings_info_fw->setText(QCoreApplication::translate("FluorescenceApp", "sw_str", nullptr));
         settings_info_app_t->setText(QCoreApplication::translate("FluorescenceApp", "App version:", nullptr));
-        settings_info_app->setText(QCoreApplication::translate("FluorescenceApp", "3.0, Build 10/30/2020 for macOS", nullptr));
+        settings_info_app->setText(QCoreApplication::translate("FluorescenceApp", "3.01, Build 12/22/2020 for macOS", nullptr));
         settings_update->setTitle(QCoreApplication::translate("FluorescenceApp", "Updates", nullptr));
         settings_info_download->setText(QCoreApplication::translate("FluorescenceApp", "Download Latest Firmware", nullptr));
         settings_info_update->setText(QCoreApplication::translate("FluorescenceApp", "Firmware Update", nullptr));

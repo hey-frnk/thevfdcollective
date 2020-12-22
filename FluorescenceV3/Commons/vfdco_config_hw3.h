@@ -55,7 +55,7 @@ extern "C" {
  */
 // Edit software version here
 #define CONFIG_SW_STRING_LENGTH 6
-#define CONFIG_SW_STRING {'3', '.', '1', 's', ' ', ' '}
+#define CONFIG_SW_STRING {'3', '.', '0', '1', 's', ' '}
 // Edit hardware version here
 #define CONFIG_HW_STRING_LENGTH 4
 #define CONFIG_HW_STRING {'3', '.', '0', ' '}
@@ -93,12 +93,14 @@ extern "C" {
  * @tableofcontents SECTION_CONFIG_GUI
  * @brief Configuration parameters for the GUI
  */
+// How many milliseconds to debounce a non messaged button press?
+#define CONFIG_NOMESSAGE_DELAY    100
 // How many milliseconds should a short notice last?
 #define CONFIG_MESSAGE_SHORT      500
 // How many milliseconds should a regular message last?
 #define CONFIG_MESSAGE_LONG       1000
 // What should be the default welcome message? (Default: {'H', 'E', 'L', 'L', 'O', ' '})
-#define CONFIG_WELCOME_MESSAGE_DEFAULT 'H', 'A', 'I', 'L', 'E', 'E'
+#define CONFIG_WELCOME_MESSAGE_DEFAULT 'H', 'E', 'L', 'L', 'O', ' '
 
 /**
  * @tableofcontents SECTION_CONFIG_LIGHTS

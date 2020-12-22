@@ -275,6 +275,7 @@ inline void vfdco_clock_power_routine() {
       }
       // F1 long press: Explicit wake trigger
       if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
+        vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY);
         vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
         vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
         global_night_shift_state = NIGHT_SHIFT_OFF;
@@ -301,6 +302,7 @@ inline void vfdco_clock_power_routine() {
 inline void vfdco_clock_gui_routine() {
   if(Time_Event_Update(&display_updater)) GUI_Format_Update(&global_gui_instance);
   if(global_button_F1_state == BUTTON_STATE_SHORTPRESS) {
+    vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); // Lazy debounce
     /* F1: Change GUI, done in 4 steps:
         - (1) Save settings (internal destructor call)
         - (2) Apply set parameters (external destructor call)
@@ -346,6 +348,7 @@ inline void vfdco_clock_gui_routine() {
     }
     GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
   } else if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
+    vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY);
     if((global_gui_instance_counter == GUI_TIME) || (global_gui_instance_counter == GUI_DATE)) {
       // To time set menu: Save settings
       if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
@@ -357,12 +360,12 @@ inline void vfdco_clock_gui_routine() {
   }
 
   switch(global_button_F2_state) {
-    case BUTTON_STATE_SHORTPRESS:   if(GUI_Format_F2)         {GUI_Format_F2(&global_gui_instance);     GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
-    case BUTTON_STATE_LONGPRESS:    if(GUI_Format_F2Var)      {GUI_Format_F2Var(&global_gui_instance);  GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
+    case BUTTON_STATE_SHORTPRESS:   if(GUI_Format_F2)    {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F2(&global_gui_instance);    GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
+    case BUTTON_STATE_LONGPRESS:    if(GUI_Format_F2Var) {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F2Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
   }
   switch(global_button_F3_state) {
-    case BUTTON_STATE_SHORTPRESS:   if(GUI_Format_F3)         {GUI_Format_F3(&global_gui_instance);     GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
-    case BUTTON_STATE_LONGPRESS:    if(GUI_Format_F3Var)      {GUI_Format_F3Var(&global_gui_instance);  GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
+    case BUTTON_STATE_SHORTPRESS:   if(GUI_Format_F3)    {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F3(&global_gui_instance);    GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
+    case BUTTON_STATE_LONGPRESS:    if(GUI_Format_F3Var) {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F3Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
   }
   switch(global_button_F4_state) {
     case BUTTON_STATE_SHORTPRESS: {

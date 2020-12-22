@@ -1050,6 +1050,12 @@ void FluorescenceApp::on_settings_info_update_clicked()
         error_message("Bluetooth firmware update is not supported (yet). Please perform the firmware update over USB!", QMessageBox::Icon::Information);
         return;
     }
+
+    // Comment this part. Debug only
+    // fw_update_manual_dfu_request();
+    // return;
+    // End of debug only part
+
     FWUpdate fw_update_dialog(this, ui->settings_info_fw->text(), ui->com_select->currentText());
     // FWUpdate fw_update_dialog(this, "v3.9222s", ui->com_select->currentText());
     fw_update_dialog.setModal(true);

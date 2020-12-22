@@ -93,6 +93,8 @@ extern "C" {
  * @tableofcontents SECTION_CONFIG_GUI
  * @brief Configuration parameters for the GUI
  */
+// How many milliseconds to debounce a non messaged button press?
+#define CONFIG_NOMESSAGE_DELAY    100
 // How many milliseconds should a short notice last?
 #define CONFIG_MESSAGE_SHORT      500
 // How many milliseconds should a regular message last?

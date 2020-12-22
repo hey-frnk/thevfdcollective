@@ -71,6 +71,8 @@ extern "C" {
  * @tableofcontents SECTION_CONFIG_LEDS
  * @brief Configuration parameters of the LED driver
  */
+// How many milliseconds to debounce a non messaged button press?
+#define CONFIG_NOMESSAGE_DELAY    100
 // Number of LEDs. Default: 6
 #define CONFIG_NUM_PIXELS ((uint8_t) 6)
 // Select the LED driver. If set to 1, a separate white LED can be used, when the LEDs are of type SK6812
