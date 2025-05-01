@@ -50,12 +50,13 @@ typedef enum {
   GUI_DATE = 1,             // Display the current date
   GUI_STOPWATCH = 10,       // Display stopwatch
   GUI_TIME_DATE_SET = 20,   // Active when time set or date set is enabled
-  GUI_BRIGHTNESS_SET = 21   // Active when brightness (night shift) set is enabled
+  GUI_BRIGHTNESS_SET = 21,  // Active when brightness (night shift) set is enabled
+  GUI_DIGIT_FADE_SET = 22   // Active when digit fade set is enabled
 } gui_instance_t;
 
 // Light Patterns tell in which way or pattern the LED lights glow
 typedef enum {
-  // Iterable instances, max. 8 instances. Reachable by navigating with F2 in strictly ascending order
+  // Iterable instances, max. 16 instances. Reachable by navigating with F2 in strictly ascending order
   LIGHT_PATTERN_STATIC = 0,           // Corresponds to Light_Pattern_Static class. Single color preset
   LIGHT_PATTERN_MOMENTSOFBLISS = 1,   // Corresponds to Light_Pattern_MomentsOfBliss class
   LIGHT_PATTERN_SPECTRUM = 2,         // Corresponds to Light_Pattern_Spectrum class. Single color fade through the entire spectrum
@@ -64,6 +65,7 @@ typedef enum {
   LIGHT_PATTERN_MUSIC = 5,            // Corresponds to Light_Pattern_Music class. Beat reactive pattern
   LIGHT_PATTERN_TIME_CODE = 6,        // Corresponds to Light_Pattern_Time_Code class. Pattern according to time digit value
   LIGHT_PATTERN_COP = 7,              // Corresponds to Light_Pattern_Cop. Police lights
+  LIGHT_PATTERN_PULSE = 8, 			  // Correnponds to Light_Pattern_Pulse. Pulsed rainbow
 
   // Non-iterable instances
   LIGHT_PATTERN_SERIAL0 = 20,         // Corresponds to Light_Pattern_Serial0. Optimized for fast response time from incoming serial color data

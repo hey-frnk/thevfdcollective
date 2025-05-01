@@ -1,3 +1,15 @@
 {
-    "C_Cpp.dimInactiveRegions": false
+    "C_Cpp.dimInactiveRegions": false,
+    "files.associations": {
+        "vfdco_hid.h": "c",
+        "stdint.h": "c",
+        "vfdco_time.h": "c",
+        "vfdco_config.h": "c",
+        "__node_handle": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "vfdco_config_hw3.h": "c"
+    }
 }

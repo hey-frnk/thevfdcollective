@@ -34,7 +34,7 @@ void _vfdco_hid_button_set(uint16_t count, uint8_t button) {
 
 uint8_t vfdco_hid_button_retrieve(uint8_t num) {
   // Button check function
-  uint8_t button_state = BUTTON_STATE_OFF;                      // State return variable
+  uint8_t button_state = BUTTON_EVENT_OFF;                      // State return variable
   if(digitalRead(_vfdco_button_to_pin(num)) == HIGH) {
     if(button_enable[num] == 0) {                               // If button not pressed before
       button_enable[num] = 1;                                   // Set pressed flag
@@ -42,14 +42,14 @@ uint8_t vfdco_hid_button_retrieve(uint8_t num) {
     }
     if ((millis() - button_timers[num] > BUTTON_LONGPRESS_THRESHOLD) && (long_press_enable[num] == 0)) {
       long_press_enable[num] = 1;                               // Long press detected
-      button_state = BUTTON_STATE_LONGPRESS;                    // Set alternative number
+      button_state = BUTTON_EVENT_LONGPRESS;                    // Set alternative number
     }
   } else {                                                      // If digitalRead returns FALSE
     if(button_enable[num] == 1) {                               // If pressed flag set
       if(long_press_enable[num] == 1) {                         // If long press flag set
         long_press_enable[num] = 0;                             // Reset long press flag
       }else {
-        button_state = BUTTON_STATE_SHORTPRESS;
+        button_state = BUTTON_EVENT_SHORTPRESS;
       }
       button_enable[num] = 0;
     }

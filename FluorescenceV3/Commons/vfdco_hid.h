@@ -44,9 +44,9 @@ extern "C" {
 #define   BUTTON_SHORTPRESS_THRESHOLD   50
 #define   BUTTON_LONGPRESS_THRESHOLD    600
 
-#define   BUTTON_STATE_OFF         0b00000000
-#define   BUTTON_STATE_SHORTPRESS  0b00000001
-#define   BUTTON_STATE_LONGPRESS   0b00000010
+#define   BUTTON_EVENT_OFF         0b00000000
+#define   BUTTON_EVENT_SHORTPRESS  0b00000001
+#define   BUTTON_EVENT_LONGPRESS   0b00000010
 
 #define   BUTTON_F1                0
 #define   BUTTON_F2                1
@@ -64,7 +64,7 @@ void      vfdco_hid_button_reset(uint8_t button);
  * @param button Which button
  * @return uint8_t Button state. 00: Off, 01: Short press, 02: Long press, 03: Error
  */
-uint8_t   vfdco_hid_button_retrieve(uint8_t button);
+// uint8_t   vfdco_hid_button_retrieve(uint8_t button);
 
 /**
  * @brief Retrieve state of all four buttons

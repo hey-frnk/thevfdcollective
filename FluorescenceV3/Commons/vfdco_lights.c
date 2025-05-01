@@ -44,6 +44,7 @@ SOFTWARE.*/
   * SECTION_LIGHT_PATTERN_TIME_CODE
   * SECTION_LIGHT_PATTERN_COP
   * SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
+  * SECTION_LIGHT_PATTERN_PULSE
   * SECTION_CONTAINER_LIGHT_PATTERN
   * SECTION_SUPPORTING_FUNCTIONS_IMPLEMENTATION
   ******************************************************************************
@@ -58,6 +59,22 @@ SOFTWARE.*/
 
 // #include <stdlib.h>
 #include <string.h>
+
+/** Begin of:
+ * @tableofcontents SECTION_LIGHT_PATTERN
+ * @details Light_Pattern is the virtual base class. Its children perform operations
+ * to LED lights to generate patterns. Each child class must overwrite the following virtual methods:
+ * - F3: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - F3Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
+ * - Hello: This method is called upon initialization and typically displays a message. Can be set to NULL
+ * - Save: This method is called before destruction and saves variables onto the same memory block used in the initializer
+**/
+void (*Light_Pattern_F3)     (Light_Pattern *unsafe_self);
+void (*Light_Pattern_F3Var)  (Light_Pattern *unsafe_self);
+void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
+void (*Light_Pattern_Hello)  (void);
+void (*Light_Pattern_Save)   (Light_Pattern *unsafe_self);
 
 /** Begin of:
   * @tableofcontents SECTION_SUPPORTING_FUNCTIONS
@@ -199,6 +216,8 @@ void LED_Color_Fader_Init(struct LED_Color_Fader    *f,             // Instance
   f->state = FADER_STATE_ACTIVE;
 }
 
+LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
+
 /** Begin of:
  * @tableofcontents SECTION_LIGHT_PATTERN_CONSTANTS
  * @brief Definition of all constants used in Light Patterns. Customizable constants are defined in vfdco_config.h
@@ -213,7 +232,8 @@ void LED_Color_Fader_Init(struct LED_Color_Fader    *f,             // Instance
   ENTRY(Music,      ' ', 'D', 'A', 'N', 'C', 'E') \
   ENTRY(Time_Code,  'T', 'I', 'C', 'O', 'D', 'E') \
   ENTRY(Cop,        'P', 'O', 'L', 'I', 'C', 'E') \
-  ENTRY(Bliss,      ' ', 'B', 'L', 'I', 'S', 'S')
+  ENTRY(Bliss,      ' ', 'B', 'L', 'I', 'S', 'S') \
+  ENTRY(Pulse,      ' ', 'P', 'U', 'L', 'S', 'E')
 
 #define GENERATE_HELLO_STRING(_IDENTIFIER, _A, _B, _C, _D, _E, _F) static const char Messages_Hello_ ## _IDENTIFIER[6] = {_A, _B, _C, _D, _E, _F};
 GENERATE_HELLO_PAIR(GENERATE_HELLO_STRING)
@@ -341,6 +361,13 @@ static const char Messages_Color_Bliss[][CONFIG_NUM_DIGITS] = {
   {' ', 'A', 'B', 'E', 'N', 'D'}
 };
 
+// Pulse Constants
+static const char Messages_Color_Pulse[][4] = {
+  {' ', 'S', 'L', 'O'},
+  {' ', 'N', 'O', 'R'},
+  {'F', 'A', 'S', 'T'}
+};
+
 
 /** Begin of:
   * @tableofcontents SECTION_LIGHT_PATTERN
@@ -401,6 +428,7 @@ static void _Light_Pattern_Static_Next_Color(struct Light_Pattern_Static *self, 
 static void _Light_Pattern_Static_F3(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
   self->position++;
+  self->reversed = 0;
   _Light_Pattern_Static_Next_Color(self, 0);
 
   char k[CONFIG_NUM_DIGITS] = {'C', ' '};
@@ -413,8 +441,9 @@ static void _Light_Pattern_Static_F3(Light_Pattern *unsafe_self) {
  **/
 static void _Light_Pattern_Static_F3Var(Light_Pattern *unsafe_self) {
   struct Light_Pattern_Static *self = (struct Light_Pattern_Static *)unsafe_self;
+  self->reversed = !self->reversed;
   if(self->position >= NUM_STATIC_T2) {
-    _Light_Pattern_Static_Next_Color(self, 1);
+    _Light_Pattern_Static_Next_Color(self, self->reversed);
 
     char k[CONFIG_NUM_DIGITS] = {'R', 'E', 'V', 'E', 'R', 'S'};
     vfdco_display_render_message(k, 0, CONFIG_MESSAGE_SHORT);
@@ -450,6 +479,7 @@ void Light_Pattern_Static_Init(struct Light_Pattern_Static *self, uint8_t *setti
 
   self->t = Time_Event_Init(CONFIG_SINGLE_COLOR_FADE_SPEED);
   self->settings = settings;
+  self->reversed = 0;
 
   Light_Pattern_F3 = _Light_Pattern_Static_F3;
   Light_Pattern_F3Var = _Light_Pattern_Static_F3Var;
@@ -729,7 +759,8 @@ static void _Light_Pattern_Chase_Update(Light_Pattern *unsafe_self) {
       }
       vfdco_clr_render();
     }
-    self->state++;
+    if(self->state < CONFIG_NUM_PIXELS - 1)
+      self->state++;
 
     if(self->flip_timer->s != self->flip_timer_previous_second) {
       self->flip_timer_previous_second = self->flip_timer->s;
@@ -1164,6 +1195,124 @@ void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self
   Light_Pattern_Hello   = _Light_Pattern_MomentsOfBliss_Hello;
   Light_Pattern_Save    = _Light_Pattern_MomentsOfBliss_Save;
 }
+
+
+
+/** Begin of:
+* @tableofcontents SECTION_LIGHT_PATTERN_PULSE
+**/
+/**
+* @brief  Implementation of virtual function Light_Pattern_Pulse::Update (static void _Light_Pattern_Pulse_Update)
+**/
+static void _Light_Pattern_Pulse_Update(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Pulse *self = (struct Light_Pattern_Pulse *)unsafe_self;
+  struct LED_Color_Fader *base = (struct LED_Color_Fader *)&self->base_fader;
+
+  struct hsl_t *color = &base->color_1;
+
+  uint8_t value = self->position & 0x7F;      // Extract value (7 lower bits)
+  uint8_t direction = self->position & 0x80;  // Extract MSB as direction
+
+  // If not time to update, increment div_counter
+  if(Time_Event_Update(&self->clock)) {
+    if(direction) {
+      self->position = (value == 0) ? 0 : self->position - 1;
+    } else {
+      self->position = (value == 127) ? self->position | 0x80 : self->position + 1;
+    }
+    color->l = value;
+  }
+
+  LED_Color_Fader_Next(base);
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_Pulse::F3 (static void _Light_Pattern_Pulse_F3)
+**/
+static void _Light_Pattern_Pulse_F3(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Pulse *self = (struct Light_Pattern_Pulse *)unsafe_self;
+  struct LED_Color_Fader *_f = (struct LED_Color_Fader *)&self->base_fader;
+  // char message[MESSAGE_LENGTH];
+  if(_f->chain_hue_diff == 10) {
+    _f->chain_hue_diff = 21;
+    vfdco_display_render_message(Messages_Color_Rainbow[1], 0, CONFIG_MESSAGE_SHORT);
+  }
+  else if(_f->chain_hue_diff == 21) {
+    _f->chain_hue_diff = 42;
+    vfdco_display_render_message(Messages_Color_Rainbow[2], 0, CONFIG_MESSAGE_SHORT);
+  }
+  else {
+    _f->chain_hue_diff = 10;
+    vfdco_display_render_message(Messages_Color_Rainbow[0], 0, CONFIG_MESSAGE_SHORT);
+  }
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_Pulse:F3Var (static void _Light_Pattern_Pulse_F3Var)
+**/
+static void _Light_Pattern_Pulse_F3Var(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Pulse *self = (struct Light_Pattern_Pulse *)unsafe_self;
+  time_event_t *clock = &self->clock;
+  char k[CONFIG_NUM_DIGITS] = {' ', ' '};
+  if(clock->interval == CONFIG_PULSE_MEDIUM) {
+    clock->interval = CONFIG_PULSE_SLOW;
+    for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Pulse[0][i];
+  } else if(clock->interval == CONFIG_PULSE_SLOW) {
+    clock->interval = CONFIG_PULSE_FAST;
+    for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Pulse[2][i];
+  } else {
+    clock->interval = CONFIG_PULSE_MEDIUM;
+    for(uint_fast8_t i = 0; i < 4; ++i) k[i + 2] = Messages_Color_Pulse[1][i];
+  }
+  Time_Event_Reset(clock);
+  vfdco_display_render_message(k, 0, CONFIG_MESSAGE_SHORT);
+}
+
+/**
+* @brief  Implementation of virtual function Light_Pattern_Pulse::Hello (static void _Light_Pattern_Pulse_Hello)
+**/
+static void _Light_Pattern_Pulse_Hello(void) {
+  vfdco_display_render_message(Messages_Hello_Pulse, 0, CONFIG_MESSAGE_LONG);
+}
+
+/**
+  * @brief  Implementation of virtual function Light_Pattern_Pulse::Save (static void _Light_Pattern_Pulse_Save)
+ **/
+static void _Light_Pattern_Pulse_Save(Light_Pattern *unsafe_self) {
+  struct Light_Pattern_Pulse *self = (struct Light_Pattern_Pulse *)unsafe_self;
+  self->settings[LIGHT_PATTERN_SETTING_PULSE_chain_hue_diff]  = (uint8_t)self->base_fader.chain_hue_diff;
+  self->settings[LIGHT_PATTERN_SETTING_PULSE_speed] = (uint8_t)self->clock.interval;
+}
+
+/**
+* @brief  Constructor of Light_Pattern_Pulse class
+**/
+void Light_Pattern_Pulse_Init(struct Light_Pattern_Pulse *self, uint8_t *settings) {
+  // Default loading if saved value is garbage, then load by assignment
+  /* if((settings[LIGHT_PATTERN_SETTING_RAINBOW_saturation] == 0) || settings[LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff] == 0)
+    Light_Pattern_Rainbow_Default(settings); */
+  // Oh this is like driving a truck out of its garage to pick up a pretzel from a backery 100 ft away
+  LED_Color_Fader_Init(
+    &self->base_fader,
+    CONFIG_SPECTRUM_FADE_SPEED,  // Timer interval
+    HSL_Init(0, SATURATION_H, LIGHTNESS_H), // High saturation by default
+    HSL_Init(0, 0, 0),
+    (int8_t)settings[LIGHT_PATTERN_SETTING_PULSE_chain_hue_diff], // Hue difference between chained pixels
+    0
+  );
+
+  self->position = LIGHTNESS_H;
+  self->clock = Time_Event_Init(settings[LIGHT_PATTERN_SETTING_PULSE_speed]);
+  self->base_fader.state = FADER_STATE_ACTIVE;
+  self->settings = settings;
+
+  Light_Pattern_F3 = _Light_Pattern_Pulse_F3;
+  Light_Pattern_F3Var = _Light_Pattern_Pulse_F3Var;
+  Light_Pattern_Update = _Light_Pattern_Pulse_Update;
+  Light_Pattern_Hello = _Light_Pattern_Pulse_Hello;
+  Light_Pattern_Save = _Light_Pattern_Pulse_Save;
+}
+
 
 
 /** Begin of:

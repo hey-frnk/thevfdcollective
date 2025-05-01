@@ -46,13 +46,22 @@ extern "C" {
  * @brief Initialize display with an initial brightness dimming factor
  * @param dim_factor used to divide brightness by 2^(dim_factor). Hence, e.g. dim_factor == 2 divides brightness by 4, and the display is 1/4 bright
  */
-void        vfdco_display_init(uint8_t dim_factor);
+void        vfdco_display_init(uint8_t dim_factor, uint8_t digit_fade_mode);
 
 /**
  * @brief Set a dimming factor to the display, in order to reduce brightness
  * @param dim_factor used to divide brightness by 2^(dim_factor). Hence, e.g. dim_factor == 2 divides brightness by 4, and the display is 1/4 bright
  */
 void        vfdco_display_set_dim_factor(uint8_t dim_factor);
+
+/**
+ * @brief Set a fade mode of display
+ * @param digit_fade_mode 
+ *        0: No fading
+ *        1: Cross fade-out to dark and fade-in to full brightness
+ *        2: Blend without going dark
+ */
+void        vfdco_display_set_digit_fade_mode(uint8_t digit_fade_mode);
 
 /**
  * @brief Send time to the display

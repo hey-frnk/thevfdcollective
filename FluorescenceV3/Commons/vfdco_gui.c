@@ -50,6 +50,28 @@ SOFTWARE.*/
 #include "vfdco_gui.h"
 
 /** Begin of:
+ * @tableofcontents SECTION_GUI_FORMAT
+ * @details GUI_Format is the virtual base class. Its children perform operations to the display.
+ * Each child class must overwrite the following virtual methods:
+ * - F2: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - F3: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - F4: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - F2Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - F3Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - F4Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
+ * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
+**/
+typedef union GUI_Format GUI_Format;
+void         (*GUI_Format_F2)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F3)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F4)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F2Var)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F3Var)(GUI_Format *unsafe_self);
+void         (*GUI_Format_F4Var)(GUI_Format *unsafe_self);
+void         (*GUI_Format_Update)(GUI_Format *unsafe_self);
+void         (*GUI_Format_Save)(GUI_Format *unsafe_self);
+
+/** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT_CONSTANTS
  * @brief Definition of all constants used in the GUI. Customizable constants are defined in vfdco_config.h
 **/
@@ -66,6 +88,8 @@ static const uint16_t GUI_Format_Time_Dot_Intervals[4] = {
 #define _SHARED_dim_factor_night_shift_start_m  3
 #define _SHARED_dim_factor_night_shift_end_h    4
 #define _SHARED_dim_factor_night_shift_end_m    5
+
+#define _SHARED_digit_fade_mode                 0
 
 
 #define MESSAGES_BRIGHTNESS_SET_IDLE_MAX 6
@@ -97,6 +121,20 @@ static const char Messages_Brightness_Set_Nsh[MESSAGES_BRIGHTNESS_SET_NSH][CONFI
   {'A', 'V', 'E', 'R', 'A', 'G'}, // Average Joe
   {'O', 'V', 'L', ' ', ' ', ' '}, // Owl
   {'S', 'T', 'U', 'D', 'N', 'T'}  // Student
+};
+
+#define MESSAGES_DIGIT_FADE_SET_IDLE_MAX 5
+static const char Messages_Digit_Fade_Set_Idle[MESSAGES_DIGIT_FADE_SET_IDLE_MAX][CONFIG_NUM_DIGITS] = {
+  {'D', 'I', 'G', 'I', 'T', ' '}, // Digit
+  {'F', 'A', 'D', 'E', ' ', ' '}, // Fade
+  {'S', 'E', 'T', ' ', ' ', ' '}, // Set
+  {'F', 2,   ' ', 'T', 'O', ' '}, // F2 to
+  {'C', 'H', 'A', 'N', 'G', 'E'}, // Change
+};
+static const char Messages_Digit_Fade_Set[3][CONFIG_NUM_DIGITS] = {
+  {'N', '0', 'N', 'E', ' ', ' '}, // None
+  {'C', 'R', 'O', 'S', 'S', ' '}, // Fade-out and fade-in digits
+  {'B', 'L', 'E', 'N', 'D', ' '}  // Blend digits
 };
 
  
@@ -641,6 +679,53 @@ void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self
   GUI_Format_F3Var = NULL;
   GUI_Format_F4Var = NULL;
   GUI_Format_Update = _GUI_Format_Brightness_Setter_Update;
+  GUI_Format_Save = NULL;
+}
+
+
+/**
+ * @tableofcontents SECTION_GUI_DIGIT_FADE_SETTER
+ * F2 to set
+ */
+
+ static void _GUI_Format_Digit_Fade_Setter_Update(GUI_Format *unsafe_self) {
+  struct GUI_Format_Digit_Fade_Setter *self = (struct GUI_Format_Digit_Fade_Setter *)unsafe_self;
+  if(Time_Event_Update(&self->message_timer)) {
+    // Idle. Waiting for F2/F3/F4/F4Var
+    // Just cycle through all the messages
+    uint8_t message_counter = self->message_counter;
+    vfdco_display_render_message( Messages_Digit_Fade_Set_Idle[message_counter], 0x00, 0);
+    ++self->message_counter;
+    if(self->message_counter == MESSAGES_DIGIT_FADE_SET_IDLE_MAX) self->message_counter = 0;
+  }
+}
+
+static void _GUI_Format_Digit_Fade_Setter_F2(GUI_Format *unsafe_self) {
+  struct GUI_Format_Digit_Fade_Setter *self = (struct GUI_Format_Digit_Fade_Setter *)unsafe_self;
+  if(self->digit_fade_mode == CONFIG_DIGIT_FADE_NONE) {
+    self->digit_fade_mode = CONFIG_DIGIT_FADE_CROSS;
+  } else if(self->digit_fade_mode == CONFIG_DIGIT_FADE_CROSS) {
+    self->digit_fade_mode = CONFIG_DIGIT_FADE_BLEND;
+  } else {
+    self->digit_fade_mode = CONFIG_DIGIT_FADE_NONE;
+  }
+  vfdco_display_render_message(Messages_Digit_Fade_Set[self->digit_fade_mode], 0x00, CONFIG_MESSAGE_SHORT);
+  self->message_counter = 0; // Resume message cycling
+}
+
+void GUI_Format_Digit_Fade_Setter_Init(struct GUI_Format_Digit_Fade_Setter *self, const uint8_t *shared_initializer) {
+  self->digit_fade_mode = shared_initializer[_SHARED_digit_fade_mode];
+  
+  self->message_timer = Time_Event_Init(800);
+  self->message_counter = 0;
+
+  GUI_Format_F2 = _GUI_Format_Digit_Fade_Setter_F2;
+  GUI_Format_F3 = NULL;
+  GUI_Format_F4 = NULL;
+  GUI_Format_F2Var = NULL;
+  GUI_Format_F3Var = NULL;
+  GUI_Format_F4Var = NULL;
+  GUI_Format_Update = _GUI_Format_Digit_Fade_Setter_Update;
   GUI_Format_Save = NULL;
 }
 

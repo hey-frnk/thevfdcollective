@@ -55,7 +55,7 @@ extern "C" {
  */
 // Edit software version here
 #define CONFIG_SW_STRING_LENGTH 6
-#define CONFIG_SW_STRING {'3', '.', '0', 'a', ' ', ' '}
+#define CONFIG_SW_STRING {'3', '.', '1', 'a', ' ', ' '}
 // Edit hardware version here
 #define CONFIG_HW_STRING_LENGTH 4
 #define CONFIG_HW_STRING {'2', '.', 'x', ' '}
@@ -89,6 +89,10 @@ extern "C" {
 #define CONFIG_BRIGHTNESS_HALF  2 // 1/4 brightness
 #define CONFIG_BRIGHTNESS_MIN   4 // 1/8 brightness
 
+#define CONFIG_DIGIT_FADE_NONE   0
+#define CONFIG_DIGIT_FADE_CROSS  1
+#define CONFIG_DIGIT_FADE_BLEND  2
+
 /**
  * @tableofcontents SECTION_CONFIG_GUI
  * @brief Configuration parameters for the GUI
@@ -108,9 +112,9 @@ extern "C" {
  */
 // Each iterable light pattern is represented as a number n according to clock_routines. The n-th bit in the 
 // default register below enables or disables a light pattern from being switched to by F2 pressing or in the randomizer
-// 0b[COP | TIME_CODE | MUSIC | CHASE | RAINBOW | SPECTRUM | MOMENTSOFBLISS | STATIC]
-#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b11111111 // All enabled
-#define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b01011111 // All except mic & cop
+// 0b[r|r|r|r|r|r|r| PULSE || COP | TIME_CODE | MUSIC | CHASE | RAINBOW | SPECTRUM | MOMENTSOFBLISS | STATIC]
+#define CONFIG_ITERABLE_ENABLED_INSTANCES_DEFAULT 0b00000000, 0b11111111 // All enabled
+#define CONFIG_RANDOM_ENABLED_INSTANCES_DEFAULT 0b00000000, 0b01011111 // All except mic & cop
 // Definition for different lightess & saturation settings
 #define CONFIG_LIGHTNESS_HIGH     127
 #define CONFIG_LIGHTNESS_MEDIUM   90
@@ -124,6 +128,10 @@ extern "C" {
 #define CONFIG_CHASE_FADE_SPEED            60
 #define CONFIG_COP_FADE_SPEED              25
 #define CONFIG_MOMENTSOFBLISS_FADE_SPEED   10
+// Pulse fade speed definitions (architecture specific!)
+#define CONFIG_PULSE_FAST                  16
+#define CONFIG_PULSE_MEDIUM                32
+#define CONFIG_PULSE_SLOW                  64
 
 /**
  * @tableofcontents SECTION_CONFIG_COM

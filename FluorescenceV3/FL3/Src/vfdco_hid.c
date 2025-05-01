@@ -8,9 +8,22 @@
 #endif
 #define _HID_IMPLEMENTATION
 
-static uint32_t button_timers[4] = {0};
-static uint8_t button_enable[4] = {0};        // Button enable
-static uint8_t long_press_enable[4] = {0};    // Long press enable
+typedef enum {
+  BUTTON_FSM_IDLE,
+  BUTTON_FSM_DEBOUNCE_PRESS,
+  BUTTON_FSM_PRESSED,
+  BUTTON_FSM_LONG_HELD,
+  BUTTON_FSM_DEBOUNCE_RELEASE,
+} BUTTON_STATE_t;
+
+typedef struct {
+  BUTTON_STATE_t state;
+  uint32_t timestamp;
+  uint8_t event;
+  uint8_t longpress_handled;
+} BUTTON_FSM_t;
+
+static BUTTON_FSM_t button_fsms[4] = {0};
 
 static uint16_t _vfdco_button_to_pin(uint8_t button) {
   switch(button) {
@@ -38,29 +51,59 @@ void _vfdco_hid_button_set(uint16_t count, uint8_t button) {
   return;
 }
 
-uint8_t vfdco_hid_button_retrieve(uint8_t num) {
-  // Button check function
-  uint8_t button_state = BUTTON_STATE_OFF;                      // State return variable
-  if(HAL_GPIO_ReadPin(_vfdco_button_to_port(num), _vfdco_button_to_pin(num)) == 0) {
-    if(button_enable[num] == 0) {                               // If button not pressed before
-      button_enable[num] = 1;                                   // Set pressed flag
-      button_timers[num] = vfdco_time_get_milliseconds();       // Set timer as millis
-    }
-    if ((vfdco_time_get_milliseconds() - button_timers[num] > BUTTON_LONGPRESS_THRESHOLD) && (long_press_enable[num] == 0)) {
-      long_press_enable[num] = 1;                               // Long press detected
-      button_state = BUTTON_STATE_LONGPRESS;                    // Set alternative number
-    }
-  } else {                                                      // If digitalRead returns FALSE
-    if(button_enable[num] == 1) {                               // If pressed flag set
-      if(long_press_enable[num] == 1) {                         // If long press flag set
-        long_press_enable[num] = 0;                             // Reset long press flag
-      } else {
-        button_state = BUTTON_STATE_SHORTPRESS;
+void vfdco_hid_button_retrieve(uint8_t num, uint8_t is_pressed) {
+  BUTTON_FSM_t *fsm = &button_fsms[num];
+  uint32_t now = vfdco_time_get_milliseconds();
+
+  switch(fsm->state) {
+
+    case BUTTON_FSM_IDLE:
+      if(is_pressed) {
+        fsm->state = BUTTON_FSM_DEBOUNCE_PRESS;
+        fsm->timestamp = now;
+        fsm->longpress_handled = 0;
       }
-      button_enable[num] = 0;
-    }
+      break;
+    
+    case BUTTON_FSM_DEBOUNCE_PRESS:
+      if(!is_pressed) {
+        fsm->state = BUTTON_FSM_IDLE;
+      } else if(now - fsm->timestamp >= BUTTON_SHORTPRESS_THRESHOLD) {
+        fsm->state = BUTTON_FSM_PRESSED;
+        fsm->timestamp = now;
+      }
+      break;
+    
+    case BUTTON_FSM_PRESSED:
+      if(!is_pressed) {
+        fsm->state = BUTTON_FSM_DEBOUNCE_RELEASE;
+        fsm->timestamp = now;
+      } else if(now - fsm->timestamp >= BUTTON_LONGPRESS_THRESHOLD) {
+        fsm->state = BUTTON_FSM_LONG_HELD;
+        fsm->event = BUTTON_EVENT_LONGPRESS;
+        fsm->longpress_handled = 1; // <--- Important
+      }
+      break;
+
+    case BUTTON_FSM_LONG_HELD:
+      if(!is_pressed) {
+        fsm->state = BUTTON_FSM_DEBOUNCE_RELEASE;
+        fsm->timestamp = now;
+      }
+      break;
+
+    case BUTTON_FSM_DEBOUNCE_RELEASE:
+      if(is_pressed) {
+        fsm->state = BUTTON_FSM_PRESSED; // Re-bounce
+      } else if(now - fsm->timestamp >= BUTTON_SHORTPRESS_THRESHOLD) {
+        if(fsm->longpress_handled == 0) { // <--- Important: Only if not already a longpress
+          fsm->event = BUTTON_EVENT_SHORTPRESS;
+        }
+        fsm->state = BUTTON_FSM_IDLE;
+        fsm->longpress_handled = 0; // Reset
+      }
+      break;
   }
-  return button_state;
 }
 
 void vfdco_hid_init() {
@@ -68,8 +111,24 @@ void vfdco_hid_init() {
 }
 
 void vfdco_hid_button_retrieve_all(uint8_t *b0, uint8_t *b1, uint8_t *b2, uint8_t *b3) {
-  *b0 = vfdco_hid_button_retrieve(BUTTON_F1);
-  *b1 = vfdco_hid_button_retrieve(BUTTON_F2);
-  *b2 = vfdco_hid_button_retrieve(BUTTON_F3);
-  *b3 = vfdco_hid_button_retrieve(BUTTON_F4);
+  uint8_t states[4] = {
+    HAL_GPIO_ReadPin(_vfdco_button_to_port(BUTTON_F1), _vfdco_button_to_pin(BUTTON_F1)) == GPIO_PIN_RESET,
+    HAL_GPIO_ReadPin(_vfdco_button_to_port(BUTTON_F2), _vfdco_button_to_pin(BUTTON_F2)) == GPIO_PIN_RESET,
+    HAL_GPIO_ReadPin(_vfdco_button_to_port(BUTTON_F3), _vfdco_button_to_pin(BUTTON_F3)) == GPIO_PIN_RESET,
+    HAL_GPIO_ReadPin(_vfdco_button_to_port(BUTTON_F4), _vfdco_button_to_pin(BUTTON_F4)) == GPIO_PIN_RESET
+  };
+
+  for(uint_fast8_t i = 0; i < 4; ++i) {
+	  vfdco_hid_button_retrieve(i, states[i]);
+  }
+
+  *b0 = button_fsms[0].event;
+  *b1 = button_fsms[1].event;
+  *b2 = button_fsms[2].event;
+  *b3 = button_fsms[3].event;
+
+  // Clear events after reading
+  for(uint_fast8_t i = 0; i < 4; ++i) {
+    button_fsms[i].event = BUTTON_EVENT_OFF;
+  }
 }

@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#include <QString>
+#include <QFile>
+#include <QStandardPaths>
+#include <QDebug>
+#include <QDir>
 #include "../Commons/vfdco_config.h"
 #include "../Commons/vfdco_serialization.h"
 
@@ -15,29 +20,52 @@ static inline uint16_t _vfdco_calculate_length(const uint8_t *length_arr, const 
 }
 
 void vfdco_serialization_write(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length) {
-  FILE *bin_file;
-  bin_file = fopen("serialization.bin", "r+");
-  
-  struct Serialization_Header _h = {
-    .vfdco_1 = 'v',
-    .vfdco_2 = 'f',
-    .sw_str = CONFIG_SW_STRING,
-    .hw_str = CONFIG_HW_STRING,
-    .data_container_length = _vfdco_calculate_length(length_arr, length_arr_length)
-  };
+    QString qPath = QDir::currentPath() + "/serialization.bin";
+    qDebug() << qPath;
+    QByteArray pathBytes = qPath.toUtf8(); // convert to UTF-8 path
+    const char *path = pathBytes.constData();
 
-  fwrite(&_h, sizeof(struct Serialization_Header), 1, bin_file);
+    FILE *bin_file = fopen(path, "wb+"); // "wb+" ensures file is created if not existing
+    if (!bin_file) {
+        perror("fopen failed");
+        return;
+    }
 
-  size_t data_bytes_written = 0;
-  printf("SERIALIZATION: Header written, starting data write to file!\n");
-  for(uint8_t i = 0; i < length_arr_length; ++i) {
-    data_bytes_written += fwrite(data[i], sizeof(uint8_t), length_arr[i], bin_file);
-    printf("Block write of size %hhu at offset %zu: ", length_arr[i], data_bytes_written);
-      for(uint8_t j = 0; j < length_arr[i]; ++j) printf("%hhu ", data[i][j]);
-    printf("\n");
-  }
+    struct Serialization_Header _h = {
+        .vfdco_1 = 'v',
+        .vfdco_2 = 'f',
+        .sw_str = CONFIG_SW_STRING,
+        .hw_str = CONFIG_HW_STRING,
+        .data_container_length = _vfdco_calculate_length(length_arr, length_arr_length)
+    };
 
-  fclose(bin_file);
+    if (fwrite(&_h, sizeof(struct Serialization_Header), 1, bin_file) != 1) {
+        perror("fwrite header failed");
+        fclose(bin_file);
+        return;
+    }
+
+    size_t data_bytes_written = 0;
+    printf("SERIALIZATION: Header written, starting data write to file!\n");
+
+    for (uint8_t i = 0; i < length_arr_length; ++i) {
+        size_t written = fwrite(data[i], sizeof(uint8_t), length_arr[i], bin_file);
+        if (written != length_arr[i]) {
+            fprintf(stderr, "Error: Could not write full data block %u\n", i);
+            fclose(bin_file);
+            return;
+        }
+
+        data_bytes_written += written;
+        printf("Block write of size %hhu at offset %zu: ", length_arr[i], data_bytes_written);
+        for (uint8_t j = 0; j < length_arr[i]; ++j) {
+            printf("%hhu ", data[i][j]);
+        }
+        printf("\n");
+    }
+
+    fclose(bin_file);
+    printf("Serialization complete.\n");
 }
 
 SERIALIZATION_HEADER_STATUS_t vfdco_serialization_read(uint8_t *const data[], const uint8_t *length_arr, const uint8_t length_arr_length) {

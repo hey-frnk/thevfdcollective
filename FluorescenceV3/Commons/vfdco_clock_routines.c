@@ -75,11 +75,11 @@ static vfdco_date_t global_date;
 static time_event_t global_time_updater;
 
 // HID variables
-static uint8_t global_button_F1_state = BUTTON_STATE_OFF;
-static uint8_t global_button_F2_state = BUTTON_STATE_OFF;
-static uint8_t global_button_F3_state = BUTTON_STATE_OFF;
-static uint8_t global_button_F4_state = BUTTON_STATE_OFF;
-#define GLOBAL_CLEAR_BUTTON(_button) _button = BUTTON_STATE_OFF
+static uint8_t global_button_F1_state = BUTTON_EVENT_OFF;
+static uint8_t global_button_F2_state = BUTTON_EVENT_OFF;
+static uint8_t global_button_F3_state = BUTTON_EVENT_OFF;
+static uint8_t global_button_F4_state = BUTTON_EVENT_OFF;
+#define GLOBAL_CLEAR_BUTTON(_button) _button = BUTTON_EVENT_OFF
 
 // GUI variables
 GUI_Format global_gui_instance;
@@ -97,12 +97,24 @@ light_pattern_instance_t global_light_instance_random;
 #define GLOBAL_LIGHT_INSTANCE_RANDOM_OFF 255
 #define GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON (global_light_instance_random != GLOBAL_LIGHT_INSTANCE_RANDOM_OFF)
 
-#define GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(_instance)     ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register]) &   (1 << (_instance)))
-#define GLOBAL_ITERABLE_INSTANCE_ENABLE(_instance)         ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register]) |=  (1 << (_instance)))
-#define GLOBAL_ITERABLE_INSTANCE_DISABLE(_instance)        ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register]) &= ~(1 << (_instance)))
-#define GLOBAL_RANDOM_INSTANCE_IS_ENABLED(_instance)     ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register])  &   (1 << (_instance)))
-#define GLOBAL_RANDOM_INSTANCE_ENABLE(_instance)         ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register])  |=  (1 << (_instance)))
-#define GLOBAL_RANDOM_INSTANCE_DISABLE(_instance)        ((SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register])  &= ~(1 << (_instance)))
+#define GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(_i) \
+    ((((uint16_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register + 1]) | \
+     ((uint16_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register] << 8)) & (1 << (_i)))
+#define GLOBAL_ITERABLE_INSTANCE_ENABLE(_i) \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register + 1]     |= (uint8_t)((1 << (_i)) & 0xFF), \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register] |= (uint8_t)((1 << (_i)) >> 8)
+#define GLOBAL_ITERABLE_INSTANCE_DISABLE(_i) \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register + 1]     &= (uint8_t)(~((1 << (_i)) & 0xFF)), \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register] &= (uint8_t)(~((1 << (_i)) >> 8))
+#define GLOBAL_RANDOM_INSTANCE_IS_ENABLED(_i) \
+    ((((uint16_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register + 1]) | \
+     ((uint16_t)SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register] << 8)) & (1 << (_i)))
+#define GLOBAL_RANDOM_INSTANCE_ENABLE(_i) \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register + 1]     |= (uint8_t)((1 << (_i)) & 0xFF), \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register] |= (uint8_t)((1 << (_i)) >> 8)
+#define GLOBAL_RANDOM_INSTANCE_DISABLE(_i) \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register + 1]     &= (uint8_t)(~((1 << (_i)) & 0xFF)), \
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register] &= (uint8_t)(~((1 << (_i)) >> 8))
 
 // Clock power variables
 static night_shift_state_t global_night_shift_state;
@@ -190,7 +202,10 @@ inline void vfdco_clock_power_initializer() {
 
 inline void vfdco_clock_gui_initializer() {
   // Initialize display driver first, then GUI
-  vfdco_display_init(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
+  vfdco_display_init(
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display], 
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_digit_fade_mode]
+  );
   // Start by creating a time instance
   set_next_gui_instance(GUI_TIME);
 }
@@ -274,7 +289,7 @@ inline void vfdco_clock_power_routine() {
         }
       }
       // F1 long press: Explicit wake trigger
-      if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
+      if(global_button_F1_state == BUTTON_EVENT_LONGPRESS) {
         vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY);
         vfdco_display_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_display]);
         vfdco_clr_set_dim_factor(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_dim_factor_led]);
@@ -301,7 +316,7 @@ inline void vfdco_clock_power_routine() {
 // VFD display data render routine
 inline void vfdco_clock_gui_routine() {
   if(Time_Event_Update(&display_updater)) GUI_Format_Update(&global_gui_instance);
-  if(global_button_F1_state == BUTTON_STATE_SHORTPRESS) {
+  if(global_button_F1_state == BUTTON_EVENT_SHORTPRESS) {
     vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); // Lazy debounce
     /* F1: Change GUI, done in 4 steps:
         - (1) Save settings (internal destructor call)
@@ -333,6 +348,12 @@ inline void vfdco_clock_gui_routine() {
         }
         break;
       }
+      case GUI_DIGIT_FADE_SET: {
+        struct GUI_Format_Digit_Fade_Setter *self = (struct GUI_Format_Digit_Fade_Setter*)&global_gui_instance;
+        vfdco_display_set_digit_fade_mode(self->digit_fade_mode);
+        SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_digit_fade_mode] = self->digit_fade_mode;
+        break;
+      }
       default: break;
     }
     // (3) Dealloc
@@ -342,12 +363,13 @@ inline void vfdco_clock_gui_routine() {
       case GUI_TIME:            { set_next_gui_instance(GUI_DATE);            break; }
       case GUI_DATE:            { set_next_gui_instance(GUI_STOPWATCH);       break; }
       case GUI_STOPWATCH:       { set_next_gui_instance(GUI_BRIGHTNESS_SET);  break; }
-      case GUI_BRIGHTNESS_SET:  { set_next_gui_instance(GUI_TIME);            break; }
+      case GUI_BRIGHTNESS_SET:  { set_next_gui_instance(GUI_DIGIT_FADE_SET);  break; }
+      case GUI_DIGIT_FADE_SET:  { set_next_gui_instance(GUI_TIME);            break; }
       case GUI_TIME_DATE_SET:   { set_next_gui_instance(GUI_TIME);            break; }
       default: break;
     }
     GLOBAL_CLEAR_BUTTON(global_button_F1_state); // Priority clear
-  } else if(global_button_F1_state == BUTTON_STATE_LONGPRESS) {
+  } else if(global_button_F1_state == BUTTON_EVENT_LONGPRESS) {
     vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY);
     if((global_gui_instance_counter == GUI_TIME) || (global_gui_instance_counter == GUI_DATE)) {
       // To time set menu: Save settings
@@ -360,21 +382,21 @@ inline void vfdco_clock_gui_routine() {
   }
 
   switch(global_button_F2_state) {
-    case BUTTON_STATE_SHORTPRESS:   if(GUI_Format_F2)    {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F2(&global_gui_instance);    GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
-    case BUTTON_STATE_LONGPRESS:    if(GUI_Format_F2Var) {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F2Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
+    case BUTTON_EVENT_SHORTPRESS:   if(GUI_Format_F2)    {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F2(&global_gui_instance);    GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
+    case BUTTON_EVENT_LONGPRESS:    if(GUI_Format_F2Var) {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F2Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F2_state);} break;
   }
   switch(global_button_F3_state) {
-    case BUTTON_STATE_SHORTPRESS:   if(GUI_Format_F3)    {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F3(&global_gui_instance);    GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
-    case BUTTON_STATE_LONGPRESS:    if(GUI_Format_F3Var) {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F3Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
+    case BUTTON_EVENT_SHORTPRESS:   if(GUI_Format_F3)    {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F3(&global_gui_instance);    GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
+    case BUTTON_EVENT_LONGPRESS:    if(GUI_Format_F3Var) {vfdco_time_delay_milliseconds(CONFIG_NOMESSAGE_DELAY); GUI_Format_F3Var(&global_gui_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state);} break;
   }
   switch(global_button_F4_state) {
-    case BUTTON_STATE_SHORTPRESS: {
+    case BUTTON_EVENT_SHORTPRESS: {
       if(global_gui_instance_counter == GUI_STOPWATCH) vfdco_clock_settings_save(0);
       else if(GUI_Format_F4) GUI_Format_F4(&global_gui_instance);
       GLOBAL_CLEAR_BUTTON(global_button_F4_state); 
       break;
     }
-    case BUTTON_STATE_LONGPRESS: {
+    case BUTTON_EVENT_LONGPRESS: {
       if(global_gui_instance_counter == GUI_STOPWATCH) vfdco_clock_settings_default(0);
       else if(GUI_Format_F4Var) GUI_Format_F4Var(&global_gui_instance);
       GLOBAL_CLEAR_BUTTON(global_button_F4_state); 
@@ -386,13 +408,13 @@ inline void vfdco_clock_gui_routine() {
 // VFD LED light illumination routine
 inline void vfdco_clock_lights_routine() {
   Light_Pattern_Update(&global_light_instance);
-  if(global_button_F2_state == BUTTON_STATE_SHORTPRESS) {
+  if(global_button_F2_state == BUTTON_EVENT_SHORTPRESS) {
     if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
       find_next_lights_instance();
       if(Light_Pattern_Hello) Light_Pattern_Hello();
     }
     GLOBAL_CLEAR_BUTTON(global_button_F2_state); // Priority clear
-  } else if(global_button_F2_state == BUTTON_STATE_LONGPRESS) {
+  } else if(global_button_F2_state == BUTTON_EVENT_LONGPRESS) {
     if(GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) { // If random state is on, turn off
       GLOBAL_SET_NEXT_RANDOM_INSTANCE(GLOBAL_LIGHT_INSTANCE_RANDOM_OFF);
       vfdco_display_render_message(Messages_Routine_RandomOff, 0, CONFIG_MESSAGE_LONG);
@@ -405,10 +427,10 @@ inline void vfdco_clock_lights_routine() {
     GLOBAL_CLEAR_BUTTON(global_button_F2_state); // Priority clear
   }
   switch(global_button_F3_state) {
-    case BUTTON_STATE_SHORTPRESS:
+    case BUTTON_EVENT_SHORTPRESS:
       if(Light_Pattern_F3) { Light_Pattern_F3(&global_light_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state); } 
       break;
-    case BUTTON_STATE_LONGPRESS:
+    case BUTTON_EVENT_LONGPRESS:
       if(Light_Pattern_F3Var) { Light_Pattern_F3Var(&global_light_instance); GLOBAL_CLEAR_BUTTON(global_button_F3_state); }
       break;
     default: break;
@@ -552,6 +574,13 @@ static void set_next_gui_instance(gui_instance_t next_instance) {
       );
       break;
     }
+    case GUI_DIGIT_FADE_SET: {
+      GUI_Format_Digit_Fade_Setter_Init(
+        (struct GUI_Format_Digit_Fade_Setter *)&global_gui_instance,
+        SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_digit_fade_mode
+      );
+      break;
+    }
     default: break;
   }
   GLOBAL_SET_NEXT_GUI_INSTANCE(next_instance);
@@ -560,19 +589,19 @@ static void set_next_gui_instance(gui_instance_t next_instance) {
 static void find_next_lights_instance() {
   if(Light_Pattern_Save) Light_Pattern_Save(&global_light_instance);
   Container_Light_Pattern_Clear(&global_light_instance);
-  if(global_light_instance_counter < 8) { // Iterable instance
+  if(global_light_instance_counter < 16) { // Iterable instance
     light_pattern_instance_t next_iterable_instance;
     if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
       next_iterable_instance = global_light_instance_counter;
       do { // Look for the next enabled iterable instance in the enable register
         ++next_iterable_instance;
-        if(next_iterable_instance == 8) next_iterable_instance = LIGHT_PATTERN_STATIC;
+        if(next_iterable_instance == 16) next_iterable_instance = LIGHT_PATTERN_STATIC;
       } while(!GLOBAL_ITERABLE_INSTANCE_IS_ENABLED(next_iterable_instance));
     } else {
       next_iterable_instance = vfdco_util_random(3);
       do { // Look for the next enabled iterable instance in the enable register
         ++next_iterable_instance;
-        if(next_iterable_instance == 8) next_iterable_instance = LIGHT_PATTERN_STATIC;
+        if(next_iterable_instance == 16) next_iterable_instance = LIGHT_PATTERN_STATIC;
       } while(!GLOBAL_RANDOM_INSTANCE_IS_ENABLED(next_iterable_instance));
     }
     set_next_lights_instance(next_iterable_instance);
@@ -662,6 +691,10 @@ static void set_next_lights_instance(light_pattern_instance_t next_instance) {
       Light_Pattern_Serial1_Init((struct Light_Pattern_Serial1 *)&global_light_instance, instance_settings);
       break;
     }
+    case LIGHT_PATTERN_PULSE: {
+	  Light_Pattern_Pulse_Init((struct Light_Pattern_Pulse *)&global_light_instance, instance_settings);
+	  break;
+	}
   }
   if(!GLOBAL_LIGHT_INSTANCE_RANDOM_IS_ON) {
     GLOBAL_SET_NEXT_LIGHT_INSTANCE(next_instance);

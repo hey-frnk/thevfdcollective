@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QTextStream>
 #include <QDebug>
+#include <QFile>
 
 #include "../Commons/vfdco_config.h"
 #include "../Commons/vfdco_com.h"
@@ -359,7 +360,7 @@ void FluorescenceSimulator::read_in_protocol(QString file_name)
     while(!csv_read_in.atEnd()) {
         // Read in every line into vector
         QStringList str_list;
-        str_list << csv_read_in.readLine().split(",", QString::SkipEmptyParts);
+        str_list << csv_read_in.readLine().split(",", Qt::SkipEmptyParts);
         // qDebug() << "reading:" << str_list;
         // qDebug() << str_list.length();
         protocol_file.push_back(str_list);

@@ -42,6 +42,7 @@ SOFTWARE.*/
   * SECTION_LIGHT_PATTERN_TIME_CODE
   * SECTION_LIGHT_PATTERN_COP
   * SECTION_LIGHT_PATTERN_MOMENTSOFBLISS
+  * SECTION_LIGHT_PATTERN_PULSE
   * SECTION_CONTAINER_LIGHT_PATTERN
   ******************************************************************************
  **/
@@ -110,12 +111,12 @@ void LED_Color_Fader_Init(
   int8_t                    chain_hue_diff, // Hue difference between chained pixels
   uint8_t                   shuffle_enable  // Enable order shuffling
 );
-LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
+extern LED_COLOR_STATE_t (*LED_Color_Fader_Next)(struct LED_Color_Fader *self);
 void LED_Color_Fader_Shuffle(struct LED_Color_Fader *self);
 
 /** Begin of:
  * @tableofcontents SECTION_LIGHT_PATTERN
- * @details Light_Pattern is the virtual base class. Its children perform operations 
+ * @details Light_Pattern is the virtual base class. Its children perform operations
  * to LED lights to generate patterns. Each child class must overwrite the following virtual methods:
  * - F3: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
  * - F3Var: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
@@ -124,11 +125,11 @@ void LED_Color_Fader_Shuffle(struct LED_Color_Fader *self);
  * - Save: This method is called before destruction and saves variables onto the same memory block used in the initializer
 **/
 typedef union Light_Pattern Light_Pattern;
-void (*Light_Pattern_F3)     (Light_Pattern *unsafe_self);
-void (*Light_Pattern_F3Var)  (Light_Pattern *unsafe_self);
-void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
-void (*Light_Pattern_Hello)  (void);
-void (*Light_Pattern_Save)   (Light_Pattern *unsafe_self);
+extern void (*Light_Pattern_F3)     (Light_Pattern *unsafe_self);
+extern void (*Light_Pattern_F3Var)  (Light_Pattern *unsafe_self);
+extern void (*Light_Pattern_Update) (Light_Pattern *unsafe_self);
+extern void (*Light_Pattern_Hello)  (void);
+extern void (*Light_Pattern_Save)   (Light_Pattern *unsafe_self);
 
 // Documentation see config.h::CONFIG_SAVED_SETTINGS_TABLE. Anonymous enums for setting offsets
 #define CREATE_SETTINGS_OFFSET_LIGHT_PATTERN(_entry, _offset, _size, _setting_identifier, _defaultval, _description) \
@@ -146,6 +147,7 @@ struct Light_Pattern_Static {
   time_event_t          t;
   uint8_t               position;   // Color lookup array index
   uint8_t               target_arr[4 * CONFIG_NUM_PIXELS]; // Bound to protocol fixed width
+  uint8_t               reversed;
 };
 
 /**
@@ -306,6 +308,24 @@ struct Light_Pattern_MomentsOfBliss {
 void Light_Pattern_MomentsOfBliss_Init(struct Light_Pattern_MomentsOfBliss *self, uint8_t *settings);
 
 /** Begin of:
+  * @tableofcontents SECTION_LIGHT_PATTERN_PULSE
+**/
+/**
+  * @brief  Definition of Light_Pattern_Pulse class
+**/
+struct Light_Pattern_Pulse {
+  uint8_t                *settings;
+  time_event_t           clock;
+  uint_fast8_t           position;
+
+  struct LED_Color_Fader base_fader;
+};
+/**
+  * @brief  Constructor of Light_Pattern_MomentsOfBliss class
+**/
+void Light_Pattern_Pulse_Init(struct Light_Pattern_Pulse *self, uint8_t *settings);
+
+/** Begin of:
   * @tableofcontents SECTION_CONTAINER_LIGHT_PATTERN
   * @details The Light Pattern container. C Unions are awesome, the German Union party not so.
   * The container is a single element memory pool consisting of a base member and all used childs
@@ -323,6 +343,7 @@ typedef union Light_Pattern {
   struct Light_Pattern_MomentsOfBliss   _lp_bliss;
   struct Light_Pattern_Serial0          _lp_ser0;
   struct Light_Pattern_Serial1          _lp_ser1;
+  struct Light_Pattern_Pulse            _lp_pulse;
 } Light_Pattern;
 
 /**

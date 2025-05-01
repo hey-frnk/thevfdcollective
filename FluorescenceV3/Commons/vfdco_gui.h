@@ -37,6 +37,7 @@ SOFTWARE.*/
   * SECTION_GUI_FORMAT_TIME_DATE_SET
   * SECTION_GUI_FORMAT_STOPWATCH
   * SECTION_GUI_BRIGHTNESS_SETTER
+  * SECTION_GUI_DIGIT_FADE_SETTER
   * SECTION_CONTAINER_GUI
   ******************************************************************************
  **/
@@ -54,7 +55,7 @@ extern "C" {
 
 /** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT
- * @details GUI_Format is the virtual base class. Its children perform operations to the display. 
+ * @details GUI_Format is the virtual base class. Its children perform operations to the display.
  * Each child class must overwrite the following virtual methods:
  * - F2: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
  * - F3: This method is triggered upon an HID event, typically sets a configuration. Can be set to NULL
@@ -65,14 +66,14 @@ extern "C" {
  * - Update: This method is called periodically in object lifetime. Typically used to update FSMs and render. Must not be NULL
 **/
 typedef union GUI_Format GUI_Format;
-void         (*GUI_Format_F2)(GUI_Format *unsafe_self);
-void         (*GUI_Format_F3)(GUI_Format *unsafe_self);
-void         (*GUI_Format_F4)(GUI_Format *unsafe_self);
-void         (*GUI_Format_F2Var)(GUI_Format *unsafe_self);
-void         (*GUI_Format_F3Var)(GUI_Format *unsafe_self);
-void         (*GUI_Format_F4Var)(GUI_Format *unsafe_self);
-void         (*GUI_Format_Update)(GUI_Format *unsafe_self);
-void         (*GUI_Format_Save)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_F2)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_F3)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_F4)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_F2Var)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_F3Var)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_F4Var)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_Update)(GUI_Format *unsafe_self);
+extern void         (*GUI_Format_Save)(GUI_Format *unsafe_self);
 
 // Documentation see config.h::CONFIG_SAVED_SETTINGS_TABLE. Anonymous enums for setting offsets
 #define CREATE_SETTINGS_OFFSET_GUI(_entry, _offset, _size, _setting_identifier, _defaultval, _description) \
@@ -94,6 +95,7 @@ struct GUI_Format_Time {
 };
 
 void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_instance, uint8_t *settings);
+
 
 /** Begin of:
   * @tableofcontents SECTION_GUI_FORMAT_DATE
@@ -170,6 +172,22 @@ struct GUI_Format_Brightness_Setter {
 };
 
 void GUI_Format_Brightness_Setter_Init(struct GUI_Format_Brightness_Setter *self, const uint8_t *shared_initializer);
+
+
+/**
+ * @tableofcontents SECTION_GUI_DIGIT_FADE_SETTER
+ * F1 to leave
+ * F2 to change digit fade mode
+ */
+
+struct GUI_Format_Digit_Fade_Setter {
+  time_event_t      message_timer; // Message timer
+  uint8_t           message_counter;
+
+  uint8_t           digit_fade_mode;
+};
+
+void GUI_Format_Digit_Fade_Setter_Init(struct GUI_Format_Digit_Fade_Setter *self, const uint8_t *shared_initializer);
 
 
 /** Begin of:

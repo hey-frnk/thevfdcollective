@@ -10,9 +10,9 @@
 uint8_t buttonRegister = 0;
 
 void _vfdco_hid_button_set(uint16_t count, uint8_t button) {
-	uint8_t mask = BUTTON_STATE_SHORTPRESS;
-	if      (count < BUTTON_SHORTPRESS_THRESHOLD) mask = BUTTON_STATE_OFF;
-	else if (count > BUTTON_LONGPRESS_THRESHOLD)  mask = BUTTON_STATE_LONGPRESS;
+	uint8_t mask = BUTTON_EVENT_SHORTPRESS;
+	if      (count < BUTTON_SHORTPRESS_THRESHOLD) mask = BUTTON_EVENT_OFF;
+	else if (count > BUTTON_LONGPRESS_THRESHOLD)  mask = BUTTON_EVENT_LONGPRESS;
 
 	buttonRegister |= (mask << (button << 1));
 }

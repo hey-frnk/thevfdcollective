@@ -70,6 +70,7 @@ extern void SystemClock_Config(void);
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
   if(pcdHandle->Instance==USB)
   {
   /* USER CODE BEGIN USB_MspInit 0 */
@@ -77,6 +78,15 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
   uint16_t length;
   *(USBD_CDC.GetFSConfigDescriptor(&length) + 8) = (500 / 2);
   /* USER CODE END USB_MspInit 0 */
+
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
+    PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_MSI;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+    {
+      Error_Handler();
+    }
 
     __HAL_RCC_GPIOA_CLK_ENABLE();
     /**USB GPIO Configuration
@@ -760,10 +770,10 @@ USBD_StatusTypeDef USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev, uint8_t ep_a
 }
 
 /**
-  * @brief  Returns the last transfered packet size.
+  * @brief  Returns the last transferred packet size.
   * @param  pdev: Device handle
   * @param  ep_addr: Endpoint number
-  * @retval Recived Data Size
+  * @retval Received Data Size
   */
 uint32_t USBD_LL_GetRxDataSize(USBD_HandleTypeDef *pdev, uint8_t ep_addr)
 {
@@ -847,4 +857,3 @@ static void SystemClockConfig_Resume(void)
 }
 /* USER CODE END 5 */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
