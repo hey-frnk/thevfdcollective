@@ -44,7 +44,7 @@ private slots:
     #endif
 
 private:
-    void execute_updater(QString command, fw_updater_t updater_type);
+    void execute_updater(QString command, QStringList command_args, fw_updater_t updater_type);
 
     Ui::FWUpdate *ui;
     fw_updater_t fw_updater_type_detected;

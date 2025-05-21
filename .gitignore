@@ -6,4 +6,7 @@ openvfd_firmware_development/FLClassic/.DS_Store
 build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug
 FluorescenceV3/build-FLSim-Qt_6_4_2_for_macOS-Debug
 FluorescenceV3/FLSim/build/Qt_6_9_0_for_macOS-Debug
+FluorescenceApp/.qtc_clangd
+FluorescenceApp/build
+FluorescenceApp/qmake_qmake_immediate.qrc
 *.log

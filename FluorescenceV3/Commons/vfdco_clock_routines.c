@@ -752,6 +752,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
     // Enabled iterable instances set
     else if(command_byte == 0x05) {
       SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register + 1] = input_buffer[COM_PROTOCOL_DATA_OFFSET + 1];
       vfdco_display_render_message(Messages_Routine_Inst, 0, CONFIG_MESSAGE_SHORT);
       vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
     }
@@ -760,6 +761,7 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
       // Apply settings
       SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register] = input_buffer[COM_PROTOCOL_DATA_OFFSET];
       SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_speed] = input_buffer[COM_PROTOCOL_DATA_OFFSET + 1];
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register + 1] = input_buffer[COM_PROTOCOL_DATA_OFFSET + 2];
       vfdco_display_render_message(Messages_Routine_Rnd, 0, CONFIG_MESSAGE_SHORT);
       vfdco_display_render_message(Messages_Routine_Set, 0, CONFIG_MESSAGE_SHORT); 
       // Turn on
@@ -845,6 +847,12 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
       }
     }
 
+    // If digit fade mode set command is detected
+    else if(command_byte == 0x23) {
+      SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_digit_fade_mode] = input_buffer[COM_PROTOCOL_CONTROL_OFFSET];
+      vfdco_display_set_digit_fade_mode(input_buffer[COM_PROTOCOL_CONTROL_OFFSET]);
+    }
+
     // If welcome message set is detected
     else if(command_byte == 0x25) {
       for(uint8_t i = COM_PROTOCOL_DATA_OFFSET; i < (COM_PROTOCOL_DATA_OFFSET + CONFIG_NUM_DIGITS); ++i)
@@ -899,9 +907,11 @@ static void com_decoder(uint8_t *input_buffer, void (*com_encoder)(const struct 
         case COM_PROTOCOL_ENABLED_INSTANCES_REQ: {
           uint8_t transfer_buffer[10] = {
             0x24, 0x33, 
-            SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register], 
+            SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register],
+            SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_it_register + 1],
             SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register], 
-            0, 0, 0, 0, 0, 0x25
+            SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_global_light_rnd_register + 1], 
+            0, 0, 0, 0x25
           };
           global_com_data.tx_buffer = transfer_buffer;
           com_encoder(&global_com_data);

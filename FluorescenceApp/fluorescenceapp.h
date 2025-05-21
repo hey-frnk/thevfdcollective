@@ -200,6 +200,8 @@ private slots:
 
     void on_timesync_time_label_clicked();
 
+    void on_settings_digit_fade_set_clicked();
+
 public:
     Ui::FluorescenceApp *ui;
 

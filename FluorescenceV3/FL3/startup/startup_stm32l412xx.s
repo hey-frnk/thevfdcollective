@@ -61,12 +61,13 @@ defined in linker script */
 	.type	Reset_Handler, %function
 Reset_Handler:
   /*Check for bootloader*/
-  ldr r0, =_bootloader_flag // Load bootloader flag address
-  ldr r1, =0x00C0FFEE // Load magic number
-  ldr r2, [r0, #0] // Dereference flag
-  str r0, [r0, #0] // Clear
-  cmp r2, r1 // Check flag
-  beq Reboot_Loader // Flag detected? Go to loader
+  ldr r1, =0x00C0FFEE       // Load magic number into r1
+  ldr r0, =_bootloader_flag // Load address of the flag into r0
+  ldr r2, [r0]              // Load value of the flag into r2
+  mov r3, #0
+  str r3, [r0]              // Clear the flag by writing 0
+  cmp r2, r1                // Compare the value to the magic number
+  beq Reboot_Loader         // If it matches, branch to Reboot_Loader
 
   ldr   sp, =_estack    /* Set stack pointer */
 

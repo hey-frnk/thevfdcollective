@@ -34,12 +34,18 @@ extern bool visualize_dimming;
 #undef NORENDER
 
 uint8_t display_dimmer = 0;
+uint8_t digit_fade_mode = 0;
 
 void _vfdco_display_render_direct(uint8_t *data);
 
 void vfdco_display_set_dim_factor(uint8_t dim_factor) {
   printf("Setting Display Dim Factor: %hhu", dim_factor);
   display_dimmer = dim_factor;
+}
+
+void vfdco_display_set_digit_fade_mode(uint8_t digit_fade_mode_) {
+  digit_fade_mode = digit_fade_mode_;
+  return;
 }
 
 uint8_t vfdco_display_char_convert(char input) {
@@ -162,8 +168,9 @@ void _vfdco_display_render_direct(uint8_t *data) {
 }
 
 // Function mapping
-void vfdco_display_init(uint8_t initial_dim_factor) {
+void vfdco_display_init(uint8_t initial_dim_factor, uint8_t digit_fade_mode) {
   printf("IV-11 simulation debug display init with %d digits, successful\n", CONFIG_NUM_DIGITS);
   printf("Setting Display Dim Factor: %hhu", initial_dim_factor);
   vfdco_display_set_dim_factor(initial_dim_factor);
+  vfdco_display_set_digit_fade_mode(digit_fade_mode);
 }

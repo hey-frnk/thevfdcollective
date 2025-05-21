@@ -24,6 +24,7 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 #include <QThread>
+#include <QDate>
 
 // Global dynamic colors
 QLabel *preset_dynamic_colors[NUM_PRESET_DYNAMIC_COLORS];
@@ -225,7 +226,7 @@ void FluorescenceApp::update(){
     QTime ct = QTime::currentTime().addSecs(60 * ui->timesync_p_m->value() + 60 * 60 * ui->timesync_p_h->value());
     QDate cd = QDate::currentDate().addDays(ui->timesync_p_d->value()).addMonths(ui->timesync_p_mo->value()).addYears(ui->timesync_p_y->value());
     ui->timesync_time_label->setText(ct.toString("hh:mm:ss"));
-    ui->timesync_date_label->setText(cd.toString(Qt::DefaultLocaleLongDate));
+    ui->timesync_date_label->setText(cd.toString());
 
     // Update color wheel
     vfdco_date_t d;
@@ -739,10 +740,16 @@ void FluorescenceApp::on_settings_bri_set_clicked()
     global_com_instance->transfer_brightness(1, brightness_led);
 }
 
+void FluorescenceApp::on_settings_digit_fade_set_clicked()
+{
+    uint8_t digit_fade_mode = ui->settings_digit_fade_mode->currentIndex();
+    global_com_instance->transfer_digit_fade(digit_fade_mode);
+}
+
 void FluorescenceApp::on_settings_presets_en_set_clicked()
 {
     // Parse checks
-    uint8_t enabled_instances = 0;
+    uint16_t enabled_instances = 0;
     enabled_instances |=  1 << (ui->settings_presets_en_cop->isChecked() * LIGHT_PATTERN_COP);
     enabled_instances |=  1 << (ui->settings_presets_en_tcode->isChecked() * LIGHT_PATTERN_TIME_CODE);
     enabled_instances |=  1 << (ui->settings_presets_en_music->isChecked() * LIGHT_PATTERN_MUSIC);
@@ -751,6 +758,7 @@ void FluorescenceApp::on_settings_presets_en_set_clicked()
     enabled_instances |=  1 << (ui->settings_presets_en_spectrum->isChecked() * LIGHT_PATTERN_SPECTRUM);
     enabled_instances |=  1 << (ui->settings_presets_en_bliss->isChecked() * LIGHT_PATTERN_MOMENTSOFBLISS);
     enabled_instances |=  1 << (ui->settings_presets_en_static->isChecked() * LIGHT_PATTERN_STATIC);
+    enabled_instances |=  1 << (ui->settings_presets_en_pulse->isChecked() * LIGHT_PATTERN_PULSE);
     global_com_instance->transfer_enable_presets(enabled_instances);
 }
 
@@ -758,7 +766,7 @@ void FluorescenceApp::on_settings_presets_en_set_clicked()
 void FluorescenceApp::on_shuffle_set_clicked()
 {
     // Parse checks
-    uint8_t enabled_instances = 0;
+    uint16_t enabled_instances = 0;
     enabled_instances |=  1 << (ui->shuffle_en_cop->isChecked() * LIGHT_PATTERN_COP);
     enabled_instances |=  1 << (ui->shuffle_en_tcode->isChecked() * LIGHT_PATTERN_TIME_CODE);
     enabled_instances |=  1 << (ui->shuffle_en_music->isChecked() * LIGHT_PATTERN_MUSIC);
@@ -767,6 +775,7 @@ void FluorescenceApp::on_shuffle_set_clicked()
     enabled_instances |=  1 << (ui->shuffle_en_spectrum->isChecked() * LIGHT_PATTERN_SPECTRUM);
     enabled_instances |=  1 << (ui->shuffle_en_bliss->isChecked() * LIGHT_PATTERN_MOMENTSOFBLISS);
     enabled_instances |=  1 << (ui->shuffle_en_static->isChecked() * LIGHT_PATTERN_STATIC);
+    enabled_instances |=  1 << (ui->shuffle_en_pulse->isChecked() * LIGHT_PATTERN_PULSE);
     global_com_instance->transfer_random_set(enabled_instances, (random_speed_t)ui->shuffle_speed->currentIndex());
 }
 
@@ -1128,4 +1137,7 @@ void FluorescenceApp::on_menu_button_clicked()
 void FluorescenceApp::menu_hide_menu() {
     ui->menu_controls_layout->hide();
 }
+
+
+
 

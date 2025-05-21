@@ -132,8 +132,8 @@ static const char Messages_Digit_Fade_Set_Idle[MESSAGES_DIGIT_FADE_SET_IDLE_MAX]
   {'C', 'H', 'A', 'N', 'G', 'E'}, // Change
 };
 static const char Messages_Digit_Fade_Set[3][CONFIG_NUM_DIGITS] = {
-  {'N', '0', 'N', 'E', ' ', ' '}, // None
-  {'C', 'R', 'O', 'S', 'S', ' '}, // Fade-out and fade-in digits
+  {'N', 'O', 'N', 'E', ' ', ' '}, // None
+  {'F', 'A', 'D', 'I', 'N', 'G'}, // Fade-out and fade-in digits
   {'B', 'L', 'E', 'N', 'D', ' '}  // Blend digits
 };
 

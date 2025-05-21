@@ -139,23 +139,25 @@ void fl_app_com::transfer_light_pattern(light_pattern_instance_t instance, uint8
     transfer();
 }
 
-void fl_app_com::transfer_enable_presets(uint8_t enabled_instances)
+void fl_app_com::transfer_enable_presets(uint16_t enabled_instances)
 {
     clear_buffer();
     if(!is_legacy_protocol) {
         set_command_byte(0x05);
-        buf_tx[COM_PROTOCOL_DATA_OFFSET] = enabled_instances;
+        buf_tx[COM_PROTOCOL_DATA_OFFSET + 1] = enabled_instances & 0xFF;
+        buf_tx[COM_PROTOCOL_DATA_OFFSET] = (enabled_instances >> 8) & 0xFF;
     }
     transfer();
 }
 
-void fl_app_com::transfer_random_set(uint8_t enabled_instances, random_speed_t speed)
+void fl_app_com::transfer_random_set(uint16_t enabled_instances, random_speed_t speed)
 {
     clear_buffer();
     if(!is_legacy_protocol) {
         set_command_byte(0x06);
-        buf_tx[COM_PROTOCOL_DATA_OFFSET] = enabled_instances;
+        buf_tx[COM_PROTOCOL_DATA_OFFSET + 2] = enabled_instances & 0xFF;
         buf_tx[COM_PROTOCOL_DATA_OFFSET + 1] = speed;
+        buf_tx[COM_PROTOCOL_DATA_OFFSET] = (enabled_instances >> 8) & 0xFF;
     }
     transfer();
 }
@@ -232,6 +234,14 @@ void fl_app_com::legacy_transfer_night_shift(vfdco_time_t start, vfdco_time_t st
     transfer();
 }
 
+void fl_app_com::transfer_digit_fade(uint8_t digit_fade_mode)
+{
+    clear_buffer();
+    set_command_byte(0x23);
+    buf_tx[COM_PROTOCOL_CONTROL_OFFSET] = digit_fade_mode;
+    transfer();
+}
+
 void fl_app_com::transfer_welcome_set(uint8_t *message)
 {
     clear_buffer();
@@ -305,7 +315,9 @@ fl_app_status_t fl_app_com::getStatus()
 void fl_app_com::bt_discovery_finished() {
     qDebug() << "Device discovery finished";
     const QList<QBluetoothDeviceInfo> foundDevices = discoveryAgent->discoveredDevices();
-    for (auto nextDevice : foundDevices) {
+
+    for(auto i = 0; i < foundDevices.length(); ++i) {
+        auto nextDevice = foundDevices.at(i);
         if (nextDevice.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) {
             qDebug() << "Device found: " << nextDevice.address() << ", Name: " << nextDevice.name() << ", Strength: " << nextDevice.rssi();;
             if(!nextDevice.name().isEmpty()) deviceList.append(nextDevice);
@@ -316,6 +328,7 @@ void fl_app_com::bt_discovery_finished() {
             }
         }
     }
+
     if(deviceList.isEmpty()) {
         qDebug() << "No device matching Fluorescence!";
         emit bt_status_changed("Error connecting to Fluorescence: Make sure Fluorescence is within reach, and try again!");
@@ -345,7 +358,7 @@ void fl_app_com::bt_discovery_finished() {
 
         connect(controller, &QLowEnergyController::connected,
                 this, &fl_app_com::bt_connect_device_connected);
-        connect(controller, QOverload<QLowEnergyController::Error>::of(&QLowEnergyController::error),
+        connect(controller, &QLowEnergyController::errorOccurred,
                 this, &fl_app_com::bt_connect_device_error);
         connect(controller, &QLowEnergyController::disconnected,
                 this, &fl_app_com::bt_connect_device_disconnected);
@@ -392,7 +405,7 @@ void fl_app_com::bt_connect_services_scan_complete() {
 
     QLowEnergyService *service = serviceList.first();
 
-    if (service->state() == QLowEnergyService::DiscoveryRequired) {
+    if (service->state() == QLowEnergyService::RemoteService) {
         connect(service, SIGNAL(stateChanged(QLowEnergyService::ServiceState)),
                         this, SLOT(bt_connect_services_details_discovered(QLowEnergyService::ServiceState)));
         service->discoverDetails();
@@ -403,8 +416,8 @@ void fl_app_com::bt_connect_services_scan_complete() {
 // 4. After connection to service, discover characteristics
 void fl_app_com::bt_connect_services_details_discovered(QLowEnergyService::ServiceState newState)
 {
-    if (newState != QLowEnergyService::ServiceDiscovered) {
-        if (newState != QLowEnergyService::DiscoveringServices) {
+    if (newState != QLowEnergyService::RemoteServiceDiscovered) {
+        if (newState != QLowEnergyService::RemoteServiceDiscovering) {
             // QMetaObject::invokeMethod(this, "characteristicsUpdated", Qt::QueuedConnection);
         }
         return;
@@ -423,7 +436,7 @@ void fl_app_com::bt_connect_services_details_discovered(QLowEnergyService::Servi
     currentCharacteristic = link;
 
     // Setup Notification: Descriptor
-    QLowEnergyDescriptor notification = link->descriptor(QBluetoothUuid::ClientCharacteristicConfiguration);
+    QLowEnergyDescriptor notification = link->descriptor(QBluetoothUuid::DescriptorType::ClientCharacteristicConfiguration);
     if (!notification.isValid()) {
         qDebug() << "The notification descriptor is invalid";
         emit bt_status_changed("Invalid device");
@@ -564,7 +577,7 @@ void fl_app_com::regular_transfer()
     buf_tx[BUF_TX_SIZE - 1] = 0x25;
     if(is_bluetooth_communication) {
         QThread::msleep(250); // A little wait
-        if(currentService->state() == QLowEnergyService::ServiceDiscovered){
+        if(currentService->state() == QLowEnergyService::RemoteServiceDiscovered){
             // Send
             currentService->writeCharacteristic(
                 *currentCharacteristic,
@@ -593,7 +606,7 @@ void fl_app_com::legacy_transfer()
 
     if(is_bluetooth_communication) {
         QThread::msleep(250); // A little wait
-        if(currentService->state() == QLowEnergyService::ServiceDiscovered){
+        if(currentService->state() == QLowEnergyService::RemoteServiceDiscovered){
             // Send
             currentService->writeCharacteristic(
                 *currentCharacteristic,

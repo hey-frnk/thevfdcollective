@@ -42,8 +42,8 @@ public:
     void transfer_serial1(uint8_t *clr_arr); // Legacy: No warm white LED
 
     void transfer_light_pattern(light_pattern_instance_t instance, uint8_t param0, uint8_t param1); // Legacy: Only param0 relevant
-    void transfer_enable_presets(uint8_t enabled_instances); // Legacy: Unsupported
-    void transfer_random_set(uint8_t enabled_instances, random_speed_t speed); // Legacy: Unsupported
+    void transfer_enable_presets(uint16_t enabled_instances); // Legacy: Unsupported
+    void transfer_random_set(uint16_t enabled_instances, random_speed_t speed); // Legacy: Unsupported
 
     void transfer_gui_set(uint8_t instance, uint8_t param0); // Legacy: Unsupported
     void legacy_transfer_clock_flags(uint8_t clock_flag, uint8_t clock_flag_value);
@@ -53,6 +53,8 @@ public:
     void transfer_brightness(uint8_t disp_or_led, uint8_t dim_factor); // Legacy: Unsupported
     void transfer_night_shift(vfdco_time_t start, vfdco_time_t stop, uint8_t en); // Legacy: Unsupported
     void legacy_transfer_night_shift(vfdco_time_t start, vfdco_time_t stop, uint8_t en1, uint8_t en2); // Legacy: Only
+    void transfer_digit_fade(uint8_t digit_fade_mode); // Legacy: Unsupported
+
 
     void transfer_welcome_set(uint8_t *message); // Legacy: Fully compatible
     void transfer_message(uint8_t *m1, uint8_t *m2, uint8_t *m3, uint8_t *m4, uint8_t duration); // Legacy: Up to m3

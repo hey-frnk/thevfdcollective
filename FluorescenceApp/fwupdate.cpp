@@ -59,7 +59,7 @@ void FWUpdate::on_welcome_next_clicked()
 {
     // Open File
     QFileDialog fileDialog;
-    fileDialog.setFileMode(QFileDialog::DirectoryOnly);
+    fileDialog.setFileMode(QFileDialog::Directory);
     // # just list mode is quite sufficient for choosing a diectory
     fileDialog.setViewMode(QFileDialog::List);
     // # only want to to show directories
@@ -199,6 +199,12 @@ void FWUpdate::on_updater_update_clicked()
         ui->updater_run->setEnabled(false);
 
         QString updater_command;
+        QStringList arguments;
+        arguments << "-a" << "0"
+                  << "-s" << "0x08000000:leave"
+                  << "-D" << fw_updater_firmware_file_detected
+                  << "-v" << "-v"
+                  << "-t" << "2048";
 
         if(fw_updater_type_detected == FIRMWARE_UPDATE_STM) {
             // fl_app_inst->error_message("Hi i'm dfu-util", QMessageBox::Icon::Warning);
@@ -211,7 +217,8 @@ void FWUpdate::on_updater_update_clicked()
             updater_command_path = fw_updater_path_detected + "dfu_util_win64" + QDir::separator() + "dfu-util.exe";
             #endif
 
-            updater_command = "\"" + updater_command_path + "\"" +  " -a 0 -s 0x08000000:leave -D \"" + fw_updater_firmware_file_detected + "\" -v -v -t 2048";
+            updater_command = updater_command_path;
+            // updater_command = "\"" + updater_command_path + "\"" +  " -a 0 -s 0x08000000:leave -D \"" + fw_updater_firmware_file_detected + "\" -v -v -t 2048";
 
             fl_app_inst->fw_update_manual_dfu_request();
         } else if(fw_updater_type_detected == FIRMWARE_UPDATE_AVR){
@@ -242,7 +249,7 @@ void FWUpdate::on_updater_update_clicked()
         fl_app_inst->fw_update_manual_disconnect();
         QThread::msleep(500);
 
-        execute_updater(updater_command, fw_updater_type_detected);
+        execute_updater(updater_command, arguments, fw_updater_type_detected);
     }
 }
 
@@ -283,18 +290,23 @@ void FWUpdate::UpdateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
 }
 #endif
 
-void FWUpdate::execute_updater(QString command, fw_updater_t updater_type)
+void FWUpdate::execute_updater(QString command, QStringList command_args, fw_updater_t updater_type)
 {
     if(updater_type == FIRMWARE_UPDATE_UNDETERMINED) return;
 
     #ifndef Q_OS_IOS
     QProcess *p = new QProcess(this);
     if(p) {
-      p->setEnvironment(QProcess::systemEnvironment());
       p->setProcessChannelMode(QProcess::MergedChannels);
-
-      p->start(command);
-      p->waitForStarted();
+      qDebug() << command;
+      p->start(command, command_args);
+      if (!p->waitForStarted()) {
+          qDebug() << "Failed to start process:" << p->errorString();
+          return;
+      }
+      connect(p, &QProcess::errorOccurred, this, [](QProcess::ProcessError err){
+          qDebug() << "Process error:" << err;
+      });
 
       if(updater_type == FIRMWARE_UPDATE_AVR) ui->updater_info_text->setPlainText(fw_text_2_avr + " is updating Fluorescence\n");
       else if(updater_type == FIRMWARE_UPDATE_STM) ui->updater_info_text->setPlainText(fw_text_2_stm + " is updating Fluorescence\n");

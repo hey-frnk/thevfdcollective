@@ -22,7 +22,7 @@
    <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
   <property name="toolButtonStyle">
-   <enum>Qt::ToolButtonIconOnly</enum>
+   <enum>Qt::ToolButtonStyle::ToolButtonIconOnly</enum>
   </property>
   <property name="dockNestingEnabled">
    <bool>false</bool>
@@ -51,7 +51,7 @@
         <number>0</number>
        </property>
        <property name="sizeConstraint">
-        <enum>QLayout::SetNoConstraint</enum>
+        <enum>QLayout::SizeConstraint::SetNoConstraint</enum>
        </property>
        <property name="leftMargin">
         <number>10</number>
@@ -86,7 +86,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/menu.png</pixmap>
+          <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/menu.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -103,7 +103,7 @@ font: 18px &quot;RalewayBlack&quot;;</string>
           <string>Fluorescence App   </string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -118,7 +118,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
    T H E   V F D   C O L L E C T I V E</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
          </property>
          <property name="margin">
           <number>0</number>
@@ -201,7 +201,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
              <font>
               <family>RalewayBold</family>
               <pointsize>-1</pointsize>
-              <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -231,7 +230,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
              <font>
               <family>RalewayBold</family>
               <pointsize>-1</pointsize>
-              <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -261,7 +259,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
              <font>
               <family>RalewayBold</family>
               <pointsize>-1</pointsize>
-              <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -291,7 +288,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
              <font>
               <family>RalewayBold</family>
               <pointsize>-1</pointsize>
-              <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -318,7 +314,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
              <font>
               <family>RalewayBold</family>
               <pointsize>-1</pointsize>
-              <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -348,7 +343,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
              <font>
               <family>RalewayBold</family>
               <pointsize>-1</pointsize>
-              <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
              </font>
@@ -408,10 +402,10 @@ font: 32px &quot;RalewayBold&quot;;</string>
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -421,7 +415,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>447</width>
+               <width>461</width>
                <height>369</height>
               </rect>
              </property>
@@ -444,7 +438,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -478,10 +471,10 @@ font: 32px &quot;RalewayBold&quot;;</string>
                   <item>
                    <widget class="QScrollArea" name="scroll_presets_static">
                     <property name="frameShape">
-                     <enum>QFrame::NoFrame</enum>
+                     <enum>QFrame::Shape::NoFrame</enum>
                     </property>
                     <property name="horizontalScrollBarPolicy">
-                     <enum>Qt::ScrollBarAlwaysOff</enum>
+                     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                     </property>
                     <property name="widgetResizable">
                      <bool>true</bool>
@@ -491,7 +484,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>417</width>
+                       <width>415</width>
                        <height>1094</height>
                       </rect>
                      </property>
@@ -517,7 +510,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -529,7 +521,7 @@ font: 32px &quot;RalewayBold&quot;;</string>
                          <string>Some hand crafted presets that look fantastic on Fluorescence.</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -539,7 +531,6 @@ font: 32px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -555,7 +546,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string>#off</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -565,7 +556,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -580,7 +570,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string>#white</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -590,7 +580,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -605,7 +594,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string>#warmwhite</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -618,10 +607,10 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string/>
                         </property>
                         <property name="pixmap">
-                         <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/rainbow_alt.png</pixmap>
+                         <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/rainbow_alt.png</pixmap>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -634,10 +623,10 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string/>
                         </property>
                         <property name="pixmap">
-                         <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/pastelrainbow.png</pixmap>
+                         <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/pastelrainbow.png</pixmap>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -650,10 +639,10 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string/>
                         </property>
                         <property name="pixmap">
-                         <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
+                         <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/red2blue1.png</pixmap>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -666,10 +655,10 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string/>
                         </property>
                         <property name="pixmap">
-                         <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/red2green_alt.png</pixmap>
+                         <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/red2green_alt.png</pixmap>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -682,10 +671,10 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <string/>
                         </property>
                         <property name="pixmap">
-                         <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/green2blue.png</pixmap>
+                         <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/green2blue.png</pixmap>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -695,7 +684,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -711,7 +699,7 @@ color: rgb(0, 84, 147);</string>
                          <string>#blue</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -721,7 +709,6 @@ color: rgb(0, 84, 147);</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -736,7 +723,7 @@ color: rgb(0, 84, 147);</string>
                          <string>#cyan</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -746,7 +733,6 @@ color: rgb(0, 84, 147);</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -762,7 +748,7 @@ color: rgb(0, 143, 0);</string>
                          <string>#green</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -772,7 +758,6 @@ color: rgb(0, 143, 0);</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -787,7 +772,7 @@ color: rgb(0, 143, 0);</string>
                          <string>#yellow</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -797,7 +782,6 @@ color: rgb(0, 143, 0);</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -813,7 +797,7 @@ color: rgb(206, 114, 0);</string>
                          <string>#orange</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -823,7 +807,6 @@ color: rgb(206, 114, 0);</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -839,7 +822,7 @@ color: rgb(148, 17, 0);</string>
                          <string>#red</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -849,7 +832,6 @@ color: rgb(148, 17, 0);</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -865,7 +847,7 @@ color: rgb(148, 23, 81);</string>
                          <string>#magenta</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -875,7 +857,6 @@ color: rgb(148, 23, 81);</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -891,7 +872,7 @@ color: rgb(83, 27, 147);</string>
                          <string>#violet</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -921,23 +902,23 @@ color: rgb(83, 27, 147);</string>
                   <item>
                    <widget class="QScrollArea" name="scroll_presets_dynamic">
                     <property name="frameShape">
-                     <enum>QFrame::NoFrame</enum>
+                     <enum>QFrame::Shape::NoFrame</enum>
                     </property>
                     <property name="horizontalScrollBarPolicy">
-                     <enum>Qt::ScrollBarAlwaysOff</enum>
+                     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                     </property>
                     <property name="widgetResizable">
                      <bool>true</bool>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignCenter</set>
+                     <set>Qt::AlignmentFlag::AlignCenter</set>
                     </property>
                     <widget class="QWidget" name="tab_presets_dynamic_content">
                      <property name="geometry">
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>441</width>
+                       <width>442</width>
                        <height>1878</height>
                       </rect>
                      </property>
@@ -981,7 +962,6 @@ color: rgb(83, 27, 147);</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1008,7 +988,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1035,7 +1014,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1062,7 +1040,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1089,7 +1066,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1116,7 +1092,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1143,7 +1118,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1167,7 +1141,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -1182,7 +1155,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1202,7 +1174,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1214,7 +1185,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <string>chill</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                            </property>
                           </widget>
                          </item>
@@ -1224,7 +1195,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1242,10 +1212,10 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <bool>true</bool>
                            </property>
                            <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
+                            <enum>Qt::Orientation::Horizontal</enum>
                            </property>
                            <property name="tickPosition">
-                            <enum>QSlider::TicksBelow</enum>
+                            <enum>QSlider::TickPosition::TicksBelow</enum>
                            </property>
                           </widget>
                          </item>
@@ -1255,7 +1225,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1267,7 +1236,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <string>tight</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                            </property>
                           </widget>
                          </item>
@@ -1277,7 +1246,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1303,7 +1271,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1343,7 +1310,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBlack</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1367,7 +1333,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -1382,7 +1347,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1408,7 +1372,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBlack</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1429,7 +1392,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1455,7 +1417,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1489,7 +1450,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1502,7 +1462,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
 all the amazing colors.</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                            <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
                            </property>
                           </widget>
                          </item>
@@ -1518,7 +1478,6 @@ all the amazing colors.</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1555,7 +1514,6 @@ all the amazing colors.</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -1570,7 +1528,6 @@ all the amazing colors.</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1590,7 +1547,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1602,7 +1558,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <string>chill</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                            </property>
                           </widget>
                          </item>
@@ -1612,7 +1568,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1630,10 +1585,10 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <bool>true</bool>
                            </property>
                            <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
+                            <enum>Qt::Orientation::Horizontal</enum>
                            </property>
                            <property name="tickPosition">
-                            <enum>QSlider::TicksBelow</enum>
+                            <enum>QSlider::TickPosition::TicksBelow</enum>
                            </property>
                           </widget>
                          </item>
@@ -1643,7 +1598,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1655,7 +1609,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <string>tight</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                            </property>
                           </widget>
                          </item>
@@ -1665,7 +1619,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1691,7 +1644,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1736,7 +1688,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBlack</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1760,7 +1711,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -1775,7 +1725,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1787,7 +1736,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <string>For every digit value, there is a different color!</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                            <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
                            </property>
                           </widget>
                          </item>
@@ -1797,7 +1746,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1823,7 +1771,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1858,7 +1805,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBlack</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1882,7 +1828,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -1897,7 +1842,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1917,7 +1861,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1929,7 +1872,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <string>tight</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                            </property>
                           </widget>
                          </item>
@@ -1945,7 +1888,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBlack</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1966,7 +1908,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -1978,7 +1919,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <string>chill</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                            </property>
                           </widget>
                          </item>
@@ -1994,7 +1935,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2028,7 +1968,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2046,10 +1985,10 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <bool>true</bool>
                            </property>
                            <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
+                            <enum>Qt::Orientation::Horizontal</enum>
                            </property>
                            <property name="tickPosition">
-                            <enum>QSlider::TicksBelow</enum>
+                            <enum>QSlider::TickPosition::TicksBelow</enum>
                            </property>
                           </widget>
                          </item>
@@ -2059,7 +1998,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2082,7 +2020,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -2097,7 +2034,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2109,7 +2045,7 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <string>Should Fluorescence be on patrol or a high speed, hot pursuit?</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                            <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
                            </property>
                           </widget>
                          </item>
@@ -2119,7 +2055,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2145,7 +2080,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2185,7 +2119,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBlack</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2209,7 +2142,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -2230,7 +2162,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2279,7 +2210,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2305,7 +2235,6 @@ font: 26px &quot;RalewayBold&quot;;</string>
                             <font>
                              <family>RalewayBlack</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2326,7 +2255,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                             <font>
                              <family>RalewayBold</family>
                              <pointsize>-1</pointsize>
-                             <weight>50</weight>
                              <italic>false</italic>
                              <bold>false</bold>
                             </font>
@@ -2339,7 +2267,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
 he she me wumbo. That's first grade Spongebob!</string>
                            </property>
                            <property name="alignment">
-                            <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                            <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
                            </property>
                            <property name="wordWrap">
                             <bool>true</bool>
@@ -2361,7 +2289,6 @@ he she me wumbo. That's first grade Spongebob!</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -2374,7 +2301,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <string>Animated preview. We know it's prettier on Fluorescence.</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+                         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignHCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -2552,7 +2479,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -2565,7 +2491,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <string>Time:</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+                         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignHCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -2575,7 +2501,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -2814,10 +2739,10 @@ font: 12px &quot;RalewayBold&quot;;</string>
                   <item>
                    <widget class="QScrollArea" name="scroll_moodsync">
                     <property name="frameShape">
-                     <enum>QFrame::NoFrame</enum>
+                     <enum>QFrame::Shape::NoFrame</enum>
                     </property>
                     <property name="horizontalScrollBarPolicy">
-                     <enum>Qt::ScrollBarAlwaysOff</enum>
+                     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                     </property>
                     <property name="widgetResizable">
                      <bool>true</bool>
@@ -2827,7 +2752,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>391</width>
+                       <width>389</width>
                        <height>475</height>
                       </rect>
                      </property>
@@ -2853,7 +2778,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -2865,14 +2789,14 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <string>Generate ambient light colors to the mood of your computer screen.</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                         <property name="wordWrap">
                          <bool>true</bool>
                         </property>
                        </widget>
                       </item>
-                      <item alignment="Qt::AlignHCenter">
+                      <item alignment="Qt::AlignmentFlag::AlignHCenter">
                        <widget class="QWidget" name="lisync_computer_layout" native="true">
                         <property name="minimumSize">
                          <size>
@@ -2893,7 +2817,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                           <string/>
                          </property>
                          <property name="pixmap">
-                          <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/computer.png</pixmap>
+                          <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/computer.png</pixmap>
                          </property>
                         </widget>
                         <widget class="ClickableLabel" name="lisync_sample">
@@ -2915,7 +2839,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                           <string/>
                          </property>
                          <property name="pixmap">
-                          <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/res0.jpg</pixmap>
+                          <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/res0.jpg</pixmap>
                          </property>
                         </widget>
                        </widget>
@@ -3028,7 +2952,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -3040,7 +2963,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <string>Click on the computer to begin.</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -3058,10 +2981,10 @@ font: 12px &quot;RalewayBold&quot;;</string>
                   <item>
                    <widget class="QScrollArea" name="scroll_shuffle">
                     <property name="frameShape">
-                     <enum>QFrame::NoFrame</enum>
+                     <enum>QFrame::Shape::NoFrame</enum>
                     </property>
                     <property name="horizontalScrollBarPolicy">
-                     <enum>Qt::ScrollBarAlwaysOff</enum>
+                     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                     </property>
                     <property name="widgetResizable">
                      <bool>true</bool>
@@ -3071,57 +2994,14 @@ font: 12px &quot;RalewayBold&quot;;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>401</width>
-                       <height>469</height>
+                       <width>399</width>
+                       <height>455</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_12">
-                      <property name="leftMargin">
-                       <number>20</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>20</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>30</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>50</number>
-                      </property>
-                      <property name="horizontalSpacing">
-                       <number>10</number>
-                      </property>
                       <property name="verticalSpacing">
                        <number>20</number>
                       </property>
-                      <item row="6" column="0" colspan="2">
-                       <widget class="QLabel" name="shuffle_intro2">
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>40</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(128, 0, 128);font: 18px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>and pick another one every...</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="0" colspan="2">
                        <widget class="QLabel" name="shuffle_intro1">
                         <property name="sizePolicy">
@@ -3140,7 +3020,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -3152,98 +3031,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <string>Not in the mood to pick?</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_chase">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Chase Fade</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="5" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_rnb">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Rainbow Fade</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_static">
-                        <property name="enabled">
-                         <bool>false</bool>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Static</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="4" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_spectrum">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Spectrum Fade</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -3265,7 +3053,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -3278,11 +3065,250 @@ font: 12px &quot;RalewayBold&quot;;</string>
 randomly out of:</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_static">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Static</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_chase">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Chase Fade</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_bliss">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Moments of Bliss</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_tcode">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Time Code</string>
+                        </property>
+                        <property name="checked">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_spectrum">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Spectrum Fade</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_music">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Music</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="5" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_rnb">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Rainbow Fade</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="5" column="1">
+                       <widget class="QCheckBox" name="shuffle_en_cop">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Police Lights</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="6" column="0">
+                       <widget class="QCheckBox" name="shuffle_en_pulse">
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Pulse</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
                         </property>
                        </widget>
                       </item>
                       <item row="7" column="0" colspan="2">
+                       <widget class="QLabel" name="shuffle_intro2">
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>RalewayBold</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">color: rgb(128, 0, 128);font: 18px &quot;RalewayBold&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>and pick another one every...</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="9" column="0" colspan="2">
+                       <widget class="QPushButton" name="shuffle_set">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>75</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>RalewayBlack</family>
+                          <pointsize>-1</pointsize>
+                          <italic>false</italic>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);
+font: 26px &quot;RalewayBlack&quot;;</string>
+                        </property>
+                        <property name="text">
+                         <string>Looks good, go!</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="8" column="0" colspan="2">
                        <widget class="QComboBox" name="shuffle_speed">
                         <property name="minimumSize">
                          <size>
@@ -3294,7 +3320,6 @@ randomly out of:</string>
                          <font>
                           <family>RalewayBold</family>
                           <pointsize>-1</pointsize>
-                          <weight>50</weight>
                           <italic>false</italic>
                           <bold>false</bold>
                          </font>
@@ -3332,115 +3357,6 @@ randomly out of:</string>
                         </item>
                        </widget>
                       </item>
-                      <item row="4" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_music">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Music</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_tcode">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Time Code</string>
-                        </property>
-                        <property name="checked">
-                         <bool>false</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="5" column="1">
-                       <widget class="QCheckBox" name="shuffle_en_cop">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Police Lights</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="0">
-                       <widget class="QCheckBox" name="shuffle_en_bliss">
-                        <property name="font">
-                         <font>
-                          <family>RalewayBold</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">color: rgb(16, 128, 128);font: 12px &quot;RalewayBold&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Moments of Bliss</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="8" column="0" colspan="2">
-                       <widget class="QPushButton" name="shuffle_set">
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>75</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <family>RalewayBlack</family>
-                          <pointsize>-1</pointsize>
-                          <weight>50</weight>
-                          <italic>false</italic>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">background-color: rgb(16, 128, 128);
-color: rgb(255, 255, 255);
-font: 26px &quot;RalewayBlack&quot;;</string>
-                        </property>
-                        <property name="text">
-                         <string>Looks good, go!</string>
-                        </property>
-                       </widget>
-                      </item>
                      </layout>
                     </widget>
                    </widget>
@@ -3462,10 +3378,10 @@ font: 26px &quot;RalewayBlack&quot;;</string>
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -3475,7 +3391,7 @@ font: 26px &quot;RalewayBlack&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>447</width>
+               <width>445</width>
                <height>963</height>
               </rect>
              </property>
@@ -3501,7 +3417,6 @@ font: 26px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -3514,11 +3429,11 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <string>Time to paint the night sky. Or some LEDs.</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
-              <item alignment="Qt::AlignHCenter">
+              <item alignment="Qt::AlignmentFlag::AlignHCenter">
                <widget class="QWidget" name="custom_color_wheel_parent" native="true">
                 <property name="minimumSize">
                  <size>
@@ -3528,7 +3443,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                 </property>
                 <layout class="QFormLayout" name="formLayout">
                  <property name="labelAlignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignmentFlag::AlignCenter</set>
                  </property>
                  <property name="leftMargin">
                   <number>0</number>
@@ -3566,13 +3481,13 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/hsl_wheel.png</pixmap>
+                    <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/hsl_wheel.png</pixmap>
                    </property>
                    <property name="scaledContents">
                     <bool>true</bool>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignCenter</set>
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -3605,13 +3520,13 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/cursor.png</pixmap>
+                  <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/cursor.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignCenter</set>
+                  <set>Qt::AlignmentFlag::AlignCenter</set>
                  </property>
                 </widget>
                 <zorder>custom_color_wheel</zorder>
@@ -3621,13 +3536,12 @@ font: 12px &quot;RalewayMedium&quot;;</string>
               <item>
                <widget class="QWidget" name="custom_led_grid" native="true">
                 <layout class="QGridLayout" name="gridLayout">
-                 <item row="0" column="0" alignment="Qt::AlignHCenter">
+                 <item row="0" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
                   <widget class="QCheckBox" name="custom_select_led_6">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3644,13 +3558,12 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1" alignment="Qt::AlignHCenter">
+                 <item row="0" column="1" alignment="Qt::AlignmentFlag::AlignHCenter">
                   <widget class="QCheckBox" name="custom_select_led_5">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3667,13 +3580,12 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="2" alignment="Qt::AlignHCenter">
+                 <item row="0" column="2" alignment="Qt::AlignmentFlag::AlignHCenter">
                   <widget class="QCheckBox" name="custom_select_led_4">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3690,13 +3602,12 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="0" alignment="Qt::AlignHCenter">
+                 <item row="1" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
                   <widget class="QCheckBox" name="custom_select_led_3">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3713,13 +3624,12 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="1" alignment="Qt::AlignHCenter">
+                 <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignHCenter">
                   <widget class="QCheckBox" name="custom_select_led_2">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3736,13 +3646,12 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="2" alignment="Qt::AlignHCenter">
+                 <item row="1" column="2" alignment="Qt::AlignmentFlag::AlignHCenter">
                   <widget class="QCheckBox" name="custom_select_led_1">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3768,7 +3677,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -3780,7 +3688,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <string>red, green, blue &amp; white.</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -3793,7 +3701,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3812,7 +3719,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <number>255</number>
                    </property>
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
@@ -3825,19 +3732,18 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
                    </property>
                    <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
+                    <enum>Qt::LayoutDirection::LeftToRight</enum>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="maximum">
                     <number>255</number>
@@ -3850,7 +3756,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3869,7 +3774,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <number>255</number>
                    </property>
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
@@ -3882,19 +3787,18 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
                    </property>
                    <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
+                    <enum>Qt::LayoutDirection::LeftToRight</enum>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="maximum">
                     <number>255</number>
@@ -3907,7 +3811,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3926,7 +3829,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <number>255</number>
                    </property>
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
@@ -3939,19 +3842,18 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
                    </property>
                    <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
+                    <enum>Qt::LayoutDirection::LeftToRight</enum>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="maximum">
                     <number>255</number>
@@ -3964,7 +3866,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -3983,7 +3884,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <number>255</number>
                    </property>
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
@@ -3996,19 +3897,18 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
                    </property>
                    <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
+                    <enum>Qt::LayoutDirection::LeftToRight</enum>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="maximum">
                     <number>255</number>
@@ -4024,7 +3924,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -4036,7 +3935,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <string>hue, saturation &amp; lightness.</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -4049,7 +3948,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4068,7 +3966,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <number>359</number>
                    </property>
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
@@ -4081,19 +3979,18 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
                    </property>
                    <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
+                    <enum>Qt::LayoutDirection::LeftToRight</enum>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="maximum">
                     <number>359</number>
@@ -4106,7 +4003,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4125,7 +4021,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <number>255</number>
                    </property>
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
@@ -4138,19 +4034,18 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
                    </property>
                    <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
+                    <enum>Qt::LayoutDirection::LeftToRight</enum>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="maximum">
                     <number>255</number>
@@ -4163,7 +4058,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4182,7 +4076,7 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <number>255</number>
                    </property>
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="invertedAppearance">
                     <bool>false</bool>
@@ -4195,19 +4089,18 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
                    </property>
                    <property name="layoutDirection">
-                    <enum>Qt::LeftToRight</enum>
+                    <enum>Qt::LayoutDirection::LeftToRight</enum>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="maximum">
                     <number>255</number>
@@ -4232,7 +4125,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4257,18 +4149,17 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>Courier New</family>
                      <pointsize>12</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
                    <property name="verticalScrollBarPolicy">
-                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                    </property>
                    <property name="horizontalScrollBarPolicy">
-                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                    <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                    </property>
                    <property name="lineWrapMode">
-                    <enum>QPlainTextEdit::NoWrap</enum>
+                    <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
                    </property>
                    <property name="readOnly">
                     <bool>true</bool>
@@ -4293,7 +4184,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -4326,7 +4216,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -4370,10 +4259,10 @@ font: 12px &quot;RalewayMedium&quot;;</string>
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -4382,9 +4271,9 @@ font: 12px &quot;RalewayMedium&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-390</y>
-               <width>447</width>
-               <height>759</height>
+               <y>-163</y>
+               <width>445</width>
+               <height>774</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -4409,7 +4298,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -4434,7 +4322,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4457,7 +4344,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4480,7 +4366,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4503,7 +4388,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -4528,7 +4412,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4548,7 +4431,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4571,7 +4453,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4583,7 +4464,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -4603,7 +4483,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -4627,7 +4506,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -4647,7 +4525,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -4671,7 +4548,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -4697,7 +4573,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -4727,7 +4602,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4754,7 +4628,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4778,7 +4651,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -4802,7 +4674,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4822,7 +4693,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4842,7 +4712,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4862,7 +4731,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4882,7 +4750,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4902,7 +4769,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4922,7 +4788,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4951,7 +4816,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -4978,7 +4842,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5009,13 +4872,13 @@ font: 12px &quot;RalewayBold&quot;;</string>
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarAsNeeded</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -5024,8 +4887,8 @@ font: 12px &quot;RalewayBold&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-368</y>
-               <width>447</width>
+               <y>0</y>
+               <width>445</width>
                <height>737</height>
               </rect>
              </property>
@@ -5051,7 +4914,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5063,7 +4925,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <string>Write a poem. Or say something lovely. We wrote this so that you can have a fun time :)</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -5082,7 +4944,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBlack</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5092,16 +4953,16 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 48px &quot;RalewayBlack&quot;;</string>
                 </property>
                 <property name="inputMethodHints">
-                 <set>Qt::ImhNone</set>
+                 <set>Qt::InputMethodHint::ImhNone</set>
                 </property>
                 <property name="verticalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                 <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
                 </property>
                 <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAsNeeded</enum>
+                 <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
                 </property>
                 <property name="lineWrapMode">
-                 <enum>QPlainTextEdit::NoWrap</enum>
+                 <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
                 </property>
                 <property name="plainText">
                  <string>HEART HOPE  </string>
@@ -5114,7 +4975,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5126,7 +4986,7 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <string>Rules of the game:</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -5136,7 +4996,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5148,7 +5007,7 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <string>24 letters for you. The message will be split in max. 4 parts shown separately</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -5161,7 +5020,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5173,7 +5031,7 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <string>Write in CAPS, and only use those the display can display (see next point)</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -5186,7 +5044,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5198,7 +5055,7 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <string>Allowed: A B C D E F G H I J L N O P Q R S T U V Y, 0, spacebar and minus (-)</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -5211,7 +5068,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5226,14 +5082,14 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <bool>false</bool>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
                 </property>
                </widget>
               </item>
-              <item alignment="Qt::AlignHCenter">
+              <item alignment="Qt::AlignmentFlag::AlignHCenter">
                <widget class="QCheckBox" name="message_set_custom_welcome">
                 <property name="minimumSize">
                  <size>
@@ -5245,7 +5101,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayMedium</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5265,7 +5120,6 @@ Fluorescence uses to greet you on startup</string>
                  <font>
                   <family>RalewayBlack</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5278,7 +5132,7 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <string>second(s)</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -5294,7 +5148,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayBlack</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5304,7 +5157,7 @@ font: 48px &quot;RalewayBlack&quot;;</string>
 font: 48px &quot;RalewayBlack&quot;;</string>
                 </property>
                 <property name="lineWrapMode">
-                 <enum>QPlainTextEdit::NoWrap</enum>
+                 <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
                 </property>
                 <property name="plainText">
                  <string>1</string>
@@ -5317,7 +5170,6 @@ font: 48px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayBlack</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5348,10 +5200,10 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -5360,34 +5212,18 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>-801</y>
-               <width>447</width>
-               <height>1170</height>
+               <y>-861</y>
+               <width>445</width>
+               <height>1230</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_11">
-              <property name="spacing">
-               <number>20</number>
-              </property>
-              <property name="leftMargin">
-               <number>30</number>
-              </property>
-              <property name="topMargin">
-               <number>30</number>
-              </property>
-              <property name="rightMargin">
-               <number>30</number>
-              </property>
-              <property name="bottomMargin">
-               <number>60</number>
-              </property>
               <item>
                <widget class="QGroupBox" name="settings_td">
                 <property name="font">
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5411,7 +5247,6 @@ font: 36px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5434,7 +5269,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5468,7 +5302,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5488,7 +5321,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5523,7 +5355,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5547,7 +5378,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5571,7 +5401,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5585,13 +5414,31 @@ font: 12px &quot;RalewayBold&quot;;</string>
                    </property>
                   </widget>
                  </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="settings_bri_t_led">
+                   <property name="font">
+                    <font>
+                     <family>RalewayBold</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(16, 128, 128);
+font: 12px &quot;RalewayBold&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>LED brightness:</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="0" column="1">
                   <widget class="QComboBox" name="settings_bri_disp">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5619,33 +5466,12 @@ font: 12px &quot;RalewayBold&quot;;</string>
                    </item>
                   </widget>
                  </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="settings_bri_t_led">
-                   <property name="font">
-                    <font>
-                     <family>RalewayBold</family>
-                     <pointsize>-1</pointsize>
-                     <weight>50</weight>
-                     <italic>false</italic>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: rgb(16, 128, 128);
-font: 12px &quot;RalewayBold&quot;;</string>
-                   </property>
-                   <property name="text">
-                    <string>LED brightness:</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="1" column="1">
                   <widget class="QComboBox" name="settings_bri_led">
                    <property name="font">
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5685,7 +5511,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5704,12 +5529,115 @@ font: 12px &quot;RalewayBold&quot;;</string>
                </widget>
               </item>
               <item>
+               <widget class="QGroupBox" name="settings_digit_fade">
+                <property name="font">
+                 <font>
+                  <family>RalewayBold</family>
+                  <pointsize>-1</pointsize>
+                  <italic>false</italic>
+                  <bold>false</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font: 12px &quot;RalewayBold&quot;;</string>
+                </property>
+                <property name="title">
+                 <string>Digit Fading</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_22">
+                 <property name="verticalSpacing">
+                  <number>20</number>
+                 </property>
+                 <item row="1" column="0" colspan="2">
+                  <widget class="QPushButton" name="settings_digit_fade_set">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>RalewayBold</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: rgb(16, 128, 128);
+color: rgb(255, 255, 255);
+font: 12px &quot;RalewayBold&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>Set</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="settings_digit_fade_t">
+                   <property name="font">
+                    <font>
+                     <family>RalewayBold</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(16, 128, 128);
+font: 12px &quot;RalewayBold&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>Digit fade mode</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="settings_digit_fade_mode">
+                   <property name="font">
+                    <font>
+                     <family>RalewayMedium</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">font: 12px &quot;RalewayMedium&quot;;</string>
+                   </property>
+                   <property name="frame">
+                    <bool>false</bool>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>None</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Fade-out + Fade-in</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Blend</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
                <widget class="QGroupBox" name="settings_presets">
                 <property name="font">
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5724,88 +5652,18 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <bool>true</bool>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_16">
+                 <property name="horizontalSpacing">
+                  <number>-1</number>
+                 </property>
                  <property name="verticalSpacing">
                   <number>20</number>
                  </property>
-                 <item row="0" column="0">
-                  <widget class="QCheckBox" name="settings_presets_en_static">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>RalewayBold</family>
-                     <pointsize>-1</pointsize>
-                     <weight>50</weight>
-                     <italic>false</italic>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: rgb(16, 128, 128);
-font: 12px &quot;RalewayBold&quot;;</string>
-                   </property>
-                   <property name="text">
-                    <string>Static</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QCheckBox" name="settings_presets_en_chase">
-                   <property name="font">
-                    <font>
-                     <family>RalewayBold</family>
-                     <pointsize>-1</pointsize>
-                     <weight>50</weight>
-                     <italic>false</italic>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: rgb(16, 128, 128);
-font: 12px &quot;RalewayBold&quot;;</string>
-                   </property>
-                   <property name="text">
-                    <string>Chase Fade</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QCheckBox" name="settings_presets_en_bliss">
-                   <property name="font">
-                    <font>
-                     <family>RalewayBold</family>
-                     <pointsize>-1</pointsize>
-                     <weight>50</weight>
-                     <italic>false</italic>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: rgb(16, 128, 128);
-font: 12px &quot;RalewayBold&quot;;</string>
-                   </property>
-                   <property name="text">
-                    <string>Moments of Bliss</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
+                 <item row="1" column="2">
                   <widget class="QCheckBox" name="settings_presets_en_tcode">
                    <property name="font">
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5822,13 +5680,12 @@ font: 12px &quot;RalewayBold&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="0">
-                  <widget class="QCheckBox" name="settings_presets_en_spectrum">
+                 <item row="3" column="2">
+                  <widget class="QCheckBox" name="settings_presets_en_cop">
                    <property name="font">
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5838,20 +5695,63 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 12px &quot;RalewayBold&quot;;</string>
                    </property>
                    <property name="text">
-                    <string>Spectrum Fade</string>
+                    <string>Police Lights</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QCheckBox" name="settings_presets_en_chase">
+                   <property name="font">
+                    <font>
+                     <family>RalewayBold</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(16, 128, 128);
+font: 12px &quot;RalewayBold&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>Chase Fade</string>
                    </property>
                    <property name="checked">
                     <bool>true</bool>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QCheckBox" name="settings_presets_en_static">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>RalewayBold</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(16, 128, 128);
+font: 12px &quot;RalewayBold&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>Static</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
                   <widget class="QCheckBox" name="settings_presets_en_music">
                    <property name="font">
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5865,13 +5765,12 @@ font: 12px &quot;RalewayBold&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0">
+                 <item row="3" column="0" colspan="2">
                   <widget class="QCheckBox" name="settings_presets_en_rnb">
                    <property name="font">
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5888,13 +5787,12 @@ font: 12px &quot;RalewayBold&quot;;</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="1">
-                  <widget class="QCheckBox" name="settings_presets_en_cop">
+                 <item row="2" column="0" colspan="2">
+                  <widget class="QCheckBox" name="settings_presets_en_spectrum">
                    <property name="font">
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5904,11 +5802,55 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 12px &quot;RalewayBold&quot;;</string>
                    </property>
                    <property name="text">
-                    <string>Police Lights</string>
+                    <string>Spectrum Fade</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="0" colspan="2">
+                 <item row="6" column="0">
+                  <widget class="QCheckBox" name="settings_presets_en_pulse">
+                   <property name="font">
+                    <font>
+                     <family>RalewayBold</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(16, 128, 128);
+font: 12px &quot;RalewayBold&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>Pulse</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0" colspan="2">
+                  <widget class="QCheckBox" name="settings_presets_en_bliss">
+                   <property name="font">
+                    <font>
+                     <family>RalewayBold</family>
+                     <pointsize>-1</pointsize>
+                     <italic>false</italic>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(16, 128, 128);
+font: 12px &quot;RalewayBold&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>Moments of Bliss</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0" colspan="3">
                   <widget class="QPushButton" name="settings_presets_en_set">
                    <property name="minimumSize">
                     <size>
@@ -5920,7 +5862,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5933,6 +5874,9 @@ font: 12px &quot;RalewayBold&quot;;</string>
                    <property name="text">
                     <string>Set</string>
                    </property>
+                   <property name="autoDefault">
+                    <bool>false</bool>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -5944,7 +5888,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -5968,7 +5911,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -5991,7 +5933,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6003,7 +5944,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -6023,7 +5963,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -6046,7 +5985,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -6066,7 +6004,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -6089,7 +6026,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                        <font>
                         <family>RalewayMedium</family>
                         <pointsize>-1</pointsize>
-                        <weight>50</weight>
                         <italic>false</italic>
                         <bold>false</bold>
                        </font>
@@ -6118,7 +6054,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6142,7 +6077,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -6172,7 +6106,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6198,7 +6131,6 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6221,7 +6153,6 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -6245,7 +6176,6 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6265,7 +6195,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6285,7 +6214,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6305,7 +6233,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6325,7 +6252,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6345,7 +6271,6 @@ font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayMedium</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                      <underline>true</underline>
@@ -6359,7 +6284,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
 font: 12px &quot;RalewayMedium&quot;;</string>
                    </property>
                    <property name="text">
-                    <string>3.01, Build 12/22/2020 for macOS</string>
+                    <string>3.02, Build 05/07/2025 for macOS</string>
                    </property>
                   </widget>
                  </item>
@@ -6372,7 +6297,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -6402,7 +6326,6 @@ font: 12px &quot;RalewayMedium&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6428,7 +6351,6 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6458,10 +6380,10 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -6470,8 +6392,8 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
              <property name="geometry">
               <rect>
                <x>0</x>
-               <y>0</y>
-               <width>447</width>
+               <y>-103</y>
+               <width>445</width>
                <height>472</height>
               </rect>
              </property>
@@ -6500,7 +6422,6 @@ color: rgb(255, 255, 255);font: 12px &quot;RalewayBold&quot;;</string>
                  <font>
                   <family>RalewayBlack</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                   <underline>false</underline>
@@ -6520,7 +6441,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                  <string>20:15:16</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -6536,7 +6457,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayBlack</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -6548,7 +6468,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                  <string>Friyay, March 7th 2032</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -6573,7 +6493,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6585,7 +6504,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string>+</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -6595,10 +6514,10 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="buttonSymbols">
-                    <enum>QAbstractSpinBox::PlusMinus</enum>
+                    <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
                    </property>
                    <property name="minimum">
                     <number>-10</number>
@@ -6614,10 +6533,10 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="buttonSymbols">
-                    <enum>QAbstractSpinBox::PlusMinus</enum>
+                    <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
                    </property>
                    <property name="minimum">
                     <number>-24</number>
@@ -6636,10 +6555,10 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="buttonSymbols">
-                    <enum>QAbstractSpinBox::PlusMinus</enum>
+                    <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
                    </property>
                    <property name="minimum">
                     <number>-60</number>
@@ -6655,10 +6574,10 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="buttonSymbols">
-                    <enum>QAbstractSpinBox::PlusMinus</enum>
+                    <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
                    </property>
                    <property name="minimum">
                     <number>-48</number>
@@ -6674,10 +6593,10 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string notr="true">color: rgb(16, 128, 128);font: 24px &quot;RalewayBold&quot;;</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                    <property name="buttonSymbols">
-                    <enum>QAbstractSpinBox::PlusMinus</enum>
+                    <enum>QAbstractSpinBox::ButtonSymbols::PlusMinus</enum>
                    </property>
                    <property name="minimum">
                     <number>-90</number>
@@ -6693,7 +6612,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6705,7 +6623,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string/>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -6715,7 +6633,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6727,7 +6644,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string>years</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -6737,7 +6654,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6749,7 +6665,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string>months</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -6759,7 +6675,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6771,7 +6686,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string>days</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -6781,7 +6696,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6793,7 +6707,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string>hours</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -6803,7 +6717,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <font>
                      <family>RalewayBold</family>
                      <pointsize>-1</pointsize>
-                     <weight>50</weight>
                      <italic>false</italic>
                      <bold>false</bold>
                     </font>
@@ -6815,7 +6728,7 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                     <string>minutes</string>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -6828,7 +6741,6 @@ font: 96px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -6860,7 +6772,6 @@ to the time of your computer</string>
                  <font>
                   <family>RalewayBlack</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -6884,7 +6795,6 @@ font: 36px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -6910,10 +6820,10 @@ font: 36px &quot;RalewayBlack&quot;;</string>
              </size>
             </property>
             <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+             <enum>QFrame::Shape::NoFrame</enum>
             </property>
             <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAlwaysOff</enum>
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
             </property>
             <property name="widgetResizable">
              <bool>true</bool>
@@ -6923,7 +6833,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>447</width>
+               <width>445</width>
                <height>291</height>
               </rect>
              </property>
@@ -6974,7 +6884,7 @@ font: 18px &quot;RalewayBlack&quot;;</string>
                  <string>Time to connect. Let's talk to Fluorescence...</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                 </property>
                </widget>
               </item>
@@ -6996,7 +6906,6 @@ font: 18px &quot;RalewayBlack&quot;;</string>
                  <font>
                   <family>RalewayBold</family>
                   <pointsize>-1</pointsize>
-                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -7036,7 +6945,7 @@ font: 18px &quot;RalewayBlack&quot;;</string>
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
+                 <item alignment="Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter">
                   <widget class="ClickableLabel" name="com_reload">
                    <property name="maximumSize">
                     <size>
@@ -7055,20 +6964,20 @@ font: 36px &quot;RalewayBlack&quot;;</string>
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc">:/Resources/reload.png</pixmap>
+                    <pixmap resource="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc">:/Resources/reload.png</pixmap>
                    </property>
                    <property name="scaledContents">
                     <bool>true</bool>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
                  <item>
                   <widget class="QWidget" name="widget" native="true"/>
                  </item>
-                 <item alignment="Qt::AlignRight|Qt::AlignVCenter">
+                 <item alignment="Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignVCenter">
                   <widget class="ClickableLabel" name="com_connect">
                    <property name="maximumSize">
                     <size>
@@ -7090,7 +6999,7 @@ font: 36px &quot;RalewayBlack&quot;;</string>
                     <bool>true</bool>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -7129,7 +7038,6 @@ font: 36px &quot;RalewayBlack&quot;;</string>
        <font>
         <family>RalewayBold</family>
         <pointsize>-1</pointsize>
-        <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
@@ -7145,7 +7053,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
        <bool>false</bool>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
       </property>
       <property name="margin">
        <number>0</number>
@@ -7181,7 +7089,7 @@ font: 12px &quot;RalewayBold&quot;;</string>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../CCPP/FluorescenceApp_MacOS_Release/qmake_qmake_immediate.qrc"/>
+  <include location="../build-FluorescenceApp-Qt_6_4_2_for_macOS-Debug/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>

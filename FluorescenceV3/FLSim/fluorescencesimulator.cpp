@@ -56,6 +56,7 @@ extern struct COM_Data global_com_data;
 // From vfdco_sim_display, vfdco_sim_led: import dim factors
 extern uint8_t _led_dim_factor;
 extern uint8_t display_dimmer;
+extern uint8_t digit_fade_mode;
 // From vfdco_sim_com: import virtual com receiver
 extern uint8_t virtual_transfer_buffer[CONFIG_COM_TX_BUF_MAX];
 
@@ -127,6 +128,7 @@ void FluorescenceSimulator::update()
         ui->widget_gui->setTitle("GUI & Display Monitor. Active Instance: "
                                  + QString::fromStdString(std::string(_gui_active))
                                  + " (" + QString::number(global_gui_instance_counter) + "). RTC Respond: " + cdt.currentDateTime().toString()
+                                 + ", Digit Fade Mode: " + ((digit_fade_mode == 0) ? "None" : (digit_fade_mode == 1 ? "Cross" : "Blend"))
                                  );
         ui->widget_lights->setTitle("Lights Monitor. Regular Instance: "
                                  + QString::fromStdString(std::string(_light_active)) + " ("
