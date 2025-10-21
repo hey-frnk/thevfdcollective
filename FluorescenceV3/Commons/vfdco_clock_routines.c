@@ -58,7 +58,8 @@ SOFTWARE.*/
 #include "vfdco_time.h"            // Physical timing & RTC driver
 #include "vfdco_hid.h"             // Physical HID driver
 #include "vfdco_com.h"             // Physical Communication driver
-#include "vfdco_mic.h"             // Physical Microphone driver
+#include "vfdco_audio.h"           // Physical Audio driver
+#include "vfdco_sensors.h"         // Physical Sensors driver
 
 // Application specific libraries
 #include "vfdco_lights.h"          // Library of light patterns
@@ -69,10 +70,15 @@ SOFTWARE.*/
 
 // Globally accessible parameters
 static time_event_t display_updater;
+static time_event_t global_time_updater;
+static time_event_t global_sensors_updater;
 
 static vfdco_time_t global_time;
 static vfdco_date_t global_date;
-static time_event_t global_time_updater;
+static vfdco_temperature_t global_temperature;
+static vfdco_humidity_t global_humidity;
+static vfdco_pressure_t global_pressure;
+static vfdco_tilt_t global_tilt;
 
 // HID variables
 static uint8_t global_button_F1_state = BUTTON_EVENT_OFF;
@@ -155,6 +161,7 @@ static void com_decoder(uint8_t *input_buffer, void (*legacy_com_encoder)(const 
 void vfdco_clock_initializer(uint32_t welcome_color) {
   global_time_updater = Time_Event_Init(CONFIG_RTC_UPDATE_INTERVAL);
   display_updater = Time_Event_Init(CONFIG_DISPLAY_UPDATE_INTERVAL);
+  global_sensors_updater = Time_Event_Init(CONFIG_SENSORS_UPDATE_INTERVAL);
 
   // Read in all saved settings from (de)serializer
   vfdco_clock_serialization_initializer();
@@ -164,7 +171,8 @@ void vfdco_clock_initializer(uint32_t welcome_color) {
   vfdco_clock_gui_initializer();
   vfdco_clock_lights_initializer();
   vfdco_clock_com_initializer();
-  vfdco_clock_mic_initializer();
+  vfdco_clock_audio_initializer();
+  vfdco_clock_sensors_initializer();
   
   // All good? All good! Fluorescence, say hello!
   vfdco_welcome((char *)SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_welcome, welcome_color);
@@ -230,9 +238,17 @@ inline void vfdco_clock_com_initializer() {
   global_com_data.tx_buffer = NULL;
 }
 
-inline void vfdco_clock_mic_initializer() {
+inline void vfdco_clock_audio_initializer() {
   // Initialize driver
-  vfdco_mic_init();
+  vfdco_audio_init();
+}
+
+inline void vfdco_clock_sensors_initializer() {
+  // Initialize driver
+  vfdco_sensors_init_temperature();
+  vfdco_sensors_init_humidity();
+  vfdco_sensors_init_pressure();
+  vfdco_sensors_init_tilt();
 }
 
 /** Begin of:
@@ -245,6 +261,8 @@ inline void vfdco_clock_routine() {
   vfdco_clock_gui_routine();
   vfdco_clock_lights_routine();
   vfdco_clock_com_routine();
+  vfdco_clock_audio_routine();
+  vfdco_clock_sensors_routine();
 }
 
 /** Begin of:
@@ -264,6 +282,26 @@ inline void vfdco_clock_hid_routine() {
 inline void vfdco_clock_time_routine() {
   if(Time_Event_Update(&global_time_updater)) {
     vfdco_get_date_time(&global_date, &global_time);
+
+    // Check if alarm time is set
+    if(SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_h] != 0 &&
+    SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_m] != 0) {
+      // Alarm time is set, check if alarm time is reached
+      if (global_time.h == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_h] &&
+      global_time.m == SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_m] &&
+      global_time.s < 3) {
+        // Safety: switch GUI to TIME if not already
+        if(global_gui_instance_counter != GUI_TIME) {
+          if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
+          Container_GUI_Clear(&global_gui_instance);
+          set_next_gui_instance(GUI_TIME);
+        }
+        struct GUI_Format_Time *self = (struct GUI_Format_Time *)&global_gui_instance;
+        if(self->alarm_state == ALARM_STATE_IDLE) {
+          self->alarm_state = ALARM_STATE_STARTED;
+        }
+      }
+    }
   }
 }
 
@@ -328,6 +366,16 @@ inline void vfdco_clock_gui_routine() {
     if(GUI_Format_Save) GUI_Format_Save(&global_gui_instance);
     // (2) Apply set parameters (external destructor call)
     switch(global_gui_instance_counter) {
+      case GUI_ALARM_SET: {
+        struct GUI_Format_Alarm_Setter *self = (struct GUI_Format_Alarm_Setter *)&global_gui_instance;
+        if(1) { // If alarm has been set
+          // Set snooze option
+          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_h] = self->new_time.h;
+          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_m] = self->new_time.m;
+          SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_snooze_option] = self->snooze_option;
+        }
+        break;
+      }
       case GUI_TIME_DATE_SET: {
         struct GUI_Format_Time_Date_Setter *self = (struct GUI_Format_Time_Date_Setter*)&global_gui_instance;
         if(self->set_mode == 0) vfdco_set_date_time(&global_date,    &self->new_time);
@@ -361,7 +409,9 @@ inline void vfdco_clock_gui_routine() {
     // (4) Initialize (internal constructor call)
     switch(global_gui_instance_counter) {
       case GUI_TIME:            { set_next_gui_instance(GUI_DATE);            break; }
-      case GUI_DATE:            { set_next_gui_instance(GUI_STOPWATCH);       break; }
+      case GUI_DATE:            { set_next_gui_instance(GUI_SENSORS);         break; }
+      case GUI_SENSORS:         { set_next_gui_instance(GUI_ALARM_SET);       break; }
+      case GUI_ALARM_SET:       { set_next_gui_instance(GUI_STOPWATCH);       break; }
       case GUI_STOPWATCH:       { set_next_gui_instance(GUI_BRIGHTNESS_SET);  break; }
       case GUI_BRIGHTNESS_SET:  { set_next_gui_instance(GUI_DIGIT_FADE_SET);  break; }
       case GUI_DIGIT_FADE_SET:  { set_next_gui_instance(GUI_TIME);            break; }
@@ -469,6 +519,20 @@ inline void vfdco_clock_com_routine() {
   }
 }
 
+inline void vfdco_clock_audio_routine() {
+  return;
+}
+
+// Sensors routine
+inline void vfdco_clock_sensors_routine() {
+  if(Time_Event_Update(&global_sensors_updater)) {
+    vfdco_sensors_get_temperature(&global_temperature);
+    vfdco_sensors_get_humidity(&global_humidity);
+    vfdco_sensors_get_pressure(&global_pressure);
+    vfdco_sensors_get_tilt(&global_tilt);
+  }
+}
+
 /** Begin of:
   * @tableofcontents SECTION_SETTING_FUNCTIONS
  **/
@@ -561,12 +625,21 @@ static void set_next_gui_instance_timeset(uint8_t set_mode) {
  * @param next_instance any regular GUI without special parameters (TIME/DATE_STOPWATCH)
  */
 static void set_next_gui_instance(gui_instance_t next_instance) {
-  uint8_t mapped_instance = _map_gui_instance_to_serialized_settings_index(next_instance), *instance_settings = NULL;
+  uint8_t mapped_instance = _map_gui_instance_to_serialized_settings_index(next_instance);
+  uint8_t *instance_settings = NULL;
   if(mapped_instance != INSTANCE_NO_SETTINGS) instance_settings = serialized_settings[mapped_instance];
   switch(next_instance) {
-    case GUI_TIME:      { GUI_Format_Time_Init(     (struct GUI_Format_Time*)&global_gui_instance, &global_time, instance_settings); break; }
+    case GUI_TIME:      { GUI_Format_Time_Init(     (struct GUI_Format_Time*)&global_gui_instance, &global_time, &global_date, SERIALIZABLE_CLOCK_ROUTINE_arr[CLOCK_ROUTINE_SETTING_alarm_snooze_option], instance_settings); break; }
     case GUI_DATE:      { GUI_Format_Date_Init(     (struct GUI_Format_Date*)&global_gui_instance, &global_date, instance_settings); break; }
+    case GUI_SENSORS:   { GUI_Format_Sensors_Init(  (struct GUI_Format_Sensors*)&global_gui_instance, &global_temperature, &global_humidity, &global_pressure, &global_tilt, instance_settings); break; }
     case GUI_STOPWATCH: { GUI_Format_Stopwatch_Init((struct GUI_Format_Stopwatch*)&global_gui_instance, &global_time);               break; }
+    case GUI_ALARM_SET: {
+      GUI_Format_Alarm_Setter_Init(
+        (struct GUI_Format_Alarm_Setter *)&global_gui_instance,
+        SERIALIZABLE_CLOCK_ROUTINE_arr + CLOCK_ROUTINE_SETTING_alarm_h
+      );
+      break;
+    }
     case GUI_BRIGHTNESS_SET: {
       GUI_Format_Brightness_Setter_Init(
         (struct GUI_Format_Brightness_Setter *)&global_gui_instance,

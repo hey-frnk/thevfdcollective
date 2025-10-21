@@ -71,6 +71,10 @@ void    vfdco_clock_gui_routine();
 void    vfdco_clock_lights_initializer();
 void    vfdco_clock_lights_routine();
 
+// Sensor data refresh routine
+void    vfdco_clock_sensors_initializer();
+void    vfdco_clock_sensors_routine();
+
 // Power management routine (Brightness, Night Shift/Energy saving)
 void    vfdco_clock_power_initializer();
 void    vfdco_clock_power_routine();
@@ -83,7 +87,8 @@ void    vfdco_clock_com_initializer();
 void    vfdco_clock_com_routine();
 
 // Microphone initializer
-void    vfdco_clock_mic_initializer();
+void    vfdco_clock_audio_initializer();
+void    vfdco_clock_audio_routine();
 
 // ######## EVERYTHING FROM HERE IS GENERATED AUTOMATICALLY FROM THE SERIALIZATION MAPPING BY PREPROCESSOR ABUSE in config.h, DO NOT CHANGE MANUALLY ########
 #define CREATE_SERIALIZED_INDEX(_globalindex, _size, _enum_map, _serializable_identifier) \

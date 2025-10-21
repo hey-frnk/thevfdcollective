@@ -76,11 +76,11 @@ extern "C" {
  *    -> Description: Only for documentation/reference. Should be meaningful
  */
 #define NUM_SERIALIZABLE_GLOBAL 1
-#define NUM_SERIALIZABLE_GUI 2
+#define NUM_SERIALIZABLE_GUI 3
 #define NUM_SERIALIZABLE_LIGHTS 9
      // ENTRY:  Index|    Size| Corresponding enum mapping     | Instance
 #define CREATE_SERIALIZED_GLOBAL(ENTRY) \
-        ENTRY(      0,      20, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
+        ENTRY(      0,      23, 0                              , SERIALIZABLE_CLOCK_ROUTINE    )
                // SUBENTRY: Entry|Offset| Size| Setting identifier                                    | Default value                            | Description, just for documentation Has no effect on anything
 #define CREATE_SERIALIZED_GLOBAL_POSITIONS(SUBENTRY) \
           /*-->*/ SUBENTRY(      0,    0,    6, CLOCK_ROUTINE_SETTING_welcome                         , CONFIG_WELCOME_MESSAGE_DEFAULT           , "6 * char, welcome message") \
@@ -95,41 +95,47 @@ extern "C" {
           /*-->*/ SUBENTRY(      0,   16,    1, CLOCK_ROUTINE_SETTING_night_shift_start_m             , 0                                        , "uint8_t, night_shift_start_m") \
           /*-->*/ SUBENTRY(      0,   17,    1, CLOCK_ROUTINE_SETTING_night_shift_end_h               , 0                                        , "uint8_t, night_shift_end_h") \
           /*-->*/ SUBENTRY(      0,   18,    1, CLOCK_ROUTINE_SETTING_night_shift_end_m               , 0                                        , "uint8_t, night_shift_end_m") \
-          /*-->*/ SUBENTRY(      0,   19,    1, CLOCK_ROUTINE_SETTING_digit_fade_mode                 , CONFIG_DIGIT_FADE_CROSS                  , "uint8_t, digit_fade_mode")
+          /*-->*/ SUBENTRY(      0,   19,    1, CLOCK_ROUTINE_SETTING_digit_fade_mode                 , CONFIG_DIGIT_FADE_CROSS                  , "uint8_t, digit_fade_mode") \
+          /*-->*/ SUBENTRY(      0,   20,    1, CLOCK_ROUTINE_SETTING_alarm_h                         , 8                                        , "uint8_t, alarm_h") \
+          /*-->*/ SUBENTRY(      0,   21,    1, CLOCK_ROUTINE_SETTING_alarm_m                         , 0                                        , "uint8_t, alarm_m") \
+          /*-->*/ SUBENTRY(      0,   22,    1, CLOCK_ROUTINE_SETTING_alarm_snooze_option             , 0                                        , "uint8_t, alarm_snooze_option")
 
 #define CREATE_SERIALIZED_GUI(ENTRY) \
         ENTRY(      1,       2, GUI_TIME                       , SERIALIZABLE_GUI_TIME         ) \
-        ENTRY(      2,       1, GUI_DATE                       , SERIALIZABLE_GUI_DATE         )
+        ENTRY(      2,       1, GUI_DATE                       , SERIALIZABLE_GUI_DATE         ) \
+        ENTRY(      3,       2, GUI_SENSORS                    , SERIALIZABLE_GUI_SENSORS      )
 #define CREATE_SERIALIZED_GUI_POSITIONS(SUBENTRY) \
           /*-->*/ SUBENTRY(      1,    0,    1, GUI_FORMAT_SETTING_TIME_time_mode                     , TIME_FORMAT_24H /* ! */                  , "uint8_t, time_mode (12/24H/12HLZ)") \
           /*-->*/ SUBENTRY(      1,    1,    1, GUI_FORMAT_SETTING_TIME_dot_mode                      , 0 /* Standard */                         , "uint8_t, dot_mode (blink/flip/off") \
-          /*-->*/ SUBENTRY(      2,    0,    1, GUI_FORMAT_SETTING_DATE_date_mode                     , DATE_FORMAT_DDMMYY /* ! */               , "uint8_t, date_mode (DDMMYY/MMDDYY)")
+          /*-->*/ SUBENTRY(      2,    0,    1, GUI_FORMAT_SETTING_DATE_date_mode                     , DATE_FORMAT_DDMMYY /* ! */               , "uint8_t, date_mode (DDMMYY/MMDDYY)") \
+          /*-->*/ SUBENTRY(      3,    0,    1, GUI_FORMAT_SETTING_SENSORS_unit_temperature           , TEMPERATURE_UNIT_CELSIUS /* Celsius */ , "uint8_t, unit_temperature (C/F)") \
+          /*-->*/ SUBENTRY(      3,    1,    1, GUI_FORMAT_SETTING_SENSORS_unit_pressure              , PRESSURE_UNIT_HPA /* hPa */            , "uint8_t, unit_pressure (hPa/inHg)")
 
 #define CREATE_SERIALIZED_LIGHTS(ENTRY) \
-        ENTRY(      3,       1, LIGHT_PATTERN_STATIC           , SERIALIZABLE_LIGHTS_STATIC    ) \
-        ENTRY(      4,       1, LIGHT_PATTERN_MOMENTSOFBLISS   , SERIALIZABLE_LIGHTS_BLISS     ) \
-        ENTRY(      5,       2, LIGHT_PATTERN_SPECTRUM         , SERIALIZABLE_LIGHTS_SPECTRUM  ) \
-        ENTRY(      6,       2, LIGHT_PATTERN_RAINBOW          , SERIALIZABLE_LIGHTS_RAINBOW   ) \
-        ENTRY(      7,       2, LIGHT_PATTERN_CHASE            , SERIALIZABLE_LIGHTS_CHASE     ) \
-        ENTRY(      8,       2, LIGHT_PATTERN_MUSIC            , SERIALIZABLE_LIGHTS_MUSIC     ) \
-        ENTRY(      9,      24, LIGHT_PATTERN_SERIAL0          , SERIALIZABLE_LIGHTS_SERIAL0   ) \
-        ENTRY(     10,      24, LIGHT_PATTERN_SERIAL1          , SERIALIZABLE_LIGHTS_SERIAL1   ) \
-        ENTRY(     11,       2, LIGHT_PATTERN_PULSE            , SERIALIZABLE_LIGHTS_PULSE     )
+        ENTRY(      4,       1, LIGHT_PATTERN_STATIC           , SERIALIZABLE_LIGHTS_STATIC    ) \
+        ENTRY(      5,       1, LIGHT_PATTERN_MOMENTSOFBLISS   , SERIALIZABLE_LIGHTS_BLISS     ) \
+        ENTRY(      6,       2, LIGHT_PATTERN_SPECTRUM         , SERIALIZABLE_LIGHTS_SPECTRUM  ) \
+        ENTRY(      7,       2, LIGHT_PATTERN_RAINBOW          , SERIALIZABLE_LIGHTS_RAINBOW   ) \
+        ENTRY(      8,       2, LIGHT_PATTERN_CHASE            , SERIALIZABLE_LIGHTS_CHASE     ) \
+        ENTRY(      9,       2, LIGHT_PATTERN_MUSIC            , SERIALIZABLE_LIGHTS_MUSIC     ) \
+        ENTRY(     10,      24, LIGHT_PATTERN_SERIAL0          , SERIALIZABLE_LIGHTS_SERIAL0   ) \
+        ENTRY(     11,      24, LIGHT_PATTERN_SERIAL1          , SERIALIZABLE_LIGHTS_SERIAL1   ) \
+        ENTRY(     12,       2, LIGHT_PATTERN_PULSE            , SERIALIZABLE_LIGHTS_PULSE     )
 #define CREATE_SERIALIZED_LIGHTS_POSITIONS(SUBENTRY) \
-          /*-->*/ SUBENTRY(      3,    0,    1, LIGHT_PATTERN_SETTING_STATIC_position                 , 11 /* Rainbow */                        , "uint8_t, position") \
-          /*-->*/ SUBENTRY(      4,    0,    1, LIGHT_PATTERN_SETTING_BLISS_moment                    , 0 /* Nordlicht */                       , "uint8_t, moment") \
-          /*-->*/ SUBENTRY(      5,    0,    1, LIGHT_PATTERN_SETTING_SPECTRUM_saturation             , CONFIG_SATURATION_HIGH                  , "uint8_t, saturation") \
-          /*-->*/ SUBENTRY(      5,    1,    1, LIGHT_PATTERN_SETTING_SPECTRUM_lightness              , CONFIG_LIGHTNESS_HIGH                   , "uint8_t, lightness") \
-          /*-->*/ SUBENTRY(      6,    0,    1, LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff          , 10 /* Chill */                          , "int8_t, chain_hue_diff") \
-          /*-->*/ SUBENTRY(      6,    1,    1, LIGHT_PATTERN_SETTING_RAINBOW_saturation              , CONFIG_SATURATION_HIGH                  , "uint8_t, saturation") \
-          /*-->*/ SUBENTRY(      7,    0,    1, LIGHT_PATTERN_SETTING_CHASE_chase_mode                , 2 /* Flip */                            , "uint8_t, chase_mode") \
-          /*-->*/ SUBENTRY(      7,    1,    1, LIGHT_PATTERN_SETTING_CHASE_color_peak_diff           , 0 /* No diff */                         , "uint8_t, color_peak_diff") \
-          /*-->*/ SUBENTRY(      8,    0,    1, LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff           , 10 /* Chill */                          , "uint8_t, color_peak_diff") \
-          /*-->*/ SUBENTRY(      8,    1,    1, LIGHT_PATTERN_SETTING_MUSIC_saturation                , CONFIG_SATURATION_HIGH                  , "uint8_t, saturation") \
-          /*-->*/ SUBENTRY(      9,    0,   24, LIGHT_PATTERN_SETTING_SERIAL0_colors                  , 0 /* Off */                             , "24 * uint8_t, colors") \
-          /*-->*/ SUBENTRY(     10,    0,   24, LIGHT_PATTERN_SETTING_SERIAL1_colors                  , 0 /* Off */                             , "24 * uint8_t, colors") \
-          /*-->*/ SUBENTRY(     11,    0,    1, LIGHT_PATTERN_SETTING_PULSE_chain_hue_diff            , 10 /* Chill */                          , "int8_t, chain_hue_diff") \
-          /*-->*/ SUBENTRY(     11,    1,    1, LIGHT_PATTERN_SETTING_PULSE_speed                     , CONFIG_PULSE_MEDIUM /* Slow */          , "uint8_t, speed")
+          /*-->*/ SUBENTRY(      4,    0,    1, LIGHT_PATTERN_SETTING_STATIC_position                 , 11 /* Rainbow */                        , "uint8_t, position") \
+          /*-->*/ SUBENTRY(      5,    0,    1, LIGHT_PATTERN_SETTING_BLISS_moment                    , 0 /* Nordlicht */                       , "uint8_t, moment") \
+          /*-->*/ SUBENTRY(      6,    0,    1, LIGHT_PATTERN_SETTING_SPECTRUM_saturation             , CONFIG_SATURATION_HIGH                  , "uint8_t, saturation") \
+          /*-->*/ SUBENTRY(      6,    1,    1, LIGHT_PATTERN_SETTING_SPECTRUM_lightness              , CONFIG_LIGHTNESS_HIGH                   , "uint8_t, lightness") \
+          /*-->*/ SUBENTRY(      7,    0,    1, LIGHT_PATTERN_SETTING_RAINBOW_chain_hue_diff          , 10 /* Chill */                          , "int8_t, chain_hue_diff") \
+          /*-->*/ SUBENTRY(      7,    1,    1, LIGHT_PATTERN_SETTING_RAINBOW_saturation              , CONFIG_SATURATION_HIGH                  , "uint8_t, saturation") \
+          /*-->*/ SUBENTRY(      8,    0,    1, LIGHT_PATTERN_SETTING_CHASE_chase_mode                , 2 /* Flip */                            , "uint8_t, chase_mode") \
+          /*-->*/ SUBENTRY(      8,    1,    1, LIGHT_PATTERN_SETTING_CHASE_color_peak_diff           , 0 /* No diff */                         , "uint8_t, color_peak_diff") \
+          /*-->*/ SUBENTRY(      9,    0,    1, LIGHT_PATTERN_SETTING_MUSIC_color_peak_diff           , 10 /* Chill */                          , "uint8_t, color_peak_diff") \
+          /*-->*/ SUBENTRY(      9,    1,    1, LIGHT_PATTERN_SETTING_MUSIC_saturation                , CONFIG_SATURATION_HIGH                  , "uint8_t, saturation") \
+          /*-->*/ SUBENTRY(     10,    0,   24, LIGHT_PATTERN_SETTING_SERIAL0_colors                  , 0 /* Off */                             , "24 * uint8_t, colors") \
+          /*-->*/ SUBENTRY(     11,    0,   24, LIGHT_PATTERN_SETTING_SERIAL1_colors                  , 0 /* Off */                             , "24 * uint8_t, colors") \
+          /*-->*/ SUBENTRY(     12,    0,    1, LIGHT_PATTERN_SETTING_PULSE_chain_hue_diff            , 10 /* Chill */                          , "int8_t, chain_hue_diff") \
+          /*-->*/ SUBENTRY(     12,    1,    1, LIGHT_PATTERN_SETTING_PULSE_speed                     , CONFIG_PULSE_MEDIUM /* Slow */          , "uint8_t, speed")
 
 // END MODIFY
 

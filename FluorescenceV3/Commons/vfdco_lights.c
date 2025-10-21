@@ -53,7 +53,7 @@ SOFTWARE.*/
 #include "vfdco_config.h"
 #include "vfdco_led.h"
 #include "vfdco_display.h"
-#include "vfdco_mic.h"
+#include "vfdco_audio.h"
 #include "vfdco_lights.h"
 #include "vfdco_util.h"
 
@@ -864,7 +864,7 @@ static void _Light_Pattern_Music_Update(Light_Pattern *unsafe_self) {
         ++self->color_pos; // Intended overflow
     }
 
-    uint8_t mic_read_in = 6 - vfdco_mic_read_level();
+    uint8_t mic_read_in = 6 - vfdco_audio_mic_read_level();
 
     if(self->state >= mic_read_in) {
       self->state = mic_read_in;

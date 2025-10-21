@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,15 +23,17 @@ SOURCES += \
     ../Commons/vfdco_util.c \
     main.cpp \
     fluorescencesimulator.cpp \
+    vfdco_sim_audio.cpp \
     vfdco_sim_com.cpp \
     vfdco_sim_display.cpp \
     vfdco_sim_hid.cpp \
     vfdco_sim_led.cpp \
+    vfdco_sim_sensors.cpp \
     vfdco_sim_serialization.cpp \
-    vfdco_sim_time.cpp \
-    vfdco_sim_virtual_mic.cpp
+    vfdco_sim_time.cpp
 
 HEADERS += \
+    ../Commons/vfdco_audio.h \
     ../Commons/vfdco_clock_routines.h \
     ../Commons/vfdco_gui.h \
     ../Commons/vfdco_lights.h \
@@ -40,7 +43,7 @@ HEADERS += \
     ../Commons/vfdco_display.h \
     ../Commons/vfdco_hid.h \
     ../Commons/vfdco_led.h \
-    ../Commons/vfdco_mic.h \
+    ../Commons/vfdco_sensors.h \
     ../Commons/vfdco_serialization.h \
     ../Commons/vfdco_time.h \
     ../Commons/vfdco_util.h \
@@ -56,4 +59,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    protocol.csv
+    protocol.csv \
+    resources.qrc
+

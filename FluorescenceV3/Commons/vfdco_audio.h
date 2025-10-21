@@ -27,7 +27,7 @@ SOFTWARE.*/
   * @author   The VFD Collective, Frank from The VFD Collective (Fu Zheng)
   * @version  V1.0
   * @date     20-November-2019
-  * @brief    This is the microphone driver
+  * @brief    This is the audio driver
   ******************************************************************************
  **/
 
@@ -46,13 +46,17 @@ extern "C" {
  * By using Arduino, configure GPIO settings by pinMode(...)
  * By using STM32 HAL, this function can stay unused as initialization is done by STM32 HAL in void main()
  */
-void vfdco_mic_init();
+void vfdco_audio_init();
 
 /**
  * @brief Read in sound intensity level captured by the microphone
  * @return uint8_t Level, number between and including 0 and 6
  */
-uint8_t vfdco_mic_read_level(void);
+uint8_t vfdco_audio_mic_read_level(void);
+
+void vfdco_audio_speaker_play(uint16_t frequency_hz);
+void vfdco_audio_speaker_stop();
+uint_fast8_t vfdco_audio_speaker_is_active();
 
 #endif
 

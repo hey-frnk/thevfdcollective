@@ -55,7 +55,7 @@ extern "C" {
  */
 // Edit software version here
 #define CONFIG_SW_STRING_LENGTH 6
-#define CONFIG_SW_STRING {'3', '.', '1', 's', 'i', 'm'}
+#define CONFIG_SW_STRING {'3', '.', '3', 's', 'i', 'm'}
 // Edit hardware version here
 #define CONFIG_HW_STRING_LENGTH 4
 #define CONFIG_HW_STRING {'3', '.', '0', '0'}
@@ -149,6 +149,16 @@ extern "C" {
 #define CONFIG_RTC_UPDATE_INTERVAL 156
 // How quickly do we want to update the display?
 #define CONFIG_DISPLAY_UPDATE_INTERVAL 37
+// How often should we ask sensors to update the values? (Milliseconds)
+#define CONFIG_SENSORS_UPDATE_INTERVAL 345
+
+/**
+ * @tableofcontents SECTION_CONFIG_SOUND
+ * @brief Configuration parameters for the speaker
+ */
+// Which frequency should the alarm ring?
+#define CONFIG_ALARM_FREQ         440
+
 
 #endif
 #ifdef __cplusplus

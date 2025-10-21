@@ -48,7 +48,9 @@ extern "C" {
 typedef enum {
   GUI_TIME = 0,             // Display the current time (default of default)
   GUI_DATE = 1,             // Display the current date
+  GUI_SENSORS = 2,          // Display the current sensor values
   GUI_STOPWATCH = 10,       // Display stopwatch
+  GUI_ALARM_SET = 11,       // Display alarm set
   GUI_TIME_DATE_SET = 20,   // Active when time set or date set is enabled
   GUI_BRIGHTNESS_SET = 21,  // Active when brightness (night shift) set is enabled
   GUI_DIGIT_FADE_SET = 22   // Active when digit fade set is enabled

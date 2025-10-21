@@ -34,7 +34,9 @@ SOFTWARE.*/
   * SECTION_GUI_FORMAT
   * SECTION_GUI_FORMAT_TIME
   * SECTION_GUI_FORMAT_DATE
+  * SECTION_GUI_FORMAT_SENSORS
   * SECTION_GUI_FORMAT_TIME_DATE_SET
+  * SECTION_GUI_FORMAT_ALARM_SET
   * SECTION_GUI_FORMAT_STOPWATCH
   * SECTION_GUI_BRIGHTNESS_SETTER
   * SECTION_GUI_DIGIT_FADE_SETTER
@@ -51,7 +53,19 @@ extern "C" {
 
 #include <stdint.h>
 #include "vfdco_time.h"
+#include "vfdco_sensors.h"
 #include "vfdco_hid.h"
+
+/** Begin of:
+ * @tableofcontents SECTION_ALARM_STATE
+ */
+typedef enum {
+  ALARM_STATE_IDLE,
+  ALARM_STATE_STARTED,
+  ALARM_STATE_RINGING,
+  ALARM_STATE_SNOOZED,
+  ALARM_STATE_DISMISSED
+} GUI_Format_Alarm_t;
 
 /** Begin of:
  * @tableofcontents SECTION_GUI_FORMAT
@@ -85,16 +99,25 @@ CREATE_SERIALIZED_GUI_POSITIONS(CREATE_SETTINGS_OFFSET_GUI)
   * @tableofcontents SECTION_GUI_FORMAT_TIME
  **/
 struct GUI_Format_Time {
-  uint8_t           *settings;
-  vfdco_time_t      *time_instance;
-  time_format_t     time_mode;
-  uint_fast8_t      dot_mode;
-  uint8_t           dot_position;
-  uint8_t           dot_direction;
-  time_event_t      dot_timer;
+  uint8_t             *settings;
+  vfdco_time_t        *time_instance;
+  time_format_t       time_mode;
+  uint_fast8_t        dot_mode;
+  uint8_t             dot_position;
+  uint8_t             dot_direction;
+  time_event_t        dot_timer;
+
+  GUI_Format_Alarm_t  alarm_state;
+  time_event_t        alarm_flash_timer;
+  uint8_t             alarm_flash_toggle;     // Toggles between 0 and 1
+  uint8_t             alarm_snooze_option;    // Snooze index according to Messages_Alarm_Snooze_Set in gui.c
+  uint8_t             alarm_auto_off_option;  // Auto-off index according to Messages_Alarm_Auto_Off_Set in gui.c
+  uint32_t            alarm_trigger_epoch;    // Snooze timing
+  uint32_t            alarm_ringing_epoch;    // Auto-off timing
+  vfdco_date_t        *date_instance;         // Used to track date for alarm for special cases
 };
 
-void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_instance, uint8_t *settings);
+void GUI_Format_Time_Init(struct GUI_Format_Time *self, vfdco_time_t *time_instance, vfdco_date_t *date_instance, uint8_t alarm_snooze_option, uint8_t *settings);
 
 
 /** Begin of:
@@ -107,6 +130,32 @@ struct GUI_Format_Date {
 };
 
 void GUI_Format_Date_Init(struct GUI_Format_Date *self, vfdco_date_t *date_instance, uint8_t *settings);
+
+
+/** Begin of:
+  * @tableofcontents SECTION_GUI_FORMAT_SENSORS
+ **/
+struct GUI_Format_Sensors {
+  uint8_t               *settings;
+  // Cycle between: 0 Temperature, 1 Humidity, 2 Pressure, 3 Tilt
+  uint8_t               sensor_mode;
+  vfdco_temperature_t   *temperature_instance;
+  vfdco_humidity_t      *humidity_instance;
+  vfdco_pressure_t      *pressure_instance;
+  vfdco_tilt_t          *tilt_instance;
+  sensors_temperature_unit_t
+                        unit_temperature;
+  sensors_pressure_unit_t
+                        unit_pressure;
+};
+void GUI_Format_Sensors_Init(
+  struct GUI_Format_Sensors *self, 
+  vfdco_temperature_t *temperature_instance,
+  vfdco_humidity_t *humidity_instance,
+  vfdco_pressure_t *pressure_instance,
+  vfdco_tilt_t *tilt_instance,
+  uint8_t *settings
+);
 
 
 /** Begin of:
@@ -125,6 +174,25 @@ struct GUI_Format_Time_Date_Setter {
 };
 
 void GUI_Format_Time_Date_Setter_Init(struct GUI_Format_Time_Date_Setter *self, vfdco_time_t *time_instance, vfdco_date_t *date_instance, uint_fast8_t set_mode);
+
+
+/** Begin of:
+  * @tableofcontents SECTION_GUI_FORMAT_ALARM_SET
+ **/
+struct GUI_Format_Alarm_Setter {
+  uint8_t           *settings;    // Alarm times, Snooze options
+
+  uint_fast8_t      active_digit; // Group with blank digits
+  uint_fast8_t      blank_active; // Blank period?
+  char              blank_alt_message[CONFIG_NUM_DIGITS]; // Since render time is bad, use alt renderer
+  time_event_t      blank_timer; // Blank timer
+
+  vfdco_time_t      new_time;
+  uint8_t           snooze_option;
+  uint8_t           auto_off_option;
+};
+
+void GUI_Format_Alarm_Setter_Init(struct GUI_Format_Alarm_Setter *self, uint8_t *settings);
 
 
 enum {
@@ -201,9 +269,12 @@ typedef union GUI_Format {
   // GUI_Format                   base;
   struct GUI_Format_Time                _gui_time;
   struct GUI_Format_Date                _gui_date;
+  struct GUI_Format_Sensors             _gui_sensors;
   struct GUI_Format_Time_Date_Setter    _gui_set;
+  struct GUI_Format_Alarm_Setter        _gui_alset;
   struct GUI_Format_Stopwatch           _gui_watch;
   struct GUI_Format_Brightness_Setter   _gui_bset;
+  struct GUI_Format_Digit_Fade_Setter   _gui_dfset;
 } GUI_Format;
 
 /**

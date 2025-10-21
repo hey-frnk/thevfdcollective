@@ -149,6 +149,15 @@ extern "C" {
 #define CONFIG_RTC_UPDATE_INTERVAL 850
 // How quickly do we want to update the display?
 #define CONFIG_DISPLAY_UPDATE_INTERVAL 11
+// How often should we ask sensors to update the values? (Milliseconds)
+#define CONFIG_SENSORS_UPDATE_INTERVAL 345
+
+/**
+ * @tableofcontents SECTION_CONFIG_SOUND
+ * @brief Configuration parameters for the speaker
+ */
+// Which frequency should the alarm ring?
+#define CONFIG_ALARM_FREQ         440
 
 #endif
 #ifdef __cplusplus
